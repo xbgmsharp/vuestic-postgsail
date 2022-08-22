@@ -44,12 +44,8 @@
           name: 'brazilian_portuguese',
         },
         {
-          code: 'cn',
-          name: 'simplified_chinese',
-        },
-        {
-          code: 'ir',
-          name: 'persian',
+          code: 'fr',
+          name: 'french',
         },
       ],
     },

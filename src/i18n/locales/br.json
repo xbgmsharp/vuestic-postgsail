@@ -167,7 +167,17 @@
     "uiElements": "Elementos UI",
     "treeView": "Árvore de visualização",
     "dateTimePickers": "Selecionar Data e Hora",
-    "chat": "Gráficos"
+    "chat": "Gráficos",
+    "faq": "Faq",
+    "logs": "Logs",
+    "moorages": "Moorages",
+    "stays": "Stays",
+    "badges": "Badges",
+    "boats": "Boats",
+    "stats": "Stats",
+    "timelapse": "Timelapse",
+    "monitoring": "Monitoring",
+    "privacy": "Privacy"
   },
   "messages": {
     "all": "Ver todas as menssagens",

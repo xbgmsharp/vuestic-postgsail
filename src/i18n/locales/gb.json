@@ -338,7 +338,16 @@
     "line-maps": "Line Maps",
     "login-singup": "Login/Signup",
     "404-pages": "404 Pages",
-    "faq": "Faq"
+    "faq": "Faq",
+    "logs": "Logs",
+    "moorages": "Moorages",
+    "stays": "Stays",
+    "badges": "Badges",
+    "boats": "Boats",
+    "stats": "Stats",
+    "timelapse": "Timelapse",
+    "monitoring": "Monitoring",
+    "privacy": "Privacy"
   },
   "messages": {
     "all": "See all messages",

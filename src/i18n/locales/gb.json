@@ -12,7 +12,8 @@
     "sign_up": "Sign Up",
     "keep_logged_in": "Keep me logged in",
     "termsOfUse": "Terms of Use.",
-    "reset_password": "Reset password"
+    "reset_password": "Reset password",
+    "vessel_register": "Add vessel"
   },
   "404": {
     "title": "This page’s gone fishing.",

@@ -1,3 +1,5 @@
+import { nextTick } from 'vue'
+
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import AuthLayout from '../layouts/AuthLayout.vue'
@@ -7,14 +9,44 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 
+import { useGlobalStore } from '../stores/global-store'
+
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/:catchAll(.*)',
-    redirect: { name: 'dashboard' },
+    path: '/login',
+    name: 'login',
+    component: AuthLayout,
+    //meta: { title: 'Login 2' },
+    children: [
+      {
+        name: 'login',
+        path: 'login',
+        component: () => import('../pages/auth/login/Login.vue'),
+      },
+      {
+        name: 'signup',
+        path: 'signup',
+        component: () => import('../pages/auth/signup/Signup.vue'),
+      },
+      {
+        name: 'recover-password',
+        path: 'recover-password',
+        component: () => import('../pages/auth/recover-password/RecoverPassword.vue'),
+      },
+      {
+        path: '',
+        redirect: { name: 'login' },
+      },
+    ],
   },
   {
     name: 'admin',
-    path: '/admin',
+    path: '/',
+    meta: { requiresAuth: true },
+    async beforeEnter(to, from, next) {
+      const store = useGlobalStore()
+      next()
+    },
     component: AppLayout,
     children: [
       {
@@ -30,7 +62,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             name: 'charts',
             path: 'charts',
-            component: () => import('../pages/admin/statistics/charts/Charts.vue'),
+            component: () => import('../pages/admin/tables/Logs.vue'),
             meta: {
               wikiLink: 'https://github.com/epicmaxco/vuestic-admin/wiki/Charts',
             },
@@ -46,14 +78,14 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
-        name: 'forms',
-        path: 'forms',
+        name: 'moorages',
+        path: 'moorages',
         component: RouteViewComponent,
         children: [
           {
             name: 'form-elements',
             path: 'form-elements',
-            component: () => import('../pages/admin/forms/form-elements/FormElements.vue'),
+            component: () => import('../pages/admin/tables/markup-tables/MarkupTables.vue'),
             meta: {
               wikiLink: 'https://github.com/epicmaxco/vuestic-admin/wiki/inputs',
             },
@@ -153,6 +185,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'faq',
             component: () => import('../pages/admin/pages/FaqPage.vue'),
           },
+          {
+            name: 'privacy',
+            path: 'privacy',
+            component: () => import('../pages/admin/pages/FaqPage.vue'),
+          },
         ],
       },
       UIRoute,
@@ -184,30 +221,16 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/404',
+    path: '/:pathMatch(.*)*',
+    name: 'error-404',
     component: Page404Layout,
-    children: [
-      {
-        name: 'not-found-advanced',
-        path: 'not-found-advanced',
-        component: () => import('../pages/404-pages/VaPageNotFoundSearch.vue'),
-      },
-      {
-        name: 'not-found-simple',
-        path: 'not-found-simple',
-        component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
-      },
-      {
-        name: 'not-found-custom',
-        path: 'not-found-custom',
-        component: () => import('../pages/404-pages/VaPageNotFoundCustom.vue'),
-      },
-      {
-        name: 'not-found-large-text',
-        path: '/pages/not-found-large-text',
-        component: () => import('../pages/404-pages/VaPageNotFoundLargeText.vue'),
-      },
-    ],
+    meta: { title: 'Error 404' },
+  },
+  {
+    path: '/403',
+    name: 'unauthorized',
+    component: Page404Layout,
+    meta: { title: 'Error 403' },
   },
 ]
 
@@ -215,6 +238,28 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   //  mode: process.env.VUE_APP_ROUTER_MODE_HISTORY === 'true' ? 'history' : 'hash',
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  console.log(localStorage.getItem('token'))
+  const loggedIn = localStorage.getItem('token')
+  console.log(loggedIn)
+  if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
+    // If not login redirect to login page.
+    next({ name: 'login' })
+  } else {
+    if (to.name === 'login' && loggedIn) {
+      next({ name: 'dashboard' })
+      return
+    }
+    next()
+  }
+})
+
+router.afterEach((to) => {
+  nextTick(() => {
+    document.title = (to.meta.title as string) || 'PostgSail Dashboard'
+  })
 })
 
 export default router

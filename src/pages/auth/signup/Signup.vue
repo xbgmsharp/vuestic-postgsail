@@ -18,6 +18,24 @@
       :error-messages="passwordErrors"
     />
 
+    <va-input
+      v-model="firstname"
+      class="mb-3"
+      type="firstname"
+      :label="t('auth.firstname')"
+      :error="!!passwordErrors.length"
+      :error-messages="passwordErrors"
+    />
+
+    <va-input
+      v-model="lastname"
+      class="mb-3"
+      type="lastname"
+      :label="t('auth.lastname')"
+      :error="!!passwordErrors.length"
+      :error-messages="passwordErrors"
+    />
+
     <div class="auth-layout__options d-flex align--center justify--space-between">
       <va-checkbox
         v-model="agreedToTerms"

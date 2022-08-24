@@ -65,10 +65,10 @@ export default {
           name: 'markup',
           displayName: 'menu.markupTables',
         },
-        // {
-        //   name: 'data',
-        //   displayName: 'menu.dataTables',
-        // },
+        {
+          name: 'data',
+          displayName: 'menu.dataTables',
+        },
       ],
     },
     {
@@ -224,6 +224,10 @@ export default {
         {
           name: 'faq',
           displayName: 'menu.faq',
+        },
+        {
+          name: 'privacy',
+          displayName: 'menu.privacy',
         },
       ],
     },

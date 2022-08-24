@@ -43,12 +43,45 @@
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 
-  function onsubmit() {
+  async function onsubmit() {
     if (!formReady.value) return
 
     emailErrors.value = email.value ? [] : ['Email is required']
     passwordErrors.value = password.value ? [] : ['Password is required']
 
-    useRouter().push({ name: 'dashboard' })
+    //useRouter().push({ name: 'dashboard' })
+
+    const payload = {
+      email: email.value,
+      pass: password.value,
+    }
+    try {
+      //loading.value = true;
+      const response = await fetch(`http://localhost:3002/rpc/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      var response_data = await response.json()
+      //console.log(response_data.token)
+      localStorage.setItem('token', response_data.token)
+      //useRouter().push({ name: 'dashboard' })
+      window.location.reload()
+    } catch (error: any) {
+      //loading.value = false;
+      //console.log(localStorage.removeItem('token'))
+      /*
+      if (error.response.status === StatusCodes.unAuthorized) {
+        showNotify('Login Incorrecto', error.response.data.message, TypeNotification.Warn);
+        return;
+      }
+      Object.entries(error.response.data.validations).reverse().forEach(([, value]) => {
+        const tempList = value as Array<string>;
+        tempList.forEach((el: string) => {
+          showNotify('Error de validación', el, TypeNotification.Warn);
+        });
+      });
+      */
+    }
   }
 </script>

@@ -19,5 +19,6 @@ export default createI18n({
   legacy: false,
   locale: 'gb',
   fallbackLocale: 'gb',
+  globalInjection: true,
   messages,
 })

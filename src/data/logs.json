@@ -1,0 +1,24 @@
+{
+  "logs_view": [
+    {
+      "id" : 2,
+      "name" : "Knipan to Ekenäs",
+      "_from" : "Knipan",
+      "_to" : "Ekenäs",
+      "_from_time" : "2022-08-07T15:32:49.000Z",
+      "_to_time" : "2022-08-07T15:50:49.000Z",
+      "distance" : 8686,
+      "duration" : "00:18:00"
+    },
+    {
+      "id" : 1,
+      "name" : "Bollsta to Hamnterassen Baywatch",
+      "_from" : "Bollsta",
+      "_to" : "Hamnterassen Baywatch",
+      "_from_time" : "2022-08-07T15:04:49.000Z",
+      "_to_time" : "2022-08-07T15:29:49.000Z",
+      "distance" : 7170,
+      "duration" : "00:25:00"
+    }
+  ]}
+  

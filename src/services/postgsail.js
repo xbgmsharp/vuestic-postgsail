@@ -105,6 +105,14 @@ class PostgSail {
     })
     return await response.json()
   }
+
+  async logbook(data) {
+    const response = await fetch(`${this.app_url}/logbook?id.eq=${data}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    })
+    return await response.json()
+  }
 }
 
 export default PostgSail

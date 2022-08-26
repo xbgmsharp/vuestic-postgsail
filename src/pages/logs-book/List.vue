@@ -3,7 +3,14 @@
     <va-card>
       <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
       <va-card-content>
-        <va-data-table :columns="columns" :items="items" :loading="isBusy" no-pagination stripped>
+        <va-data-table
+          :columns="columns"
+          :items="items"
+          :loading="isBusy"
+          :per-page="perPage"
+          :current-page="currentPage"
+          stripped
+        >
           <template #cell(name)="{ value, rowIndex }">
             <router-link class="text--bold" :to="{ name: 'log', params: { id: rowIndex } }">
               {{ value }}
@@ -22,6 +29,11 @@
             {{ durationFormat(value) }} {{ $t('logs.log.duration_unit') }}
           </template>
         </va-data-table>
+        <template v-if="items.length > perPage">
+          <div class="mt-3 row justify--center">
+            <va-pagination v-model="currentPage" input :pages="pages" />
+          </div>
+        </template>
       </va-card-content>
     </va-card>
   </div>
@@ -38,6 +50,8 @@
       return {
         isBusy: false,
         items: [],
+        perPage: 20,
+        currentPage: 1,
         columns: [
           { key: 'name', label: this.$t('logs.log.name'), sortable: true },
           { key: '_from', label: this.$t('logs.log.from'), sortable: true },

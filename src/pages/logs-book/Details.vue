@@ -5,25 +5,19 @@
       <va-card-content>
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
-            <GMapMap
-              :center="mapCenter"
-              :zoom="7"
-              :disable-default-u-i="true"
-              :options="mapOptions"
-              map-type-id="terrain"
-              style="width: 100%; height: 250px"
-            >
-              <template v-if="item && item.name">
-                <GMapMarker v-for="(m, index) in mapMarkers" :key="index" :position="m.position" />
-                <GMapPolyline ref="polyline" :path="mapPath" />
-              </template>
-            </GMapMap>
+            <gMap :loading="isBusy" :markers="mapMarkers" :parth="mapPath" style="width: 100%; height: 250px" />
           </div>
           <template v-if="item">
-            <va-form ref="form">
+            <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
               <dl class="dl-details row">
                 <dt class="flex xs12 md6 text--bold">Name</dt>
-                <dd class="flex xs12 md6"><va-input v-model="item.name" placeholder="Name" /></dd>
+                <dd class="flex xs12 md6">
+                  <va-input
+                    v-model="form.name"
+                    placeholder="Name"
+                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                  />
+                </dd>
                 <dt class="flex xs12 md6 text--bold">Boat</dt>
                 <dd class="flex xs12 md6">{{ item.client_id }}</dd>
                 <dt class="flex xs12 md6 text--bold">Departed</dt>
@@ -44,12 +38,12 @@
                 <dd class="flex xs12 md6">{{ item.max_wind_speed }}</dd>
                 <dt class="flex xs12 md6 text--bold">Note</dt>
                 <dd class="flex xs12 md6">
-                  <va-input v-model="item.notes" type="textarea" placeholder="Note" />
+                  <va-input v-model="form.notes" type="textarea" placeholder="Note" />
                 </dd>
               </dl>
               <div class="row justify--end">
                 <div class="flex">
-                  <va-button @click="$refs.form.validate()"> Save </va-button>
+                  <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
               </div>
             </va-form>
@@ -63,58 +57,77 @@
 <script>
   import dateFormater from '../../mixins/dateFormater.js'
   import logsBooks from '../../data/logbook.json'
+  import gMap from '../../components/maps/gMap.vue'
   import { defineComponent } from 'vue'
   export default defineComponent({
+    components: {
+      gMap,
+    },
     mixins: [dateFormater],
     data() {
       return {
         isBusy: false,
         item: null,
-        mapOptions: {
-          zoomControl: true,
-          mapTypeControl: false,
-          scaleControl: false,
-          streetViewControl: false,
-          rotateControl: false,
-          fullscreenControl: false,
+        form: {
+          isValid: true,
+          name: null,
+          notes: null,
         },
       }
     },
     computed: {
-      mapCenter() {
-        return this.item ? this.mapMarkers[0].position : { lat: 0, lng: 0 }
-      },
       mapMarkers() {
-        return ['from', 'to']
-          .map((key) => {
-            if (!this.item) {
-              return null
-            }
-            const lat = this.item['_' + key + '_lat']
-            const lng = this.item['_' + key + '_lng']
-            return { position: { lat, lng } }
-          })
-          .filter(Boolean)
+        return !this.item
+          ? []
+          : ['from', 'to']
+              .map((key) => {
+                const lat = this.item['_' + key + '_lat']
+                const lng = this.item['_' + key + '_lng']
+                return lat && lng ? { position: new window.google.maps.LatLng(lat, lng) } : null
+              })
+              .filter(Boolean)
       },
       mapPath() {
-        if (!this.item) {
-          return null
+        if (!this.item || !this.item.track_geom || !this.item.track_geom.length) {
+          return []
         }
         const re = new RegExp(/\((.*)\)/, 'g')
         const pointsString = this.item.track_geom.match(re)[0]
         const points = pointsString.substring(1, pointsString.length - 1).split(', ')
         return points.map((str) => {
           const [lat, lng] = str.split(' ').map(Number)
-          return { lat, lng }
+          return new window.google.maps.LatLng(lat, lng)
         })
+      },
+      canSubmit() {
+        const isDirty = this.item.name !== this.form.name || this.item.notes !== this.form.notes
+        return !this.isBusy && this.form.isValid && isDirty
       },
     },
     mounted() {
-      this.isBusy = true
-      window.setTimeout(() => {
-        this.item = { ...logsBooks[this.$route.params.id] }
-        this.isBusy = false
-      }, 400)
+      this.getLog()
+    },
+    methods: {
+      getLog() {
+        this.isBusy = true
+        window.setTimeout(() => {
+          this.item = { ...logsBooks[this.$route.params.id] }
+          this.form.name = this.item.name
+          this.form.notes = this.item.notes
+          this.isBusy = false
+        }, 400)
+      },
+      handleSubmit() {
+        console.log('Submiting Log...')
+        this.$refs.form.validate()
+        if (this.form.isValid) {
+          this.isBusy = true
+          window.setTimeout(() => {
+            this.isBusy = false
+          }, 400)
+          console.log('Send datas', this.form)
+        }
+      },
     },
   })
 </script>

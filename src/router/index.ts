@@ -54,12 +54,27 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'logs',
         path: 'logs',
-        component: () => import('../pages/dashboard/Logs.vue'),
+        component: () => import('../pages/logs-book/List.vue'),
       },
       {
-        name: 'log-details',
-        path: 'log-details/:id',
-        component: () => import('../pages/dashboard/Details.vue'),
+        name: 'log',
+        path: 'log/:id',
+        component: () => import('../pages/logs-book/Details.vue'),
+      },
+      {
+        name: 'boats',
+        path: 'boats',
+        component: () => import('../pages/boats/List.vue'),
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('../pages/profile/Profile.vue'),
+      },
+      {
+        path: '/privacy',
+        name: 'privacy',
+        component: () => import('../pages/privacy/Privacy.vue'),
       },
     ],
   },

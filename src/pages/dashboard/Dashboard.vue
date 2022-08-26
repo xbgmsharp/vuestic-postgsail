@@ -1,11 +1,11 @@
 <template>
-  <div class="dashboard">
-    <h1>{{ $t('dashboard.title') }}</h1>
-    <va-list>
-      <va-list-item>
-        <router-link :to="{ name: 'logs' }">Logs</router-link>
-      </va-list-item>
-    </va-list>
+  <div>
+    <va-card>
+      <va-card-title>{{ $t('dashboard.title') }}</va-card-title>
+      <va-card-content>
+        <p>Dashboard content here</p>
+      </va-card-content>
+    </va-card>
   </div>
 </template>
 

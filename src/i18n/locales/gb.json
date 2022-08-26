@@ -15,6 +15,12 @@
     "reset_password": "Reset password",
     "vessel_register": "Add vessel"
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "logs": "Logs",
+    "boats": "Boats",
+    "privacy": "Privacy"
+  },
   "404": {
     "title": "This page’s gone fishing.",
     "text": "If you feel that it’s not right, please send us a message at ",
@@ -29,6 +35,35 @@
     },
     "details": {
       "title": "Logs details"
+    },
+    "log": {
+      "name": "Name | Names",
+      "boat": "Boat | Boats",
+      "from": "Departed",
+      "from_time": "Departed at",
+      "to": "Arrived",
+      "to_time": "Arrived at",
+      "duration": "Duration",
+      "duration_unit": "hour | hours",
+      "distance": "Distance",
+      "distance_unit": "mile | miles",
+      "avg": "Average",
+      "max": "Max",
+      "speed": "Speed",
+      "speed_unit": "knot | knots",
+      "wind_speed": "Wind Speed",
+      "note": "Note | Notes"
     }
+  },
+  "boats": {
+    "list": {
+      "title": "Boats list"
+    }
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "privacy": {
+    "title": "Privacy"
   }
 }

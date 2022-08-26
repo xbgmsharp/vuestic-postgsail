@@ -1,12 +1,14 @@
 <template>
   <div>
     <va-card>
-      <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
-      <va-data-table :columns="columns" :items="items" no-pagination>
-        <template #cell(actions)="{ rowIndex }">
-          <va-button flat icon="eye" @click="openDetails(rowIndex)" />
-        </template>
-      </va-data-table>
+      <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
+      <va-card-content>
+        <va-data-table :columns="columns" :items="items" no-pagination>
+          <template #cell(actions)="{ rowIndex }">
+            <va-button flat icon="eye" @click="openDetails(rowIndex)" />
+          </template>
+        </va-data-table>
+      </va-card-content>
     </va-card>
   </div>
 </template>
@@ -16,8 +18,9 @@
   import logsDatas from '../../data/logs.json'
   export default defineComponent({
     data() {
+      console.log(logsDatas)
       return {
-        items: logsDatas.logs_view,
+        items: logsDatas,
         columns: [
           { key: 'name', label: 'Name', sortable: true },
           { key: '_from', label: 'From', sortable: true },

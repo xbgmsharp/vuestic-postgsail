@@ -1,9 +1,9 @@
 <template>
   <div>
     <va-card>
-      <va-card-title>{{ $t('logs.details.title') }}</va-card-title>
+      <va-card-title>{{ $t('privacy.title') }}</va-card-title>
       <va-card-content>
-        <p>Detailed logs here: {{ $route.params.id }}</p>
+        <p>Privacy content here</p>
       </va-card-content>
     </va-card>
   </div>

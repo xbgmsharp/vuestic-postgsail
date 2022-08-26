@@ -31,7 +31,7 @@
       options: () => [
         {
           name: 'profile',
-          redirectTo: '',
+          redirectTo: 'profile',
         },
         {
           name: 'logout',

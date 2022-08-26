@@ -31,11 +31,11 @@
                 <dt class="flex xs12 md6 text--bold">Duration</dt>
                 <dd class="flex xs12 md6">{{ item.duration }}</dd>
                 <dt class="flex xs12 md6 text--bold">Distance</dt>
-                <dd class="flex xs12 md6">{{ item.distance }}</dd>
+                <dd class="flex xs12 md6">{{ distanceFormat(item.distance) }}</dd>
                 <dt class="flex xs12 md6 text--bold">Average / Max Speed</dt>
-                <dd class="flex xs12 md6">{{ item.avg_speed }} / {{ item.max_speed }}</dd>
+                <dd class="flex xs12 md6">{{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}</dd>
                 <dt class="flex xs12 md6 text--bold">Max Wind Speed</dt>
-                <dd class="flex xs12 md6">{{ item.max_wind_speed }}</dd>
+                <dd class="flex xs12 md6">{{ speedFormat(item.max_wind_speed) }}</dd>
                 <dt class="flex xs12 md6 text--bold">Note</dt>
                 <dd class="flex xs12 md6">
                   <va-input v-model="form.notes" type="textarea" placeholder="Note" />
@@ -56,6 +56,8 @@
 
 <script>
   import dateFormater from '../../mixins/dateFormater.js'
+  import distanceFormater from '../../mixins/distanceFormater.js'
+  import speedFormater from '../../mixins/speedFormater.js'
   import logsBooks from '../../data/logbook.json'
   import gMap from '../../components/maps/gMap.vue'
   import { defineComponent } from 'vue'
@@ -63,7 +65,7 @@
     components: {
       gMap,
     },
-    mixins: [dateFormater],
+    mixins: [dateFormater, distanceFormater, speedFormater],
     data() {
       return {
         isBusy: false,

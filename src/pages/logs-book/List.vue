@@ -23,7 +23,7 @@
             {{ dateFormat(value) }}
           </template>
           <template #cell(distance)="{ value }">
-            {{ value }} {{ ($t('logs.log.distance_unit'), Number(value)) }}
+            {{ distanceFormat(value) }}
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormat(value) }} {{ $t('logs.log.duration_unit') }}
@@ -42,10 +42,11 @@
 <script>
   import PostgSail from '../../services/postgsail.js'
   import dateFormater from '../../mixins/dateFormater.js'
+  import distanceFormater from '../../mixins/distanceFormater.js'
   import { defineComponent } from 'vue'
   import logsDatas from '../../data/logs.json'
   export default defineComponent({
-    mixins: [dateFormater],
+    mixins: [dateFormater, distanceFormater],
     data() {
       return {
         isBusy: false,

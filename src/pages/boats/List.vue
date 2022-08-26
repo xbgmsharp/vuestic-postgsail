@@ -4,8 +4,13 @@
       <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
       <va-card-content>
         <va-data-table :columns="columns" :items="items" no-pagination>
-          <template #cell(actions)="{ rowIndex }">
-            <va-button flat icon="eye" @click="openDetails(rowIndex)" />
+          <template #cell(name)="{ value, rowData }">
+            <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
+              {{ value }}
+            </router-link>
+          </template>
+          <template #cell(last_contact)="{ value }">
+            {{ dateFormat(value) }}
           </template>
         </va-data-table>
       </va-card-content>
@@ -15,39 +20,35 @@
 
 <script>
   import { defineComponent } from 'vue'
-  import logsDatas from '../../data/logs.json'
+  import dateFormater from '../../mixins/dateFormater.js'
+  import vesselsDatas from '../../data/vessel.json'
   export default defineComponent({
+    mixins: [dateFormater],
     data() {
-      console.log(logsDatas)
       return {
-        items: logsDatas,
+        isBusy: false,
+        items: [],
+        perPage: 20,
+        currentPage: 1,
         columns: [
-          { key: 'name', label: 'Name', sortable: true },
-          { key: '_from', label: 'From', sortable: true },
-          { key: '_from_time', label: 'From time', sortable: true },
-          { key: '_to', label: 'To', sortable: true },
-          { key: '_to_time', label: 'To time', sortable: true },
-          { key: 'actions', label: '' },
+          { key: 'name', label: this.$t('boats.boat.name'), sortable: true },
+          { key: 'mmsi', label: this.$t('boats.boat.mmsi'), sortable: true },
+          { key: 'last_contact', label: this.$t('boats.boat.last_contact'), sortable: true },
         ],
       }
     },
-    methods: {
-      openDetails(id) {
-        console.log(id)
-        this.$router.push({ name: 'log-details', params: { id } })
-      },
+    mounted() {
+      this.isBusy = true
+      window.setTimeout(() => {
+        this.items = [vesselsDatas]
+        this.isBusy = false
+      }, 400)
     },
   })
 </script>
 
-<style lang="scss">
-  .markup-tables {
-    .table-wrapper {
-      overflow: auto;
-    }
-
-    .va-table {
-      width: 100%;
-    }
+<style lang="scss" scoped>
+  .va-table {
+    width: 100%;
   }
 </style>

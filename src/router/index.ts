@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/logs-book/List.vue'),
       },
       {
-        name: 'log',
+        name: 'log-details',
         path: 'log/:id',
         component: () => import('../pages/logs-book/Details.vue'),
       },
@@ -65,6 +65,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'boats',
         path: 'boats',
         component: () => import('../pages/boats/List.vue'),
+      },
+      {
+        name: 'boat-details',
+        path: 'boats/mmsi',
+        component: () => import('../pages/boats/Details.vue'),
       },
       {
         path: '/profile',

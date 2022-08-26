@@ -111,7 +111,9 @@
       getLog() {
         this.isBusy = true
         window.setTimeout(() => {
-          this.item = { ...logsBooks[this.$route.params.id] }
+          const id = this.$route.params.id
+          const row = logsBooks.find((row) => row.id == id)
+          this.item = { ...row }
           this.form.name = this.item.name
           this.form.notes = this.item.notes
           this.isBusy = false

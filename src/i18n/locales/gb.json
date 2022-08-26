@@ -34,7 +34,7 @@
       "title": "Logs list"
     },
     "details": {
-      "title": "Logs details"
+      "title": "Log's details"
     },
     "log": {
       "name": "Name | Names",
@@ -58,6 +58,14 @@
   "boats": {
     "list": {
       "title": "Boats list"
+    },
+    "details": {
+      "title": "Boat's details"
+    },
+    "boat": {
+      "name": "Name | Names",
+      "mmsi": "MMSI",
+      "last_contact": "Last Contact",
     }
   },
   "profile": {

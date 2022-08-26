@@ -11,8 +11,8 @@
           :current-page="currentPage"
           stripped
         >
-          <template #cell(name)="{ value, rowIndex }">
-            <router-link class="text--bold" :to="{ name: 'log', params: { id: rowIndex } }">
+          <template #cell(name)="{ value, rowData }">
+            <router-link class="text--bold" :to="{ name: 'log-details', params: { id: rowData.id } }">
               {{ value }}
             </router-link>
           </template>
@@ -63,14 +63,13 @@
         ],
       }
     },
-    computed: {},
     async mounted() {
       this.isBusy = true
       window.setTimeout(() => {
         this.items = [...logsDatas]
         this.isBusy = false
       }, 400)
-      const post = new PostgSail()
+      /*const post = new PostgSail()
       post
         .logs_view()
         .then((response) => {
@@ -80,25 +79,13 @@
           console.log(error)
           this.errored = true
         })
-        .finally(() => (this.isBusy = false))
-    },
-    methods: {
-      openDetails(id) {
-        console.log(id)
-        this.$router.push({ name: 'log-details', params: { id } })
-      },
+        .finally(() => (this.isBusy = false))*/
     },
   })
 </script>
 
-<style lang="scss">
-  .markup-tables {
-    .table-wrapper {
-      overflow: auto;
-    }
-
-    .va-table {
-      width: 100%;
-    }
+<style lang="scss" scoped>
+  .va-table {
+    width: 100%;
   }
 </style>

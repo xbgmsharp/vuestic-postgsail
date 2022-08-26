@@ -35,7 +35,7 @@
         },
         {
           name: 'logout',
-          redirectTo: 'login',
+          redirectTo: 'logout',
         },
       ],
     },

@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/auth/recover-password/RecoverPassword.vue'),
       },
       {
+        name: 'logout',
+        path: 'logout',
+        component: () => import('../pages/auth/login/Logout.vue'),
+      },
+      {
         path: '',
         redirect: { name: 'login' },
       },
@@ -105,7 +110,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem('token')
-  console.log('Before route token:', loggedIn)
+  console.log('Check token on navigation:', loggedIn)
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     // If not login redirect to login page.
     next({ name: 'login' })

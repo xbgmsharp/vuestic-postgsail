@@ -45,6 +45,8 @@
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
 
+  const router = useRouter()
+
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 
   async function onsubmit() {
@@ -59,21 +61,13 @@
     }
     try {
       isBusy.value = true
-      const post = new PostgSail()
-      var response = await post.login(payload)
-      console.log(response)
-      /*
-      const response = await fetch(`http://localhost:3002/rpc/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      var response_data = await response.json()
-      //console.log(response_data.token)
-      localStorage.setItem('token', response_data.token)
-      //useRouter().push({ name: 'dashboard' })
-      window.location.reload()
-      */
+      const api = new PostgSail()
+      // const response = await api.login(payload)
+      // console.log(response)
+      //  localStorage.setItem('token', response.token)
+      //
+      localStorage.setItem('token', '-fake-token-')
+      router.push({ name: 'dashboard' })
     } catch (error: any) {
       isBusy.value = false
       console.log(error)

@@ -107,8 +107,8 @@
     }
     try {
       isBusy.value = true
-      const post = new PostgSail()
-      var response = await post.signin(payload)
+      const api = new PostgSail()
+      var response = await api.signin(payload)
       console.log(response)
     } catch (error: any) {
       console.log(error)

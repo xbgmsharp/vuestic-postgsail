@@ -4,8 +4,8 @@
     "createAccount": "Create account",
     "createNewAccount": "Create New Account",
     "email": "Email",
-    "firstname": "Firstname",
-    "lastname": "Lastname",
+    "first_name": "Firstname",
+    "last_name": "Lastname",
     "login": "Login",
     "password": "Password",
     "recover_password": "Recover password",
@@ -13,7 +13,14 @@
     "keep_logged_in": "Keep me logged in",
     "termsOfUse": "Terms of Use.",
     "reset_password": "Reset password",
-    "vessel_register": "Add vessel"
+    "vessel_register": "Add vessel",
+    "errors": {
+      "email": "Email is required",
+      "password": "Password is required",
+      "first_name": "First name is required",
+      "last_name": "Last name is required",
+      "agreed_to_terms": "You must agree to the terms of use to continue",
+    }
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -32,7 +39,7 @@
     "french": "French",
     "brazilian_portuguese": "Portuguese (Br)"
   },
-  "user":{
+  "user": {
     "profile": "Profile",
     "logout": "Logout"
   },

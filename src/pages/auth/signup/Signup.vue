@@ -19,21 +19,21 @@
     />
 
     <va-input
-      v-model="firstname"
+      v-model="firstName"
       class="mb-3"
-      type="firstname"
-      :label="t('auth.firstname')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
+      type="firstName"
+      :label="t('auth.first_name')"
+      :error="!!firstNameErrors.length"
+      :error-messages="firstNameErrors"
     />
 
     <va-input
-      v-model="lastname"
+      v-model="lastName"
       class="mb-3"
-      type="lastname"
-      :label="t('auth.lastname')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
+      type="lastName"
+      :label="t('auth.last_name')"
+      :error="!!lastNameErrors.length"
+      :error-messages="lastNameErrors"
     />
 
     <div class="auth-layout__options d-flex align--center justify--space-between">
@@ -62,29 +62,58 @@
 </template>
 
 <script setup lang="ts">
+  import PostgSail from '../../../services/postgsail.js'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
 
+  const isBusy = ref(false)
   const email = ref('')
   const password = ref('')
+  const firstName = ref('')
+  const lastName = ref('')
   const agreedToTerms = ref(false)
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
+  const firstNameErrors = ref<string[]>([])
+  const lastNameErrors = ref<string[]>([])
   const agreedToTermsErrors = ref<string[]>([])
 
   const formReady = computed(() => {
-    return !(emailErrors.value.length || passwordErrors.value.length || agreedToTermsErrors.value.length)
+    return !(
+      emailErrors.value.length ||
+      passwordErrors.value.length ||
+      firstNameErrors.value.length ||
+      lastNameErrors.value.length ||
+      agreedToTermsErrors.value.length
+    )
   })
 
-  function onsubmit() {
+  async function onsubmit() {
+    emailErrors.value = email.value ? [] : [t('auth.errors.email')]
+    passwordErrors.value = password.value ? [] : [t('auth.errors.password')]
+    firstNameErrors.value = firstName.value ? [] : [t('auth.errors.first_name')]
+    lastNameErrors.value = lastName.value ? [] : [t('auth.errors.last_name')]
+    agreedToTermsErrors.value = agreedToTerms.value ? [] : [t('auth.errors.agreed_to_terms')]
+
     if (!formReady.value) return
 
-    emailErrors.value = email.value ? [] : ['Email is required']
-    passwordErrors.value = password.value ? [] : ['Password is required']
-    agreedToTermsErrors.value = agreedToTerms.value ? [] : ['You must agree to the terms of use to continue']
-
-    useRouter().push({ name: 'dashboard' })
+    const payload = {
+      email: email.value,
+      password: password.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+    }
+    try {
+      isBusy.value = true
+      const post = new PostgSail()
+      var response = await post.signin(payload)
+      console.log(response)
+    } catch (error: any) {
+      console.log(error)
+    } finally {
+      isBusy.value = false
+    }
   }
 </script>

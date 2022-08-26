@@ -15,6 +15,7 @@
                   <va-input
                     v-model="form.name"
                     placeholder="Name"
+                    outline
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
@@ -38,7 +39,7 @@
                 <dd class="flex xs12 md6">{{ speedFormat(item.max_wind_speed) }}</dd>
                 <dt class="flex xs12 md6 text--bold">Note</dt>
                 <dd class="flex xs12 md6">
-                  <va-input v-model="form.notes" type="textarea" placeholder="Note" />
+                  <va-input v-model="form.notes" outline type="textarea" placeholder="Note" />
                 </dd>
               </dl>
               <div class="row justify--end">

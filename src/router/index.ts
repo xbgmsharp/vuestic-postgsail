@@ -12,8 +12,8 @@ import { useGlobalStore } from '../stores/global-store'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/login',
-    name: 'login',
+    path: '/',
+    name: 'auth',
     component: AuthLayout,
     children: [
       {
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     async beforeEnter(to, from, next) {
       const store = useGlobalStore()
       next()
@@ -84,31 +84,6 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/auth',
-    component: AuthLayout,
-    children: [
-      {
-        name: 'login',
-        path: 'login',
-        component: () => import('../pages/auth/login/Login.vue'),
-      },
-      {
-        name: 'signup',
-        path: 'signup',
-        component: () => import('../pages/auth/signup/Signup.vue'),
-      },
-      {
-        name: 'recover-password',
-        path: 'recover-password',
-        component: () => import('../pages/auth/recover-password/RecoverPassword.vue'),
-      },
-      {
-        path: '',
-        redirect: { name: 'login' },
-      },
-    ],
-  },
-  {
     path: '/:pathMatch(.*)*',
     name: 'error-404',
     component: Page404Layout,
@@ -130,6 +105,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem('token')
+  console.log('Before route token:', loggedIn)
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     // If not login redirect to login page.
     next({ name: 'login' })

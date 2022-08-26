@@ -10,6 +10,7 @@ class PostgSail {
     this.app_url = import.meta.env.VITE_PGSAIL_URL || null
     this.data = null
     this.status = null
+    this.token = null
 
     this.check()
   }
@@ -75,7 +76,7 @@ class PostgSail {
     const response = await fetch(`${this.app_url}/rpc/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ user: data }),
+      body: data,
     })
     return await response.json()
   }
@@ -84,32 +85,82 @@ class PostgSail {
     const response = await fetch(`${this.app_url}/rpc/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ user: data }),
+      body: data,
     })
     return await response.json()
   }
 
-  async vessel(data) {
+  async vessel_reg(data) {
     const response = await fetch(`${this.app_url}/rpc/register_vessel`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ user: data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      body: data,
     })
     return await response.json()
   }
 
-  async logs_view(data) {
-    const response = await fetch(`${this.app_url}/rpc/logs_view`, {
+  async vessel_get() {
+    const response = await fetch(`${this.app_url}/vessel`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
     })
     return await response.json()
   }
 
-  async logbook(data) {
-    const response = await fetch(`${this.app_url}/logbook?id.eq=${data}`, {
+  async logs() {
+    const response = await fetch(`${this.app_url}/logs_view`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+    return await response.json()
+  }
+
+  async log_get(id) {
+    const response = await fetch(`${this.app_url}/logbook?id=eq.${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+    return await response.json()
+  }
+
+  async log_map(id) {
+    const response = await fetch(`${this.app_url}/rpc/export_logbook_geojson_linestring_fn`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      body: { _id: id },
+    })
+    return await response.json()
+  }
+
+  async log_update(id, data) {
+    const response = await fetch(`${this.app_url}/logbook?id=eq.${id}`, {
+      method: 'PATH',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      body: data,
     })
     return await response.json()
   }

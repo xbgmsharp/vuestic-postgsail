@@ -3,7 +3,7 @@
     <va-card>
       <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
       <va-card-content>
-        <va-data-table :columns="columns" :items="items" no-pagination>
+        <va-data-table :columns="columns" :items="items" striped hoverable>
           <template #cell(name)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
               {{ value }}
@@ -13,6 +13,11 @@
             {{ dateFormat(value) }}
           </template>
         </va-data-table>
+        <template v-if="items.length > perPage">
+          <div class="mt-3 row justify--center">
+            <va-pagination v-model="currentPage" input :pages="pages" />
+          </div>
+        </template>
       </va-card-content>
     </va-card>
   </div>

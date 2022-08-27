@@ -29,6 +29,11 @@
     "boats": "Boats",
     "privacy": "Privacy"
   },
+  "notifications": {
+    "all": "All",
+    "mark_as_read": "Mark as read",
+    "sent_message": "Sent message"
+  },
   "404": {
     "title": "This page’s gone fishing.",
     "text": "If you feel that it’s not right, please send us a message at ",

@@ -3,13 +3,19 @@
     <va-card>
       <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
       <va-card-content>
+        <div class="row">
+          <va-input v-model="filter.name" class="flex mb-2 md6" placeholder="Filter by name..." />
+        </div>
         <va-data-table
           :columns="columns"
           :items="items"
           :loading="isBusy"
           :per-page="perPage"
           :current-page="currentPage"
-          stripped
+          :filter="filter"
+          :filter-method="filterMethod"
+          striped
+          hoverable
         >
           <template #cell(name)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'log-details', params: { id: rowData.id } }">
@@ -62,6 +68,9 @@
           { key: 'distance', label: this.$t('logs.log.distance'), sortable: true },
           { key: 'duration', label: this.$t('logs.log.duration'), sortable: true },
         ],
+        filter: {
+          name: '',
+        },
       }
     },
     async mounted() {
@@ -81,6 +90,15 @@
           this.errored = true
         })
         .finally(() => (this.isBusy = false))*/
+    },
+    methods: {
+      filterMethod(source) {
+        console.log(source)
+        if (this.filter.name === '') {
+          return true
+        }
+        return typeof source === 'string' ? source.toLowerCase().includes(this.filter.name.toLowerCase()) : false
+      },
     },
   })
 </script>

@@ -1,5 +1,7 @@
 <template>
   <div class="app-navbar-actions">
+    <color-dropdown class="app-navbar-actions__item" />
+    <notification-dropdown class="app-navbar-actions__item" />
     <language-dropdown class="app-navbar-actions__item" />
     <profile-dropdown class="app-navbar-actions__item app-navbar-actions__item--profile">
       <span>{{ userName }}</span>
@@ -9,7 +11,9 @@
 
 <script setup lang="ts">
   import LanguageDropdown from './dropdowns/LanguageDropdown.vue'
+  import NotificationDropdown from './dropdowns/NotificationDropdown.vue'
   import ProfileDropdown from './dropdowns/ProfileDropdown.vue'
+  import ColorDropdown from './dropdowns/ColorDropdown.vue'
 
   withDefaults(
     defineProps<{

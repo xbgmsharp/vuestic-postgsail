@@ -5,7 +5,7 @@
       <va-card-content>
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
-            <gMap :loading="isBusy" :markers="mapMarkers" style="width: 100%; height: 250px" />
+            <lMap :loading="isBusy" :markers="mapMarkers" style="width: 100%; height: 250px" />
           </div>
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
@@ -28,11 +28,11 @@
 <script>
   import dateFormater from '../../mixins/dateFormater.js'
   import vesselsDatas from '../../data/vessel.json'
-  import gMap from '../../components/maps/gMap.vue'
+  import lMap from '../../components/maps/leafletMap.vue'
   import { defineComponent } from 'vue'
   export default defineComponent({
     components: {
-      gMap,
+      lMap,
     },
     mixins: [dateFormater],
     data() {

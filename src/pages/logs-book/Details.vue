@@ -3,10 +3,12 @@
     <va-card>
       <va-card-title>{{ $t('logs.details.title') }}</va-card-title>
       <va-card-content>
+        <div class="mb-3 my-3">
+          <template v-if="!isBusy">
+            <lMap :markers="mapMarkers" :path="mapPath" style="width: 100%; height: 250px" />
+          </template>
+        </div>
         <va-inner-loading :loading="isBusy">
-          <div class="mb-3 my-3">
-            <gMap :loading="isBusy" :markers="mapMarkers" :parth="mapPath" style="width: 100%; height: 250px" />
-          </div>
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
               <dl class="dl-details row">
@@ -60,16 +62,16 @@
   import distanceFormater from '../../mixins/distanceFormater.js'
   import speedFormater from '../../mixins/speedFormater.js'
   import logsBooks from '../../data/logbook.json'
-  import gMap from '../../components/maps/gMap.vue'
+  import lMap from '../../components/maps/leafletMap.vue'
   import { defineComponent } from 'vue'
   export default defineComponent({
     components: {
-      gMap,
+      lMap,
     },
     mixins: [dateFormater, distanceFormater, speedFormater],
     data() {
       return {
-        isBusy: false,
+        isBusy: true,
         item: null,
         form: {
           isValid: true,
@@ -86,7 +88,7 @@
               .map((key) => {
                 const lat = this.item['_' + key + '_lat']
                 const lng = this.item['_' + key + '_lng']
-                return lat && lng ? { position: new window.google.maps.LatLng(lat, lng) } : null
+                return lat && lng ? [lat, lng] : null
               })
               .filter(Boolean)
       },
@@ -97,10 +99,12 @@
         const re = new RegExp(/\((.*)\)/, 'g')
         const pointsString = this.item.track_geom.match(re)[0]
         const points = pointsString.substring(1, pointsString.length - 1).split(', ')
-        return points.map((str) => {
-          const [lat, lng] = str.split(' ').map(Number)
-          return new window.google.maps.LatLng(lat, lng)
-        })
+        return points
+          .map((str) => {
+            const [lat, lng] = str.split(' ').map(Number)
+            return lat && lng ? [lat, lng] : null
+          })
+          .filter(Boolean)
       },
       canSubmit() {
         const isDirty = this.item.name !== this.form.name || this.item.notes !== this.form.notes

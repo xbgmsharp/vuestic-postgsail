@@ -5,7 +5,6 @@ export default {
       if (!val) return null
       const n = parseFloat(val)
       const count = { n: n % 1 ? parseFloat(n.toFixed(2)) : n }
-      console.log(count)
       return this.$t(trad, count)
     },
   },

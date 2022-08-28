@@ -1,46 +1,820 @@
 [
   {
-    "id": 1,
-    "client_id": "vessels.urn:mrn:imo:mmsi:123456789",
-    "active": false,
-    "name": "Bollsta to Hamnterassen Baywatch",
-    "_from": "Bollsta",
-    "_from_lat": 60.07065,
-    "_from_lng": 23.52355,
-    "_to": "Hamnterassen Baywatch",
-    "_to_lat": 59.97688333333333,
-    "_to_lng": 23.4321,
-    "track_geom": "LINESTRING (23.52355 60.07065, 23.515866666666668 60.0637, 23.507866666666665 60.05671666666667, 23.500533333333333 60.04915, 23.493 60.04163333333333, 23.485466666666667 60.03398333333333, 23.479033333333334 60.02621666666667, 23.47295 60.01835, 23.46745 60.01045, 23.461033333333333 60.00351666666667, 23.45415 59.99755, 23.445683333333335 59.99235, 23.438766666666666 59.989266666666666, 23.435116666666666 59.98786666666667, 23.43165 59.986333333333334, 23.4292 59.984833333333334, 23.432566666666666 59.9862, 23.43375 59.98726666666666, 23.431566666666665 59.98615, 23.431566666666665 59.98615, 23.4307 59.98565, 23.429383333333334 59.98468333333334, 23.42106666666667 59.978233333333336, 23.431 59.977716666666666, 23.432133333333333 59.97688333333333, 23.4321 59.97688333333333)",
-    "track_geog": null,
-    "_from_time": "2022-08-07T15:04:49.000Z",
-    "_to_time": "2022-08-07T15:29:49.000Z",
-    "distance": 7170,
-    "duration": "00:25:00",
-    "avg_speed": 3.6961538461538455,
-    "max_speed": 6.1,
-    "max_wind_speed": 22.1,
-    "notes": null
-  },
-  {
     "id": 2,
-    "client_id": "vessels.urn:mrn:imo:mmsi:123456789",
-    "active": false,
-    "name": "Knipan to Ekenäs",
-    "_from": "Knipan",
-    "_from_lat": 59.9781,
-    "_from_lng": 23.425533333333334,
-    "_to": "Ekenäs",
-    "_to_lat": 59.86,
-    "_to_lng": 23.365766666666666,
-    "track_geom": "LINESTRING (23.425533333333334 59.9781, 23.41165 59.9738, 23.40138333333333 59.967, 23.395816666666665 59.958866666666665, 23.390166666666666 59.9508, 23.38365 59.94275, 23.37245 59.93578333333333, 23.3572 59.93076666666666, 23.3448 59.925133333333335, 23.33415 59.918933333333335, 23.32743333333333 59.9114, 23.329966666666667 59.90315, 23.3428 59.89735, 23.3492 59.88953333333333, 23.345833333333335 59.88126666666667, 23.344066666666667 59.87278333333333, 23.355716666666666 59.866616666666665, 23.365766666666666 59.86, 23.365766666666666 59.86)",
-    "track_geog": null,
-    "_from_time": "2022-08-07T15:32:49.000Z",
-    "_to_time": "2022-08-07T15:50:49.000Z",
-    "distance": 8686,
-    "duration": "00:18:00",
+    "Name": "Knipan to Ekenäs",
+    "From": "Knipan",
+    "Started": "2022-08-28T19:30:12",
+    "To": "Ekenäs",
+    "Ended": "2022-08-28T19:48:12",
+    "Distance": 8686,
+    "Duration": "00:18:00",
+    "Notes": null,
+    "geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [23.425533333, 59.9781],
+              [23.41165, 59.9738],
+              [23.401383333, 59.967],
+              [23.395816667, 59.958866667],
+              [23.390166667, 59.9508],
+              [23.38365, 59.94275],
+              [23.37245, 59.935783333],
+              [23.3572, 59.930766667],
+              [23.3448, 59.925133333],
+              [23.33415, 59.918933333],
+              [23.327433333, 59.9114],
+              [23.329966667, 59.90315],
+              [23.3428, 59.89735],
+              [23.3492, 59.889533333],
+              [23.345833333, 59.881266667],
+              [23.344066667, 59.872783333],
+              [23.355716667, 59.866616667],
+              [23.365766667, 59.86],
+              [23.365766667, 59.86]
+            ]
+          },
+          "properties": {
+            "id": 2,
+            "_to": "Ekenäs",
+            "name": "Knipan to Ekenäs",
+            "_from": "Knipan",
+            "notes": null,
+            "active": false,
+            "_to_lat": 59.86,
+            "_to_lng": 23.365766666666666,
+            "_to_time": "2022-08-28T19:48:12",
+            "distance": 8686,
+            "duration": "00:18:00",
+            "_from_lat": 59.9781,
+            "_from_lng": 23.425533333333334,
+            "avg_speed": 6.026315789473684,
+            "client_id": "vessels.urn:mrn:imo:mmsi:123456789",
+            "max_speed": 6.5,
+            "_from_time": "2022-08-28T19:30:12",
+            "track_geog": null,
+            "track_geojson": null,
+            "max_wind_speed": 37.2
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.425533333, 59.9781]
+          },
+          "properties": {
+            "time": "2022-08-28T19:30:12",
+            "latitude": 59.9781,
+            "longitude": 23.425533333333334,
+            "speedoverground": 5,
+            "anglespeedapparent": 11,
+            "courseovergroundtrue": 258.3
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.41165, 59.9738]
+          },
+          "properties": {
+            "time": "2022-08-28T19:31:12",
+            "latitude": 59.9738,
+            "longitude": 23.41165,
+            "speedoverground": 6.2,
+            "anglespeedapparent": 12,
+            "courseovergroundtrue": 228
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.401383333, 59.967]
+          },
+          "properties": {
+            "time": "2022-08-28T19:32:12",
+            "latitude": 59.967,
+            "longitude": 23.40138333333333,
+            "speedoverground": 6.1,
+            "anglespeedapparent": 16,
+            "courseovergroundtrue": 197.7
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.395816667, 59.958866667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:33:12",
+            "latitude": 59.958866666666665,
+            "longitude": 23.395816666666665,
+            "speedoverground": 6.2,
+            "anglespeedapparent": 38,
+            "courseovergroundtrue": 203.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.390166667, 59.9508]
+          },
+          "properties": {
+            "time": "2022-08-28T19:34:12",
+            "latitude": 59.9508,
+            "longitude": 23.390166666666666,
+            "speedoverground": 6.2,
+            "anglespeedapparent": 63,
+            "courseovergroundtrue": 200.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.38365, 59.94275]
+          },
+          "properties": {
+            "time": "2022-08-28T19:35:12",
+            "latitude": 59.94275,
+            "longitude": 23.38365,
+            "speedoverground": 6.3,
+            "anglespeedapparent": 22,
+            "courseovergroundtrue": 206.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.37245, 59.935783333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:36:12",
+            "latitude": 59.93578333333333,
+            "longitude": 23.37245,
+            "speedoverground": 6.5,
+            "anglespeedapparent": -10,
+            "courseovergroundtrue": 227.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.3572, 59.930766667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:37:12",
+            "latitude": 59.93076666666666,
+            "longitude": 23.3572,
+            "speedoverground": 6.3,
+            "anglespeedapparent": 19,
+            "courseovergroundtrue": 232.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.3448, 59.925133333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:38:12",
+            "latitude": 59.925133333333335,
+            "longitude": 23.3448,
+            "speedoverground": 5.9,
+            "anglespeedapparent": 13,
+            "courseovergroundtrue": 228.4
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.33415, 59.918933333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:39:12",
+            "latitude": 59.918933333333335,
+            "longitude": 23.33415,
+            "speedoverground": 6,
+            "anglespeedapparent": -15,
+            "courseovergroundtrue": 211.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.327433333, 59.9114]
+          },
+          "properties": {
+            "time": "2022-08-28T19:40:12",
+            "latitude": 59.9114,
+            "longitude": 23.32743333333333,
+            "speedoverground": 6.2,
+            "anglespeedapparent": -8,
+            "courseovergroundtrue": 175.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.329966667, 59.90315]
+          },
+          "properties": {
+            "time": "2022-08-28T19:41:12",
+            "latitude": 59.90315,
+            "longitude": 23.329966666666667,
+            "speedoverground": 6.1,
+            "anglespeedapparent": -3,
+            "courseovergroundtrue": 144
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.3428, 59.89735]
+          },
+          "properties": {
+            "time": "2022-08-28T19:42:12",
+            "latitude": 59.89735,
+            "longitude": 23.3428,
+            "speedoverground": 6.3,
+            "anglespeedapparent": -2,
+            "courseovergroundtrue": 129.8
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.3492, 59.889533333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:43:12",
+            "latitude": 59.88953333333333,
+            "longitude": 23.3492,
+            "speedoverground": 6.5,
+            "anglespeedapparent": -7,
+            "courseovergroundtrue": 162.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.345833333, 59.881266667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:44:12",
+            "latitude": 59.88126666666667,
+            "longitude": 23.345833333333335,
+            "speedoverground": 6.1,
+            "anglespeedapparent": -15,
+            "courseovergroundtrue": 196.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.344066667, 59.872783333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:45:12",
+            "latitude": 59.87278333333333,
+            "longitude": 23.344066666666667,
+            "speedoverground": 6.2,
+            "anglespeedapparent": -5,
+            "courseovergroundtrue": 160.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.355716667, 59.866616667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:46:12",
+            "latitude": 59.866616666666665,
+            "longitude": 23.355716666666666,
+            "speedoverground": 6.1,
+            "anglespeedapparent": 9,
+            "courseovergroundtrue": 131.4
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.365766667, 59.86]
+          },
+          "properties": {
+            "time": "2022-08-28T19:47:12",
+            "latitude": 59.86,
+            "longitude": 23.365766666666666,
+            "speedoverground": 5.8,
+            "anglespeedapparent": 10,
+            "courseovergroundtrue": 122
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.365766667, 59.86]
+          },
+          "properties": {
+            "time": "2022-08-28T19:48:12",
+            "latitude": 59.86,
+            "longitude": 23.365766666666666,
+            "speedoverground": 4.5,
+            "anglespeedapparent": 10,
+            "courseovergroundtrue": 122
+          }
+        }
+      ]
+    },
     "avg_speed": 6.026315789473684,
     "max_speed": 6.5,
-    "max_wind_speed": 37.2,
-    "notes": null
+    "max_wind_speed": 37.2
+  },
+  {
+    "id": 1,
+    "Name": "Bollsta to Hamnterassen Baywatch",
+    "From": "Bollsta",
+    "Started": "2022-08-28T19:02:12",
+    "To": "Hamnterassen Baywatch",
+    "Ended": "2022-08-28T19:27:12",
+    "Distance": 7170,
+    "Duration": "00:25:00",
+    "Notes": "new log note",
+    "geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [23.52355, 60.07065],
+              [23.515866667, 60.0637],
+              [23.507866667, 60.056716667],
+              [23.500533333, 60.04915],
+              [23.493, 60.041633333],
+              [23.485466667, 60.033983333],
+              [23.479033333, 60.026216667],
+              [23.47295, 60.01835],
+              [23.46745, 60.01045],
+              [23.461033333, 60.003516667],
+              [23.45415, 59.99755],
+              [23.445683333, 59.99235],
+              [23.438766667, 59.989266667],
+              [23.435116667, 59.987866667],
+              [23.43165, 59.986333333],
+              [23.4292, 59.984833333],
+              [23.432566667, 59.9862],
+              [23.43375, 59.987266667],
+              [23.431566667, 59.98615],
+              [23.431566667, 59.98615],
+              [23.4307, 59.98565],
+              [23.429383333, 59.984683333],
+              [23.421066667, 59.978233333],
+              [23.431, 59.977716667],
+              [23.432133333, 59.976883333],
+              [23.4321, 59.976883333]
+            ]
+          },
+          "properties": {
+            "id": 1,
+            "_to": "Hamnterassen Baywatch",
+            "name": "Bollsta to Hamnterassen Baywatch",
+            "_from": "Bollsta",
+            "notes": "new log note",
+            "active": false,
+            "_to_lat": 59.97688333333333,
+            "_to_lng": 23.4321,
+            "_to_time": "2022-08-28T19:27:12",
+            "distance": 7170,
+            "duration": "00:25:00",
+            "_from_lat": 60.07065,
+            "_from_lng": 23.52355,
+            "avg_speed": 3.6961538461538455,
+            "client_id": "vessels.urn:mrn:imo:mmsi:123456789",
+            "max_speed": 6.1,
+            "_from_time": "2022-08-28T19:02:12",
+            "track_geog": null,
+            "track_geojson": null,
+            "max_wind_speed": 22.1
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.52355, 60.07065]
+          },
+          "properties": {
+            "time": "2022-08-28T19:02:12",
+            "latitude": 60.07065,
+            "longitude": 23.52355,
+            "speedoverground": 5.6,
+            "anglespeedapparent": -7,
+            "courseovergroundtrue": 211.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.515866667, 60.0637]
+          },
+          "properties": {
+            "time": "2022-08-28T19:03:12",
+            "latitude": 60.0637,
+            "longitude": 23.515866666666668,
+            "speedoverground": 5.6,
+            "anglespeedapparent": 0,
+            "courseovergroundtrue": 211.3
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.507866667, 60.056716667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:04:12",
+            "latitude": 60.05671666666667,
+            "longitude": 23.507866666666665,
+            "speedoverground": 5.9,
+            "anglespeedapparent": -2,
+            "courseovergroundtrue": 211.1
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.500533333, 60.04915]
+          },
+          "properties": {
+            "time": "2022-08-28T19:05:12",
+            "latitude": 60.04915,
+            "longitude": 23.500533333333333,
+            "speedoverground": 6.1,
+            "anglespeedapparent": -5,
+            "courseovergroundtrue": 212
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.493, 60.041633333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:06:12",
+            "latitude": 60.04163333333333,
+            "longitude": 23.493,
+            "speedoverground": 6,
+            "anglespeedapparent": -26,
+            "courseovergroundtrue": 204.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.485466667, 60.033983333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:07:12",
+            "latitude": 60.03398333333333,
+            "longitude": 23.485466666666667,
+            "speedoverground": 6.1,
+            "anglespeedapparent": -23,
+            "courseovergroundtrue": 206
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.479033333, 60.026216667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:08:12",
+            "latitude": 60.02621666666667,
+            "longitude": 23.479033333333334,
+            "speedoverground": 6,
+            "anglespeedapparent": -8,
+            "courseovergroundtrue": 201.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.47295, 60.01835]
+          },
+          "properties": {
+            "time": "2022-08-28T19:09:12",
+            "latitude": 60.01835,
+            "longitude": 23.47295,
+            "speedoverground": 6,
+            "anglespeedapparent": -13,
+            "courseovergroundtrue": 197.4
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.46745, 60.01045]
+          },
+          "properties": {
+            "time": "2022-08-28T19:10:12",
+            "latitude": 60.01045,
+            "longitude": 23.46745,
+            "speedoverground": 6,
+            "anglespeedapparent": -26,
+            "courseovergroundtrue": 201.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.461033333, 60.003516667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:11:12",
+            "latitude": 60.00351666666667,
+            "longitude": 23.461033333333333,
+            "speedoverground": 5.1,
+            "anglespeedapparent": -8,
+            "courseovergroundtrue": 210.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.45415, 59.99755]
+          },
+          "properties": {
+            "time": "2022-08-28T19:12:12",
+            "latitude": 59.99755,
+            "longitude": 23.45415,
+            "speedoverground": 4.8,
+            "anglespeedapparent": 6,
+            "courseovergroundtrue": 215.7
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.445683333, 59.99235]
+          },
+          "properties": {
+            "time": "2022-08-28T19:13:12",
+            "latitude": 59.99235,
+            "longitude": 23.445683333333335,
+            "speedoverground": 4.7,
+            "anglespeedapparent": -5,
+            "courseovergroundtrue": 225.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.438766667, 59.989266667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:14:12",
+            "latitude": 59.989266666666666,
+            "longitude": 23.438766666666666,
+            "speedoverground": 1.9,
+            "anglespeedapparent": 3,
+            "courseovergroundtrue": 223.2
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.435116667, 59.987866667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:15:12",
+            "latitude": 59.98786666666667,
+            "longitude": 23.435116666666666,
+            "speedoverground": 1.9,
+            "anglespeedapparent": -5,
+            "courseovergroundtrue": 229.6
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.43165, 59.986333333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:16:12",
+            "latitude": 59.986333333333334,
+            "longitude": 23.43165,
+            "speedoverground": 1.4,
+            "anglespeedapparent": 4,
+            "courseovergroundtrue": 204.7
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.4292, 59.984833333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:17:12",
+            "latitude": 59.984833333333334,
+            "longitude": 23.4292,
+            "speedoverground": 1.3,
+            "anglespeedapparent": -20,
+            "courseovergroundtrue": 225.8
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.432566667, 59.9862]
+          },
+          "properties": {
+            "time": "2022-08-28T19:18:12",
+            "latitude": 59.9862,
+            "longitude": 23.432566666666666,
+            "speedoverground": 3.3,
+            "anglespeedapparent": 175,
+            "courseovergroundtrue": 41.1
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.43375, 59.987266667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:19:12",
+            "latitude": 59.98726666666666,
+            "longitude": 23.43375,
+            "speedoverground": 1.7,
+            "anglespeedapparent": 8,
+            "courseovergroundtrue": 228.8
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.431566667, 59.98615]
+          },
+          "properties": {
+            "time": "2022-08-28T19:20:12",
+            "latitude": 59.98615,
+            "longitude": 23.431566666666665,
+            "speedoverground": 1,
+            "anglespeedapparent": -6,
+            "courseovergroundtrue": 223.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.431566667, 59.98615]
+          },
+          "properties": {
+            "time": "2022-08-28T19:21:12",
+            "latitude": 59.98615,
+            "longitude": 23.431566666666665,
+            "speedoverground": 1,
+            "anglespeedapparent": -6,
+            "courseovergroundtrue": 223.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.4307, 59.98565]
+          },
+          "properties": {
+            "time": "2022-08-28T19:22:12",
+            "latitude": 59.98565,
+            "longitude": 23.4307,
+            "speedoverground": 1.2,
+            "anglespeedapparent": 2,
+            "courseovergroundtrue": 224.5
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.429383333, 59.984683333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:23:12",
+            "latitude": 59.98468333333334,
+            "longitude": 23.429383333333334,
+            "speedoverground": 6.1,
+            "anglespeedapparent": 3,
+            "courseovergroundtrue": 219.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.421066667, 59.978233333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:24:12",
+            "latitude": 59.978233333333336,
+            "longitude": 23.42106666666667,
+            "speedoverground": 5.3,
+            "anglespeedapparent": -8,
+            "courseovergroundtrue": 216.7
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.431, 59.977716667]
+          },
+          "properties": {
+            "time": "2022-08-28T19:25:12",
+            "latitude": 59.977716666666666,
+            "longitude": 23.431,
+            "speedoverground": 2.1,
+            "anglespeedapparent": 32,
+            "courseovergroundtrue": 151.9
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.432133333, 59.976883333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:26:12",
+            "latitude": 59.97688333333333,
+            "longitude": 23.432133333333333,
+            "speedoverground": 0,
+            "anglespeedapparent": 88,
+            "courseovergroundtrue": 179.3
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.4321, 59.976883333]
+          },
+          "properties": {
+            "time": "2022-08-28T19:27:12",
+            "latitude": 59.97688333333333,
+            "longitude": 23.4321,
+            "speedoverground": 0,
+            "anglespeedapparent": 74,
+            "courseovergroundtrue": 241
+          }
+        }
+      ]
+    },
+    "avg_speed": 3.6961538461538455,
+    "max_speed": 6.1,
+    "max_wind_speed": 22.1
   }
 ]

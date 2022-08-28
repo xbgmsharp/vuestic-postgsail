@@ -16,60 +16,16 @@ class PostgSail {
   }
 
   /*
-   * Check API KEY.
+   * Check API URL.
    */
   check() {
-    /*
-        if (navigator.onLine && (this.appid !== '' && this.appid !== null)) {
-            this.doitPhotos();
-        }
-        */
     if (!navigator.onLine || this.app_url == '' || this.app_url == null) {
       console.log(`PostgSail, NetworkError when attempting to fetch resource.`)
     }
   }
 
   /*
-   * Prepare Get photos
-   */
-  async doitPhotos() {
-    let data = null
-
-    try {
-      data = await this.getPhotos()
-    } catch (e) {
-      console.log('Unsplash:' + e)
-      data = this.getErrorData()
-    }
-
-    this.populate(data)
-  }
-
-  /*
-   * Fetch photos from endpoint(api.unsplash.com).
-   */
-  async getPhotos() {
-    let appid = this.appid
-    let keywords = this.searchKeywords
-    // To get random keyboard during search whne user opens the page
-    let query = keywords[Math.floor(Math.random() * keywords.length)]
-    let endpoint = `https://api.unsplash.com/search/photos?page=1&per_page=10&query=${query}&client_id=${appid}`
-
-    let response = await fetch(endpoint)
-    return await response.json()
-  }
-
-  /*
-   * Error data for end-users.
-   */
-  getErrorData() {
-    return {
-      error: `There's a problem fetching data`,
-    }
-  }
-
-  /*
-   * TODO
+   * Methods API endpoint
    */
 
   async login(data) {
@@ -128,7 +84,7 @@ class PostgSail {
   }
 
   async log_get(id) {
-    const response = await fetch(`${this.app_url}/logbook?id=eq.${id}`, {
+    const response = await fetch(`${this.app_url}/log_view?id=eq.${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -139,21 +95,8 @@ class PostgSail {
     return await response.json()
   }
 
-  async log_map(id) {
-    const response = await fetch(`${this.app_url}/rpc/export_logbook_geojson_linestring_fn`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      },
-      body: { _id: id },
-    })
-    return await response.json()
-  }
-
   async log_update(id, data) {
-    const response = await fetch(`${this.app_url}/logbook?id=eq.${id}`, {
+    const response = await fetch(`${this.app_url}/log_view?id=eq.${id}`, {
       method: 'PATH',
       headers: {
         'Content-Type': 'application/json',

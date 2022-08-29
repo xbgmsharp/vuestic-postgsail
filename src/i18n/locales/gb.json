@@ -16,6 +16,7 @@
     "reset_password": "Reset password",
     "vessel_register": "Add vessel",
     "errors": {
+      "cedentials": "Wrong credentials",
       "email": "Email is required",
       "password": "Password is required",
       "first_name": "First name is required",

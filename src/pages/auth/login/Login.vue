@@ -1,6 +1,9 @@
 <template>
   <va-inner-loading :loading="isBusy">
     <form @submit.prevent="onsubmit">
+      <template v-if="loginError">
+        <va-alert color="danger" outline class="mb-4"> {{ $t('auth.errors.cedentials') }} ({{ loginError }}) </va-alert>
+      </template>
       <va-input
         v-model="email"
         class="mb-3"
@@ -20,7 +23,6 @@
       />
 
       <div class="auth-layout__options d-flex align--center justify--space-between">
-        <va-checkbox v-model="keepLoggedIn" class="mb-0" :label="t('auth.keep_logged_in')" />
         <router-link class="ml-1 link" :to="{ name: 'recover-password' }">{{ t('auth.recover_password') }}</router-link>
       </div>
 
@@ -41,9 +43,9 @@
   const isBusy = ref(false)
   const email = ref('')
   const password = ref('')
-  const keepLoggedIn = ref(false)
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
+  const loginError = ref(null)
 
   const router = useRouter()
 
@@ -55,22 +57,24 @@
 
     if (!formReady.value) return
 
+    loginError.value = null
+    isBusy.value = true
     const payload = {
       email: email.value,
       pass: password.value,
     }
+
     try {
-      isBusy.value = true
       const api = new PostgSail()
-      // const response = await api.login(payload)
-      // console.log(response)
-      //  localStorage.setItem('token', response.token)
-      //
-      localStorage.setItem('token', '-fake-token-')
-      router.push({ name: 'dashboard' })
-    } catch (error: any) {
-      isBusy.value = false
-      console.log(error)
+      const response = await api.login(payload)
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        router.push({ name: 'dashboard' })
+      } else {
+        throw { response }
+      }
+    } catch ({ response }) {
+      loginError.value = response.data.message
     } finally {
       isBusy.value = false
     }

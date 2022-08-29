@@ -2,6 +2,7 @@
  * Service that fetch and parse data from PostgSail API.
  *
  */
+import axios from 'axios'
 class PostgSail {
   /*
    * Create PostgSail instance.
@@ -28,13 +29,8 @@ class PostgSail {
    * Methods API endpoint
    */
 
-  async login(data) {
-    const response = await fetch(`${this.app_url}/rpc/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: data,
-    })
-    return await response.json()
+  login(payload) {
+    return axios.post(`${this.app_url}/rpc/login`, payload)
   }
 
   async signin(data) {

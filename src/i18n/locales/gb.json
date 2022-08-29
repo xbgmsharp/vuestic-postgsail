@@ -54,7 +54,13 @@
   },
   "logs": {
     "list": {
-      "title": "Logs list"
+      "title": "Logs list",
+      "filter": {
+        "title": "Search for log",
+        "name": "Name",
+        "date_range": "Date range",
+        "reset": "Reset"
+      }
     },
     "details": {
       "title": "Log's details"

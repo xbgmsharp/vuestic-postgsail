@@ -5,15 +5,12 @@
 <script>
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
+  import 'leaflet-rotatedmarker'
 
   export default {
     name: 'LeafletMap',
     props: {
-      markers: {
-        type: Array,
-        default: () => [],
-      },
-      path: {
+      geoJsonFeatures: {
         type: Array,
         default: () => [],
       },
@@ -31,17 +28,26 @@
       //use a mix of renderers
       var customPane = this.map.createPane('customPane')
       var canvasRenderer = L.canvas({ pane: 'customPane' })
-      customPane.style.zIndex = 399 // put just behind the standard overlay pane which is at 400
-      const markers = this.markers.map(([lat, lng]) => L.latLng(lat, lng))
-      markers.forEach((m) => {
-        L.marker(m).addTo(this.map)
-      })
-      if (this.path.length) {
-        const path = this.path.map(([lat, lng]) => L.latLng(lat, lng))
-        L.polyline(path, { color: 'red' }).addTo(this.map)
+      customPane.style.zIndex = 399
+      // geoJson features
+      const bounds = []
+      const pointToLayer = function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: new L.Icon({
+            iconSize: [15, 30],
+            iconAnchor: [7.5, 0],
+            iconUrl: '/public/sailboaticon.png',
+          }),
+          rotationAngle: feature.properties.anglespeedapparent,
+        })
       }
-      const bounds = L.latLngBounds(markers)
-      this.map.fitBounds(bounds, { padding: [40, 40] })
+      this.geoJsonFeatures.forEach((f) => {
+        const feat = L.geoJSON(f, { pointToLayer }).addTo(this.map)
+        bounds.push(feat.getBounds())
+      })
+      if (bounds.length) {
+        this.map.fitBounds(bounds, { padding: [25, 25] })
+      }
     },
     onBeforeUnmount() {
       if (this.map) {

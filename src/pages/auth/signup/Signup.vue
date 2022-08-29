@@ -1,5 +1,12 @@
 <template>
   <form @submit.prevent="onsubmit()">
+    <template v-if="apiError">
+      <va-alert color="danger" outline class="mb-4"> {{ $t('api.errors') }}: {{ apiError }} </va-alert>
+    </template>
+    <template v-if="signupSuccess">
+      <va-alert color="success" outline class="mb-4"> {{ $t('auth.account_created') }} </va-alert>
+    </template>
+
     <va-input
       v-model="email"
       class="mb-3"
@@ -69,6 +76,8 @@
   const { t } = useI18n()
 
   const isBusy = ref(false)
+  const apiError = ref(null)
+  const signupSuccess = ref(null)
   const email = ref('')
   const password = ref('')
   const firstName = ref('')
@@ -79,6 +88,8 @@
   const firstNameErrors = ref<string[]>([])
   const lastNameErrors = ref<string[]>([])
   const agreedToTermsErrors = ref<string[]>([])
+
+  const router = useRouter()
 
   const formReady = computed(() => {
     return !(
@@ -105,13 +116,24 @@
       firstName: firstName.value,
       lastName: lastName.value,
     }
+
+    apiError.value = null
+    isBusy.value = true
+
     try {
-      isBusy.value = true
       const api = new PostgSail()
-      var response = await api.signin(payload)
-      console.log(response)
-    } catch (error: any) {
-      console.log(error)
+      const response = await api.signin(payload)
+      console.log(response.data)
+      if (response.data.token) {
+        signupSuccess.value = true
+        setTimeout(() => {
+          router.push({ name: 'login' })
+        }, 1000)
+      } else {
+        throw { response }
+      }
+    } catch ({ response }) {
+      apiError.value = response.data.message
     } finally {
       isBusy.value = false
     }

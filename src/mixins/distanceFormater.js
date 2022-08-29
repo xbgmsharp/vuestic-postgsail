@@ -1,4 +1,3 @@
-import { format, formatDuration } from 'date-fns'
 export default {
   methods: {
     distanceFormat(val, trad = 'logs.log.distance_miles') {

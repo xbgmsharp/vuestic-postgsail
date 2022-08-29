@@ -3,6 +3,7 @@
     "agree": "I agree to",
     "createAccount": "Create account",
     "createNewAccount": "Create New Account",
+    "account_created": "New account created successfully.",
     "email": "Email",
     "first_name": "Firstname",
     "last_name": "Lastname",
@@ -52,6 +53,9 @@
   },
   "dashboard": {
     "title": "Dashboard"
+  },
+  "api": {
+    "error": "Api error"
   },
   "logs": {
     "list": {

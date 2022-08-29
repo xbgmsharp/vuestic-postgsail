@@ -33,13 +33,8 @@ class PostgSail {
     return axios.post(`${this.app_url}/rpc/login`, payload)
   }
 
-  async signin(data) {
-    const response = await fetch(`${this.app_url}/rpc/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: data,
-    })
-    return await response.json()
+  async signin(payload) {
+    return axios.post(`${this.app_url}/rpc/signin`, payload)
   }
 
   async vessel_reg(data) {
@@ -56,39 +51,27 @@ class PostgSail {
   }
 
   async vessel_get() {
-    const response = await fetch(`${this.app_url}/vessel`, {
-      method: 'GET',
+    return axios.get(`${this.app_url}/vessel`, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
         Authorization: `Bearer ${this.token}`,
       },
     })
-    return await response.json()
   }
 
   async logs() {
-    const response = await fetch(`${this.app_url}/logs_view`, {
-      method: 'GET',
+    return axios.get(`${this.app_url}/logs_view`, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
         Authorization: `Bearer ${this.token}`,
       },
     })
-    return await response.json()
   }
 
   async log_get(id) {
-    const response = await fetch(`${this.app_url}/log_view?id=eq.${id}`, {
-      method: 'GET',
+    return axios.get(`${this.app_url}/log_view?id=eq.${id}`, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
         Authorization: `Bearer ${this.token}`,
       },
     })
-    return await response.json()
   }
 
   async log_update(id, data) {

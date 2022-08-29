@@ -6,10 +6,6 @@ import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 
-import RouteViewComponent from '../layouts/RouterBypass.vue'
-
-import { useGlobalStore } from '../stores/global-store'
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -45,10 +41,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     meta: { requiresAuth: true },
-    async beforeEnter(to, from, next) {
-      const store = useGlobalStore()
-      next()
-    },
     component: AppLayout,
     children: [
       {
@@ -110,7 +102,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem('token')
-  console.log('Check token on navigation:', loggedIn)
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     // If not login redirect to login page.
     next({ name: 'login' })

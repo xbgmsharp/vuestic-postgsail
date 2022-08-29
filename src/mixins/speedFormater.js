@@ -1,4 +1,3 @@
-import { format, formatDuration } from 'date-fns'
 export default {
   methods: {
     speedFormat(val, trad = 'logs.log.speed_knots') {

@@ -27,7 +27,7 @@
       }).addTo(this.map)
       //use a mix of renderers
       var customPane = this.map.createPane('customPane')
-      var canvasRenderer = L.canvas({ pane: 'customPane' })
+      L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
       // geoJson features
       const bounds = []
@@ -59,7 +59,6 @@
 
 <style scoped>
   #mapContainer {
-    width: 100vw;
-    height: 100vh;
+    z-index: 0;
   }
 </style>

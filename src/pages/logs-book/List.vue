@@ -29,6 +29,9 @@
     <va-card>
       <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
       <va-card-content>
+        <template v-if="apiError">
+          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+        </template>
         <va-data-table
           :columns="columns"
           :items="items"
@@ -84,6 +87,7 @@
     data() {
       return {
         isBusy: false,
+        apiError: null,
         rowsData: [],
         perPage: 20,
         currentPage: 1,
@@ -138,21 +142,22 @@
     },
     async mounted() {
       this.isBusy = true
-      window.setTimeout(() => {
+      this.apiError = null
+      try {
+        const api = new PostgSail()
+        const response = await api.logs()
+        if (response.data) {
+          this.rowsData = response.data
+        } else {
+          throw { response }
+        }
+      } catch ({ response }) {
+        this.apiError = response.data.message
+        console.warn('Get datas from json...', this.apiError)
         this.rowsData = [...logsDatas]
+      } finally {
         this.isBusy = false
-      }, 400)
-      /*const post = new PostgSail()
-      post
-        .logs_view()
-        .then((response) => {
-          console.log('logs_view', response)
-        })
-        .catch((error) => {
-          console.log(error)
-          this.errored = true
-        })
-        .finally(() => (this.isBusy = false))*/
+      }
     },
     methods: {
       resetFilter() {

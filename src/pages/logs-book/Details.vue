@@ -11,7 +11,7 @@
         <va-inner-loading :loading="isBusy">
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
-              <dl class="dl-details row">
+              <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
@@ -72,7 +72,7 @@
     data() {
       return {
         isBusy: true,
-        dataRow: null,
+        rowData: null,
         form: {
           isValid: true,
           name: null,
@@ -82,21 +82,21 @@
     },
     computed: {
       item() {
-        return this.dataRow
+        return this.rowData
           ? {
-              id: this.dataRow.id,
-              name: this.dataRow.Name,
-              from: this.dataRow.From,
-              fromTime: this.dataRow.Started,
-              to: this.dataRow.To,
-              toTime: this.dataRow.Ended,
-              distance: this.dataRow.Distance,
-              duration: this.dataRow.Duration,
-              notes: this.dataRow.Notes,
-              geoJson: this.dataRow.geojson,
-              avg_speed: this.dataRow.avg_speed,
-              max_speed: this.dataRow.max_speed,
-              max_wind_speed: this.dataRow.max_wind_speed,
+              id: this.rowData.id,
+              name: this.rowData.Name,
+              from: this.rowData.From,
+              fromTime: this.rowData.Started,
+              to: this.rowData.To,
+              toTime: this.rowData.Ended,
+              distance: this.rowData.Distance,
+              duration: this.rowData.Duration,
+              notes: this.rowData.Notes,
+              geoJson: this.rowData.geojson,
+              avg_speed: this.rowData.avg_speed,
+              max_speed: this.rowData.max_speed,
+              max_wind_speed: this.rowData.max_wind_speed,
             }
           : {}
       },
@@ -119,7 +119,7 @@
         window.setTimeout(() => {
           const id = this.$route.params.id
           const row = logsBooks.find((row) => row.id == id)
-          this.dataRow = { ...row }
+          this.rowData = { ...row }
           this.form.name = this.item.name
           this.form.notes = this.item.notes
           this.isBusy = false

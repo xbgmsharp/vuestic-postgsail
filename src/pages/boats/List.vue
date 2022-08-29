@@ -3,14 +3,20 @@
     <va-card>
       <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
       <va-card-content>
-        <va-data-table :columns="columns" :items="items" striped hoverable>
+        <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
           <template #cell(name)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
               {{ value }}
             </router-link>
           </template>
-          <template #cell(last_contact)="{ value }">
+          <template #cell(lastContact)="{ value }">
             {{ dateFormat(value) }}
+          </template>
+          <template #cell(createdAt)="{ value }">
+            {{ dateFormat(value) }}
+          </template>
+          <template #cell(actions)="{ rowData }">
+            <va-button @click="handleGetToken(rowData.mmsi)">{{ $t('boats.boat.get_token') }}</va-button>
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -31,23 +37,44 @@
     mixins: [dateFormater],
     data() {
       return {
-        isBusy: false,
-        items: [],
+        isBusy: true,
+        rowsData: null,
         perPage: 20,
         currentPage: 1,
         columns: [
           { key: 'name', label: this.$t('boats.boat.name'), sortable: true },
           { key: 'mmsi', label: this.$t('boats.boat.mmsi'), sortable: true },
-          { key: 'last_contact', label: this.$t('boats.boat.last_contact'), sortable: true },
+          { key: 'lastContact', label: this.$t('boats.boat.last_contact'), sortable: true },
+          { key: 'createdAt', label: this.$t('boats.boat.created_at'), sortable: true },
+          { key: 'actions', label: '' },
         ],
       }
+    },
+    computed: {
+      items() {
+        return Array.isArray(this.rowsData)
+          ? this.rowsData.map((row) => {
+              return {
+                name: row.name,
+                mmsi: row.mmsi,
+                lastContact: row.last_contact,
+                createdAt: row.created_at,
+              }
+            })
+          : []
+      },
     },
     mounted() {
       this.isBusy = true
       window.setTimeout(() => {
-        this.items = [vesselsDatas]
+        this.rowsData = [...vesselsDatas]
         this.isBusy = false
       }, 400)
+    },
+    methods: {
+      handleGetToken(mmsi) {
+        console.log('get token for', mmsi)
+      },
     },
   })
 </script>

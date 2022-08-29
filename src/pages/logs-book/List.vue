@@ -84,7 +84,7 @@
     data() {
       return {
         isBusy: false,
-        dataRows: [],
+        rowsData: [],
         perPage: 20,
         currentPage: 1,
         columns: [
@@ -101,8 +101,8 @@
     },
     computed: {
       items() {
-        return Array.isArray(this.dataRows)
-          ? this.dataRows
+        return Array.isArray(this.rowsData)
+          ? this.rowsData
               .map((row) => ({
                 id: row.id,
                 name: row.Name,
@@ -139,7 +139,7 @@
     async mounted() {
       this.isBusy = true
       window.setTimeout(() => {
-        this.dataRows = [...logsDatas]
+        this.rowsData = [...logsDatas]
         this.isBusy = false
       }, 400)
       /*const post = new PostgSail()

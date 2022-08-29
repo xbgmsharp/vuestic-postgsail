@@ -5,17 +5,21 @@
       <va-card-content>
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
-            <lMap :loading="isBusy" :markers="mapMarkers" style="width: 100%; height: 250px" />
+            <template v-if="!isBusy && item">
+              <lMap :loading="isBusy" style="width: 100%; height: 250px" />
+            </template>
           </div>
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
               <dl class="dl-details row">
-                <dt class="flex xs12 md6 text--bold">{{ $t('boats.boat.name') }}</dt>
-                <dd class="flex xs12 md6">{{ item.name }}</dd>
-                <dt class="flex xs12 md6 text--bold">{{ $t('boats.boat.mmsi') }}</dt>
-                <dd class="flex xs12 md6">{{ item.mmsi }}</dd>
-                <dt class="flex xs12 md6 text--bold">{{ $t('boats.boat.last_contact') }}</dt>
-                <dd class="flex xs12 md6">{{ dateFormat(item.last_contact) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.name') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.name }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.mmsi') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.mmsi }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.last_contact') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.lastContact) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.created_at') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
               </dl>
             </va-form>
           </template>
@@ -38,17 +42,19 @@
     data() {
       return {
         isBusy: false,
-        item: null,
-        form: {
-          isValid: true,
-          name: null,
-          notes: null,
-        },
+        rowData: null,
       }
     },
     computed: {
-      mapMarkers() {
-        return []
+      item() {
+        return this.rowData
+          ? {
+              name: this.rowData.name,
+              mmsi: this.rowData.mmsi,
+              lastContact: this.rowData.last_contact,
+              createdAt: this.rowData.created_at,
+            }
+          : {}
       },
     },
     mounted() {
@@ -59,10 +65,8 @@
         this.isBusy = true
         window.setTimeout(() => {
           const mmsi = this.$route.params.mmsi
-          const row = [vesselsDatas].find((row) => row.mmsi == mmsi)
-          this.item = { ...row }
-          this.form.name = this.item.name
-          this.form.notes = this.item.notes
+          const row = [...vesselsDatas].find((row) => row.mmsi == mmsi)
+          this.rowData = { ...row }
           this.isBusy = false
         }, 400)
       },

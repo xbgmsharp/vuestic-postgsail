@@ -94,7 +94,9 @@
     "boat": {
       "name": "Name | Names",
       "mmsi": "MMSI",
-      "last_contact": "Last Contact"
+      "last_contact": "Last Contact",
+      "created_at": "Created at",
+      "get_token": "Get token"
     }
   },
   "profile": {

@@ -36,6 +36,9 @@
     "mark_as_read": "Mark as read",
     "sent_message": "Sent message"
   },
+  "modals": {
+    "close": "Close"
+  },
   "404": {
     "title": "This page’s gone fishing.",
     "text": "If you feel that it’s not right, please send us a message at ",
@@ -101,7 +104,11 @@
       "mmsi": "MMSI",
       "last_contact": "Last Contact",
       "created_at": "Created at",
-      "get_token": "Get token"
+      "token_modal": {
+        "button": "Get token",
+        "title": "Boat's token",
+        "token": "Token"
+      }
     }
   },
   "profile": {

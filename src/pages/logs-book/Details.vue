@@ -13,37 +13,41 @@
         </div>
         <va-inner-loading :loading="isBusy">
           <template v-if="item">
-            <dl class="dl-details row mb-3">
-              <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
-              <dd class="flex xs12 md6 pa-1">
-                <va-input
-                  v-model="form.name"
-                  placeholder="Name"
-                  outline
-                  :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                />
-              </dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Departed</dt>
-              <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Departed at</dt>
-              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Arrived</dt>
-              <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Arrived at</dt>
-              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Duration</dt>
-              <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Distance</dt>
-              <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
-              <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
-              <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">Note</dt>
-              <dd class="flex xs12 md6 pa-1">
-                <va-input v-model="form.notes" outline type="textarea" placeholder="Note" />
-              </dd>
-            </dl>
+            <va-form ref="form" @submit.prevent="handleSubmit" @validation="form.isValid = $event">
+              <dl class="dl-details row mb-3">
+                <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
+                <dd class="flex xs12 md6 pa-1">
+                  <va-input
+                    v-model="form.name"
+                    placeholder="Name"
+                    outline
+                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                  />
+                </dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Departed</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Departed at</dt>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Arrived</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Arrived at</dt>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Duration</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Distance</dt>
+                <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
+                <dd class="flex xs12 md6 pa-2">
+                  {{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}
+                </dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
+                <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">Note</dt>
+                <dd class="flex xs12 md6 pa-1">
+                  <va-input v-model="form.notes" outline type="textarea" placeholder="Note" />
+                </dd>
+              </dl>
+            </va-form>
           </template>
         </va-inner-loading>
       </va-card-content>
@@ -126,7 +130,31 @@
         this.isBusy = false
       }
     },
-    methods: {},
+    methods: {
+      async handleSubmit() {
+        this.isBusy = true
+        this.apiError = null
+        try {
+          const api = new PostgSail()
+          const id = this.$route.params.id
+          const payload = {
+            name: this.form.name,
+            notes: this.form.notes,
+          }
+          const response = await api.log_update(id, payload)
+          if (response.data) {
+            console.log('log_update success', response.data)
+          } else {
+            throw { response }
+          }
+        } catch ({ response }) {
+          console.log('log_update failed', response)
+          this.apiError = response.data.message
+        } finally {
+          this.isBusy = false
+        }
+      },
+    },
   })
 </script>
 

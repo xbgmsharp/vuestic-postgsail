@@ -11,7 +11,7 @@ class PostgSail {
     this.app_url = import.meta.env.VITE_PGSAIL_URL || null
     this.data = null
     this.status = null
-    this.token = null
+    this.token = localStorage.getItem('token')
 
     this.check()
   }
@@ -52,6 +52,14 @@ class PostgSail {
 
   async vessel_get() {
     return axios.get(`${this.app_url}/vessel`, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+  }
+
+  async vessel_get_token() {
+    return axios.get(`${this.app_url}/vessel_token`, {
       headers: {
         Authorization: `Bearer ${this.token}`,
       },

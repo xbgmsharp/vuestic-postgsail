@@ -19,7 +19,7 @@
             {{ dateFormat(value) }}
           </template>
           <template #cell(actions)="{ rowData }">
-            <va-button @click="handleGetToken(rowData.mmsi)">{{ $t('boats.boat.get_token') }}</va-button>
+            <GetBoatToken :item="rowData" />
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -35,9 +35,11 @@
 <script>
   import PostgSail from '../../services/postgsail.js'
   import { defineComponent } from 'vue'
+  import GetBoatToken from './GetBoatToken.vue'
   import dateFormater from '../../mixins/dateFormater.js'
   import vesselsDatas from '../../data/vessel.json'
   export default defineComponent({
+    components: { GetBoatToken },
     mixins: [dateFormater],
     data() {
       return {
@@ -87,11 +89,6 @@
       } finally {
         this.isBusy = false
       }
-    },
-    methods: {
-      handleGetToken(mmsi) {
-        console.log('get token for', mmsi)
-      },
     },
   })
 </script>

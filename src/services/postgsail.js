@@ -82,17 +82,13 @@ class PostgSail {
     })
   }
 
-  async log_update(id, data) {
-    const response = await fetch(`${this.app_url}/log_view?id=eq.${id}`, {
-      method: 'PATH',
+  async log_update(id, payload) {
+    return axios.put(`${this.app_url}/log_view?id=eq.${id}`, {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
         Authorization: `Bearer ${this.token}`,
       },
-      body: data,
+      body: payload,
     })
-    return await response.json()
   }
 }
 

@@ -47,6 +47,9 @@
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
               </dl>
+              <template v-if="updateError">
+                <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
+              </template>
               <div class="row justify--end">
                 <div class="flex">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
@@ -74,6 +77,7 @@
   const route = useRoute()
   const isBusy = ref(false)
   const apiError = ref(null)
+  const updateError = ref(null)
   const apiData = reactive({ row: null })
   const formData = reactive({
     isValid: true,
@@ -136,7 +140,7 @@
 
   const handleSubmit = async () => {
     isBusy.value = true
-    apiError.value = null
+    updateError.value = null
 
     const api = new PostgSail()
     const id = route.params.id
@@ -154,7 +158,7 @@
     } catch (err) {
       const { response } = err
       console.log('log_update failed', response)
-      apiError.value = response.data.message
+      updateError.value = response.data.message
     } finally {
       isBusy.value = false
     }

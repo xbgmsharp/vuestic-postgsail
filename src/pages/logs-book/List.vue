@@ -159,7 +159,7 @@
   })
 
   function resetFilter() {
-    filter.value = { ...getDefaultFilter() }
+    Object.assign(filter, { ...getDefaultFilter() })
   }
 </script>
 

@@ -32,64 +32,62 @@
   </div>
 </template>
 
-<script>
+<script setup>
+  import { computed, ref, onMounted } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'
-  import { defineComponent } from 'vue'
   import GetBoatToken from './GetBoatToken.vue'
-  import dateFormater from '../../mixins/dateFormater.js'
+  import { dateFormat } from '../../utils/dateFormater.js'
+
   import vesselsDatas from '../../data/vessel.json'
-  export default defineComponent({
-    components: { GetBoatToken },
-    mixins: [dateFormater],
-    data() {
-      return {
-        isBusy: true,
-        apiError: null,
-        rowsData: null,
-        perPage: 20,
-        currentPage: 1,
-        columns: [
-          { key: 'name', label: this.$t('boats.boat.name'), sortable: true },
-          { key: 'mmsi', label: this.$t('boats.boat.mmsi'), sortable: true },
-          { key: 'lastContact', label: this.$t('boats.boat.last_contact'), sortable: true },
-          { key: 'createdAt', label: this.$t('boats.boat.created_at'), sortable: true },
-          { key: 'actions', label: '' },
-        ],
+
+  const { t } = useI18n()
+
+  const isBusy = ref(false)
+  const apiError = ref(null)
+  const rowsData = ref([])
+  const perPage = ref(20)
+  const currentPage = ref(1)
+  const columns = ref([
+    { key: 'name', label: t('boats.boat.name'), sortable: true },
+    { key: 'mmsi', label: t('boats.boat.mmsi'), sortable: true },
+    { key: 'lastContact', label: t('boats.boat.last_contact'), sortable: true },
+    { key: 'createdAt', label: t('boats.boat.created_at'), sortable: true },
+    { key: 'actions', label: '' },
+  ])
+  const items = computed(() => {
+    return Array.isArray(rowsData.value)
+      ? rowsData.value.map((row) => {
+          return {
+            name: row.name,
+            mmsi: row.mmsi,
+            lastContact: row.last_contact,
+            createdAt: row.created_at,
+          }
+        })
+      : []
+  })
+
+  onMounted(async () => {
+    isBusy.value = true
+    apiError.value = null
+    const api = new PostgSail()
+    try {
+      const response = await api.vessel_get()
+      if (response.data) {
+        rowsData.value.splice(0, rowsData.value.length)
+        rowsData.value.push(...response.data)
+      } else {
+        throw { response }
       }
-    },
-    computed: {
-      items() {
-        return Array.isArray(this.rowsData)
-          ? this.rowsData.map((row) => {
-              return {
-                name: row.name,
-                mmsi: row.mmsi,
-                lastContact: row.last_contact,
-                createdAt: row.created_at,
-              }
-            })
-          : []
-      },
-    },
-    async mounted() {
-      this.isBusy = true
-      this.apiError = null
-      try {
-        const api = new PostgSail()
-        const response = await api.vessel_get()
-        if (response.data) {
-          this.rowsData = response.data
-        } else {
-          throw { response }
-        }
-      } catch ({ response }) {
-        this.apiError = response.data.message
-        console.warn('Get data from json...', this.apiError)
-        this.rowsData = [...vesselsDatas]
-      } finally {
-        this.isBusy = false
-      }
-    },
+    } catch ({ response }) {
+      apiError.value = response.data.message
+      console.warn('Get datas from json...', apiError.value)
+      rowsData.value.splice(0, rowsData.value.length)
+      rowsData.value.push(...vesselsDatas)
+    } finally {
+      isBusy.value = false
+    }
   })
 </script>
 

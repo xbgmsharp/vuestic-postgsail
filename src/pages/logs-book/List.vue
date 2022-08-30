@@ -69,102 +69,98 @@
   </div>
 </template>
 
-<script>
+<script setup>
+  import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
+  import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'
-  import dateFormater from '../../mixins/dateFormater.js'
-  import distanceFormater from '../../mixins/distanceFormater.js'
-  import { defineComponent } from 'vue'
+  import { dateFormat, durationFormat } from '../../utils/dateFormater.js'
+  import { distanceFormat } from '../../utils/distanceFormater.js'
+
   import logsDatas from '../../data/logs.json'
+
+  const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
       name: null,
       dateRange: null,
     }
   }
-  export default defineComponent({
-    mixins: [dateFormater, distanceFormater],
-    data() {
-      return {
-        isBusy: false,
-        apiError: null,
-        rowsData: [],
-        perPage: 20,
-        currentPage: 1,
-        columns: [
-          { key: 'name', label: this.$t('logs.log.name'), sortable: true },
-          { key: 'from', label: this.$t('logs.log.from'), sortable: true },
-          { key: 'to', label: this.$t('logs.log.to'), sortable: true },
-          { key: 'fromTime', label: this.$t('logs.log.from_time'), sortable: true },
-          { key: 'toTime', label: this.$t('logs.log.to_time'), sortable: true },
-          { key: 'distance', label: this.$t('logs.log.distance'), sortable: true },
-          { key: 'duration', label: this.$t('logs.log.duration'), sortable: true },
-        ],
-        filter: getDefaultFilter(),
-      }
-    },
-    computed: {
-      items() {
-        return Array.isArray(this.rowsData)
-          ? this.rowsData
-              .map((row) => ({
-                id: row.id,
-                name: row.Name,
-                from: row.From,
-                to: row.To,
-                fromTime: row.Started,
-                toTime: row.Ended,
-                distance: row.Distance,
-                duration: row.Duration,
-              }))
-              .filter((row) => {
-                const f = this.filter
-                if (Object.keys(f).every((fkey) => !f[fkey])) {
-                  return true
-                }
-                return Object.keys(f).every((fkey) => {
-                  if (!f[fkey]) {
-                    return true
-                  }
-                  switch (fkey) {
-                    case 'name':
-                      return row.name.toLowerCase().includes(f[fkey].toLowerCase())
-                    case 'dateRange':
-                      return areIntervalsOverlapping(
-                        { start: new Date(row.fromTime), end: new Date(row.toTime) },
-                        f[fkey],
-                      )
-                  }
-                })
-              })
-          : []
-      },
-    },
-    async mounted() {
-      this.isBusy = true
-      this.apiError = null
-      try {
-        const api = new PostgSail()
-        const response = await api.logs()
-        if (response.data) {
-          this.rowsData = response.data
-        } else {
-          throw { response }
-        }
-      } catch ({ response }) {
-        this.apiError = response.data.message
-        console.warn('Get datas from json...', this.apiError)
-        this.rowsData = [...logsDatas]
-      } finally {
-        this.isBusy = false
-      }
-    },
-    methods: {
-      resetFilter() {
-        this.filter = { ...getDefaultFilter() }
-      },
-    },
+
+  const isBusy = ref(false)
+  const apiError = ref(null)
+  const rowsData = ref([])
+  const perPage = ref(20)
+  const currentPage = ref(1)
+  const columns = ref([
+    { key: 'name', label: t('logs.log.name'), sortable: true },
+    { key: 'from', label: t('logs.log.from'), sortable: true },
+    { key: 'to', label: t('logs.log.to'), sortable: true },
+    { key: 'fromTime', label: t('logs.log.from_time'), sortable: true },
+    { key: 'toTime', label: t('logs.log.to_time'), sortable: true },
+    { key: 'distance', label: t('logs.log.distance'), sortable: true },
+    { key: 'duration', label: t('logs.log.duration'), sortable: true },
+  ])
+  const filter = reactive(getDefaultFilter())
+
+  const items = computed(() => {
+    return Array.isArray(rowsData.value)
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            name: row.Name,
+            from: row.From,
+            to: row.To,
+            fromTime: row.Started,
+            toTime: row.Ended,
+            distance: row.Distance,
+            duration: row.Duration,
+          }))
+          .filter((row) => {
+            const f = filter
+            if (Object.keys(f).every((fkey) => !f[fkey])) {
+              return true
+            }
+            return Object.keys(f).every((fkey) => {
+              if (!f[fkey]) {
+                return true
+              }
+              switch (fkey) {
+                case 'name':
+                  return row.name.toLowerCase().includes(f[fkey].toLowerCase())
+                case 'dateRange':
+                  return areIntervalsOverlapping({ start: new Date(row.fromTime), end: new Date(row.toTime) }, f[fkey])
+              }
+            })
+          })
+      : []
   })
+
+  onMounted(async () => {
+    isBusy.value = true
+    apiError.value = null
+    const api = new PostgSail()
+    try {
+      const response = await api.logs()
+      if (response.data) {
+        rowsData.value.splice(0, rowsData.value.length)
+        rowsData.value.push(...response.data)
+      } else {
+        throw { response }
+      }
+    } catch ({ response }) {
+      apiError.value = response.data.message
+      console.warn('Get datas from json...', apiError.value)
+      rowsData.value.splice(0, rowsData.value.length)
+      rowsData.value.push(...logsDatas)
+    } finally {
+      isBusy.value = false
+    }
+  })
+
+  function resetFilter() {
+    filter.value = { ...getDefaultFilter() }
+  }
 </script>
 
 <style lang="scss" scoped>

@@ -30,56 +30,52 @@
   </div>
 </template>
 
-<script>
+<script setup>
+  import { computed, ref, reactive, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
   import PostgSail from '../../services/postgsail.js'
-  import dateFormater from '../../mixins/dateFormater.js'
-  import vesselsDatas from '../../data/vessel.json'
+  import { dateFormat } from '../../utils/dateFormater.js'
   import lMap from '../../components/maps/leafletMap.vue'
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    components: {
-      lMap,
-    },
-    mixins: [dateFormater],
-    data() {
-      return {
-        isBusy: false,
-        apiError: null,
-        rowData: null,
-      }
-    },
-    computed: {
-      item() {
-        return this.rowData
-          ? {
-              name: this.rowData.name,
-              mmsi: this.rowData.mmsi,
-              lastContact: this.rowData.last_contact,
-              createdAt: this.rowData.created_at,
-            }
-          : {}
-      },
-    },
-    async mounted() {
-      this.isBusy = true
-      this.apiError = null
-      try {
-        const api = new PostgSail()
-        const mmsi = this.$route.params.mmsi
-        const response = await api.vessel_get(mmsi)
-        if (response.data) {
-          this.rowData = response.data
-        } else {
-          throw { response }
+
+  import vesselsDatas from '../../data/vessel.json'
+
+  const route = useRoute()
+  const isBusy = ref(false)
+  const apiError = ref(null)
+  const apiData = reactive({ row: null })
+
+  const item = computed(() => {
+    return apiData.row
+      ? {
+          mmsi: apiData.row.mmsi,
+          name: apiData.row.name,
+          lastContact: apiData.row.last_contact,
+          createdAt: apiData.row.created_at,
         }
-      } catch ({ response }) {
-        this.apiError = response.data.message
-        console.warn('Get data from json...', this.apiError)
-        this.rowData = vesselsDatas.find((row) => row.mmsi == this.$route.params.mmsi)
-      } finally {
-        this.isBusy = false
+      : {}
+  })
+
+  onMounted(async () => {
+    isBusy.value = true
+    apiError.value = null
+    const api = new PostgSail()
+    const mmsi = route.params.mmsi
+    try {
+      const response = await api.vessel_get(mmsi)
+      if (response.data) {
+        apiData.row = response.data
+      } else {
+        throw { response }
       }
-    },
+    } catch (err) {
+      const { response } = err
+      apiError.value = response.data.message
+      console.warn('Get data from json...', apiError.value)
+      const row = vesselsDatas.find((row) => row.id == route.params.id)
+      apiData.row = row
+    } finally {
+      isBusy.value = false
+    }
   })
 </script>
 

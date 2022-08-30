@@ -32,51 +32,45 @@
   </div>
 </template>
 
-<script>
+<script setup>
+  import { computed, ref } from 'vue'
   import PostgSail from '../../services/postgsail.js'
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    props: {
-      item: {
-        type: Object,
-        required: true,
-      },
-    },
-    data() {
-      return {
-        isBusy: true,
-        apiError: null,
-        showModal: false,
-        rowData: null,
-      }
-    },
-    computed: {
-      boatToken() {
-        return this.rowData && this.rowData.token ? this.rowData.token : ''
-      },
-    },
-    methods: {
-      async handleGetToken() {
-        this.isBusy = true
-        this.apiError = null
-        this.showModal = true
-        try {
-          const api = new PostgSail()
-          const response = await api.vessel_get_token()
-          if (response.data) {
-            this.rowData = response.data
-          } else {
-            throw { response }
-          }
-        } catch ({ response }) {
-          this.apiError = response.data.message
-          console.warn("Could not get vessel's token", this.apiError)
-        } finally {
-          this.isBusy = false
-        }
-      },
+
+  defineProps({
+    item: {
+      type: Object,
+      required: true,
     },
   })
+
+  const isBusy = ref(true)
+  const apiError = ref(null)
+  const showModal = ref(false)
+  const rowData = ref(null)
+
+  const boatToken = computed(() => {
+    return rowData.value && rowData.value.token ? rowData.value.token : ''
+  })
+
+  async function handleGetToken() {
+    isBusy.value = true
+    apiError.value = null
+    showModal.value = true
+    try {
+      const api = new PostgSail()
+      const response = await api.vessel_get_token()
+      if (response.data) {
+        this.rowData = response.data
+      } else {
+        throw { response }
+      }
+    } catch ({ response }) {
+      apiError.value = response.data.message
+      console.warn("Could not get vessel's token", apiError)
+    } finally {
+      isBusy.value = false
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

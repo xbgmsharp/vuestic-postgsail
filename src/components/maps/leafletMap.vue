@@ -36,7 +36,7 @@
           icon: new L.Icon({
             iconSize: [15, 30],
             iconAnchor: [7.5, 0],
-            iconUrl: '/public/sailboaticon.png',
+            iconUrl: '/sailboaticon.png',
           }),
           rotationAngle: feature.properties.anglespeedapparent,
         })

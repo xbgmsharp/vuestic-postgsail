@@ -41,7 +41,7 @@
   const { t } = useI18n()
 
   const isBusy = ref(false)
-  const email = ref('')
+  const email = ref(localStorage.getItem('email') || '')
   const password = ref('')
   const emailErrors = ref('')
   const passwordErrors = ref('')
@@ -63,6 +63,8 @@
       email: email.value,
       pass: password.value,
     }
+
+    localStorage.setItem('email', email.value)
 
     try {
       const api = new PostgSail()

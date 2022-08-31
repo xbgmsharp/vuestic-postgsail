@@ -28,11 +28,9 @@ class PostgSail {
 
     this.API.interceptors.response.use(
       (response) => {
-        console.log('interceptors response', response)
         return response
       },
       (error) => {
-        console.log('interceptors error', error)
         if (error.response.status === 401) {
           router.push('/login', { params: { is401: true } })
         }

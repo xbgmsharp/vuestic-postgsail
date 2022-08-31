@@ -40,8 +40,8 @@
   const { t } = useI18n()
 
   const email = ref('')
-  const mmsi = ref('')
-  const name = ref('')
+  const vessel_mmsi = ref('')
+  const vessel_name = ref('')
   const emailErrors = ref<string[]>([])
   const mmsiErrors = ref<string[]>([])
   const nameErrors = ref<string[]>([])
@@ -54,8 +54,8 @@
     if (!formReady.value) return
 
     emailErrors.value = email.value ? [] : ['Email is required']
-    mmsiErrors.value = mmsi.value ? [] : ['mmsi is required']
-    nameErrors.value = name.value ? [] : ['name is required']
+    mmsiErrors.value = vessel_mmsi.value ? [] : ['mmsi is required']
+    nameErrors.value = vessel_name.value ? [] : ['name is required']
 
     useRouter().push({ name: 'dashboard' })
   }

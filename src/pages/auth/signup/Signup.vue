@@ -68,7 +68,7 @@
   </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import PostgSail from '../../../services/postgsail.js'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
@@ -83,11 +83,11 @@
   const firstName = ref('')
   const lastName = ref('')
   const agreedToTerms = ref(false)
-  const emailErrors = ref<string[]>([])
-  const passwordErrors = ref<string[]>([])
-  const firstNameErrors = ref<string[]>([])
-  const lastNameErrors = ref<string[]>([])
-  const agreedToTermsErrors = ref<string[]>([])
+  const emailErrors = ref('')
+  const passwordErrors = ref('')
+  const firstNameErrors = ref('')
+  const lastNameErrors = ref('')
+  const agreedToTermsErrors = ref('')
 
   const router = useRouter()
 

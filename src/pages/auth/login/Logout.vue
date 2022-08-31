@@ -4,7 +4,7 @@
   </va-inner-loading>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import { useRouter } from 'vue-router'
 
   localStorage.removeItem('token')

@@ -33,7 +33,7 @@
   </va-inner-loading>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import PostgSail from '../../../services/postgsail.js'
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
@@ -43,8 +43,8 @@
   const isBusy = ref(false)
   const email = ref('')
   const password = ref('')
-  const emailErrors = ref<string[]>([])
-  const passwordErrors = ref<string[]>([])
+  const emailErrors = ref('')
+  const passwordErrors = ref('')
   const loginError = ref(null)
 
   const router = useRouter()

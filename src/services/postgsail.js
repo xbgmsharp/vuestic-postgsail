@@ -13,6 +13,10 @@ class PostgSail {
     this.app_url = import.meta.env.VITE_PGSAIL_URL
     this.token = localStorage.getItem('token')
 
+    this.authAPI = axios.create({
+      baseURL: this.app_url + '/',
+    })
+
     this.API = axios.create({
       baseURL: this.app_url + '/',
       headers: {
@@ -51,11 +55,11 @@ class PostgSail {
    */
 
   login(payload) {
-    return this.API.post(`rpc/login`, payload)
+    return this.authAPI.post(`rpc/login`, payload)
   }
 
   async signin(payload) {
-    return this.API.post(`rpc/signup`, payload)
+    return this.authAPI.post(`rpc/signup`, payload)
   }
 
   async vessel_reg(data) {

@@ -36,7 +36,7 @@ class PostgSail {
         if (error.response.status === 401) {
           router.push('/login', { params: { is401: true } })
         }
-        return error
+        throw error
       },
     )
   }

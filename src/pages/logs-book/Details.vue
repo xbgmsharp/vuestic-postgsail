@@ -122,18 +122,17 @@
       const response = await api.log_get(id)
       if (response.data) {
         apiData.row = response.data
+        formData.name = apiData.row.Name || null
+        formData.notes = apiData.row.Notes || null
       } else {
         throw { response }
       }
-    } catch (err) {
-      const { response } = err
+    } catch ({ response }) {
       apiError.value = response.data.message
       console.warn('Get data from json...', apiError.value)
       const row = logsBooks.find((row) => row.id == route.params.id)
       apiData.row = row
     } finally {
-      formData.name = apiData.row.Name || null
-      formData.notes = apiData.row.Notes || null
       isBusy.value = false
     }
   })

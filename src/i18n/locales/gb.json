@@ -22,7 +22,8 @@
       "password": "Password is required",
       "first_name": "First name is required",
       "last_name": "Last name is required",
-      "agreed_to_terms": "You must agree to the terms of use to continue"
+      "agreed_to_terms": "You must agree to the terms of use to continue",
+      "expired_session": "Your session has expired."
     }
   },
   "menu": {

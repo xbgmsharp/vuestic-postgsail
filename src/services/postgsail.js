@@ -3,17 +3,38 @@
  *
  */
 import axios from 'axios'
+import router from '../router'
+
 class PostgSail {
   /*
    * Create PostgSail instance.
    */
   constructor() {
-    this.app_url = import.meta.env.VITE_PGSAIL_URL || null
-    this.data = null
-    this.status = null
+    this.app_url = import.meta.env.VITE_PGSAIL_URL
     this.token = localStorage.getItem('token')
 
+    this.API = axios.create({
+      baseURL: this.app_url + '/',
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+      },
+    })
+
     this.check()
+
+    this.API.interceptors.response.use(
+      (response) => {
+        console.log('interceptors response', response)
+        return response
+      },
+      (error) => {
+        console.log('interceptors error', error)
+        if (error.response.status === 401) {
+          router.push('/login', { params: { is401: true } })
+        }
+        return error
+      },
+    )
   }
 
   /*
@@ -30,15 +51,15 @@ class PostgSail {
    */
 
   login(payload) {
-    return axios.post(`${this.app_url}/rpc/login`, payload)
+    return this.API.post(`rpc/login`, payload)
   }
 
   async signin(payload) {
-    return axios.post(`${this.app_url}/rpc/signin`, payload)
+    return this.API.post(`rpc/signin`, payload)
   }
 
   async vessel_reg(data) {
-    const response = await fetch(`${this.app_url}/rpc/register_vessel`, {
+    const response = await fetch(`rpc/register_vessel`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,44 +72,23 @@ class PostgSail {
   }
 
   async vessel_get() {
-    return axios.get(`${this.app_url}/vessel`, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    })
+    return this.API.get(`vessel`)
   }
 
   async vessel_get_token() {
-    return axios.get(`${this.app_url}/vessel_token`, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    })
+    return this.API.get(`vessel_token`)
   }
 
   async logs() {
-    return axios.get(`${this.app_url}/logs_view`, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    })
+    return this.API.get(`logs_view`)
   }
 
   async log_get(id) {
-    return axios.get(`${this.app_url}/log_view?id=eq.${id}`, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    })
+    return this.API.get(`log_view?id=eq.${id}`)
   }
 
   async log_update(id, payload) {
-    return axios.put(`${this.app_url}/log_view?id=eq.${id}`, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-      body: payload,
-    })
+    return this.API.put(`log_view?id=eq.${id}`, payload)
   }
 }
 

@@ -4,6 +4,9 @@
       <template v-if="loginError">
         <va-alert color="danger" outline class="mb-4"> {{ $t('auth.errors.cedentials') }} ({{ loginError }}) </va-alert>
       </template>
+      <template v-if="tokenExpired">
+        <va-alert color="warning" outline class="mb-4"> {{ $t('auth.errors.expired_session') }}</va-alert>
+      </template>
       <va-input
         v-model="email"
         class="mb-3"
@@ -17,6 +20,7 @@
         v-model="password"
         class="mb-3"
         type="password"
+        autocomplete="off"
         :label="t('auth.password')"
         :error="!!passwordErrors.length"
         :error-messages="passwordErrors"
@@ -36,7 +40,7 @@
 <script setup>
   import PostgSail from '../../../services/postgsail.js'
   import { computed, ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
 
@@ -48,6 +52,10 @@
   const loginError = ref(null)
 
   const router = useRouter()
+
+  const route = useRoute()
+
+  const tokenExpired = route.params.is401
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 

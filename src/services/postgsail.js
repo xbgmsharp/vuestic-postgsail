@@ -55,7 +55,7 @@ class PostgSail {
   }
 
   async signin(payload) {
-    return this.API.post(`rpc/signin`, payload)
+    return this.API.post(`rpc/signup`, payload)
   }
 
   async vessel_reg(data) {

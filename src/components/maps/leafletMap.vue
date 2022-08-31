@@ -38,7 +38,7 @@
             iconAnchor: [7.5, 0],
             iconUrl: '/sailboaticon.png',
           }),
-          rotationAngle: feature.properties.anglespeedapparent,
+          rotationAngle: feature.properties.courseOverGroundTrue,
         })
       }
       this.geoJsonFeatures.forEach((f) => {

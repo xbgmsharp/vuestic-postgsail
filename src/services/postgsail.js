@@ -74,7 +74,7 @@ class PostgSail {
   }
 
   async vessel_get() {
-    return this.API.get(`vessel`)
+    return this.API.get(`rpc/vessel_fn`)
   }
 
   async vessel_get_token() {

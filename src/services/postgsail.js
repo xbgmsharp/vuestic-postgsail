@@ -3,7 +3,7 @@
  *
  */
 import axios from 'axios'
-import router from '../router'
+import { useRouter } from 'vue-router'
 
 class PostgSail {
   /*
@@ -12,7 +12,7 @@ class PostgSail {
   constructor() {
     this.app_url = import.meta.env.VITE_PGSAIL_URL
     this.token = localStorage.getItem('token')
-
+    this.router = useRouter()
     this.authAPI = axios.create({
       baseURL: this.app_url + '/',
     })
@@ -32,7 +32,7 @@ class PostgSail {
       },
       (error) => {
         if (error.response.status === 401) {
-          router.push('/login', { params: { is401: true } })
+          this.router.push({ name: 'logout', params: { is401: true } })
         }
         throw error
       },

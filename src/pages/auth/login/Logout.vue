@@ -5,9 +5,11 @@
 </template>
 
 <script setup>
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
 
   localStorage.removeItem('token')
+  const route = useRoute()
   const router = useRouter()
-  router.push({ name: 'login' })
+  const is401 = route.params.is401
+  router.push({ name: 'login', params: { is401 } })
 </script>

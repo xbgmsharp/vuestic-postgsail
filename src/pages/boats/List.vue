@@ -39,7 +39,7 @@
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormat } from '../../utils/dateFormater.js'
 
-  import vesselsDatas from '../../data/vessel.json'
+  import vesselsDatas from '../../data/vessels_list.json'
 
   const { t } = useI18n()
 
@@ -58,11 +58,12 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.map((row) => {
+          const { name, mmsi, last_contact, created_at } = row.vessel
           return {
-            name: row.name,
-            mmsi: row.mmsi,
-            lastContact: row.last_contact,
-            createdAt: row.created_at,
+            name: name,
+            mmsi: mmsi,
+            lastContact: last_contact,
+            createdAt: created_at,
           }
         })
       : []
@@ -74,17 +75,20 @@
     const api = new PostgSail()
     try {
       const response = await api.vessel_get()
-      if (response.data) {
+      if (response.data && Array.isArray(response.data) && response.data[0]) {
         rowsData.value.splice(0, rowsData.value.length)
         rowsData.value.push(...response.data)
       } else {
-        throw { response }
+        throw {
+          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+        }
       }
     } catch ({ response }) {
       apiError.value = response.data.message
       console.warn('Get datas from json...', apiError.value)
       rowsData.value.splice(0, rowsData.value.length)
       rowsData.value.push(...vesselsDatas)
+      console.log(vesselsDatas, rowsData.value)
     } finally {
       isBusy.value = false
     }

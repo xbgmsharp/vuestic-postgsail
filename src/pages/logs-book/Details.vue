@@ -120,12 +120,14 @@
     const id = route.params.id
     try {
       const response = await api.log_get(id)
-      if (response.data) {
-        apiData.row = response.data
+      if (response.data && Array.isArray(response.data) && response.data[0]) {
+        apiData.row = response.data[0]
         formData.name = apiData.row.Name || null
         formData.notes = apiData.row.Notes || null
       } else {
-        throw { response }
+        throw {
+          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+        }
       }
     } catch ({ response }) {
       apiError.value = response.data.message

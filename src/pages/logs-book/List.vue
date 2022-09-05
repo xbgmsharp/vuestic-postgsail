@@ -5,10 +5,10 @@
       <va-card-content>
         <div class="layout gutter--md">
           <div class="row">
-            <div class="flex md6">
+            <div class="flex xs6">
               <va-input v-model="filter.name" :label="$t('logs.list.filter.name')" placeholder="Filter by name..." />
             </div>
-            <div class="flex md6">
+            <div class="flex xs6">
               <va-date-input
                 v-model="filter.dateRange"
                 :label="$t('logs.list.filter.date_range')"
@@ -142,11 +142,13 @@
     const api = new PostgSail()
     try {
       const response = await api.logs()
-      if (response.data) {
+      if (response.data && Array.isArray(response.data) && response.data[0]) {
         rowsData.value.splice(0, rowsData.value.length)
         rowsData.value.push(...response.data)
       } else {
-        throw { response }
+        throw {
+          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+        }
       }
     } catch ({ response }) {
       apiError.value = response.data.message

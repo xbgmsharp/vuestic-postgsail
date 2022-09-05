@@ -112,9 +112,9 @@
 
     const payload = {
       email: email.value,
-      password: password.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
+      pass: password.value,
+      firstname: firstName.value,
+      lastname: lastName.value,
     }
 
     apiError.value = null

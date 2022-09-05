@@ -35,10 +35,10 @@
         return L.marker(latlng, {
           icon: new L.Icon({
             iconSize: [15, 30],
-            iconAnchor: [7.5, 0],
+            iconAnchor: [7.5, 10],
             iconUrl: '/sailboaticon.png',
           }),
-          rotationAngle: feature.properties.courseOverGroundTrue,
+          rotationAngle: feature.properties.courseovergroundtrue,
         })
       }
       this.geoJsonFeatures.forEach((f) => {

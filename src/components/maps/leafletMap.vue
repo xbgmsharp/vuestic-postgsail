@@ -14,6 +14,14 @@
         type: Array,
         default: () => [],
       },
+      showPath: {
+        type: Boolean,
+        default: false,
+      },
+      showPoints: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -25,7 +33,7 @@
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map)
-      //use a mix of renderers
+      // use a mix of renderers
       var customPane = this.map.createPane('customPane')
       L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
@@ -42,8 +50,17 @@
         })
       }
       this.geoJsonFeatures.forEach((f) => {
-        const feat = L.geoJSON(f, { pointToLayer }).addTo(this.map)
-        bounds.push(feat.getBounds())
+        let feat = null
+        if (this.showPath && f.geometry.type === 'LineString') {
+          feat = L.polyline(f.geometry.coordinates, {})
+        }
+        if (this.showPoints && f.geometry.type === 'Point') {
+          feat = L.geoJSON(f, { pointToLayer })
+        }
+        if (feat) {
+          feat.addTo(this.map)
+          bounds.push(feat.getBounds())
+        }
       })
       if (bounds.length) {
         this.map.fitBounds(bounds, { padding: [25, 25] })

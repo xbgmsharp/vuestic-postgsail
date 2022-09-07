@@ -8,7 +8,7 @@
         </template>
         <div class="mb-3 my-3">
           <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 250px" />
+            <lMap :geo-json-features="mapGeoJsonFeatures" show-path show-points style="width: 100%; height: 250px" />
           </template>
         </div>
         <va-inner-loading :loading="isBusy">

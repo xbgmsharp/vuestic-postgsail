@@ -38,22 +38,28 @@
       L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
       // geoJson features
-      if (Array.isArray(this.geoJsonFeatures) && this.geoJsonFeatures.length) {
+      if (
+        (this.showPath || this.showPoints) &&
+        this.geoJsonFeatures &&
+        Array.isArray(this.geoJsonFeatures.features) &&
+        this.geoJsonFeatures.features.length
+      ) {
         const layer = L.geoJSON(this.geoJsonFeatures, {
           pointToLayer: (feature, latlng) => {
-            if (this.showPoints && feature.geometry.type === 'Point') {
-              return L.marker(latlng, {
-                icon: new L.Icon({
-                  iconSize: [15, 30],
-                  iconAnchor: [7.5, 10],
-                  iconUrl: '/sailboaticon.png',
-                }),
-                rotationAngle: feature.properties.courseovergroundtrue,
-              })
-            }
-            if (this.showPath && feature.geometry.type === 'LineString') {
-              return L.polyline(latlng, {})
-            }
+            return L.marker(latlng, {
+              icon: new L.Icon({
+                iconSize: [15, 30],
+                iconAnchor: [7.5, 10],
+                iconUrl: '/sailboaticon.png',
+              }),
+              rotationAngle: feature.properties.courseovergroundtrue,
+            })
+          },
+          filter: (feature) => {
+            return (
+              (this.showPath && feature.geometry.type === 'LineString') ||
+              (this.showPoints && feature.geometry.type === 'Point')
+            )
           },
         }).addTo(this.map)
         this.map.fitBounds(layer.getBounds(), { padding: [25, 25] })

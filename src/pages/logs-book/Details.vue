@@ -105,9 +105,7 @@
       : {}
   })
   const mapGeoJsonFeatures = computed(() => {
-    return item.value && item.value.geoJson && item.value.geoJson.features && Array.isArray(item.value.geoJson.features)
-      ? item.value.geoJson.features
-      : []
+    return item.value && item.value.geoJson ? item.value.geoJson : []
   })
   const canSubmit = computed(() => {
     const isDirty = item.value.name !== formData.name || item.value.notes !== formData.notes

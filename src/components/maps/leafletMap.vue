@@ -38,32 +38,25 @@
       L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
       // geoJson features
-      const bounds = []
-      const pointToLayer = function (feature, latlng) {
-        return L.marker(latlng, {
-          icon: new L.Icon({
-            iconSize: [15, 30],
-            iconAnchor: [7.5, 10],
-            iconUrl: '/sailboaticon.png',
-          }),
-          rotationAngle: feature.properties.courseovergroundtrue,
-        })
-      }
-      this.geoJsonFeatures.forEach((f) => {
-        let feat = null
-        if (this.showPath && f.geometry.type === 'LineString') {
-          feat = L.polyline(f.geometry.coordinates, {})
-        }
-        if (this.showPoints && f.geometry.type === 'Point') {
-          feat = L.geoJSON(f, { pointToLayer })
-        }
-        if (feat) {
-          feat.addTo(this.map)
-          bounds.push(feat.getBounds())
-        }
-      })
-      if (bounds.length) {
-        this.map.fitBounds(bounds, { padding: [25, 25] })
+      if (Array.isArray(this.geoJsonFeatures) && this.geoJsonFeatures.length) {
+        const layer = L.geoJSON(this.geoJsonFeatures, {
+          pointToLayer: (feature, latlng) => {
+            if (this.showPoints && feature.geometry.type === 'Point') {
+              return L.marker(latlng, {
+                icon: new L.Icon({
+                  iconSize: [15, 30],
+                  iconAnchor: [7.5, 10],
+                  iconUrl: '/sailboaticon.png',
+                }),
+                rotationAngle: feature.properties.courseovergroundtrue,
+              })
+            }
+            if (this.showPath && feature.geometry.type === 'LineString') {
+              return L.polyline(latlng, {})
+            }
+          },
+        }).addTo(this.map)
+        this.map.fitBounds(layer.getBounds(), { padding: [25, 25] })
       }
     },
     onBeforeUnmount() {

@@ -9,7 +9,7 @@
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
             <template v-if="!isBusy && item.id">
-              <lMap :geo-json-features="mapGeoJsonFeatures" show-path show-points style="width: 100%; height: 250px" />
+              <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 250px" />
             </template>
             <template v-else>
               <div style="height: 250px; background: var(--va-background)" />

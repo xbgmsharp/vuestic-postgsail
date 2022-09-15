@@ -11,14 +11,14 @@
     name: 'LeafletMap',
     props: {
       geoJsonFeatures: {
-        type: Array,
-        default: () => [],
+        type: [Array, Object],
+        default: null,
       },
-      showPath: {
+      hidePath: {
         type: Boolean,
         default: false,
       },
-      showPoints: {
+      hidePoints: {
         type: Boolean,
         default: false,
       },
@@ -38,8 +38,7 @@
       L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
       // geoJson features
-      console.log(this.geoJsonFeatures, typeof this.geoJsonFeatures)
-      if ((this.showPath || this.showPoints) && typeof this.geoJsonFeatures === 'object') {
+      if (this.geoJsonFeatures) {
         const layer = L.geoJSON(this.geoJsonFeatures, {
           // use icon for points
           pointToLayer: (feature, latlng) => {
@@ -52,11 +51,11 @@
               rotationAngle: feature.properties.courseovergroundtrue,
             })
           },
-          // filter features based on component props showPath && showPoints
+          // filter features based on component props !hidePath && !hidePoints
           filter: (feature) => {
             return (
-              (this.showPath && feature.geometry.type === 'LineString') ||
-              (this.showPoints && feature.geometry.type === 'Point')
+              (!this.hidePath && feature.geometry.type === 'LineString') ||
+              (!this.hidePoints && feature.geometry.type === 'Point')
             )
           },
         }).addTo(this.map)

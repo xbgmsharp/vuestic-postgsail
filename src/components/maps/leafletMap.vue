@@ -38,13 +38,10 @@
       L.canvas({ pane: 'customPane' })
       customPane.style.zIndex = 399
       // geoJson features
-      if (
-        (this.showPath || this.showPoints) &&
-        this.geoJsonFeatures &&
-        Array.isArray(this.geoJsonFeatures.features) &&
-        this.geoJsonFeatures.features.length
-      ) {
+      console.log(this.geoJsonFeatures, typeof this.geoJsonFeatures)
+      if ((this.showPath || this.showPoints) && typeof this.geoJsonFeatures === 'object') {
         const layer = L.geoJSON(this.geoJsonFeatures, {
+          // use icon for points
           pointToLayer: (feature, latlng) => {
             return L.marker(latlng, {
               icon: new L.Icon({
@@ -55,6 +52,7 @@
               rotationAngle: feature.properties.courseovergroundtrue,
             })
           },
+          // filter features based on component props showPath && showPoints
           filter: (feature) => {
             return (
               (this.showPath && feature.geometry.type === 'LineString') ||

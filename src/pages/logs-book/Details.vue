@@ -6,58 +6,59 @@
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
-        <div class="mb-3 my-3">
-          <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" show-path show-points style="width: 100%; height: 250px" />
-          </template>
-        </div>
         <va-inner-loading :loading="isBusy">
-          <template v-if="item">
-            <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
-              <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
-                <dd class="flex xs12 md6 pa-1">
-                  <va-input
-                    v-model="formData.name"
-                    placeholder="Name"
-                    outline
-                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                  />
-                </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Departed</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Departed at</dt>
-                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Arrived</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Arrived at</dt>
-                <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Duration</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Distance</dt>
-                <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
-                <dd class="flex xs12 md6 pa-2">
-                  {{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}
-                </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
-                <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Note</dt>
-                <dd class="flex xs12 md6 pa-1">
-                  <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
-                </dd>
-              </dl>
-              <template v-if="updateError">
-                <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
-              </template>
-              <div class="row justify--end">
-                <div class="flex">
-                  <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
-                </div>
-              </div>
-            </va-form>
-          </template>
+          <div class="mb-3 my-3">
+            <template v-if="!isBusy && item.id">
+              <lMap :geo-json-features="mapGeoJsonFeatures" show-path show-points style="width: 100%; height: 250px" />
+            </template>
+            <template v-else>
+              <div style="height: 250px; background: var(--va-background)" />
+            </template>
+          </div>
         </va-inner-loading>
+        <template v-if="item">
+          <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
+            <dl class="dl-details row mb-3">
+              <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
+              <dd class="flex xs12 md6 pa-1">
+                <va-input
+                  v-model="formData.name"
+                  placeholder="Name"
+                  outline
+                  :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                />
+              </dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Departed</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Departed at</dt>
+              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Arrived</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Arrived at</dt>
+              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Duration</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Distance</dt>
+              <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
+              <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
+              <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
+              <dt class="flex xs12 md6 pa-2 text--bold">Note</dt>
+              <dd class="flex xs12 md6 pa-1">
+                <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
+              </dd>
+            </dl>
+            <template v-if="updateError">
+              <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
+            </template>
+            <div class="row justify--end">
+              <div class="flex">
+                <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
+              </div>
+            </div>
+          </va-form>
+        </template>
       </va-card-content>
     </va-card>
   </div>

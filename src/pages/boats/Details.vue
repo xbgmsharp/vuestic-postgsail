@@ -8,7 +8,7 @@
         </template>
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
-            <template v-if="!isBusy && item">
+            <template v-if="!isBusy && item.id">
               <lMap :loading="isBusy" style="width: 100%; height: 250px" />
             </template>
           </div>

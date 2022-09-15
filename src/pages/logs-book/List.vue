@@ -135,6 +135,9 @@
           })
       : []
   })
+  const pages = computed(() => {
+    return Math.ceil(items.value.length / perPage.value)
+  })
 
   onMounted(async () => {
     isBusy.value = true

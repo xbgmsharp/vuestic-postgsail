@@ -72,12 +72,13 @@
       pass: password.value,
     }
 
-    localStorage.setItem('email', email.value)
+    //localStorage.setItem('email', email.value)
 
     try {
       const api = new PostgSail()
       const response = await api.login(payload)
       if (response.data.token) {
+        // TODO force email validation via code
         localStorage.setItem('token', response.data.token)
         router.push({ name: 'dashboard' })
       } else {

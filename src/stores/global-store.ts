@@ -5,13 +5,14 @@ export const useGlobalStore = defineStore('global', {
     return {
       isSidebarMinimized: false,
       token: localStorage.getItem('token') || '',
-      userName: 'F Lacroix',
+      userName: (localStorage.getItem('settings') && JSON.parse(localStorage.getItem('settings') || '').username) || '',
       count: 0,
       unsplash: null,
       postgsail: null,
       openweather: null,
       monitor: null,
       status: 'pending',
+      packageVersion: __APP_VERSION__,
     }
   },
   actions: {
@@ -28,5 +29,8 @@ export const useGlobalStore = defineStore('global', {
     postgrest_fn: (state) => state.postgsail,
     status_fn: (state) => state.status,
     count_fn: (state) => state.count,
+    appVersion: (state) => {
+      return state.packageVersion
+    },
   },
 })

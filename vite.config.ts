@@ -12,7 +12,10 @@ export default defineConfig({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**'),
     }),
   ],
-  define: { 'process.env': {} },
+  define: {
+    'process.env': {},
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+  },
   server: {
     hmr: { overlay: false },
   },

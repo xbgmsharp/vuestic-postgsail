@@ -8,6 +8,7 @@
   import { useRouter, useRoute } from 'vue-router'
 
   localStorage.removeItem('token')
+  localStorage.removeItem('settings')
   const route = useRoute()
   const router = useRouter()
   const is401 = route.params.is401

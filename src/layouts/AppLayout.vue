@@ -32,6 +32,8 @@
   import Navbar from '../components/navbar/Navbar.vue'
   import Sidebar from '../components/sidebar/Sidebar.vue'
 
+  import PostgSail from '../services/postgsail.js'
+
   const GlobalStore = useGlobalStore()
 
   const mobileBreakPointPX = 640
@@ -55,9 +57,36 @@
     sidebarWidth.value = isTablet.value ? '100%' : '16rem'
   }
 
+  const isBusy = ref(false)
+  const apiError = ref(null)
+
   onMounted(() => {
     window.addEventListener('resize', onResize)
+    if (localStorage.getItem('settings') === null) {
+      handleSettings()
+    }
   })
+
+  const handleSettings = async () => {
+    isBusy.value = true
+    apiError.value = null
+    const api = new PostgSail()
+    try {
+      const response = await api.settings()
+      if (response.data && response.data.settings) {
+        localStorage.setItem('settings', JSON.stringify(response.data.settings))
+      } else {
+        throw {
+          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+        }
+      }
+    } catch ({ response }) {
+      apiError.value = response
+      console.warn('Unable to get settings...', apiError.value)
+    } finally {
+      isBusy.value = false
+    }
+  }
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)

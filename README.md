@@ -50,9 +50,9 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] moorage - icon anchor
   - [ ] stays - icon alone
   - [ ] logs - icon logbook
-  - [ ] privacy - 
-  - [ ] faq - 
-  - [ ] monitoring 
+  - [ ] privacy -
+  - [ ] faq -
+  - [ ] monitoring
 - [ ] Singup
   - [ ] Force email validation via code
   - [ ] require backend update

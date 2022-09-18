@@ -14,13 +14,20 @@
             <template v-if="apiError">
               <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
             </template>
+            <a id="copyToClipboard" class="button control is-medium" @click.prevent="copyToClipboard">
+              <span class="icon">
+                <i class="fa fa-clipboard"></i>
+              </span>
+            </a>
             <div>
               <va-input
-                :value="boatToken"
+                ref="clone"
+                v-model="boatToken"
                 :label="$t('boats.boat.token_modal.token') + ':'"
-                placeholder="Readonly"
-                readonly
+                placeholder="Readonly Token"
+                @focus="$event.target.select()"
               />
+              <va-alert color="warning" outline class="mb-4">{{ $t('boats.boat.token_modal.message') }}</va-alert>
             </div>
           </va-inner-loading>
         </va-card-content>
@@ -36,7 +43,7 @@
   import { computed, ref } from 'vue'
   import PostgSail from '../../services/postgsail.js'
 
-  defineProps({
+  const props = defineProps({
     item: {
       type: Object,
       required: true,
@@ -47,29 +54,50 @@
   const apiError = ref(null)
   const showModal = ref(false)
   const rowData = ref(null)
+  const email = ref(null)
+  if (localStorage.getItem('settings') !== null) {
+    email.value = JSON.parse(localStorage.getItem('settings')).email
+  }
 
   const boatToken = computed(() => {
-    return rowData.value && rowData.value.token ? rowData.value.token : ''
+    return rowData.value ? rowData.value : ''
   })
 
   async function handleGetToken() {
     isBusy.value = true
     apiError.value = null
     showModal.value = true
+    const payload = {
+      vessel_name: props.item.name,
+      vessel_mmsi: props.item.mmsi,
+      vessel_email: email.value,
+    }
     try {
       const api = new PostgSail()
-      const response = await api.vessel_get_token()
-      if (response.data) {
-        this.rowData = response.data
+      console.log(`handleGetToken ${payload.vessel_mmsi}`)
+      const response = await api.vessel_reg(payload)
+      console.log(`handleGetToken ${response.data.token}`)
+      if (response.data.token) {
+        rowData.value = response.data.token
+        console.log(`handleGetToken ${rowData.value}`)
+        console.log(`handleGetToken ${boatToken.value}`)
       } else {
         throw { response }
       }
     } catch ({ response }) {
+      console.log(response)
+      /*
       apiError.value = response.data.message
       console.warn("Could not get vessel's token", apiError)
+      */
     } finally {
       isBusy.value = false
     }
+  }
+
+  const copyToClipboard = async () => {
+    console.log(`handleGetToken ${boatToken.value}`)
+    navigator.clipboard.writeText(boatToken.value)
   }
 </script>
 

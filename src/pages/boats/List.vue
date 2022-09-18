@@ -1,35 +1,33 @@
 <template>
-  <div>
-    <va-card>
-      <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
-      <va-card-content>
-        <template v-if="apiError">
-          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+  <va-card>
+    <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
+    <va-card-content>
+      <template v-if="apiError">
+        <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+      </template>
+      <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
+        <template #cell(name)="{ value, rowData }">
+          <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
+            {{ value }}
+          </router-link>
         </template>
-        <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
-          <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
-              {{ value }}
-            </router-link>
-          </template>
-          <template #cell(lastContact)="{ value }">
-            {{ dateFormat(value) }}
-          </template>
-          <template #cell(createdAt)="{ value }">
-            {{ dateFormat(value) }}
-          </template>
-          <template #cell(actions)="{ rowData }">
-            <GetBoatToken :item="rowData" />
-          </template>
-        </va-data-table>
-        <template v-if="items.length > perPage">
-          <div class="mt-3 row justify--center">
-            <va-pagination v-model="currentPage" input :pages="pages" />
-          </div>
+        <template #cell(lastContact)="{ value }">
+          {{ dateFormat(value) }}
         </template>
-      </va-card-content>
-    </va-card>
-  </div>
+        <template #cell(createdAt)="{ value }">
+          {{ dateFormat(value) }}
+        </template>
+        <template #cell(actions)="{ rowData }">
+          <GetBoatToken :item="rowData" />
+        </template>
+      </va-data-table>
+      <template v-if="items.length > perPage">
+        <div class="mt-3 row justify--center">
+          <va-pagination v-model="currentPage" input :pages="pages" />
+        </div>
+      </template>
+    </va-card-content>
+  </va-card>
 </template>
 
 <script setup>
@@ -39,10 +37,9 @@
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormat } from '../../utils/dateFormater.js'
 
-  import vesselsDatas from '../../data/vessels_list.json'
+  import vesselsDatas from '../../data/boats.json'
 
   const { t } = useI18n()
-
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
@@ -58,7 +55,7 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.map((row) => {
-          const { name, mmsi, last_contact, created_at } = row.vessel
+          const { name, mmsi, last_contact, created_at } = row
           return {
             name: name,
             mmsi: mmsi,
@@ -74,21 +71,32 @@
     apiError.value = null
     const api = new PostgSail()
     try {
-      const response = await api.vessel_get()
-      if (response.data && Array.isArray(response.data) && response.data[0]) {
-        rowsData.value.splice(0, rowsData.value.length)
-        rowsData.value.push(...response.data)
+      const response = await api.vessels()
+      if (response.data && Array.isArray(response.data)) {
+        if (response.data.length > 0) {
+          console.warn('api.vessels() response...', response.data)
+          rowsData.value.splice(0, rowsData.value.length || [])
+          rowsData.value.push(...response.data)
+        } else {
+          console.warn('pending boat metadata?')
+          const response = await api.vessels_pending()
+          if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+            rowsData.value.splice(0, rowsData.value.length || [])
+            rowsData.value.push(...response.data)
+          }
+        }
       } else {
         throw {
-          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+          response: {
+            data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' + response.data },
+          },
         }
       }
     } catch ({ response }) {
       apiError.value = response.data.message
-      console.warn('Get datas from json...', apiError.value)
-      rowsData.value.splice(0, rowsData.value.length)
+      console.warn('Fallback using sample datas from local json...', apiError.value)
+      rowsData.value.splice(0, vesselsDatas.length)
       rowsData.value.push(...vesselsDatas)
-      console.log(vesselsDatas, rowsData.value)
     } finally {
       isBusy.value = false
     }

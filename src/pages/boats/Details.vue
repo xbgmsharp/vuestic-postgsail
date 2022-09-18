@@ -9,7 +9,7 @@
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
             <template v-if="!isBusy && item">
-              <lMap :loading="isBusy" style="width: 100%; height: 250px" />
+              <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
             </template>
           </div>
           <template v-if="item">
@@ -37,7 +37,7 @@
   import { dateFormat } from '../../utils/dateFormater.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
-  import vesselsDatas from '../../data/vessel.json'
+  import vesselsDatas from '../../data/boats.json'
 
   const route = useRoute()
   const isBusy = ref(false)
@@ -51,8 +51,14 @@
           name: apiData.row.name,
           lastContact: apiData.row.last_contact,
           createdAt: apiData.row.created_at,
+          geoJson: apiData.row.geojson,
         }
       : {}
+  })
+  const mapGeoJsonFeatures = computed(() => {
+    console.log('mapGeoJsonFeatures')
+    console.log(`geoJson ${item.value.geoJson}`)
+    return item.value && item.value.geoJson && item.value.geoJson.feature ? Array(item.value.geoJson.feature) : []
   })
 
   onMounted(async () => {
@@ -62,8 +68,8 @@
     const mmsi = route.params.mmsi
     try {
       const response = await api.vessel_get(mmsi)
-      if (response.data) {
-        apiData.row = response.data
+      if (response.data && response.data.vessel) {
+        apiData.row = response.data.vessel
       } else {
         throw { response }
       }

@@ -10,7 +10,7 @@
             @click="isSidebarMinimized = !isSidebarMinimized"
           />
           <router-link to="/">
-            <vuestic-logo class="logo" />
+            <postgsail-logo class="logo" />
           </router-link>
         </div>
       </template>
@@ -27,7 +27,7 @@
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
   import { useColors } from 'vuestic-ui'
-  import VuesticLogo from '../VuesticLogo.vue'
+  import PostgsailLogo from '../PostgsailLogo.vue'
   import VaIconMenuCollapsed from '../icons/VaIconMenuCollapsed.vue'
   import AppNavbarActions from './components/AppNavbarActions.vue'
 

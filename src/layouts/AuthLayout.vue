@@ -2,7 +2,7 @@
   <div class="auth-layout row align-content--center">
     <div class="flex xs12 pa-3 flex-center">
       <router-link class="py-5 flex-center" to="/">
-        <vuestic-logo height="32" />
+        <PostgsailLogo height="32" />
       </router-link>
     </div>
 
@@ -30,12 +30,12 @@
 </template>
 
 <script>
-  import VuesticLogo from '../components/VuesticLogo.vue'
+  import PostgsailLogo from '../components/PostgsailLogo.vue'
   import { useI18n } from 'vue-i18n'
 
   export default {
     name: 'AuthLayout',
-    components: { VuesticLogo },
+    components: { PostgsailLogo },
     setup() {
       const { t } = useI18n()
       return { t }

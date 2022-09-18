@@ -142,8 +142,8 @@
     const api = new PostgSail()
     try {
       const response = await api.logs()
-      if (response.data && Array.isArray(response.data) && response.data[0]) {
-        rowsData.value.splice(0, rowsData.value.length)
+      if (response.data && Array.isArray(response.data)) {
+        rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response.data)
       } else {
         throw {
@@ -152,8 +152,8 @@
       }
     } catch ({ response }) {
       apiError.value = response.data.message
-      console.warn('Get datas from json...', apiError.value)
-      rowsData.value.splice(0, rowsData.value.length)
+      console.warn('Fallback using sample datas from local json...', apiError.value)
+      rowsData.value.splice(0, logsDatas.length || [])
       rowsData.value.push(...logsDatas)
     } finally {
       isBusy.value = false

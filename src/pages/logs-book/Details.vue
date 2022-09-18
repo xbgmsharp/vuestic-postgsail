@@ -8,7 +8,7 @@
         </template>
         <div class="mb-3 my-3">
           <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 250px" />
+            <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
           </template>
         </div>
         <va-inner-loading :loading="isBusy">
@@ -52,6 +52,7 @@
               </template>
               <div class="row justify--end">
                 <div class="flex">
+                  <va-button color="danger" @click="handleDelete">Delete</va-button>
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
               </div>
@@ -140,6 +141,32 @@
   })
 
   const handleSubmit = async () => {
+    isBusy.value = true
+    updateError.value = null
+
+    const api = new PostgSail()
+    const id = route.params.id
+    const payload = {
+      name: formData.name,
+      notes: formData.notes,
+    }
+    try {
+      const response = await api.log_update(id, payload)
+      if (response.data) {
+        console.log('log_update success', response.data)
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('log_update failed', response)
+      updateError.value = response.data.message
+    } finally {
+      isBusy.value = false
+    }
+  }
+
+  const handleDelete = async () => {
     isBusy.value = true
     updateError.value = null
 

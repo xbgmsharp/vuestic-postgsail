@@ -21,6 +21,8 @@ class PostgSail {
       baseURL: this.app_url + '/',
       headers: {
         Authorization: 'Bearer ' + this.token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     })
 
@@ -33,6 +35,15 @@ class PostgSail {
       (error) => {
         if (error.response.status === 401) {
           this.router.push({ name: 'logout', params: { is401: true } })
+        }
+        /* Default return HTTP/400
+         * no vessel
+         * "unrecognized configuration parameter \"vessel.mmsi\""
+         * updated backend to return HTTP/551
+         * {"hint":"Unkown vessel","details":"Invalid vessel"}
+         */
+        if (error.response.status === 551) {
+          this.router.push({ name: 'boat-new' })
         }
         throw error
       },
@@ -52,6 +63,9 @@ class PostgSail {
    * Methods API endpoint
    */
 
+  /*
+   * Auth API endpoint
+   */
   login(payload) {
     return this.authAPI.post(`rpc/login`, payload)
   }
@@ -60,8 +74,22 @@ class PostgSail {
     return this.authAPI.post(`rpc/signup`, payload)
   }
 
+  /*
+   * User settings
+   */
+  async settings() {
+    return this.API.get(`rpc/settings_fn`)
+  }
+
+  /*
+   * Boats API endpoint
+   */
+  async vessel_reg(payload) {
+    return this.API.post(`/rpc/register_vessel`, payload)
+  }
+  /*
   async vessel_reg(data) {
-    const response = await fetch(`rpc/register_vessel`, {
+    const response = await fetch(`${this.app_url}/rpc/register_vessel`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,15 +100,27 @@ class PostgSail {
     })
     return await response.json()
   }
+*/
+
+  async vessels() {
+    return this.API.get(`vessels_view`)
+  }
+
+  async vessels_pending() {
+    return this.API.get(`vessels_p_view`)
+  }
 
   async vessel_get() {
     return this.API.get(`rpc/vessel_fn`)
   }
 
-  async vessel_get_token() {
-    return this.API.get(`vessel_token`)
+  async vessel_get_token(data) {
+    return this.vessel_reg(data)
   }
 
+  /*
+   * Logs API endpoint
+   */
   async logs() {
     return this.API.get(`logs_view`)
   }
@@ -90,7 +130,11 @@ class PostgSail {
   }
 
   async log_update(id, payload) {
-    return this.API.put(`log_view?id=eq.${id}`, payload)
+    return this.API.patch(`logbook?id=eq.${id}`, payload)
+  }
+
+  async log_delete(id) {
+    return this.API.delete(`logbook?id=eq.${id}`)
   }
 }
 

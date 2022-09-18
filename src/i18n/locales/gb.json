@@ -30,7 +30,8 @@
     "dashboard": "Dashboard",
     "logs": "Logs",
     "boats": "Boats",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "faq": "FAQ"
   },
   "notifications": {
     "all": "All",
@@ -49,7 +50,7 @@
     "english": "English",
     "spanish": "Spanish",
     "french": "French",
-    "brazilian_portuguese": "Portuguese (Br)"
+    "brazilian_portuguese": "Português (Br)"
   },
   "user": {
     "profile": "Profile",
@@ -108,12 +109,21 @@
       "token_modal": {
         "button": "Get token",
         "title": "Boat's token",
-        "token": "Token"
+        "token": "Token",
+        "message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
       }
     }
   },
   "profile": {
-    "title": "Profile"
+    "title": "Profile",
+    "tabs": {
+      "overview": {
+        "title": "overview"
+      },
+      "notification": {
+        "title": "notification"
+      }
+    }
   },
   "privacy": {
     "title": "Privacy"

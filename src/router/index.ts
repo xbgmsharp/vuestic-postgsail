@@ -69,6 +69,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/boats/Details.vue'),
       },
       {
+        name: 'boat-new',
+        path: 'boat/new',
+        component: () => import('../pages/boats/Add.vue'),
+      },
+      {
         path: '/profile',
         name: 'profile',
         component: () => import('../pages/profile/Profile.vue'),
@@ -76,6 +81,11 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/privacy',
         name: 'privacy',
+        component: () => import('../pages/privacy/Privacy.vue'),
+      },
+      {
+        path: '/faq',
+        name: 'faq',
         component: () => import('../pages/privacy/Privacy.vue'),
       },
     ],

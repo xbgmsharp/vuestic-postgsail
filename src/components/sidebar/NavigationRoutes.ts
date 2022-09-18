@@ -12,13 +12,6 @@ export default {
   },
   routes: [
     {
-      name: 'dashboard',
-      displayName: 'menu.dashboard',
-      meta: {
-        icon: 'vuestic-iconset-dashboard',
-      },
-    },
-    {
       name: 'logs',
       displayName: 'menu.logs',
       meta: {
@@ -30,13 +23,6 @@ export default {
       displayName: 'menu.boats',
       meta: {
         icon: 'fa-anchor',
-      },
-    },
-    {
-      name: 'privacy',
-      displayName: 'menu.privacy',
-      meta: {
-        icon: 'fontelico-emo-wink',
       },
     },
   ] as INavigationRoute[],

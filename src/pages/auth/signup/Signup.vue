@@ -123,12 +123,13 @@
     try {
       const api = new PostgSail()
       const response = await api.signin(payload)
-      console.log(response.data)
+      //console.log(response.data)
       if (response.data.token) {
         signupSuccess.value = true
+        localStorage.setItem('token', response.data.token)
         setTimeout(() => {
-          router.push({ name: 'login' })
-        }, 1000)
+          router.push({ path: '/' })
+        }, 1100)
       } else {
         throw { response }
       }

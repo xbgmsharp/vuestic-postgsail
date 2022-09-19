@@ -90,7 +90,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
-  const perPage = ref(20)
+  const perPage = ref(25)
   const currentPage = ref(1)
   const columns = ref([
     { key: 'name', label: t('logs.log.name'), sortable: true },
@@ -134,6 +134,10 @@
             })
           })
       : []
+  })
+
+  const pages = computed(() => {
+    return Math.ceil(items.value.length / perPage.value)
   })
 
   onMounted(async () => {

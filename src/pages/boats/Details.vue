@@ -9,7 +9,7 @@
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
             <template v-if="!isBusy && item">
-              <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
+              <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
             </template>
           </div>
           <template v-if="item">
@@ -58,7 +58,7 @@
   const mapGeoJsonFeatures = computed(() => {
     console.log('mapGeoJsonFeatures')
     console.log(`geoJson ${item.value.geoJson}`)
-    return item.value && item.value.geoJson && item.value.geoJson.feature ? Array(item.value.geoJson.feature) : []
+    return item.value.geoJson
   })
 
   onMounted(async () => {
@@ -70,6 +70,7 @@
       const response = await api.vessel_get(mmsi)
       if (response.data && response.data.vessel) {
         apiData.row = response.data.vessel
+        //console.log(`geoJson ${apiData.row.geojson}`)
       } else {
         throw { response }
       }

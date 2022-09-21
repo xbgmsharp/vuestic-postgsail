@@ -32,8 +32,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Implement global store username, token, cache: logs, moorages, stays
     - [ ] Implement offline mode
 - [ ] Logs:
-  - [ ] Add button to export to CVS
-  - [ ] Add button to export to GPX
+  - [ ] Add button with icon to export to CVS to log list page
+  - [ ] Add button with to export to GPX to log details page
   - [ ] Add trash and save icon to log details page
 - [ ] Add Profile page
   - [ ] require backend update
@@ -53,9 +53,13 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] privacy -
   - [ ] faq -
   - [ ] monitoring
+- [ ] Security
+  - [ ] Implement refresh token
+    - [ ] require backend update
+  - [ ] Add Auth0 authentification
 - [ ] Singup
-  - [ ] Force email validation via code
-  - [ ] require backend update
+  - [ ] Force email validation via One Time code
+    - [ ] require backend update
 - [ ] Implement notifications
   - [ ] require backend update
 - [ ] Add Activity page with a timeline of events, history of notifications?

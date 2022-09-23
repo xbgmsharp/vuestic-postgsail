@@ -37,7 +37,7 @@ class PostgSail {
           this.router.push({ name: 'logout', params: { is401: true } })
         }
         /* Default return HTTP/400
-         * no vessel
+         * no vessel returns
          * "unrecognized configuration parameter \"vessel.mmsi\""
          * updated backend to return HTTP/551
          * {"hint":"Unkown vessel","details":"Invalid vessel"}
@@ -107,7 +107,7 @@ class PostgSail {
   }
 
   async vessels_pending() {
-    return this.API.get(`vessels_p_view`)
+    return this.API.get(`vessel_p_view`)
   }
 
   async vessel_get() {

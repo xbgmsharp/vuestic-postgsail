@@ -4,8 +4,11 @@
       <va-card-title>{{ $t('dashboard.title') }}</va-card-title>
       <va-card-content>
         <p>Dashboard content here</p>
-        {{ store.packageVersion }}
-        {{ version }}
+        FrontEnd version: {{ store.packageVersion }}<br />
+        Backend version: {{ GetpgSailVersion }}<br />
+        <!--
+          {{ version }}
+-->
       </va-card-content>
     </va-card>
   </div>
@@ -20,7 +23,10 @@
   const getVersion = computed(() => {
     return store.packageVersion
   })
-
+  const GetpgSailVersion = computed(() => {
+    return `app version: ${store.pgsail_app_version} system version: ${store.pgsail_sys_version}`
+  })
+  // Generate a build issue?
   //const version = __APP_VERSION__
 </script>
 

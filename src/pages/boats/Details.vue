@@ -8,7 +8,7 @@
         </template>
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
-            <template v-if="!isBusy && item">
+            <template v-if="!isBusy && item.geoJson">
               <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
             </template>
           </div>
@@ -68,6 +68,7 @@
     const mmsi = route.params.mmsi
     try {
       const response = await api.vessel_get(mmsi)
+      // API return null when vessel is pending metadata
       if (response.data && response.data.vessel) {
         apiData.row = response.data.vessel
         //console.log(`geoJson ${apiData.row.geojson}`)

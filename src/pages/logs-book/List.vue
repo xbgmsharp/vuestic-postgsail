@@ -90,7 +90,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
-  const perPage = ref(25)
+  const perPage = ref(20)
   const currentPage = ref(1)
   const columns = ref([
     { key: 'name', label: t('logs.log.name'), sortable: true },
@@ -156,9 +156,11 @@
       }
     } catch ({ response }) {
       apiError.value = response.data.message
-      console.warn('Fallback using sample datas from local json...', apiError.value)
-      rowsData.value.splice(0, logsDatas.length || [])
-      rowsData.value.push(...logsDatas)
+      if (!import.meta.env.PROD) {
+        console.warn('Fallback using sample datas from local json...', apiError.value)
+        rowsData.value.splice(0, logsDatas.length || [])
+        rowsData.value.push(...logsDatas)
+      }
     } finally {
       isBusy.value = false
     }

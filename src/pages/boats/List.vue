@@ -73,6 +73,7 @@
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
+    console.log(import.meta.env.PROD)
     try {
       const response = await api.vessels()
       if (response.data && Array.isArray(response.data)) {
@@ -97,9 +98,11 @@
       }
     } catch ({ response }) {
       apiError.value = response.data.message
-      console.warn('Fallback using sample datas from local json...', apiError.value)
-      rowsData.value.splice(0, vesselsDatas.length)
-      rowsData.value.push(...vesselsDatas)
+      if (!import.meta.env.PROD) {
+        console.warn('Fallback using sample datas from local json...', apiError.value)
+        rowsData.value.splice(0, vesselsDatas.length)
+        rowsData.value.push(...vesselsDatas)
+      }
     } finally {
       isBusy.value = false
     }

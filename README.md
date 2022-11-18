@@ -29,10 +29,8 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Layout
   - [ ] Update theme icon to night/day mode theme, like openplotter.cloud
   - [ ] Update theme icon to day and night vision
-  - [ ] Implement global store username, token, cache: logs, moorages, stays
-    - [ ] Implement offline mode
 - [ ] Logs:
-  - [ ] Add Action '...' column with sub menu to export to CVS, GPX or trash
+  - [ ] Add Action '...' column with sub menu to export to CVS, GPX
   - [ ] Add button with icon to export to CVS to log list page
   - [ ] Add button with to export to GPX to log details page
   - [ ] Add trash and save icon to log details page
@@ -48,16 +46,18 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] require backend update
 - [ ] Menu icon png? svg?
   - [ ] boats - icon basic sailboat
-  - [ ] moorage - icon anchor
+  - [ ] moorages - icon anchor
   - [ ] stays - icon alone
   - [ ] logs - icon logbook
   - [ ] privacy -
   - [ ] faq -
   - [ ] monitoring -
+  - [ ] observability - icon grafana
 - [ ] Security
   - [ ] Implement refresh token
     - [ ] require backend update
   - [ ] Add Auth0 authentification
+    - [ ] require backend update
 - [ ] Singup
   - [ ] Create `/activate` page for OTP validation via QS?
   - [ ] Force email validation via One Time code
@@ -68,28 +68,34 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] require backend update
 - [ ] Vessels:
   - [ ] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
-  - [ ] Disable vessel details link if missing or null last_contact
   - [ ] Disable boat details page when missing lat_contact null
+  - [ ] Add link to https://www.vesselfinder.com/vessels/details/228018810
+  - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=228018810
+  - [ ] Add vessel type or even all vessel data?
+    - [ ] require backend update
 - [ ] Add Terms of Use page
 - [ ] Update translation
 - [ ] Fix English
 - [ ] Add telegram bot in the main menu page with QR Code
   - [ ] Account verification
     - [x] require backend update OTP
-- [ ] Toggle demo data on build
-  - [ ] include in dev
-  - [ ] exclude in prod
+- [x] Toggle sample data on build
+  - [x] include in dev
+  - [x] exclude in prod
 - [ ] Settings
   - [ ] PushOver Web-Based Subscription Process
     - [x] require backend update OTP
-- [ ] Boats icons base on type
+- [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
+  - [ ] require backend update
 
 #### Core
 
 - [ ] Use vuejs/pinia store to access API instead of by compoments
-  - [ ] Offline mode store all data in browser local storage
-    - [ ] Refresh to API is data is older than 1h
+  - [ ] Offline mode store all API data in browser local storage
+    - [ ] Refresh if data is older than 10min old.
+  - [ ] Implement global store username, token, cache: logs, moorages, stays
+    - [ ] Implement offline mode
 
 #### Pages:
 
@@ -139,3 +145,4 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Table & Form layout from api?
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
+- [ ] Grafana, external link, open a new window/tab

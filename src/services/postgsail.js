@@ -80,6 +80,18 @@ class PostgSail {
   async settings() {
     return this.API.get(`rpc/settings_fn`)
   }
+  async update_user_preferences(payload) {
+    return this.API.post(`rpc/update_user_preferences_fn`, payload)
+  }
+  async versions() {
+    return this.API.get(`rpc/versions_fn`)
+  }
+  async otp(payload) {
+    return this.API.post(`rpc/generate_otp_fn`, payload)
+  }
+  async pushover(payload) {
+    return this.API.post(`rpc/pushover_fn`, payload)
+  }
 
   /*
    * Boats API endpoint
@@ -87,21 +99,10 @@ class PostgSail {
   async vessel_reg(payload) {
     return this.API.post(`/rpc/register_vessel`, payload)
   }
-  /*
-  async vessel_reg(data) {
-    const response = await fetch(`${this.app_url}/rpc/register_vessel`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      },
-      body: data,
-    })
-    return await response.json()
-  }
-*/
 
+  /*
+   * Vssels API endpoint
+   */
   async vessels() {
     return this.API.get(`vessels_view`)
   }
@@ -136,6 +137,48 @@ class PostgSail {
   async log_delete(id) {
     return this.API.delete(`logbook?id=eq.${id}`)
   }
+
+  /*
+   * Moorages API endpoint
+   */
+  async moorages() {
+    return this.API.get(`moorages_view`)
+  }
+
+  async moorage_get(id) {
+    return this.API.get(`moorage_view?id=eq.${id}`)
+  }
+
+  async moorage_update(id, payload) {
+    return this.API.patch(`moorages?id=eq.${id}`, payload)
+  }
+
+  async moorage_delete(id) {
+    return this.API.delete(`moorages?id=eq.${id}`)
+  }
+
+  /*
+   * Stays API endpoint
+   */
+  async stays() {
+    return this.API.get(`stays_view`)
+  }
+
+  async stay_get(id) {
+    return this.API.get(`stay_view?id=eq.${id}`)
+  }
+
+  async stay_update(id, payload) {
+    return this.API.patch(`stays?id=eq.${id}`, payload)
+  }
+
+  async stay_delete(id) {
+    return this.API.delete(`stays?id=eq.${id}`)
+  }
+
+  /*
+   * Monitoring API endpoint
+   */
 }
 
 export default PostgSail

@@ -20,7 +20,6 @@
     "email_valid": true,
     "public_logs": true,
     "public_stats": true,
-    "pushover_key": "",
     "pushover_user_key": "",
     "public_profile": true,
     "instagram_handle": "",

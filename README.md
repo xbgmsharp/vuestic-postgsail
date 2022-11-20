@@ -97,6 +97,9 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] require backend update
 - [ ] Timelapse
   - [ ] Geojson replay functionality
+- [ ] Loading screen
+  - [ ] Based on variable isLoading from store
+  - [ ] Display an animated gif while loading content, like in app.bromera.eu
 
 #### Core
 

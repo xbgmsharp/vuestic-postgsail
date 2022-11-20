@@ -179,6 +179,9 @@ class PostgSail {
   /*
    * Monitoring API endpoint
    */
+  async monitoring() {
+    return this.API.get(`monitoring_view`)
+  }
 }
 
 export default PostgSail

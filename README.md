@@ -33,7 +33,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Add Action '...' column with sub menu to export to CVS, GPX
   - [ ] Add button with icon to export to CVS to log list page
   - [ ] Add button with to export to GPX to log details page
-  - [ ] Add trash and save icon to log details page
+- [ ] Log:
+  - [ ] Add trash and save icon to log details page next to text
 - [ ] Add Profile/Settings page
   - [ ] require backend update
 - [x] Add new vessel page
@@ -88,12 +89,15 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
   - [ ] require backend update
+- [ ] Timelapse
+  - [ ] Geojson replay functionality
 
 #### Core
 
 - [ ] Use vuejs/pinia store to access API instead of by compoments
   - [ ] Offline mode store all API data in browser local storage
-    - [ ] Refresh if data is older than 10min old.
+    - [ ] Refresh if data is older than 10min old
+    - [ ] Fallback to localstorage is no internet
   - [ ] Implement global store username, token, cache: logs, moorages, stays
     - [ ] Implement offline mode
 
@@ -145,4 +149,4 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Table & Form layout from api?
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
-- [ ] Grafana, external link, open a new window/tab
+- [ ] /grafana, external link, open a new window/tab

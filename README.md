@@ -70,8 +70,8 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Vessels:
   - [ ] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
   - [ ] Disable boat details page when missing lat_contact null
-  - [ ] Add link to https://www.vesselfinder.com/vessels/details/228018810
-  - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=228018810
+  - [ ] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
+  - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
   - [ ] Add vessel type or even all vessel data?
     - [ ] require backend update
 - [ ] Add Terms of Use page
@@ -85,6 +85,10 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] exclude in prod
 - [ ] Settings
   - [ ] PushOver Web-Based Subscription Process
+    - [ ] Subscription URL format ```"https://pushover.net/subscribe/PostgSail-23uvrho1d5y6n3e"
+    + "?success=" + urlencode("https://beta.openplotter.cloud/api/rpc/pushover_fn?token=" + generate_otp_fn({{email}}))
+    + "&failure=" + urlencode("https://beta.openplotter.cloud/settings"));
+    ```
     - [x] require backend update OTP
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png

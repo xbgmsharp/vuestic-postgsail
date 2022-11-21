@@ -12,7 +12,9 @@ export const useGlobalStore = defineStore('global', {
       openweather: null,
       monitor: null,
       status: 'pending',
-      packageVersion: __APP_VERSION__,
+      packageVersion: 0,
+      pgsail_app_version: 0,
+      pgsail_sys_version: 0,
     }
   },
   actions: {
@@ -31,6 +33,9 @@ export const useGlobalStore = defineStore('global', {
     count_fn: (state) => state.count,
     appVersion: (state) => {
       return state.packageVersion
+    },
+    pgSailVersion: (state) => {
+      return state.pgsail_app_version + ' ' + state.pgsail_sys_version
     },
   },
 })

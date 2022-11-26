@@ -6,11 +6,16 @@
 
 <script setup>
   import { useRouter, useRoute } from 'vue-router'
+  import { useGlobalStore } from '../../../stores/global-store'
 
-  localStorage.removeItem('token')
+  const GlobalStore = useGlobalStore()
+
+  GlobalStore.token = ''
+  GlobalStore.userName = ''
   localStorage.removeItem('settings')
-  const route = useRoute()
-  const router = useRouter()
-  const is401 = route.params.is401
-  router.push({ name: 'login', params: { is401 } })
+
+  useRouter().push({
+    name: 'login',
+    params: { is401: useRoute().params.is401 },
+  })
 </script>

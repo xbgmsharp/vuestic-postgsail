@@ -75,6 +75,7 @@
       const response = await api.settings()
       if (response.data && response.data.settings) {
         localStorage.setItem('settings', JSON.stringify(response.data.settings))
+        GlobalStore.userName = response.data.settings.username
       } else {
         throw {
           response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },

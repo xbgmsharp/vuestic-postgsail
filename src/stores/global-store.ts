@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
+import { useStorage } from '@vueuse/core'
 
 export const useGlobalStore = defineStore('global', {
   state: () => {
-    return {
+    return useStorage('global', {
       isSidebarMinimized: false,
-      token: localStorage.getItem('token') || '',
-      userName: (localStorage.getItem('settings') && JSON.parse(localStorage.getItem('settings') || '').username) || '',
+      token: '',
+      userName: '',
       count: 0,
       unsplash: null,
       postgsail: null,
@@ -15,7 +16,7 @@ export const useGlobalStore = defineStore('global', {
       packageVersion: 0,
       pgsail_app_version: 0,
       pgsail_sys_version: 0,
-    }
+    })
   },
   actions: {
     toggleSidebar() {

@@ -42,6 +42,9 @@
   import { computed, ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useGlobalStore } from '../../../stores/global-store'
+
+  const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
   const isBusy = ref(false)
@@ -79,7 +82,7 @@
       const response = await api.login(payload)
       if (response.data.token) {
         // TODO force email validation via code
-        localStorage.setItem('token', response.data.token)
+        GlobalStore.token = response.data.token
         router.push({ name: 'dashboard' })
       } else {
         throw { response }

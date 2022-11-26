@@ -4,6 +4,7 @@
  */
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useGlobalStore } from '../stores/global-store'
 
 class PostgSail {
   /*
@@ -11,7 +12,7 @@ class PostgSail {
    */
   constructor() {
     this.app_url = import.meta.env.VITE_PGSAIL_URL
-    this.token = localStorage.getItem('token')
+    this.token = useGlobalStore().token
     this.router = useRouter()
     this.authAPI = axios.create({
       baseURL: this.app_url + '/',

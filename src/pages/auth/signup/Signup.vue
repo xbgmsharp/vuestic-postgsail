@@ -73,6 +73,9 @@
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useGlobalStore } from '../../../stores/global-store'
+
+  const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
   const isBusy = ref(false)
@@ -126,7 +129,8 @@
       //console.log(response.data)
       if (response.data.token) {
         signupSuccess.value = true
-        localStorage.setItem('token', response.data.token)
+        GlobalStore.token = response.data.token
+        GlobalStore.token = response.data.username
         setTimeout(() => {
           router.push({ path: '/' })
         }, 1100)

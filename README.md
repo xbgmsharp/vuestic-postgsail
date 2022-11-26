@@ -87,11 +87,13 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] PushOver Web-Based Subscription Process
     - [ ] Subscription URL format
     - [x] require backend update OTP
+
 ```
 "https://pushover.net/subscribe/PostgSail-23uvrho1d5y6n3e"
 + "?success=" + urlencode("https://beta.openplotter.cloud/api/rpc/pushover_fn?token=" + generate_otp_fn({{email}}))
 + "&failure=" + urlencode("https://beta.openplotter.cloud/settings");
 ```
+
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
   - [ ] require backend update

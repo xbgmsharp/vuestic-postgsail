@@ -3,6 +3,7 @@
  *
  */
 import axios from 'axios'
+import fetchAdapter from '@vespaiach/axios-fetch-adapter'
 import { useRouter } from 'vue-router'
 import { useGlobalStore } from '../stores/global-store'
 
@@ -25,6 +26,7 @@ class PostgSail {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+      adapter: fetchAdapter,
     })
 
     this.check()

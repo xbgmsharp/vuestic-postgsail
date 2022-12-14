@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import VueI18nPlugin from '@intlify/vite-plugin-vue-i18n'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,6 +11,15 @@ export default defineConfig({
     vue(),
     VueI18nPlugin({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**'),
+    }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      },
+      devOptions: {
+        enabled: true,
+      },
     }),
   ],
   define: {

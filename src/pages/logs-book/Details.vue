@@ -67,7 +67,8 @@
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/postgsail'
+  import { useCacheStore } from '../../stores/cache-store'
   import { dateFormat } from '../../utils/dateFormater.js'
   import { distanceFormat } from '../../utils/distanceFormater.js'
   import { speedFormat } from '../../utils/speedFormater.js'
@@ -117,21 +118,15 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    const CacheStore = useCacheStore()
     const id = route.params.id
     try {
-      const response = await api.log_get(id)
-      if (response.data && Array.isArray(response.data) && response.data[0]) {
-        apiData.row = response.data[0]
-        formData.name = apiData.row.Name || null
-        formData.notes = apiData.row.Notes || null
-      } else {
-        throw {
-          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
-        }
-      }
-    } catch ({ response }) {
-      apiError.value = response.data.message
+      const response = await CacheStore.log_get(id)
+      apiData.row = response[0]
+      formData.name = apiData.row.Name || null
+      formData.notes = apiData.row.Notes || null
+    } catch (e) {
+      apiError.value = e
       console.warn('Get data from json...', apiError.value)
       const row = logsBooks.find((row) => row.id == route.params.id)
       apiData.row = row
@@ -152,8 +147,8 @@
     }
     try {
       const response = await api.log_update(id, payload)
-      if (response.data) {
-        console.log('log_update success', response.data)
+      if (response.ok) {
+        console.log('log_update success', response.status)
       } else {
         throw { response }
       }

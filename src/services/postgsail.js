@@ -12,8 +12,10 @@ class PostgSail {
    * Create PostgSail instance.
    */
   constructor() {
+    if (PostgSail.instance) return PostgSail.instance
+
     this.app_url = import.meta.env.VITE_PGSAIL_URL
-    this.token = useGlobalStore().token
+    this.token = (this.GlobalStore = useGlobalStore()).token
     this.router = useRouter()
     this.authAPI = axios.create({
       baseURL: this.app_url + '/',
@@ -36,21 +38,25 @@ class PostgSail {
         return response
       },
       (error) => {
-        if (error.response.status === 401) {
-          this.router.push({ name: 'logout', params: { is401: true } })
-        }
-        /* Default return HTTP/400
-         * no vessel returns
-         * "unrecognized configuration parameter \"vessel.mmsi\""
-         * updated backend to return HTTP/551
-         * {"hint":"Unkown vessel","details":"Invalid vessel"}
-         */
-        if (error.response.status === 551) {
-          this.router.push({ name: 'boat-new' })
+        if (error.response) {
+          if (error.response.status === 401) {
+            this.router.push({ name: 'logout', params: { is401: true } })
+          }
+          /* Default return HTTP/400
+           * no vessel returns
+           * "unrecognized configuration parameter \"vessel.mmsi\""
+           * updated backend to return HTTP/551
+           * {"hint":"Unkown vessel","details":"Invalid vessel"}
+           */
+          if (error.response.status === 551) {
+            this.router.push({ name: 'boat-new' })
+          }
         }
         throw error
       },
     )
+
+    PostgSail.instance = this
   }
 
   /*
@@ -58,7 +64,7 @@ class PostgSail {
    */
   check() {
     if (!navigator.onLine || this.app_url == '' || this.app_url == null) {
-      console.log(`PostgSail, NetworkError when attempting to fetch resource.`)
+      console.log('PostgSail: NetworkError when attempting to fetch resource.')
     }
   }
 
@@ -69,7 +75,7 @@ class PostgSail {
   /*
    * Auth API endpoint
    */
-  login(payload) {
+  async login(payload) {
     return this.authAPI.post(`rpc/login`, payload)
   }
 

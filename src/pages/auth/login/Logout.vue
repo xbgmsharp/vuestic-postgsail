@@ -7,10 +7,12 @@
 <script setup>
   import { useRouter, useRoute } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
+  import PostgSail from '../../../services/postgsail.js'
 
   const GlobalStore = useGlobalStore()
 
   GlobalStore.token = ''
+  delete new PostgSail().API.defaults.headers.Authorization
   GlobalStore.userName = ''
   localStorage.removeItem('settings')
 

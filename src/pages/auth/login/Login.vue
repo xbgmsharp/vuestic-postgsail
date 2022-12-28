@@ -78,11 +78,11 @@
     //localStorage.setItem('email', email.value)
 
     try {
-      const api = new PostgSail()
-      const response = await api.login(payload)
+      const api = new PostgSail(),
+        response = await api.login(payload)
       if (response.data.token) {
         // TODO force email validation via code
-        GlobalStore.token = response.data.token
+        api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
         router.push({ name: 'dashboard' })
       } else {
         throw { response }

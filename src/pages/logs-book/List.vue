@@ -73,7 +73,7 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/postgsail.js'
+  import { useCacheStore } from '../../stores/cache-store'
   import { dateFormat, durationFormat } from '../../utils/dateFormater.js'
   import { distanceFormat } from '../../utils/distanceFormater.js'
 
@@ -143,22 +143,16 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    const CacheStore = useCacheStore()
     try {
-      const response = await api.logs()
-      if (response.data && Array.isArray(response.data)) {
-        rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...response.data)
-      } else {
-        throw {
-          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
-        }
-      }
-    } catch ({ response }) {
-      apiError.value = response.data.message
+      const response = await CacheStore.logs()
+      rowsData.value.splice(0, rowsData.value.length || [])
+      rowsData.value.push(...response)
+    } catch (e) {
+      apiError.value = e
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
-        rowsData.value.splice(0, logsDatas.length || [])
+        rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...logsDatas)
       }
     } finally {

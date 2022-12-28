@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onsubmit()">
     <template v-if="apiError">
-      <va-alert color="danger" outline class="mb-4"> {{ $t('api.errors') }}: {{ apiError }} </va-alert>
+      <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
     </template>
     <template v-if="signupSuccess">
       <va-alert color="success" outline class="mb-4"> {{ $t('auth.account_created') }} </va-alert>
@@ -126,11 +126,10 @@
     try {
       const api = new PostgSail()
       const response = await api.signin(payload)
-      //console.log(response.data)
       if (response.data.token) {
         signupSuccess.value = true
-        GlobalStore.token = response.data.token
-        GlobalStore.token = response.data.username
+        api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
+        GlobalStore.userName = response.data.username
         setTimeout(() => {
           router.push({ path: '/' })
         }, 1100)

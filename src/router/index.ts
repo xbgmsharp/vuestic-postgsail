@@ -89,6 +89,15 @@ const routes: Array<RouteRecordRaw> = [
         name: 'faq',
         component: () => import('../pages/privacy/Privacy.vue'),
       },
+      {
+        path: '/grafana',
+        name: 'grafana',
+        component: () => import('../pages/grafana/Grafana.vue'),
+        beforeEnter(to, from, next) {
+          //window.location.href = "https://app.openplotter.cloud";
+          window.open('https://app.openplotter.cloud', '_blank')
+        },
+      },
     ],
   },
   {

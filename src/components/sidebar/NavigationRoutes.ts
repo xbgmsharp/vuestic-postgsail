@@ -25,5 +25,12 @@ export default {
         icon: 'fa-anchor',
       },
     },
+    {
+      name: 'grafana',
+      displayName: 'menu.grafana',
+      meta: {
+        icon: 'fa-external-link',
+      },
+    },
   ] as INavigationRoute[],
 }

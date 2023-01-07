@@ -16,6 +16,9 @@
     "termsOfUse": "Terms of Use.",
     "reset_password": "Reset password",
     "vessel_register": "Add vessel",
+    "otp": "Enter the verification code",
+    "otp_validate": "Validate",
+    "otp_validated": "OTP code validated successfully.",
     "errors": {
       "cedentials": "Wrong credentials",
       "email": "Email is required",
@@ -23,7 +26,9 @@
       "first_name": "First name is required",
       "last_name": "Last name is required",
       "agreed_to_terms": "You must agree to the terms of use to continue",
-      "expired_session": "Your session has expired."
+      "expired_session": "Your session has expired.",
+      "otp": "validation code is required",
+      "otp_invalid": "We can't find your code"
     }
   },
   "menu": {

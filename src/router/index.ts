@@ -99,6 +99,11 @@ const routes: Array<RouteRecordRaw> = [
           window.open('https://app.openplotter.cloud', '_blank')
         },
       },
+      {
+        path: '/activate',
+        name: 'activate',
+        component: () => import('../pages/Activate/Activate.vue'),
+      },
     ],
   },
   {

@@ -26,11 +26,11 @@
         :error-messages="passwordErrors"
       />
 
-      <div class="auth-layout__options d-flex align--center justify--space-between">
+      <div class="auth-layout__options d-flex align-center justify-space-between">
         <router-link class="ml-1 link" :to="{ name: 'recover-password' }">{{ t('auth.recover_password') }}</router-link>
       </div>
 
-      <div class="d-flex justify--center mt-3">
+      <div class="d-flex justify-center mt-3">
         <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
       </div>
     </form>

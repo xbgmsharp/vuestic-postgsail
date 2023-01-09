@@ -1,5 +1,13 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: npm
     directory: "/"
+    schedule:
+      interval: daily
+    versioning-strategy: increase-if-necessary
     target-branch: "live"
+  - package-ecosystem: github-actions
+    target-branch: "live"
+    directory: "/"
+    schedule:
+      interval: weekly

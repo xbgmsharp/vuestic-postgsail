@@ -24,7 +24,7 @@
     "@gtm-support/vue-gtm": "^1.6.0",
     "@vespaiach/axios-fetch-adapter": "^0.3.1",
     "@vueuse/core": "^9.6.0",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "chart.js": "^3.8.0",
     "date-fns": "^2.29.2",
     "flag-icons": "^6.6.4",

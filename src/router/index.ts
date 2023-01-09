@@ -95,7 +95,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'grafana',
         component: () => import('../pages/grafana/Grafana.vue'),
         beforeEnter(to, from, next) {
-          //window.location.href = "https://app.openplotter.cloud";
           window.open('https://app.openplotter.cloud', '_blank')
         },
       },
@@ -103,6 +102,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/activate',
         name: 'activate',
         component: () => import('../pages/Activate/Activate.vue'),
+      },
+      {
+        path: '/monitoring',
+        name: 'monitoring',
+        component: () => import('../pages/monitoring/Monitoring.vue'),
       },
     ],
   },

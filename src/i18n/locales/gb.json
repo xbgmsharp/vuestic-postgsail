@@ -36,6 +36,7 @@
     "logs": "Logs",
     "boats": "Boats",
     "grafana": "Grafana",
+    "monitoring": "Monitoring",
     "privacy": "Privacy",
     "faq": "FAQ"
   },
@@ -133,5 +134,39 @@
   },
   "privacy": {
     "title": "Privacy"
+  },
+  "monitoring": {
+    "title": "Monitoring",
+    "error": "Unable to fetch monitoring data",
+    "wind": {
+      "headerString": "Wind",
+      "unitString": "Kt",
+      "detailString": "Direction: "
+    },
+    "temperature": {
+      "headerString": "Temperature",
+      "unitString": "°C",
+      "detailString": "Outside: "
+    },
+    "battery": {
+      "headerString": "Battery",
+      "unitString": "%",
+      "detailString": "Voltage: "
+    },
+    "humidity": {
+      "headerString": "Humidity",
+      "unitString": "%",
+      "detailString": "Outside: "
+    },
+    "water": {
+      "headerString": "Water",
+      "unitString": "m",
+      "detailString": "Temperature: "
+    },
+    "pressure": {
+      "headerString": "Pressure",
+      "unitString": "hPa",
+      "detailString": "1-day Average:"
+    }
   }
 }

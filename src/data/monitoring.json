@@ -1,0 +1,14 @@
+[
+    {
+        "time": "2023-01-09T08:40:12",
+        "watertemperature": 10.1,
+        "insidetemperature": 12.9,
+        "outsidetemperature": 13.1,
+        "windspeedoverground": 2.3,
+        "winddirectionground": 85.2,
+        "insidehumidity": 62.1,
+        "outsidehumidity": 69.0,
+        "outsidepressure": 1016.6,
+        "insidepressure": 1011.85594573025
+    }
+]

@@ -10,7 +10,7 @@
     >
       <template #innerLabel>
         <div class="va-text-center">
-          <va-icon size="24px" :name="themeOptions.value ? 'dark_mode' : 'light_mode'" />
+          <va-icon size="24px" :name="value ? 'light_mode' : 'dark_mode'" />
         </div>
       </template>
     </va-switch>
@@ -19,16 +19,11 @@
 
 <script setup lang="ts">
   import { useColors } from 'vuestic-ui'
-  import { computed, ref, watchEffect } from 'vue'
-  const { presets, applyPreset, colors } = useColors()
+  import { ref, watchEffect } from 'vue'
+  const { applyPreset } = useColors()
   const currentTheme = ref('light')
+  const value = ref(true)
   watchEffect(() => {
     applyPreset(currentTheme.value)
   })
-  const themeOptions = Object.keys(presets.value).map((themeName) => ({
-    value: themeName,
-    label: themeName,
-  }))
-  //console.log(presets)
-  //console.log(themeOptions)
 </script>

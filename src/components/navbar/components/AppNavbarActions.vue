@@ -17,18 +17,13 @@
   //import ColorDropdown from './dropdowns/ColorDropdown.vue'
   import ColorSwitch from './dropdowns/ColorSwitch.vue'
 
-  import { computed } from 'vue'
-  import { useGlobalStore } from '../../../stores/global-store'
-
-  const GlobalStore = useGlobalStore()
-
   withDefaults(
     defineProps<{
       userName?: string
       isTopBar?: boolean
     }>(),
     {
-      userName: 'F Last_Kapla',
+      userName: JSON.parse(localStorage.getItem('settings') || '{}').username,
       isTopBar: false,
     },
   )

@@ -3,15 +3,15 @@
     :width="width"
     :height="height"
     :value="object.value"
-    :alt-value="object.altValue"
-    :lcd-decimals="object.lcdDecimals"
-    :header-string="object.headerString"
-    :detail-string="object.detailString"
-    :unit-string="object.unitString"
-    values-numeric
-    header-string-visible
-    detail-string-visible
-    unit-string-visible
+    :altValue="object.altValue"
+    :lcdDecimals="object.lcdDecimals"
+    :headerString="object.headerString"
+    :detailString="object.detailString"
+    :unitString="object.unitString"
+    valuesNumeric
+    headerStringVisible
+    detailStringVisible
+    unitStringVisible
   ></steelseries-display-multi>
 </template>
 

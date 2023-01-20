@@ -1,234 +1,172 @@
 {
   "auth": {
     "agree": "Eu aceito.",
-    "alreadyJoined": "Já entrou.",
     "createAccount": "Criar conta",
     "createNewAccount": "Criar uma nova conta",
+    "account_created": "New account created successfully.",
     "email": "Email",
+    "first_name": "Primeiro nome",
+    "last_name": "Sobrenome",
     "login": "Entrar",
+    "logout": "Sair...",
     "password": "Senha",
-    "signUp": "Cadastrar-se",
+    "recover_password": "Recover password",
+    "sign_up": "Cadastrar-se",
+    "keep_logged_in": "Mantenha-me conectado",
     "termsOfUse": "Termos de uso.",
-    "welcome": "Bem vindo!"
-  },
-  "buttons": {
-    "advanced": "Icones, Grupos, Dropdowns",
-    "button": "BOTÃO",
-    "colors": "Cores",
-    "disabled": "DESABILITADO",
-    "dropdown": "DROPDOWN",
-    "hover": "HOVER",
-    "main": "Primeiro & Segundo Botão",
-    "micro": "MICRO",
-    "pressed": "PRESSIONADO",
-    "small": "PEQUENO"
-  },
-  "charts": {
-    "horizontalBarChart": "Barra de Gráfico Horizontal",
-    "verticalBarChart": "Barra de Gráfico Vertical",
-    "lineChart": "Gráfico de Linha",
-    "pieChart": "Gráfico Pizza",
-    "donutChart": "Gráfico Rosca",
-    "bubbleChart": "Gráfico Bolhas"
-  },
-  "dashboard": {
-    "success": "SUCESSO",
-    "successMessage": "Você leu com sucesso esta mensagem importante de alerta.",
-    "elements": "Elementos",
-    "teamMembers": "Membros da Equipe",
-    "versions": "Versões",
-    "table": {
-      "title": "Mesa impressionante",
-      "brief": "Breve",
-      "detailed": "Detalhado",
-      "resolve": "Resolver",
-      "resolved": "Resolvido"
+    "reset_password": "Reset password",
+    "vessel_register": "Add vessel",
+    "otp": "Enter the verification code",
+    "otp_validate": "Validate",
+    "otp_validated": "OTP code validated successfully.",
+    "errors": {
+      "cedentials": "Wrong credentials",
+      "email": "Email is required",
+      "password": "Password is required",
+      "first_name": "First name is required",
+      "last_name": "Last name is required",
+      "agreed_to_terms": "You must agree to the terms of use to continue",
+      "expired_session": "Your session has expired.",
+      "otp": "validation code is required",
+      "otp_invalid": "We can't find your code"
     }
-  },
-  "notificationsPage": {
-    "alerts": {
-      "title": "Alertas",
-      "success": "SUCESSO",
-      "successMessage": "Você leu com sucesso esta mensagem importante de alerta.",
-      "info": "INFORMAÇÃO",
-      "infoMessage": "Esse alerta precisa da sua atenção, mas não é super importante.",
-      "warning": "AVISO",
-      "warningMessage": "Melhor verificar a si mesmo, você não está muito bem.",
-      "danger": "PERÍGO",
-      "dangerMessage": "Mude algumas coisas e tente enviar novamente."
-    },
-    "popovers": {
-      "title": "Dicas de ferramentas & Pop-Ups",
-      "popoverTitleLabel": "Título Popover",
-      "popoverTextLabel": "Texto Popover",
-      "popoverIconLabel": "Icone Popover (fontawesome)",
-      "showPopover": "Mostrar Popover",
-      "topTooltip": "top dicas de ferramentas",
-      "rightTooltip": "sugestão ao lado direito",
-      "leftTooltip": "esquerda",
-      "bottomTooltip": "abaixo"
-    },
-    "toasts": {
-      "title": "Torradas",
-      "textLabel": "Texto",
-      "durationLabel": "Duração (milisegundos)",
-      "iconLabel": "Icone (fontawesome)",
-      "fullWidthLabel": "Largura completa",
-      "launchToast": "Launch toast"
-    }
-  },
-  "forms": {
-    "controls": {
-      "title": "Checkboxes, Radios, Switches",
-      "radioDisabled": "Radio Desabilitado",
-      "radio": "Radio",
-      "subscribe": "Assine a newsletter"
-    },
-    "dateTimePicker": {
-      "title": "Seletores de data e hora",
-      "basic": "Básico",
-      "time": "Hora",
-      "range": "Alcance",
-      "multiple": "Múltiplo",
-      "manualInput": "Entrada manual",
-      "disabled": "Desabilitado"
-    },
-    "inputs": {
-      "emailValidatedSuccess": "Email (validado com sucesso)",
-      "emailValidated": "Email (validado)",
-      "inputWithIcon": "Entrada com ícone",
-      "inputWithButton": "Entrada com botão",
-      "inputWithClearButton": "Entrada com Botão Claro",
-      "inputWithRoundButton": "Entrada com Botão Redondo",
-      "textInput": "Entrada de Texto",
-      "textInputWithDescription": "Entrada de Texto (com descrição)",
-      "textArea": "Área de Texto",
-      "title": "Entrada",
-      "upload": "UPLOAD"
-    },
-    "mediumEditor": {
-      "title": "Editor Medium"
-    },
-    "selects": {
-      "country": "Selecionar Região",
-      "countryMulti": "Selecionar Multiplas Regiões",
-      "multi": "Selecionar Múltiplos",
-      "simple": "Selecionador Simples",
-      "title": "Selecionadores"
-    }
-  },
-  "grid": {
-    "desktop": "Grid Área de Trabalho",
-    "fixed": "Grid Fixo",
-    "offsets": "Offsets",
-    "responsive": "Grid Responssivo"
-  },
-  "icons": {
-    "back": "Retornar aos icones",
-    "none": "Incones não encontrados",
-    "search": "Pesquisar Icone",
-    "title": "Icones"
-  },
-  "spinners": {
-    "title": "Spinners",
-    "poweredBy": "Distribuido por"
-  },
-  "language": {
-    "brazilian_portuguese": "Português",
-    "english": "English",
-    "spanish": "Spanish",
-    "french": "Francais"
   },
   "menu": {
     "dashboard": "Dashboard",
     "logs": "Logs",
     "boats": "Boats",
-    "privacy": "Privacy"
-  },
-  "messages": {
-    "all": "Ver todas as menssagens",
-    "new": "Nova menssagem de {name}"
-  },
-  "modal": {
-    "cancel": "CANCELAR",
-    "close": "FECHAR",
-    "confirm": "CONFIRMAR",
-    "large": "Grande",
-    "largeTitle": "Modal Grande",
-    "medium": "Médio",
-    "mediumTitle": "Modal Médio",
-    "small": "Pequeno",
-    "smallTitle": "Modal Pequeno",
-    "static": "Estático",
-    "staticMessage": "Este é um modal é estático, clicar no pano de fundo não o fechará.",
-    "staticTitle": "Modal Estático",
-    "title": "Modals"
-  },
-  "navbar": {
-    "messageUs": "Enviar uma pergunta ou feedback para"
+    "grafana": "Grafana",
+    "monitoring": "Monitoring",
+    "privacy": "Privacy",
+    "faq": "FAQ"
   },
   "notifications": {
-    "all": "Ver todas as notificações",
-    "sentMessage": "{name} enviou uma menssagem",
-    "uploadedZip": "{name} fez uploaded de um novo arquivo Zip com {type}",
-    "startedTopic": "{name} iniciou um novo tópico"
+    "all": "All",
+    "mark_as_read": "Mark as read",
+    "sent_message": "Sent message"
   },
-  "progressBars": {
-    "circle": "Círculo",
-    "horizontal": "Horizontal",
-    "state": "Doença",
-    "colors": "Cores"
+  "modals": {
+    "close": "Fechar"
   },
-  "lists": {
-    "customers": "Clientes",
-    "recentMessages": "Mensagens Recentes",
-    "archieved": "Arquivado",
-    "starterKit": "Kit iniciante",
-    "notifications": "Notificações"
+  "404": {
+    "title": "Esta página está a navegar.",
+    "text": "If you feel that it’s not right, please send us a message at ",
+    "back_button": "Back to dashboard"
   },
-  "tables": {
-    "basic": "Mesa Básica",
-    "stripedHoverable": "Listrado, flutuante",
-    "labelsActions": "Etiquetas, ações como botões",
-    "sortingPaginationActionsAsIcons": "Ordenação, Paginação, Ações como Ícones",
-    "star": "Star",
-    "unstar": "Unstar",
-    "edit": "Editar",
-    "delete": "Excluir",
-    "searchByName": "Procura por nome",
-    "searchTrendsBadges": "Pesquisa, Tendências, Emblemas",
-    "perPage": "Por página",
-    "report": "Relatório",
-    "infiniteScroll": "Rolagem infinita",
-    "selectable": "Selecionável",
-    "selected": "Selecionado",
-    "serverSidePagination": "Server-Side Paginação",
-    "emptyTable": "Mesa Vazia",
-    "noDataAvailable": "Nenhum dado disponível.",
-    "noReport": "Não há dados para exibir. O relatório estará disponível em 3 de novembro de 2018.",
-    "loading": "Carregando",
-    "headings": {
-      "email": "Email",
-      "name": "Nome",
-      "firstName": "Primeiro nome",
-      "lastName": "Último nome",
-      "status": "Status",
-      "country": "País"
-    }
+  "language": {
+    "english": "Inglês",
+    "spanish": "Espanhol",
+    "french": "Francês",
+    "brazilian_portuguese": "Português (Br)"
   },
   "user": {
-    "language": "Trocar Linguagem",
-    "logout": "Sair",
-    "profile": "Meu Perfil"
+    "profile": "Meu Perfil",
+    "logout": "Sair"
   },
-  "treeView": {
-    "basic": "Básico",
-    "icons": "Icones",
-    "selectable": "Selecionável",
-    "editable": "Editável",
-    "advanced": "Advançado"
+  "dashboard": {
+    "title": "Dashboard"
   },
-  "chat": {
-    "title": "Gráficos"
+  "api": {
+    "error": "Api error"
+  },
+  "logs": {
+    "list": {
+      "title": "Logs list",
+      "filter": {
+        "title": "Search for log",
+        "name": "Name",
+        "date_range": "Date range",
+        "reset": "Reset"
+      }
+    },
+    "details": {
+      "title": "Log's details"
+    },
+    "log": {
+      "name": "Name | Names",
+      "boat": "Boat | Boats",
+      "from": "Departed",
+      "from_time": "Departed at",
+      "to": "Arrived",
+      "to_time": "Arrived at",
+      "duration": "Duration",
+      "duration_unit": "hour | hours",
+      "distance": "Distance",
+      "distance_miles": "0 mile | {n} mile | {n} miles",
+      "avg": "Average",
+      "max": "Max",
+      "speed": "Speed",
+      "speed_knots": "0 knot | {n} knot | {n} knots",
+      "wind_speed": "Wind Speed",
+      "note": "Note | Notes"
+    }
+  },
+  "boats": {
+    "list": {
+      "title": "Boats list"
+    },
+    "details": {
+      "title": "Boat's details"
+    },
+    "boat": {
+      "name": "Name | Names",
+      "mmsi": "MMSI",
+      "last_contact": "Last Contact",
+      "created_at": "Created at",
+      "token_modal": {
+        "button": "Get token",
+        "title": "Boat's token",
+        "token": "Token",
+        "message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "tabs": {
+      "overview": {
+        "title": "overview"
+      },
+      "notification": {
+        "title": "notification"
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy"
+  },
+  "monitoring": {
+    "title": "Monitoring",
+    "error": "Unable to fetch monitoring data",
+    "wind": {
+      "headerString": "Vento",
+      "unitString": "Kt",
+      "detailString": "Direção: "
+    },
+    "temperature": {
+      "headerString": "Temperatura",
+      "unitString": "°C",
+      "detailString": "Fora: "
+    },
+    "battery": {
+      "headerString": "Bateria",
+      "unitString": "%",
+      "detailString": "Voltagem: "
+    },
+    "humidity": {
+      "headerString": "Humidity",
+      "unitString": "%",
+      "detailString": "Umidade: "
+    },
+    "water": {
+      "headerString": "Água",
+      "unitString": "m",
+      "detailString": "Temperatura: "
+    },
+    "pressure": {
+      "headerString": "Pressão",
+      "unitString": "hPa",
+      "detailString": "1-dia Média:"
+    }
   }
 }

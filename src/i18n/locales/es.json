@@ -1,268 +1,172 @@
 {
   "auth": {
-    "agree": "Acepto",
+    "agree": "Acepto.",
     "createAccount": "Create cuenta",
     "createNewAccount": "Crear cuenta",
+    "account_created": "New account created successfully.",
     "email": "Email",
-    "login": "Iniciar sesión",
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "login": "EntrIniciar sesiónar",
+    "logout": "cerrar sesión...",
     "password": "Contraseña",
-    "signUp": "Registrar",
-    "termsOfUse": "Los terminos de uso"
-  },
-  "buttons": {
-    "advanced": "Iconos, Grupos, Dropdowns",
-    "button": "BOTON",
-    "colors": "Colores",
-    "disabled": "DESHABILITADO",
-    "dropdown": "DESPLEGABLE",
-    "hover": "HOVER",
-    "main": "Botón Primario y Secundario",
-    "micro": "MICRO",
-    "pressed": "PRESIONADO",
-    "small": "PEQUEÑO"
-  },
-  "charts": {
-    "bubbleChart": "Bubble Chart",
-    "donutChart": "Donut Chart",
-    "horizontalBarChart": "Horizontal Bar Chart",
-    "lineChart": "Line Chart",
-    "pieChart": "Pie Chart",
-    "verticalBarChart": "Vertical Bar Chart"
-  },
-  "collapse": {
-    "accordion": "Acordeón",
-    "buttons": "Botones"
-  },
-  "dashboard": {
-    "elements": "Elementos",
-    "success": "ÉXITO",
-    "successMessage": "Ha leído correctamente este mensaje de alerta importante.",
-    "teamMembers": "Miembros del Equipo",
-    "versions": "Versiones",
-    "table": {
-      "title": "Mesa impresionante",
-      "brief": "Breve",
-      "detailed": "Detallado",
-      "resolve": "Resolver",
-      "resolved": "Resuelto"
+    "recover_password": "Recuperar contraseña",
+    "sign_up": "Registrar",
+    "keep_logged_in": "Mantenme conectado",
+    "termsOfUse": "Los terminos de uso.",
+    "reset_password": "Reset password",
+    "vessel_register": "Add vessel",
+    "otp": "Enter the verification code",
+    "otp_validate": "Validate",
+    "otp_validated": "OTP code validated successfully.",
+    "errors": {
+      "cedentials": "Wrong credentials",
+      "email": "Email is required",
+      "password": "Password is required",
+      "first_name": "First name is required",
+      "last_name": "Last name is required",
+      "agreed_to_terms": "You must agree to the terms of use to continue",
+      "expired_session": "Your session has expired.",
+      "otp": "validation code is required",
+      "otp_invalid": "We can't find your code"
     }
-  },
-  "notificationsPage": {
-    "alerts": {
-      "title": "Alerts",
-      "success": "ÉXITO",
-      "successMessage": "Ha leído correctamente este mensaje de alerta importante.",
-      "info": "INFO",
-      "infoMessage": "Esta alerta necesita tu atención, pero no es muy importante.",
-      "warning": "ADVERTENCIA",
-      "warningMessage": "Mejor compruébalo, esto no pinta bien.",
-      "danger": "PELIGRO",
-      "dangerMessage": "Cambiar algunas cosas e enviarlo de nuevo."
-    },
-    "popovers": {
-      "title": "Tooltips & Popovers",
-      "popoverTitleLabel": "Title de Popover",
-      "popoverTextLabel": "Texto de Popover",
-      "popoverIconLabel": "Icono de Popover (fontawesome)",
-      "showPopover": "Mostrar Popover",
-      "topTooltip": "tope tooltip",
-      "rightTooltip": "derecha tooltip",
-      "leftTooltip": "izquierda",
-      "bottomTooltip": "fondo"
-    },
-    "Toasts": {
-      "title": "tostadas",
-      "textLabel": "Texto",
-      "durationLabel": "Duración (milisegundos)",
-      "iconLabel": "Icono (fontawesome)",
-      "fullWidthLabel": "Ancho total",
-      "launchToast": "Lanzar tostadas"
-    }
-  },
-  "forms": {
-    "controls": {
-      "title": "Checkboxes, Radios, Switches",
-      "radioDisabled": "Radio Desactivado",
-      "radio": "Radio",
-      "subscribe": "Suscribirse a la newsletter"
-    },
-    "inputs": {
-      "emailValidatedSuccess": "Email (validado con éxito)",
-      "emailValidated": "Email (validado)",
-      "inputWithIcon": "Input con Icono",
-      "inputWithButton": "Input con Boton",
-      "inputWithClearButton": "Input With Clear Button",
-      "inputWithRoundButton": "Input With Round Button",
-      "textInput": "Input de Texto",
-      "textInputWithDescription": "Input de Texto (con descripcion)",
-      "textArea": "Text Area",
-      "title": "Inputs",
-      "upload": "SUBIR"
-    },
-    "mediumEditor": {
-      "title": "Medium Editor"
-    },
-    "selects": {
-      "country": "País Select",
-      "countryMulti": "País Multi Select",
-      "multi": "Multi Select",
-      "simple": "Select Simple",
-      "title": "Selects"
-    }
-  },
-  "grid": {
-    "fixed": "Grid Fijo",
-    "desktop": "Desktop Grid",
-    "responsive": "Responsive Grid",
-    "offsets": "Offsets"
-  },
-  "icons": {
-    "back": "Volver a los iconos",
-    "none": "No se han encontrado iconos",
-    "search": "Búsqueda de iconos",
-    "title": "Iconos"
-  },
-  "language": {
-    "brazilian_portuguese": "Português",
-    "english": "English",
-    "spanish": "Spanish",
-    "french": "Francais"
   },
   "menu": {
-    "auth": "Autenticación",
-    "buttons": "Botones",
-    "charts": "Gráficos",
-    "collapse": "Colapso",
-    "colorPickers": "Selector de color",
     "dashboard": "Dashboard",
-    "formElements": "Elementos de un Formulario",
-    "forms": "Formularios",
-    "mediumEditor": "Medium Editor",
-    "grid": "Grid",
-    "icons": "Iconos",
-    "cards": "Cards",
-    "login": "Iniciar sesión",
-    "maps": "Mapas",
-    "modals": "Modals",
-    "notifications": "Notificaciones",
-    "progressBars": "Barras de Progreso",
-    "signUp": "Registrar",
-    "statistics": "Estadisticas",
-    "lists": "Listas",
-    "tables": "Tablas",
-    "markupTables": "Tablas de Marcado",
-    "dataTables": "Tablas de Datos",
-    "typography": "Tipografía",
-    "uiElements": "Elementos UI",
-    "colors": "Colores",
-    "chat": "Chat",
-    "faq": "Faq",
     "logs": "Logs",
-    "moorages": "Moorages",
-    "stays": "Stays",
-    "badges": "Badges",
     "boats": "Boats",
-    "stats": "Stats",
-    "timelapse": "Timelapse",
+    "grafana": "Grafana",
     "monitoring": "Monitoring",
-    "privacy": "Privacy"
-  },
-  "messages": {
-    "all": "Ver todos los mensajes",
-    "new": "Nuevo mensajes de {name}"
-  },
-  "modal": {
-    "cancel": "CANCELAR",
-    "close": "CERRAR",
-    "confirm": "CONFIRMAR",
-    "large": "Largo",
-    "largeTitle": "Modal Largo",
-    "medium": "Mediano",
-    "mediumTitle": "Modal Mediana",
-    "small": "Pequeño",
-    "static": "Estático",
-    "smallTitle": "Modal Pequeña",
-    "staticMessage": "Esto es un modal estático. No se cerrará haciendo clic en el fondo.",
-    "staticTitle": "Modal Estático",
-    "title": "Modals"
-  },
-  "fileUpload": {
-    "advancedMediaGallery": "Avanzado, Galería de medios",
-    "advancedUploadList": "Avanzado, lista de carga",
-    "mediaGallery": "Galería media",
-    "uploadList": "Lista de carga",
-    "single": "Soltero",
-    "dragNdropFiles": "Arrastrar y soltar archivos",
-    "uploadedOn": "Subido en",
-    "fileDeleted": "El archivo fue eliminado exitosamente",
-    "undo": "Deshacer",
-    "preview": "Avance",
-    "delete": "Borrar",
-    "deleteFile": "Borrar archivo",
-    "uploadFile": "Subir archivo",
-    "uploadMedia": "Cargar medios",
-    "addAttachment": "Añadir un adjunto",
-    "modalTitle": "Validación de archivo",
-    "modalText": "El tipo de archivo es incorrecto!"
-  },
-  "navbar": {
-    "messageUs": "Envíenos sus preguntas o comentarios a"
+    "privacy": "Privacy",
+    "faq": "FAQ"
   },
   "notifications": {
-    "all": "Ver todos los notificaciones",
-    "sentMessage": "{name} te ha mandado un mensaje",
-    "uploadedZip": "{name} ha subido un archivo Zip con {type}",
-    "startedTopic": "{name} ha creado una tema nueva"
+    "all": "All",
+    "mark_as_read": "Mark as read",
+    "sent_message": "Sent message"
   },
-  "progressBars": {
-    "circle": "Circulo",
-    "horizontal": "Horizontal",
-    "state": "Сondición",
-    "colors": "Colores"
+  "modals": {
+    "close": "Cerrar"
   },
-  "lists": {
-    "customers": "Clientes",
-    "recentMessages": "Mensajes recientes",
-    "archieved": "Archivado",
-    "starterKit": "Kit de inicio",
-    "notifications": "Notificaciones"
+  "404": {
+    "title": "Esta página se fue a navegar.",
+    "text": "If you feel that it’s not right, please send us a message at ",
+    "back_button": "Back to dashboard"
   },
-  "tables": {
-    "basic": "Tabla basica",
-    "stripedHoverable": "Rayado, Hoverable",
-    "labelsActions": "Etiquetas, Acciones como Botones",
-    "sortingPaginationActionsAsIcons": "Clasificación, Paginación, Acciones como Iconos",
-    "star": "Star",
-    "unstar": "Unstar",
-    "edit": "Editar",
-    "delete": "Borrar",
-    "searchByName": "Buscar por nombre",
-    "searchTrendsBadges": "Búsqueda, Tendencias, Insignias",
-    "perPage": "Por página",
-    "report": "Informe",
-    "infiniteScroll": "Scroll infinito",
-    "selectable": "Seleccionable",
-    "selected": "Seleccionado",
-    "serverSidePagination": "Server-Side Paginación",
-    "emptyTable": "Mesa vacía",
-    "noDataAvailable": "Datos no disponibles.",
-    "noReport": "No hay datos para mostrar. El informe estará disponible el 3 de noviembre de 2018.",
-    "loading": "Cargando",
-    "headings": {
-      "email": "Email",
-      "name": "Nombre",
-      "firstName": "Nombre de pila",
-      "lastName": "Apellido",
-      "status": "Estado",
-      "country": "País"
-    }
-  },
-  "chat": {
-    "title": "Chat"
+  "language": {
+    "english": "Inglés",
+    "spanish": "Castellano",
+    "french": "Francés",
+    "brazilian_portuguese": "Português (Br)"
   },
   "user": {
-    "language": "Cambiar Idioma",
     "profile": "Mi Perfil",
     "logout": "Cerrar Sesión"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "api": {
+    "error": "Api error"
+  },
+  "logs": {
+    "list": {
+      "title": "Logs list",
+      "filter": {
+        "title": "Search for log",
+        "name": "Name",
+        "date_range": "Date range",
+        "reset": "Reset"
+      }
+    },
+    "details": {
+      "title": "Log's details"
+    },
+    "log": {
+      "name": "Nombre | Nombres",
+      "boat": "Boat | Boats",
+      "from": "Departed",
+      "from_time": "Departed at",
+      "to": "Arrived",
+      "to_time": "Arrived at",
+      "duration": "Duration",
+      "duration_unit": "hour | hours",
+      "distance": "Distance",
+      "distance_miles": "0 mile | {n} mile | {n} miles",
+      "avg": "Average",
+      "max": "Max",
+      "speed": "Speed",
+      "speed_knots": "0 knot | {n} knot | {n} knots",
+      "wind_speed": "Velocidad del viento",
+      "note": "Nota | Notas"
+    }
+  },
+  "boats": {
+    "list": {
+      "title": "Boats list"
+    },
+    "details": {
+      "title": "Boat's details"
+    },
+    "boat": {
+      "name": "Nombre | Nombres",
+      "mmsi": "MMSI",
+      "last_contact": "Last Contact",
+      "created_at": "Created at",
+      "token_modal": {
+        "button": "Get token",
+        "title": "Boat's token",
+        "token": "Token",
+        "message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
+      }
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "tabs": {
+      "overview": {
+        "title": "overview"
+      },
+      "notification": {
+        "title": "notification"
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy"
+  },
+  "monitoring": {
+    "title": "Monitoreo",
+    "error": "Unable to fetch monitoring data",
+    "wind": {
+      "headerString": "Viento",
+      "unitString": "Kt",
+      "detailString": "Dirección: "
+    },
+    "temperature": {
+      "headerString": "Temperatura",
+      "unitString": "°C",
+      "detailString": "Afuera: "
+    },
+    "battery": {
+      "headerString": "Batería",
+      "unitString": "%",
+      "detailString": "Voltaje: "
+    },
+    "humidity": {
+      "headerString": "Humedad",
+      "unitString": "%",
+      "detailString": "Afuera: "
+    },
+    "water": {
+      "headerString": "Agua",
+      "unitString": "m",
+      "detailString": "Temperatura: "
+    },
+    "pressure": {
+      "headerString": "Presión",
+      "unitString": "hPa",
+      "detailString": "1-dia Promedio:"
+    }
   }
 }

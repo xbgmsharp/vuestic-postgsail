@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
   import MadeByComponent from './MadeByComponent.vue'
-  import Wallpaper from './Wallpaper.vue'
+  import Wallpaper from './Wallpaper2.vue'
   import { useColors } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
   import { computed } from 'vue'

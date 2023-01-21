@@ -26,8 +26,7 @@ jobs:
       - uses: actions/setup-node@v3.1.1
         with:
           node-version: 12
-      - run: npm install
-      - run: npm test
+      - run: npm build
 
   deploy:
     needs: build

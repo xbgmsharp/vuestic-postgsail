@@ -19,6 +19,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - uses: actions/setup-node@v3.1.1
+        with:
+          node-version: 12
+      - run: npm build
   deploy:
     runs-on: ubuntu-latest
     permissions:
@@ -26,11 +34,6 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v3.0.2
-      - uses: actions/setup-node@v3.1.1
-        with:
-          node-version: 12
-      - run: npm build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:

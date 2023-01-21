@@ -1,11 +1,15 @@
 <template>
   <div class="made-by-component va-text-center pb-3">
     <span>
-      ©2021. Made by
-      <a href="https://epicmax.co" class="va-link">Epicmax</a>
+      ©2020-{{ year }}. Made by
+      <a href="https://openplotter.cloud" class="va-link">openplotter</a>
     </span>
   </div>
 </template>
+
+<script setup>
+  const year = new Date().getFullYear()
+</script>
 
 <style lang="scss">
   .made-by-component {

@@ -1,14 +1,14 @@
 <template>
   <va-page-not-found class="va-page-not-found-simple">
     <template #image>
-      <vuestic-logo />
+      <postgsail-logo />
     </template>
     <va-button :to="{ name: 'dashboard' }"> Back to dashboard </va-button>
   </va-page-not-found>
 </template>
 
 <script setup lang="ts">
-  import VuesticLogo from '../../components/VuesticLogo.vue'
+  import PostgsailLogo from '../../components/PostgsailLogo.vue'
   import VaPageNotFound from './VaPageNotFound.vue'
 </script>
 

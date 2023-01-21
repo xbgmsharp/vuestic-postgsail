@@ -7,7 +7,9 @@
         <span>
           {{ t('404.text') }}
         </span>
-        <a href="mailto:hello@epicmax.co" :style="{ color: colors.primary }" class="va-link">hello@epicmax.co</a>
+        <a href="mailto:hello@openplotter.cloud" :style="{ color: colors.primary }" class="va-link"
+          >hello@openplotter.cloud</a
+        >
       </div>
       <slot />
       <!-- <va-button v-if="!withoutButton" :to="{ name: 'dashboard' }">{{t('404.back_button')}}</va-button> -->

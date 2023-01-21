@@ -101,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/activate',
         name: 'activate',
-        component: () => import('../pages/Activate/Activate.vue'),
+        component: () => import('../pages/activate/Activate.vue'),
       },
       {
         path: '/monitoring',
@@ -113,7 +113,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
     name: 'error-404',
-    component: Page404Layout,
+    component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
     meta: { title: 'Error 404' },
   },
   {

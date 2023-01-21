@@ -25,10 +25,8 @@ jobs:
       - uses: actions/checkout@v3.0.2
       - uses: actions/setup-node@v3.1.1
         with:
-          node-version: 16
-        run: |
-          npm i dev
-          npm run build
+          node-version: 12
+        run: npm run build
   deploy:
     runs-on: ubuntu-latest
     permissions:
@@ -39,10 +37,8 @@ jobs:
       - uses: actions/checkout@v3.0.2
       - uses: actions/setup-node@v3.1.1
         with:
-          node-version: 16
-      - run: |
-          npm i dev
-          npm run build
+          node-version: 12
+      - run: npm run build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:

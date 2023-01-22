@@ -1,4 +1,5 @@
-name: GitHub Pages
+name: Build
+# Don't deploy to github as no rewrite is supported.
 
 on:
   push:
@@ -29,19 +30,20 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: 'Create env file'
-        run: |
-          touch .env
-          echo VITE_PGSAIL_URL="http://localhost:3002" >> .env
-          echo VITE_APP_BUILD_VERSION=true >> .env
-          cat .env
+      #- name: 'Create env file'
+      #  run: |
+      #    touch .env.production.local
+      #    echo VITE_PGSAIL_URL="http://localhost:3002" >> .env.production.local
+      #    echo VUE_APP_INCLUDE_DEMOS=false >> .env.production.local
+      #    echo VITE_APP_BUILD_VERSION=true >> .env.production.local
+      #    cat .env.production.local
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Install and Build 🔧
         run: |
-          npm install --dev
+          npm install --include=dev
           npm run build:ci
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
+      #- name: Deploy 🚀
+      #  uses: JamesIves/github-pages-deploy-action@v4
+      #  with:
+      #    folder: dist

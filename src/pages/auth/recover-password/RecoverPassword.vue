@@ -1,5 +1,8 @@
 <template>
   <form class="login" @submit.prevent="onsubmit">
+    <template v-if="resetSuccess">
+      <va-alert color="success" outline class="mb-4"> {{ $t('auth.reset') }} </va-alert>
+    </template>
     <va-input
       v-model="email"
       class="mb-3"
@@ -16,19 +19,53 @@
 </template>
 
 <script setup lang="ts">
+  import { useGlobalStore } from '../../../stores/global-store'
+  import PostgSail from '../../../services/postgsail.js'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
+  const router = useRouter()
 
+  const GlobalStore = useGlobalStore()
+
+  GlobalStore.token = ''
+  GlobalStore.userName = ''
+  localStorage.removeItem('settings')
+  localStorage.removeItem('global')
+
+  const resetSuccess = ref('')
   const email = ref('')
   const emailErrors = ref<string[]>([])
 
-  function onsubmit() {
+  const isBusy = ref(false)
+
+  async function onsubmit() {
     if (!email.value) {
-      emailErrors.value = ['Email is required']
+      emailErrors.value = email.value ? [] : [t('auth.errors.email')]
     } else {
-      useRouter().push('/')
+      isBusy.value = true
+      const payload = {
+        email: email.value,
+      }
+
+      try {
+        const api = new PostgSail(),
+          response = await api.recover(payload)
+        console.warn(response)
+        if (response.data) {
+          resetSuccess.value = t('auth.reset')
+          setTimeout(() => {
+            router.push({ path: '/' })
+          }, 1100)
+        } else {
+          throw { response }
+        }
+      } catch ({ response }) {
+        console.warn(response)
+      } finally {
+        isBusy.value = false
+      }
     }
   }
 </script>

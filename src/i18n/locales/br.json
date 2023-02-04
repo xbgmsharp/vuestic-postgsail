@@ -19,6 +19,7 @@
     "otp": "Enter the verification code",
     "otp_validate": "Validate",
     "otp_validated": "OTP code validated successfully.",
+    "reset": "Your password has been reset successfully.",
     "errors": {
       "cedentials": "Wrong credentials",
       "email": "Email is required",
@@ -28,7 +29,8 @@
       "agreed_to_terms": "You must agree to the terms of use to continue",
       "expired_session": "Your session has expired.",
       "otp": "validation code is required",
-      "otp_invalid": "We can't find your code"
+      "otp_invalid": "We can't find your code",
+      "reset": "Invalid input"
     }
   },
   "menu": {

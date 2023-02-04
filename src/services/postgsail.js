@@ -83,6 +83,13 @@ class PostgSail {
     return this.authAPI.post(`rpc/signup`, payload)
   }
 
+  async recover(payload) {
+    return this.authAPI.post(`rpc/recover`, payload)
+  }
+
+  async reset(payload) {
+    return this.authAPI.post(`rpc/reset`, payload)
+  }
   /*
    * User settings
    */

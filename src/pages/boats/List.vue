@@ -7,7 +7,7 @@
       </template>
       <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
         <template #cell(name)="{ value, rowData }">
-          <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.mmsi } }">
+          <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.name } }">
             {{ value }}
           </router-link>
         </template>

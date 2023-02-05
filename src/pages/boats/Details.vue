@@ -65,9 +65,9 @@
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
-    const mmsi = route.params.mmsi
+    //const mmsi = route.params.mmsi
     try {
-      const response = await api.vessel_get(mmsi)
+      const response = await api.vessel_get()
       // API return null when vessel is pending metadata
       if (response.data && response.data.vessel) {
         apiData.row = response.data.vessel
@@ -78,9 +78,12 @@
     } catch (err) {
       const { response } = err
       apiError.value = response.data.message
-      console.warn('Get data from json...', apiError.value)
-      const row = vesselsDatas.find((row) => row.id == route.params.id)
-      apiData.row = row
+      if (!import.meta.env.PROD) {
+        console.warn('Fallback using sample datas from local json...', apiError.value)
+        console.warn('Get data from json...', apiError.value)
+        const row = vesselsDatas.find((row) => row.id == route.params.id)
+        apiData.row = row
+      }
     } finally {
       isBusy.value = false
     }

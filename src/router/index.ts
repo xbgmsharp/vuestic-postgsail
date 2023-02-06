@@ -72,7 +72,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'boat-details',
-        path: 'boat/:mmsi',
+        path: 'boat/:name',
         component: () => import('../pages/boats/Details.vue'),
       },
       {

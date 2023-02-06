@@ -61,7 +61,7 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.map((row) => {
-          let { name, mmsi, last_contact, created_at } = row
+          const { name, mmsi, last_contact, created_at } = row
           if (last_contact) {
             vesselSuccess.value = true
           }

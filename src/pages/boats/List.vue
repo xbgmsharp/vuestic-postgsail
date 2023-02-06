@@ -7,12 +7,17 @@
       </template>
       <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
         <template #cell(name)="{ value, rowData }">
-          <router-link class="text--bold" :to="{ name: 'boat-details', params: { mmsi: rowData.name } }">
+          <template v-if="vesselSuccess">
+            <router-link class="text--bold" :to="{ name: 'boat-details', params: { name: rowData.name } }">
+              {{ value }}
+            </router-link>
+          </template>
+          <template v-else>
             {{ value }}
-          </router-link>
+          </template>
         </template>
         <template #cell(lastContact)="{ value }">
-          {{ dateFormat(value) }}
+          {{ value }}
         </template>
         <template #cell(createdAt)="{ value }">
           {{ dateFormat(value) }}
@@ -41,6 +46,7 @@
 
   const { t } = useI18n()
   const isBusy = ref(false)
+  const vesselSuccess = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
   const perPage = ref(20)
@@ -55,11 +61,14 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.map((row) => {
-          const { name, mmsi, last_contact, created_at } = row
+          let { name, mmsi, last_contact, created_at } = row
+          if (last_contact) {
+            vesselSuccess.value = true
+          }
           return {
             name: name,
             mmsi: mmsi,
-            lastContact: last_contact,
+            lastContact: last_contact ? dateFormat(last_contact) : 'Pending',
             createdAt: created_at,
           }
         })
@@ -73,7 +82,6 @@
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
-    console.log(import.meta.env.PROD)
     try {
       const response = await api.vessels()
       if (response.data && Array.isArray(response.data)) {

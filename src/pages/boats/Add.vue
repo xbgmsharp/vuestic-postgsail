@@ -1,6 +1,6 @@
 <template>
   <va-card>
-    <va-card-title>{{ $t('boats.list.title') }}</va-card-title>
+    <va-card-title>{{ $t('boats.details.title') }}</va-card-title>
     <va-card-content>
       <template v-if="apiError">
         <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -64,7 +64,7 @@
   const mmsiErrors = ref<string[]>([])
   const nameErrors = ref<string[]>([])
 
-  //const formReady = computed(() => emailErrors.value.length || mmsiErrors.value.length || nameErrors.value.length)
+  const formReady = computed(() => !emailErrors.value.length && !nameErrors.value.length)
 
   const canSubmit = computed(() => {
     /*
@@ -86,6 +86,11 @@
     isBusy.value = true
     apiError.value = null
 
+    emailErrors.value = email.value ? [] : [t('auth.errors.email')]
+    nameErrors.value = vessel_name.value ? [] : [t('boats.errors.name')]
+
+    if (!formReady.value) return
+
     const api = new PostgSail()
     const payload = {
       vessel_name: vessel_name.value,
@@ -102,15 +107,17 @@
         }
       } else {
         throw {
-          response: {
-            data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' + response.data },
-          },
+          response,
         }
       }
     } catch ({ response }) {
-      // TODO `response` Object is of type 'unknown'.
-      //apiError.value = response.data.message
-      //console.log('vessel_reg failed', apiError.value)
+      console.warn(response)
+      if (response.data.message) {
+        apiError.value = response.data.message + ', ' + response.data.hint
+      } else {
+        apiError.value = 'Error, please check your parameters'
+        //apiError.value = t('boats.errors.param')
+      }
     } finally {
       isBusy.value = false
     }

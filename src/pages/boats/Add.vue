@@ -106,18 +106,12 @@
           router.push({ name: 'boats' })
         }
       } else {
-        throw {
-          response,
-        }
+        throw { response }
       }
     } catch ({ response }) {
-      console.warn(response)
-      if (response.data.message) {
-        apiError.value = response.data.message + ', ' + response.data.hint
-      } else {
-        apiError.value = 'Error, please check your parameters'
-        //apiError.value = t('boats.errors.param')
-      }
+      //error TS18046: 'response' is of type 'unknown'.
+      //apiError.value = response.data.message
+      console.warn('Error, please check your parameters')
     } finally {
       isBusy.value = false
     }

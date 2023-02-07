@@ -103,6 +103,29 @@
       "note": "Nota | Notas"
     }
   },
+  "stays": {
+    "list": {
+      "title": "Stays list",
+      "filter": {
+        "title": "Search for stay",
+        "name": "Name",
+        "date_range": "Date range",
+        "reset": "Reset"
+      }
+    },
+    "details": {
+      "title": "Stay's details"
+    },
+    "stay": {
+      "name": "Name | Names",
+      "moorage": "Moorage",
+      "departed": "Departed",
+      "arrived": "Arrived",
+      "stayed_at": "Stayed at",
+      "duration": "Duration",
+      "note": "Note | Notes"
+    }
+  },
   "boats": {
     "list": {
       "title": "Boats list"

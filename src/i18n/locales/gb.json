@@ -36,6 +36,7 @@
   "menu": {
     "dashboard": "Dashboard",
     "logs": "Logs",
+    "stays": "Stays",
     "boats": "Boats",
     "grafana": "Grafana",
     "monitoring": "Monitoring",
@@ -196,6 +197,10 @@
       "headerString": "Pressure",
       "unitString": "hPa",
       "detailString": "1-day Average:"
+    },
+    "offline": {
+      "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
+      "lastupdate": "We have not received any data from your collector within the last 70 minutes."
     }
   }
 }

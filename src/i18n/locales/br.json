@@ -196,6 +196,10 @@
       "headerString": "Pressão",
       "unitString": "hPa",
       "detailString": "1-dia Média:"
+    },
+    "offline": {
+      "offline": "Sua embarcação está offline. O monitoramento em tempo real requer uma conexão com a Internet.",
+      "lastupdate": "Não recebemos nenhum dado do seu coletor nos últimos 70 minutos."
     }
   }
 }

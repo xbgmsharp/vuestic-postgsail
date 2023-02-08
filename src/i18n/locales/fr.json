@@ -196,6 +196,10 @@
       "headerString": "Pression",
       "unitString": "hPa",
       "detailString": "1-jour Average:"
+    },
+    "offline": {
+      "offline": "Votre navire est hors ligne. La surveillance en temps réel nécessite une connexion Internet.",
+      "lastupdate": "Nous n'avons reçu aucune donnée de votre collecteur au cours des 70 dernières minutes."
     }
   }
 }

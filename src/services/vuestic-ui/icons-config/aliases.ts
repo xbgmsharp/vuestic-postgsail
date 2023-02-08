@@ -1,3 +1,10 @@
+import IconMonitoring from '../../../components/icons/IconMonitoring.vue'
+import IconLogs from '../../../components/icons/IconLogs.vue'
+import IconCSV from '../../../components/icons/IconCSV.vue'
+import IconGPX from '../../../components/icons/IconGPX.vue'
+import IconGrafana from '../../../components/icons/IconGrafana.vue'
+import IconSailboat from '../../../components/icons/IconSailboat.vue'
+import IconAnchor from '../../../components/icons/IconAnchor.vue'
 export default [
   {
     name: 'angle_down',
@@ -73,7 +80,7 @@ export default [
   },
   {
     name: 'github',
-    to: 'fa4-github',
+    to: 'ion-logo-github',
   },
   {
     name: 'md_close',
@@ -106,5 +113,40 @@ export default [
   {
     name: 'key',
     to: 'ion-md-key',
+  },
+  {
+    name: 'menu-logs',
+    component: IconLogs,
+    color: 'primary',
+  },
+  {
+    name: 'menu-stays',
+    component: IconAnchor,
+    color: 'primary',
+  },
+  {
+    name: 'menu-boats',
+    component: IconSailboat,
+    color: 'primary',
+  },
+  {
+    name: 'menu-monitoring',
+    component: IconMonitoring,
+    color: 'primary',
+  },
+  {
+    name: 'menu-grafana',
+    component: IconGrafana,
+    color: 'primary',
+  },
+  {
+    name: 'csv',
+    component: IconCSV,
+    color: 'primary',
+  },
+  {
+    name: 'gpx',
+    component: IconGPX,
+    color: 'primary',
   },
 ]

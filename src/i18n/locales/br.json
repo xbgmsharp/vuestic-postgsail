@@ -183,9 +183,9 @@
       "detailString": "Voltagem: "
     },
     "humidity": {
-      "headerString": "Humidity",
+      "headerString": "Umidade",
       "unitString": "%",
-      "detailString": "Umidade: "
+      "detailString": "Fora: "
     },
     "water": {
       "headerString": "Água",

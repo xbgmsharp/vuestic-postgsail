@@ -15,21 +15,35 @@ export default {
       name: 'logs',
       displayName: 'menu.logs',
       meta: {
-        icon: 'vuestic-iconset-files',
+        icon: 'menu-logs',
+      },
+    },
+    {
+      name: 'stays',
+      displayName: 'menu.stays',
+      meta: {
+        icon: 'menu-stays',
+      },
+    },
+    {
+      name: 'monitoring',
+      displayName: 'menu.monitoring',
+      meta: {
+        icon: 'menu-monitoring',
       },
     },
     {
       name: 'boats',
       displayName: 'menu.boats',
       meta: {
-        icon: 'fa-anchor',
+        icon: 'menu-boats',
       },
     },
     {
       name: 'grafana',
       displayName: 'menu.grafana',
       meta: {
-        icon: 'fa-external-link',
+        icon: 'menu-grafana',
       },
     },
   ] as INavigationRoute[],

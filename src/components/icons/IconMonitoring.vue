@@ -1,5 +1,5 @@
 <template>
-  <svg class="va-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
     <g id="Layer_2" data-name="Layer 2">
       <g id="invisible_box" data-name="invisible box">
         <rect width="48" height="48" fill="none" />
@@ -18,18 +18,4 @@
   </svg>
 </template>
 
-<style lang="scss">
-  .va-icon-clean-code {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-
-    .cls-1 {
-      fill: #4ae387;
-    }
-
-    .cls-2 {
-      fill: #34495e;
-    }
-  }
-</style>
+<style lang="scss"></style>

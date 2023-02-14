@@ -1,8 +1,5 @@
 <template>
   <svg
-    id="Layer_1"
-    class="va-icon"
-    fill="#000000"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -44,18 +41,4 @@
   </svg>
 </template>
 
-<style lang="scss">
-  .va-icon-clean-code {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-
-    .cls-1 {
-      fill: #4ae387;
-    }
-
-    .cls-2 {
-      fill: #34495e;
-    }
-  }
-</style>
+<style lang="scss"></style>

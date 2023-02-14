@@ -47,20 +47,20 @@
             </router-link>
           </template>
           <template #cell(fromTime)="{ value }">
-            {{ dateFormat(value) }}
+            {{ dateFormatUTC(value) }}
           </template>
           <template #cell(toTime)="{ value }">
-            {{ dateFormat(value) }}
+            {{ dateFormatUTC(value) }}
           </template>
           <template #cell(distance)="{ value }">
             {{ distanceFormat(value) }}
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormat(value) }} {{ $t('logs.log.duration_unit') }}
+            {{ durationFormatHours(value) }} {{ $t('logs.log.duration_unit') }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
-          <div class="mt-3 row justify--center">
+          <div class="mt-3 row justify-center">
             <va-pagination v-model="currentPage" input :pages="pages" />
           </div>
         </template>
@@ -74,7 +74,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, durationFormat } from '../../utils/dateFormater.js'
+  import { dateFormat, dateFormatUTC, durationFormat, durationFormatHours } from '../../utils/dateFormater.js'
   import { distanceFormat } from '../../utils/distanceFormater.js'
 
   import logsDatas from '../../data/logs.json'

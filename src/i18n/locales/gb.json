@@ -37,6 +37,7 @@
     "dashboard": "Dashboard",
     "logs": "Logs",
     "stays": "Stays",
+    "moorages": "Moorages",
     "boats": "Boats",
     "grafana": "Grafana",
     "monitoring": "Monitoring",
@@ -125,6 +126,33 @@
       "stayed_at": "Stayed at",
       "duration": "Duration",
       "note": "Note | Notes"
+    }
+  },
+  "moorages": {
+    "list": {
+      "title": "Moorages list",
+      "filter": {
+        "title": "Search for moorage",
+        "name": "Name",
+        "date_range": "Date range",
+        "reset": "Reset"
+      },
+      "moorage": "Moorage",
+      "default_stay": "Default Stay",
+      "total_stay": "Total Stay",
+      "arrivals": "Arrivals & Departures",
+      "duration_unit": "days"
+    },
+    "details": {
+      "title": "Moorage's details"
+    },
+    "moorage": {
+      "moorage": "Preferred Name",
+      "departed": "Default Stay Type",
+      "home": "Home",
+      "stayed_at": "Total Duration of Stay",
+      "arrivals": "Number of Arrivals & Departures",
+      "note": "Notes"
     }
   },
   "boats": {

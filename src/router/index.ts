@@ -66,6 +66,26 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/logs-book/Details.vue'),
       },
       {
+        name: 'stays',
+        path: 'stays',
+        component: () => import('../pages/stays/List.vue'),
+      },
+      /*{
+        name: 'stay-details',
+        path: 'stay/:id',
+        component: () => import('../pages/stays/Details.vue'),
+      },*/
+      {
+        name: 'moorages',
+        path: 'moorages',
+        component: () => import('../pages/moorages/List.vue'),
+      },
+      /*{
+        name: 'moorage-details',
+        path: 'moorage/:id',
+        component: () => import('../pages/moorages/Details.vue'),
+      },*/
+      {
         name: 'boats',
         path: 'boats',
         component: () => import('../pages/boats/List.vue'),

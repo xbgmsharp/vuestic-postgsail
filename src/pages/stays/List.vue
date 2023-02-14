@@ -54,16 +54,16 @@
             {{ value }}
           </template>
           <template #cell(arrived)="{ value }">
-            {{ value }}
+            {{ dateFormatUTC(value) }}
           </template>
           <template #cell(departed)="{ value }">
-            {{ value }}
+            {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ value }">
             {{ value }}
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormat(value) }} {{ $t('logs.log.duration_unit') }}
+            {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -82,8 +82,7 @@
   import { useI18n } from 'vue-i18n'
   //import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/postgsail.js'
-  import { dateFormat, durationFormat } from '../../utils/dateFormater.js'
-  import { distanceFormat } from '../../utils/distanceFormater.js'
+  import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormater.js'
 
   import staysDatas from '../../data/stays.json'
 

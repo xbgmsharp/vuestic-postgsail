@@ -16,8 +16,11 @@
       </template>
       <template #center> </template>
       <template #right>
-        <va-button href="https://github.com/xbgmsharp/vuestic-postgsail/" color="#000000" icon="github" target="_blank">
-        </va-button>
+        <div class="app-navbar__actions md5 lg4">
+          <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
+            <va-icon name="github-svg" style="width: 100%; height: 32px" />
+          </a>
+        </div>
         <app-navbar-actions class="app-navbar__actions md5 lg4" :user-name="userName" />
       </template>
     </va-navbar>

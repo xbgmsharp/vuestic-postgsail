@@ -5,6 +5,8 @@ import IconGPX from '../../../components/icons/IconGPX.vue'
 import IconGrafana from '../../../components/icons/IconGrafana.vue'
 import IconSailboat from '../../../components/icons/IconSailboat.vue'
 import IconAnchor from '../../../components/icons/IconAnchor.vue'
+import IconGithub from '../../../components/icons/IconGithub.vue'
+import IconHarbor from '../../../components/icons/IconHarbor.vue'
 export default [
   {
     name: 'angle_down',
@@ -140,6 +142,11 @@ export default [
     color: 'primary',
   },
   {
+    name: 'menu-moorages',
+    component: IconHarbor,
+    color: 'primary',
+  },
+  {
     name: 'csv',
     component: IconCSV,
     color: 'primary',
@@ -147,6 +154,11 @@ export default [
   {
     name: 'gpx',
     component: IconGPX,
+    color: 'primary',
+  },
+  {
+    name: 'github-svg',
+    component: IconGithub,
     color: 'primary',
   },
 ]

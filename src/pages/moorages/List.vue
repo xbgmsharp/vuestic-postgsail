@@ -63,7 +63,7 @@
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
-          <div class="mt-3 row justify--center">
+          <div class="mt-3 row justify-center">
             <va-pagination v-model="currentPage" input :pages="pages" />
           </div>
         </template>

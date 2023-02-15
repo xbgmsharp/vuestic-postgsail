@@ -50,9 +50,11 @@
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
-              <div class="row justify--end">
+              <div class="row justify-end">
                 <div class="flex">
+                  <!--
                   <va-button color="danger" @click="handleDelete">Delete</va-button>
+                  -->
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
               </div>

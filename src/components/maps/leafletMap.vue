@@ -52,24 +52,40 @@
       if (centerLat == 0 && centerLng == 0) return
 
       console.log(`centerLatLng: ${centerLat} ${centerLng}`)
-      this.map = L.map('mapContainer').setView([centerLat, centerLng], 10)
+      this.map = L.map('mapContainer').setView([centerLat, centerLng], 17)
+
       // OSM
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 18,
-      }).addTo(this.map)
-      /* Satellite
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-            maxZoom: 17
-      }).addTo(this.map)
-*/
-      /* NOAA
-      L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-            attribution: 'NOAA',
-            maxZoom: 18
-      }).addTo(this.map)
-*/
+      })
+      //.addTo(this.map)
+      // Satellite
+      const sat = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {
+          attribution:
+            'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+          maxZoom: 17,
+        },
+      )
+      //.addTo(this.map)
+      // NOAA
+      const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
+        attribution: 'NOAA',
+        maxZoom: 18,
+      })
+      //.addTo(this.map)
+
+      const baseMaps = {
+        OpenStreetMap: osm,
+        Satellite: sat,
+        NOAA: noaa,
+      }
+      const overlays = {}
+      L.control.layers(baseMaps, overlays).addTo(this.map)
+      baseMaps['OpenStreetMap'].addTo(this.map)
+
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
@@ -126,7 +142,7 @@
         onEachFeature: popup,
       }).addTo(this.map)
 
-      this.map.fitBounds(layer.getBounds())
+      this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
     },
     onBeforeUnmount() {
       if (this.map) {

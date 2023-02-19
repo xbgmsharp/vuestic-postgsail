@@ -23,7 +23,7 @@
       isTopBar?: boolean
     }>(),
     {
-      userName: JSON.parse(localStorage.getItem('settings') || '{}').username,
+      userName: '',
       isTopBar: false,
     },
   )

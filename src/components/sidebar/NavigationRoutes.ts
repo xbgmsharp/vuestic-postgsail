@@ -26,6 +26,13 @@ export default {
       },
     },
     {
+      name: 'moorages',
+      displayName: 'menu.moorages',
+      meta: {
+        icon: 'menu-moorages',
+      },
+    },
+    {
       name: 'monitoring',
       displayName: 'menu.monitoring',
       meta: {

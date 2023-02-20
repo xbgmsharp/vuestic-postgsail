@@ -55,6 +55,10 @@ export const useCacheStore = defineStore('cache', {
       data: {
         logs: undefined,
         log_get: [],
+        stays: undefined,
+        moorages: undefined,
+        stats: new Array(12).fill(0),
+        tiles: new Array(3).fill(0),
       },
     })
   },
@@ -114,7 +118,25 @@ export const useCacheStore = defineStore('cache', {
     async stay_get(id: string) {
       return await this.getData(['stay_get', id], assertions.notPopulatedArray)
     },
+
+    InfoTiles() {
+      if (this.data.logs && this.data.stays && this.data.moorages) {
+        this.data.tiles = [this.data.logs.data.length, this.data.stays.data.length, this.data.moorages.data.length]
+      } else {
+        this.data.tiles = [0, 0, 0]
+      }
+    },
+    barChart() {
+      this.data.stats.fill(0)
+      this.data.logs
+        ? this.data.logs.data.forEach(({ Started }) => (this.data.stats[new Date(Started).getMonth()] += 1))
+        : this.data.stats
+    },
+    //mixedChart() {},
   },
 
-  getters: {},
+  getters: {
+    getInfoTiles: (state) => state.data.tiles,
+    logs_by_month: (state) => state.data.stats,
+  },
 })

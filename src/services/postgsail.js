@@ -102,23 +102,23 @@ class PostgSail {
   async versions() {
     return this.API.get(`rpc/versions_fn`)
   }
-  async otp(payload) {
+  async otp_generate(payload) {
     return this.API.post(`rpc/generate_otp_fn`, payload)
+  }
+  async otp_email(payload) {
+    return this.API.post(`rpc/email_fn`, payload)
   }
   async pushover(payload) {
     return this.API.post(`rpc/pushover_fn`, payload)
   }
 
   /*
-   * Boats API endpoint
+   * Vessels API endpoint
    */
   async vessel_reg(payload) {
     return this.API.post(`/rpc/register_vessel`, payload)
   }
 
-  /*
-   * Vssels API endpoint
-   */
   async vessels() {
     return this.API.get(`vessels_view`)
   }
@@ -197,6 +197,26 @@ class PostgSail {
    */
   async monitoring() {
     return this.API.get(`monitoring_view`)
+  }
+
+  /*
+   *
+   */
+  async stays_at() {
+    return this.API.get(`stays_at`)
+  }
+
+  /*
+   * Charts API endpoint
+   */
+  async total_info() {
+    return this.API.get(`total_info_view`)
+  }
+  async logs_by_month() {
+    return this.API.get(`rpc/logs_by_month_fn`)
+  }
+  async logs_by_year() {
+    return this.API.get(`rpc/logs_by_month_fn`)
   }
 }
 

@@ -2,7 +2,7 @@
   <va-card class="mb-3">
     <va-card-title>{{ $t('auth.otp') }}</va-card-title>
     <va-card-content>
-      <div class="box layout gutter--md">
+      <div class="box layout gutter-md">
         <strong>{{ $t('auth.otp') }}</strong>
         <form @submit.prevent="onsubmit()">
           <template v-if="apiError">
@@ -21,7 +21,7 @@
             :error-messages="otpErrors"
           />
 
-          <div class="d-flex justify--center mt-3">
+          <div class="d-flex justify-center mt-3">
             <va-button class="my-0" @click="onsubmit">{{ t('auth.otp_validate') }}</va-button>
           </div>
         </form>
@@ -68,7 +68,7 @@
 
     try {
       const api = new PostgSail()
-      const response = await api.otp(payload)
+      const response = await api.otp_email(payload)
       if (typeof response.data === 'boolean' && response.data) {
         otpSuccess.value = true
         //GlobalStore.email_valid = response.data || true

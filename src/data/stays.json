@@ -1,0 +1,20 @@
+[
+  {
+    "id": 2,
+    "name": "0 days stay at Hamnterassen Baywatch in February 2023",
+    "moorage": "Hamnterassen Baywatch",
+    "arrived": "2023-02-07T14:15:09",
+    "departed": "2023-02-07T14:18:09",
+    "Stayed_at": "Unknow",
+    "duration": "00:03:00"
+  },
+  {
+    "id": 1,
+    "name": "0 days stay at patch stay name 3 in February 2023",
+    "moorage": "patch stay name 3",
+    "arrived": "2023-02-07T13:48:09",
+    "departed": "2023-02-07T13:50:09",
+    "Stayed_at": "Anchor",
+    "duration": "00:02:00"
+  }
+]

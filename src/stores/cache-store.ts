@@ -53,10 +53,10 @@ export const useCacheStore = defineStore('cache', {
   state: () => {
     return useStorage('cache', {
       data: {
-        logs: undefined,
+        logs: { data: [] },
         log_get: [],
-        stays: undefined,
-        moorages: undefined,
+        stays: { data: [] },
+        moorages: { data: [] },
         stats: new Array(12).fill(0),
         tiles: new Array(3).fill(0),
       },

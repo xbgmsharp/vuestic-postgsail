@@ -42,6 +42,11 @@
 <script setup>
   import { computed, ref } from 'vue'
   import PostgSail from '../../services/postgsail.js'
+  import { useI18n } from 'vue-i18n'
+  import { useGlobalStore } from '../../stores/global-store'
+
+  const GlobalStore = useGlobalStore()
+  const { t } = useI18n()
 
   const props = defineProps({
     item: {
@@ -54,10 +59,8 @@
   const apiError = ref(null)
   const showModal = ref(false)
   const rowData = ref(null)
-  const email = ref(null)
-  if (localStorage.getItem('settings') !== null) {
-    email.value = JSON.parse(localStorage.getItem('settings')).email
-  }
+  //const email = ref('')
+  const email = ref(GlobalStore.settings?.email || '')
 
   const boatToken = computed(() => {
     return rowData.value ? rowData.value : ''
@@ -74,13 +77,9 @@
     }
     try {
       const api = new PostgSail()
-      console.log(`handleGetToken ${payload.vessel_mmsi}`)
       const response = await api.vessel_reg(payload)
-      console.log(`handleGetToken ${response.data.token}`)
       if (response.data.token) {
         rowData.value = response.data.token
-        console.log(`handleGetToken ${rowData.value}`)
-        console.log(`handleGetToken ${boatToken.value}`)
       } else {
         throw { response }
       }

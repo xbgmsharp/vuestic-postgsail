@@ -61,6 +61,11 @@
           </template>
           <template #cell(stayed_at)="{ value }">
             {{ value }}
+            <!--
+            <div style="max-width: 150px;">
+              <va-select class="mb-6" label="With label" v-model="stayed_at[value]" :options="stayed_at" />
+            </div>
+            -->
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -85,6 +90,8 @@
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormater.js'
 
   import staysDatas from '../../data/stays.json'
+
+  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {

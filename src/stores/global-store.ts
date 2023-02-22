@@ -9,6 +9,8 @@ export const useGlobalStore = defineStore('global', {
       isSidebarMinimized: false,
       token: '',
       userName: '',
+      validEmail: false,
+      hasVessel: false,
       count: 0,
       unsplash: null,
       postgsail: {
@@ -25,6 +27,7 @@ export const useGlobalStore = defineStore('global', {
         sys_version: '',
       },
       settings: {},
+      vessel: {},
     })
   },
   actions: {
@@ -41,39 +44,6 @@ export const useGlobalStore = defineStore('global', {
       this.userName = username
     },
 
-    async fetchLogs() {
-      const api = new PostgSail()
-      try {
-        const response = await api.versions()
-        this.postgsail.logs = response.data
-        this.$state.postgsail.logs = response.data
-        console.log(this.postgsail)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async fetchStays() {
-      const api = new PostgSail()
-      try {
-        const response = await api.versions()
-        this.postgsail.stays = response.data
-        this.$state.postgsail.stays = response.data
-        console.log(this.$state)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async fetchMoorage() {
-      const api = new PostgSail()
-      try {
-        const response = await api.versions()
-        this.postgsail.moorages = response.data
-        this.$state.postgsail.moorages = response.data
-        console.log(this.postgsail)
-      } catch (error) {
-        console.log(error)
-      }
-    },
     async fetchVersions(web_version: string) {
       const api = new PostgSail()
       try {
@@ -90,9 +60,13 @@ export const useGlobalStore = defineStore('global', {
       try {
         const response = await api.settings()
         this.settings = response.data.settings
-        this.userName = response.data.settings.username
-        this.$state.userName = response.data.settings.username
+        this.userName = response.data.settings?.username
+        this.validEmail = response.data.settings?.preferences?.email_valid
+        this.hasVessel = response.data.settings?.has_vessel
         this.$state.settings = response.data.settings
+        this.$state.userName = response.data.settings?.username
+        this.$state.validEmail = response.data.settings?.preferences?.email_valid
+        this.$state.hasVessel = response.data.settings?.has_vessel
         console.log(this.settings)
       } catch (error) {
         console.log(error)

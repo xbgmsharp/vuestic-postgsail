@@ -161,4 +161,20 @@ export default [
     component: IconGithub,
     color: 'primary',
   },
+  {
+    name: 'wifi_off',
+    to: 'wifi_off',
+  },
+  {
+    name: 'menu-stats',
+    to: 'query_stats',
+  },
+  {
+    name: 'menu-faq',
+    to: 'quizz',
+  },
+  {
+    name: 'menu-privacy',
+    to: 'security',
+  },
 ]

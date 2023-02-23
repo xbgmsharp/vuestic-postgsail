@@ -7,6 +7,7 @@ import IconSailboat from '../../../components/icons/IconSailboat.vue'
 import IconAnchor from '../../../components/icons/IconAnchor.vue'
 import IconGithub from '../../../components/icons/IconGithub.vue'
 import IconHarbor from '../../../components/icons/IconHarbor.vue'
+import IconGeoJSON from '../../../components/icons/IconGeoJSON.vue'
 export default [
   {
     name: 'angle_down',
@@ -125,6 +126,7 @@ export default [
     name: 'menu-stays',
     component: IconAnchor,
     color: 'primary',
+    //to: 'anchor',
   },
   {
     name: 'menu-boats',
@@ -157,6 +159,11 @@ export default [
     color: 'primary',
   },
   {
+    name: 'geojson',
+    component: IconGeoJSON,
+    color: 'primary',
+  },
+  {
     name: 'github-svg',
     component: IconGithub,
     color: 'primary',
@@ -176,5 +183,9 @@ export default [
   {
     name: 'menu-privacy',
     to: 'security',
+  },
+  {
+    name: 'menu-timelapse',
+    to: 'timelapse',
   },
 ]

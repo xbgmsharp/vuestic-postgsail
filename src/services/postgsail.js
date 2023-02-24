@@ -154,6 +154,17 @@ class PostgSail {
     return this.API.delete(`logbook?id=eq.${id}`)
   }
 
+  async log_export_gpx(payload) {
+    return this.API.post(`rpc/export_logbook_gpx_fn`, payload)
+  }
+
+  async log_export_geojson(payload) {
+    return this.API.post(`rpc/export_logbook_geojson_fn`, payload)
+  }
+
+  async log_export_geojson_point_fn(payload) {
+    return this.API.post(`rpc/export_logbook_geojson_point_fn`, payload)
+  }
   /*
    * Moorages API endpoint
    */
@@ -200,7 +211,7 @@ class PostgSail {
   }
 
   /*
-   *
+   * Stays at
    */
   async stays_at() {
     return this.API.get(`stays_at`)

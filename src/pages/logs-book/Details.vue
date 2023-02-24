@@ -15,7 +15,7 @@
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">Name</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.name') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
                     v-model="formData.name"
@@ -24,17 +24,17 @@
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Departed</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.from') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Departed at</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.from_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Arrived</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.to') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Arrived at</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.to_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Duration</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Distance</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.distance') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
                 <dd class="flex xs12 md6 pa-2">
@@ -42,9 +42,14 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
                 <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Note</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
+                </dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.export') }}</dt>
+                <dd class="flex xs12 md6 pa-1">
+                  <va-icon name="gpx" :size="44" @click="handleGPX" />
+                  <va-icon name="geojson" :size="44" @click="handleGeoJSON" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -174,15 +179,76 @@
       notes: formData.notes,
     }
     try {
-      const response = await api.log_update(id, payload)
+      const response = await api.log_delete(id)
       if (response.data) {
-        console.log('log_update success', response.data)
+        console.log('log_delete success', response.data)
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
-      console.log('log_update failed', response)
+      console.log('log_delete failed', response)
+      updateError.value = response.data.message
+    } finally {
+      isBusy.value = false
+    }
+  }
+
+  const handleGPX = async () => {
+    isBusy.value = true
+    updateError.value = null
+
+    const api = new PostgSail()
+    const id = route.params.id
+    const payload = {
+      _id: id,
+    }
+    try {
+      const response = await api.log_export_gpx(payload)
+      if (response.data) {
+        console.log('log_export_gpx success', response.data)
+        const blob = new Blob([response.data], { type: 'text/xml' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = `log_${id}.xml`
+        link.click()
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('log_export_gpx failed', response)
+      updateError.value = response.data.message
+    } finally {
+      isBusy.value = false
+    }
+  }
+
+  const handleGeoJSON = async () => {
+    isBusy.value = true
+    updateError.value = null
+
+    const api = new PostgSail()
+    const id = route.params.id
+    const payload = {
+      _id: id,
+    }
+    try {
+      const response = await api.log_export_geojson(payload)
+      if (response.data) {
+        console.log('log_export_geojson success', response.data)
+        const jsonse = JSON.stringify(response.data.geojson)
+        const blob = new Blob([jsonse], { type: 'application/json' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = `log_${id}.geojson`
+        link.click()
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('log_export_geojson failed', response)
       updateError.value = response.data.message
     } finally {
       isBusy.value = false

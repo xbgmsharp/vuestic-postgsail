@@ -3,7 +3,7 @@
     <div class="row">
       <div class="flex md12 xs12">
         <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-          <div ref="mapContainer" style="height: 75vh" />
+          <div ref="mapContainer" style="height: 80vh" />
         </va-card>
       </div>
     </div>
@@ -17,7 +17,7 @@
   import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/postgsail.js'
-  import geojsonDatas from '../../data/geojson.json'
+  import timelapseGeoJSON from '../../data/timelapse.json'
 
   const route = useRoute()
   const isBusy = ref(false)
@@ -26,7 +26,7 @@
   const map = ref()
   const polyLine = ref()
   const marker = ref()
-  const mygeo = ref()
+  const timelapse = ref()
 
   onMounted(async () => {
     isBusy.value = true
@@ -38,7 +38,7 @@
     try {
       const response = await api.log_export_geojson_point_fn(payload)
       if (response.data.geojson) {
-        mygeo.value = response.data.geojson
+        timelapse.value = response.data.geojson
         map_setup()
       } else {
         console.error('error log_export_geojson_point_fn')
@@ -47,7 +47,7 @@
       apiError.value = e
       if (!import.meta.env.PROD) {
         console.warn('Get sample data from local json...', apiError.value)
-        mygeo.value = geojsonDatas
+        timelapse.value = timelapseGeoJSON
         map_setup()
       }
     } finally {
@@ -56,7 +56,7 @@
   })
 
   const map_setup = () => {
-    let geojson = mygeo.value
+    let geojson = timelapse.value
     console.log(geojson.features[0].geometry.coordinates)
     let coord_rev = geojson.features[0].geometry.coordinates.reverse()
     map.value = L.map(mapContainer.value).setView(coord_rev, 13)
@@ -92,9 +92,9 @@
   }
 
   const map_update = () => {
-    let geojson = mygeo.value
+    let geojson = timelapse.value
     let index = 1
-    var timelapse = setInterval(function () {
+    var interval = setInterval(function () {
       console.log('map_update')
       let coord_rev = geojson.features[index].geometry.coordinates.reverse()
       polyLine.value.addLatLng(coord_rev)
@@ -102,7 +102,7 @@
       map.value.panTo(coord_rev, { animate: true })
       // TODO Distance
       if (index == geojson.features.length - 1) {
-        clearInterval(timelapse)
+        clearInterval(interval)
       }
       index++
     }, 200)

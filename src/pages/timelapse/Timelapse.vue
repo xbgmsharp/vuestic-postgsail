@@ -15,9 +15,11 @@
   import * as L from 'leaflet'
 
   import { ref, onMounted, computed } from 'vue'
+  import { useRoute } from 'vue-router'
   import PostgSail from '../../services/postgsail.js'
   import geojsonDatas from '../../data/geojson.json'
 
+  const route = useRoute()
   const isBusy = ref(false)
   const apiError = ref(null)
   const mapContainer = ref()
@@ -31,7 +33,7 @@
     apiError.value = null
     const api = new PostgSail()
     const payload = {
-      _id: 1,
+      _id: route.params.id,
     }
     try {
       const response = await api.log_export_geojson_point_fn(payload)

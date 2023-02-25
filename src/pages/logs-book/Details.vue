@@ -35,7 +35,15 @@
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.distance') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ distanceFormat(item.distance) }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  {{ distanceFormat(item.distance) }} (<router-link
+                    v-if="typeof item.id !== 'undefined'"
+                    class="text--bold"
+                    :to="{ name: 'timelapse', params: { id: item.id } }"
+                  >
+                    timelapse </router-link
+                  >)
+                </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
                 <dd class="flex xs12 md6 pa-2">
                   {{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}

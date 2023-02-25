@@ -10,23 +10,28 @@
         </va-card-title>
         <va-card-content>
           <va-inner-loading :loading="isBusy">
-            <p class="mb-3">{{ item.name }} ({{ item.mmsi }})</p>
+            <p class="mb-3">
+              {{ item.name }} <template v-if="item.mmsi">({{ item.mmsi }})</template>
+            </p>
             <template v-if="apiError">
               <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
             </template>
-            <a id="copyToClipboard" class="button control is-medium" @click.prevent="copyToClipboard">
-              <span class="icon">
-                <i class="fa fa-clipboard"></i>
-              </span>
-            </a>
-            <div>
+            <!-- TODO use better CSS -->
+            <div style="width: 700px; max-width: 800px">
               <va-input
                 ref="clone"
                 v-model="boatToken"
+                type="textarea"
                 :label="$t('boats.boat.token_modal.token') + ':'"
                 placeholder="Readonly Token"
+                :min-rows="3"
+                :max-rows="5"
                 @focus="$event.target.select()"
-              />
+              >
+                <template #appendInner>
+                  <va-icon name="content_copy" @click="$vaToast.init({ message: copyToClipboard, color: 'primary' })" />
+                </template>
+              </va-input>
               <va-alert color="warning" outline class="mb-4">{{ $t('boats.boat.token_modal.message') }}</va-alert>
             </div>
           </va-inner-loading>
@@ -94,14 +99,15 @@
     }
   }
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = () => {
     console.log(`handleGetToken ${boatToken.value}`)
     navigator.clipboard.writeText(boatToken.value)
+    return 'Token copy to clipboard'
   }
 </script>
 
 <style lang="scss" scoped>
-  .va-table {
-    width: 100%;
+  input[type='text'] {
+    overflowwrap: 'break-word';
   }
 </style>

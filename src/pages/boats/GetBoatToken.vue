@@ -106,8 +106,4 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  input[type='text'] {
-    overflowwrap: 'break-word';
-  }
-</style>
+<style lang="scss" scoped></style>

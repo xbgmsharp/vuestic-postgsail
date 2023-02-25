@@ -2,6 +2,9 @@
   <div class="leaflet-maps-page">
     <div class="row">
       <div class="flex md12 xs12">
+        <template v-if="apiError">
+          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+        </template>
         <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
           <div ref="mapContainer" style="height: 80vh" />
         </va-card>
@@ -37,11 +40,12 @@
     }
     try {
       const response = await api.log_export_geojson_point_fn(payload)
-      if (response.data.geojson) {
+      if (response.data.geojson && response.data.geojson.features) {
         timelapse.value = response.data.geojson
         map_setup()
       } else {
         console.error('error log_export_geojson_point_fn')
+        apiError.value = 'error log_export_geojson_point_fn'
       }
     } catch (e) {
       apiError.value = e

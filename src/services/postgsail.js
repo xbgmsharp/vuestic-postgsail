@@ -111,6 +111,9 @@ class PostgSail {
   async pushover(payload) {
     return this.API.post(`rpc/pushover_fn`, payload)
   }
+  async pushover_link() {
+    return this.API.post(`rpc/pushover_subscribe_link_fn`)
+  }
 
   /*
    * Vessels API endpoint
@@ -228,6 +231,16 @@ class PostgSail {
   }
   async logs_by_year() {
     return this.API.get(`rpc/logs_by_month_fn`)
+  }
+
+  /*
+   * Stats API endpoint
+   */
+  async stats_logs_view() {
+    return this.API.get(`stats_logs_view`)
+  }
+  async stats_moorages_view() {
+    return this.API.get(`stats_moorages_view`)
   }
 }
 

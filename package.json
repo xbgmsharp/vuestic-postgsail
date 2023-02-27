@@ -65,6 +65,6 @@
     "vite": "^3.1.0",
     "vite-plugin-pwa": "^0.13.3",
     "vue-eslint-parser": "^8.3.0",
-    "vue-tsc": "^0.35.0"
+    "vue-tsc": "^1.2.0"
   }
 }

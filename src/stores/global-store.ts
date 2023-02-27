@@ -72,6 +72,18 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
+    async updatePref(key: string, value: any) {
+      const api = new PostgSail()
+      try {
+        const response = await api.update_user_preferences({ key: `{${key}}`, value: value })
+        this.$state.settings.preferences[key] = value
+        this.settings.preferences[key] = value
+        console.log(response)
+        return response
+      } catch (error) {
+        console.log(error)
+      }
+    },
     set_web_version(web_version: string) {
       this.versions.web_version = web_version
     },

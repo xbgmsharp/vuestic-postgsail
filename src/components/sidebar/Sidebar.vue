@@ -36,7 +36,6 @@
     &__menu {
       padding: 2rem 0;
     }
-
     &-item {
       &__icon {
         width: 1.5rem;
@@ -44,6 +43,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        fill: var(--va-on-background-primary);
+      }
+      &__icon path {
+        fill: var(--va-on-background-primary);
       }
     }
   }

@@ -5,6 +5,9 @@
       <template v-if="apiError">
         <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
       </template>
+      <template v-if="apiSuccess">
+        <va-alert color="success" outline class="mb-4"> {{ $t('boats.boat.register') }} </va-alert>
+      </template>
       <form @submit.prevent="handleSubmit()">
         <va-input
           v-model="email"
@@ -44,25 +47,28 @@
   </va-card>
 </template>
 
-<script setup lang="ts">
+<script setup>
+  // TODO update setup with lang="ts"
   import PostgSail from '../../services/postgsail.js'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useGlobalStore } from '../../stores/global-store'
+
+  const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
   const router = useRouter()
   const isBusy = ref(false)
   const apiError = ref(null)
-  const email = ref('')
-  if (localStorage.getItem('settings') !== null) {
-    email.value = JSON.parse(localStorage.getItem('settings') || '').email
-  }
+  const apiSuccess = ref(null)
+  //const email = ref('')
+  const email = ref(GlobalStore.settings?.email || '')
   const vessel_mmsi = ref('')
   const vessel_name = ref('')
-  const emailErrors = ref<string[]>([])
-  const mmsiErrors = ref<string[]>([])
-  const nameErrors = ref<string[]>([])
+  const emailErrors = ref('')
+  const mmsiErrors = ref('')
+  const nameErrors = ref('')
 
   const formReady = computed(() => !emailErrors.value.length && !nameErrors.value.length)
 
@@ -88,6 +94,9 @@
 
     emailErrors.value = email.value ? [] : [t('auth.errors.email')]
     nameErrors.value = vessel_name.value ? [] : [t('boats.errors.name')]
+    if (vessel_name.value.length <= 3) {
+      nameErrors.value = [t('boats.errors.length')]
+    }
 
     if (!formReady.value) return
 
@@ -100,16 +109,24 @@
     try {
       const response = await api.vessel_reg(payload)
       if (response.data) {
-        console.log('vessel_reg success', response.data)
+        apiSuccess.value = true
         if (response.data.token) {
           console.log('vessel_reg success', response.data.token)
+          // Fetch updated settings then route
+          await GlobalStore.fetchSettings()
           router.push({ name: 'boats' })
+          /*setTimeout(() => {
+            router.push({ name: 'boats' })
+          }, 1000)
+          */
+        } else {
+          console.error('API error, no valid token from server')
         }
       } else {
         throw { response }
       }
     } catch ({ response }) {
-      //error TS18046: 'response' is of type 'unknown'.
+      // TODO error TS18046: 'response' is of type 'unknown'.
       //apiError.value = response.data.message
       console.warn('Error, please check your parameters')
     } finally {

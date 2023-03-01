@@ -47,6 +47,20 @@ export default {
       },
     },
     {
+      name: 'stats',
+      displayName: 'menu.stats',
+      meta: {
+        icon: 'menu-stats',
+      },
+    } /*
+    {
+      name: 'timelapse',
+      displayName: 'menu.timelapse',
+      meta: {
+        icon: 'menu-timelapse',
+      },
+    },*/,
+    {
       name: 'grafana',
       displayName: 'menu.grafana',
       meta: {

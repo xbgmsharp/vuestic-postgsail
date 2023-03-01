@@ -68,7 +68,13 @@
     "logout": "Sair"
   },
   "dashboard": {
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "versions": "Versions",
+    "charts": {
+      "verticalBarChart": "Log entry per month",
+      "horizontalBarChart": "Log entry per month per year",
+      "lineChart": "Log entry per year"
+    }
   },
   "api": {
     "error": "Api error"
@@ -102,7 +108,8 @@
       "speed": "Speed",
       "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Wind Speed",
-      "note": "Note | Notes"
+      "note": "Note | Notes",
+      "export": "Export"
     }
   },
   "stays": {
@@ -155,6 +162,11 @@
       "note": "Notes"
     }
   },
+  "stats": {
+    "stats": "Statistics",
+    "logs": "logs stats",
+    "moorages": "moorages stats"
+  },
   "boats": {
     "list": {
       "title": "Boats list"
@@ -171,7 +183,8 @@
         "button": "Get token",
         "title": "Boat's token",
         "token": "Token",
-        "message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
+        //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
+        "message": "Copy paste this token into your postgsail plugin instance of signalk."
       }
     },
     "errors": {
@@ -188,7 +201,32 @@
       "notification": {
         "title": "notification"
       }
-    }
+    },
+    "name": "Name",
+    "website": "Website",
+    "public_profile": "Public Profile",
+    "public_logs": "Log Details",
+    "public_stats": "Stats",
+    "public_logs_list": "Logs List",
+    "public_timelapse": "Timelapse",
+    "instagram_handle": "Instagram Handle",
+    "preferred_homepage": "Preferred Homepage",
+    "use_imperial_units": "Use Imperial Units",
+    "email_notifications": "E-mail Notifications",
+    "phone_notifications": "Phone Notifications",
+    "alerting": "Alerting",
+    "min_notification_interval": "Min Notification Interval (h)",
+    "high_wind_speed_threshold": "Wind Speed (kts)",
+    "low_outdoor_temperature_threshold": "Outdoor Temperature (C)",
+    "low_indoor_temperature_threshold": "Indoor Temperature (C)",
+    "low_water_temperature_threshold": "Water Temperature",
+    "low_water_depth_threshold": "Water Depth (m)",
+    "low_pressure_threshold": "Pressure (hpa)",
+    "high_pressure_drop_threshold": "Pressure Drop in 12 hours (hpa)",
+    "low_battery_charge_threshold": "Battery Charge (%)",
+    "low_battery_voltage_threshold": "Battery Voltage (V)",
+    "pushover": "Pushover",
+    "telegram_bot": "Telegram Bot"
   },
   "privacy": {
     "title": "Privacy"

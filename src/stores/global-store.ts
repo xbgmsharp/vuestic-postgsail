@@ -26,7 +26,42 @@ export const useGlobalStore = defineStore('global', {
         api_version: '',
         sys_version: '',
       },
-      settings: {},
+      settings: {
+        email: '',
+        first: '',
+        last: '',
+        preferences: {
+          website: '',
+          alerting: {
+            min_notification_interval: 6,
+            low_pressure_threshold: 990,
+            high_wind_speed_threshold: 30,
+            low_water_depth_threshold: 1.0,
+            high_pressure_drop_threshold: 12,
+            low_battery_charge_threshold: 50,
+            low_battery_voltage_threshold: 12.5,
+            low_water_temperature_threshold: 10.0,
+            low_indoor_temperature_threshold: 7.0,
+            low_outdoor_temperature_threshold: 3.0,
+          },
+          pushover: {} /* not used */,
+          telegram: {} /* should be expose? */,
+          email_valid: false,
+          public_logs: true,
+          public_stats: true,
+          pushover_user_key: '' /* should be expose? */,
+          public_profile: true,
+          instagram_handle: '',
+          public_logs_list: false,
+          public_timelapse: true,
+          preferred_homepage: 0,
+          use_imperial_units: false,
+          email_notifications: true,
+          phone_notifications: false,
+        },
+        created_at: '',
+        username: '',
+      },
       vessel: {},
     })
   },
@@ -63,7 +98,11 @@ export const useGlobalStore = defineStore('global', {
         this.userName = response.data.settings?.username
         this.validEmail = response.data.settings?.preferences?.email_valid
         this.hasVessel = response.data.settings?.has_vessel
-        this.$state.settings = response.data.settings
+        this.$state.settings.preferences = {
+          ...this.$state.settings.preferences,
+          ...response.data.settings.preferences,
+        }
+        //this.$state.settings = response.data.settings
         this.$state.userName = response.data.settings?.username
         this.$state.validEmail = response.data.settings?.preferences?.email_valid
         this.$state.hasVessel = response.data.settings?.has_vessel

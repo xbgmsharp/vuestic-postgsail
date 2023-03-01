@@ -4,21 +4,23 @@
       <table class="va-table full-table va-table--striped va-table--hoverable">
         <tbody>
           <tr>
-            <td>Name</td>
+            <td>
+              <b>{{ t('profile.name') }}</b>
+            </td>
             <td>{{ fullName }}</td>
           </tr>
           <tr>
-            <td>Preferred Homepage</td>
+            <td>{{ t('profile.preferred_homepage') }}</td>
             <td>
               <div class="centerContainer">
                 <va-select
                   v-model="settings.preferences.preferred_homepage"
                   :options="options"
-                  placeholder="Ship Logs"
+                  placeholder="Dashboard"
                   @change="
                     UpdatePref(
                       'preferred_homepage',
-                      settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : '',
+                      settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : 0,
                     )
                   "
                 />
@@ -26,7 +28,7 @@
             </td>
           </tr>
           <tr>
-            <td>Use Imperial Units</td>
+            <td>{{ t('profile.use_imperial_units') }}</td>
             <td>
               <div class="centerContainer">
                 <va-switch
@@ -38,7 +40,7 @@
             </td>
           </tr>
           <tr>
-            <td>Website</td>
+            <td>{{ t('profile.website') }}</td>
             <td>
               <div class="centerContainer">
                 <va-input
@@ -51,58 +53,104 @@
             </td>
           </tr>
           <tr>
-            <td>Instagram Handle</td>
+            <td>{{ t('profile.instagram_handle') }}</td>
             <td>
               <div class="centerContainer">
                 <va-input
                   v-model="settings.preferences.instagram_handle"
                   class="mb-6"
-                  style=""
                   @focusout="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
                 />
               </div>
             </td>
           </tr>
           <tr>
-            <td>Public Profile</td>
+            <td>{{ t('profile.public_profile') }}</td>
             <td>
               <div class="centerContainer">
-                <va-switch size="small" />
+                <va-switch
+                  v-model="settings.preferences.public_profile"
+                  size="small"
+                  @click="
+                    UpdatePref(
+                      'public_profile',
+                      settings.preferences.public_profile ? settings.preferences.public_profile : false,
+                    )
+                  "
+                />
               </div>
             </td>
           </tr>
-          <tr>
-            <td>Stats</td>
-            <td>
-              <div class="centerContainer">
-                <va-switch size="small" />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Timelapse</td>
-            <td>
-              <div class="centerContainer">
-                <va-switch size="small" />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Log List</td>
-            <td>
-              <div class="centerContainer">
-                <va-switch size="small" />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Log Details</td>
-            <td>
-              <div class="centerContainer">
-                <va-switch size="small" />
-              </div>
-            </td>
-          </tr>
+          <template v-if="settings.preferences.public_profile">
+            <tr>
+              <td>{{ t('profile.public_stats') }}</td>
+              <td>
+                <div class="centerContainer">
+                  <va-switch
+                    v-model="settings.preferences.public_stats"
+                    size="small"
+                    @click="
+                      UpdatePref(
+                        'public_stats',
+                        settings.preferences.public_stats ? settings.preferences.public_stats : true,
+                      )
+                    "
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{ t('profile.public_timelapse') }}</td>
+              <td>
+                <div class="centerContainer">
+                  <va-switch
+                    v-model="settings.preferences.public_timelapse"
+                    size="small"
+                    @click="
+                      UpdatePref(
+                        'public_timelapse',
+                        settings.preferences.public_timelapse ? settings.preferences.public_timelapse : true,
+                      )
+                    "
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{ t('profile.public_logs_list') }}</td>
+              <td>
+                <div class="centerContainer">
+                  <va-switch
+                    v-model="settings.preferences.public_logs_list"
+                    size="small"
+                    @click="
+                      UpdatePref(
+                        'public_logs_list',
+                        settings.preferences.public_logs_list ? settings.preferences.public_logs_list : true,
+                      )
+                    "
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{ t('profile.public_logs') }}</td>
+              <td>
+                <div class="centerContainer">
+                  <va-switch
+                    v-model="settings.preferences.public_logs"
+                    size="small"
+                    @click="
+                      UpdatePref(
+                        'public_logs',
+                        settings.preferences.public_logs ? settings.preferences.public_logs : false,
+                      )
+                    "
+                  />
+                </div>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -123,10 +171,10 @@
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
 
-  const options = ['Ship Logs', 'Stays', 'Units']
+  const options = ['Dashboard', 'Ship Logs', 'Monitoring', 'Statistics']
   console.log(`${settings.value.first} ${settings.value.last}`)
   const fullName = ref(`${settings.value.first} ${settings.value.last}`)
-
+  // TODO Issue getting default value as per store setup
   onBeforeMount(async () => {
     console.log(`onBeforeMount Overviewtab`)
     await fetchSettings()
@@ -167,5 +215,8 @@
   }
   .full-table {
     width: 100%;
+  }
+  .form-control {
+    background-color: #fff;
   }
 </style>

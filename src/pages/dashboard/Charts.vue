@@ -1,5 +1,15 @@
 <template>
   <div class="charts">
+    <div class="row">
+      <div class="flex md12 xs12">
+        <va-card v-if="barChartData" class="chart-widget">
+          <va-card-title>{{ t('dashboard.charts.verticalBarChart') }}</va-card-title>
+          <va-card-content>
+            <va-chart :data="barChartData" type="bar" />
+          </va-card-content>
+        </va-card>
+      </div>
+    </div>
     <!--
     <div class="row">
       <div class="flex md12 xs12">
@@ -12,6 +22,7 @@
       </div>
     </div>
     -->
+    <!--
     <div class="row row-equal">
       <div class="flex xl6 xs12 lg6">
         <va-card v-if="barChartData" class="chart-widget">
@@ -21,7 +32,8 @@
           </va-card-content>
         </va-card>
       </div>
-      <!--
+      -->
+    <!--
       <div class="flex xl6 xs12 lg6">
         <va-card v-if="horizontalBarChartDataGenerated" class="chart-widget">
           <va-card-title>{{ t('dashboard.charts.horizontalBarChart') }}</va-card-title>
@@ -30,7 +42,8 @@
           </va-card-content>
         </va-card>
       </div>
--->
+      -->
+    <!--
       <div class="flex xl6 xs12 lg6">
         <va-card v-if="barChartData" class="chart-widget">
           <va-card-title>{{ t('dashboard.charts.lineChart') }}</va-card-title>
@@ -40,6 +53,7 @@
         </va-card>
       </div>
     </div>
+    -->
     <!--
     <div class="row">
       <div class="flex md12 xs12">
@@ -76,29 +90,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useChartData } from '../../data/charts/composables/useChartData'
-  import {
-    lineChartData,
-    doughnutChartData,
-    pieChartData,
-    //barChartData,
-    horizontalBarChartData,
-  } from '../../data/charts'
   import VaChart from '../../components/va-charts/VaChart.vue'
-  import type { TChartData as ChartData } from 'vue-chartjs/dist/types'
-  const lineChartDataGenerated = useChartData(lineChartData, 0.7)
-  const doughnutChartDataGenerated = useChartData(doughnutChartData)
-  const pieChartDataGenerated = useChartData(pieChartData)
-  //const barChartDataGenerated = useChartData(barChartData)
-  const horizontalBarChartDataGenerated = useChartData(horizontalBarChartData)
+  import { useCacheStore } from '../../stores/cache-store'
+  import { storeToRefs } from 'pinia'
+
   const { t } = useI18n()
 
-  const props = defineProps({
-    pgdata: Array,
-  })
-  const pgcharts = computed(() => props.pgdata)
+  const CacheStore = useCacheStore()
+  const { data, logs_by_month } = storeToRefs(CacheStore)
+  const { barChart } = CacheStore
 
   const barChartData = {
     labels: [
@@ -118,12 +120,15 @@
     datasets: [
       {
         label: 'logs',
-        data: pgcharts.value,
+        data: logs_by_month.value,
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         borderWidth: 1,
       },
     ],
   }
+
+  //console.log(barChartData)
+  //const barChartDataGenerated = useChartData(barChartData)
 
   const mixedChartData = {
     labels: [
@@ -156,6 +161,28 @@
       },
     ],
   }
+
+  onMounted(async () => {
+    console.log('onMounted!')
+    barChart()
+    console.log(logs_by_month.value)
+    console.log(data.value.stats)
+    //barChartData.datasets.data = data.value.stats
+  })
+
+  watch(logs_by_month, () => {
+    console.log('logs_by_month ref changed, do something!')
+    console.log(logs_by_month.value)
+    //barChartData.datasets.data = data.value.stats
+  })
+
+  watch(
+    () => CacheStore.data.stats,
+    () => {
+      console.log('CacheStore state changed, do something!')
+      //barChartData.datasets.data = data.value.stats
+    },
+  )
 </script>
 
 <style lang="scss">

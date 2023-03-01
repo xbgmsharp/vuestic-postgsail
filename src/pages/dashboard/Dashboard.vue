@@ -11,12 +11,12 @@
     </div>
   </div>
 
-  <charts :pgdata="data.stats" />
+  <charts />
 
   <div class="row">
     <div class="flex md12 xs12">
       <va-card>
-        <va-card-title>{{ t('dashboard.title') }}</va-card-title>
+        <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
         <va-card-content>
           FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}<br />
           Backend version: {{ versions.api_version }}, {{ versions.sys_version }}<br />
@@ -41,7 +41,7 @@
   const { fetchVersions, fetchSettings } = GlobalStore
 
   const CacheStore = useCacheStore()
-  const { data, getInfoTiles, logs_by_month } = storeToRefs(CacheStore)
+  const { data, getInfoTiles } = storeToRefs(CacheStore)
   const { logs, stays, moorages, InfoTiles, barChart } = CacheStore
 
   console.log(import.meta.env)
@@ -89,20 +89,19 @@
   */
 
   onMounted(async () => {
+    // Load version
     fetchVersions(ver.value)
-    await fetchSettings()
-    console.log(GlobalStore.settings)
+    // Load cache
     const mylogs = await logs()
     console.log(mylogs)
     const mystays = await stays()
     console.log(mystays)
     const mymoorages = await moorages()
     console.log(mymoorages)
+    // Load Dashboard
     InfoTiles()
     barChart()
-    console.log(data.value)
     console.log(getInfoTiles.value)
-    console.log(logs_by_month.value)
     infoTiles.value[0].value = data.value.tiles[0]
     infoTiles.value[1].value = data.value.tiles[1]
     infoTiles.value[2].value = data.value.tiles[2]

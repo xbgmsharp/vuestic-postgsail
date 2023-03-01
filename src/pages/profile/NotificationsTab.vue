@@ -142,7 +142,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+  // TODO update setup with lang="ts"
   import { useI18n } from 'vue-i18n'
   import { ref, onBeforeMount } from 'vue'
   import { storeToRefs } from 'pinia'
@@ -185,7 +186,8 @@
     }
   }
 
-  const UpdatePref = async (key: string, value: any) => {
+  //const UpdatePref = async (key: string, value: any) => {
+  const UpdatePref = async (key, value) => {
     if (!key) {
       return
     }

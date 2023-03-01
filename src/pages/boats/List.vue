@@ -86,7 +86,7 @@
       const response = await api.vessels()
       if (response.data && Array.isArray(response.data)) {
         if (response.data.length > 0) {
-          console.warn('api.vessels() response...', response.data)
+          //console.warn('api.vessels() response...', response.data)
           rowsData.value.splice(0, rowsData.value.length || [])
           rowsData.value.push(...response.data)
         } else {

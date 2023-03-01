@@ -126,13 +126,14 @@
     try {
       const api = new PostgSail()
       const response = await api.signin(payload)
-      if (response.data.token) {
+      if (response.data && response.data.token) {
         signupSuccess.value = true
         api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
-        GlobalStore.userName = response.data.username
+        // Fetch updated settings then route
+        await GlobalStore.fetchSettings()
         setTimeout(() => {
-          router.push({ path: '/' })
-        }, 1100)
+          router.push({ name: 'activate' })
+        }, 1000)
       } else {
         throw { response }
       }

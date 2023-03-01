@@ -48,7 +48,8 @@
   const { t } = useI18n()
 
   const isBusy = ref(false)
-  const email = ref(localStorage.getItem('email') || '')
+  const email = ref(GlobalStore.settings?.email || '')
+  //const email = ref('')
   const password = ref('')
   const emailErrors = ref('')
   const passwordErrors = ref('')
@@ -75,14 +76,14 @@
       pass: password.value,
     }
 
-    //localStorage.setItem('email', email.value)
-
     try {
       const api = new PostgSail(),
         response = await api.login(payload)
       if (response.data.token) {
         // TODO force email validation via code
         api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
+        // Fetch updated settings then route
+        await GlobalStore.fetchSettings()
         router.push({ name: 'dashboard' })
       } else {
         throw { response }

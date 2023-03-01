@@ -18,7 +18,7 @@
               />
             </div>
             <div class="flex xs12">
-              <div class="d-flex justify--end">
+              <div class="d-flex justify-end">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('stays.list.filter.reset') }}</va-button>
               </div>
             </div>

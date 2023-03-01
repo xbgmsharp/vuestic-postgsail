@@ -101,22 +101,22 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/boats/Add.vue'),
       },
       {
-        path: '/profile',
+        path: 'profile',
         name: 'profile',
         component: () => import('../pages/profile/Profile.vue'),
       },
       {
-        path: '/privacy',
+        path: 'privacy',
         name: 'privacy',
         component: () => import('../pages/privacy/Privacy.vue'),
       },
       {
-        path: '/faq',
+        path: 'faq',
         name: 'faq',
         component: () => import('../pages/privacy/Privacy.vue'),
       },
       {
-        path: '/grafana',
+        path: 'grafana',
         name: 'grafana',
         component: () => import('../pages/grafana/Grafana.vue'),
         beforeEnter(to, from, next) {
@@ -124,14 +124,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: '/activate',
+        path: 'activate',
         name: 'activate',
         component: () => import('../pages/activate/Activate.vue'),
       },
       {
-        path: '/monitoring',
+        path: 'monitoring',
         name: 'monitoring',
         component: () => import('../pages/monitoring/Monitoring.vue'),
+      },
+      {
+        name: 'stats',
+        path: 'stats',
+        component: () => import('../pages/stats/Stats.vue'),
+      },
+      {
+        name: 'timelapse',
+        path: 'timelapse/:id?',
+        component: () => import('../pages/timelapse/Timelapse.vue'),
       },
     ],
   },
@@ -157,11 +167,24 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = useGlobalStore().token
+  const validEmail = useGlobalStore().validEmail || false
+  const hasVessel = useGlobalStore().hasVessel || false
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     // If not login redirect to login page.
     next({ name: 'login' })
   } else {
-    if (to.name === 'login' && loggedIn) {
+    // Enforce email otp validation
+    if (to.name != 'activate' && loggedIn && !validEmail) {
+      next({ name: 'activate' })
+      return
+    }
+    // Enforce vessel creation
+    if (to.name != 'boat-new' && loggedIn && validEmail && !hasVessel) {
+      next({ name: 'boat-new' })
+      return
+    }
+    // All good go to dashboard
+    if (to.name === 'login' && loggedIn && validEmail && hasVessel) {
       next({ name: 'dashboard' })
       return
     }

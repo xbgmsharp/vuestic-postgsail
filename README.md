@@ -26,27 +26,28 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 ### Todo
 
-- [ ] Layout
-  - [ ] Update theme icon to night/day mode theme, like openplotter.cloud
-  - [ ] Update theme icon to day and night vision
+- [x] Layout
+  - [x] Update theme icon to night/day mode theme, like openplotter.cloud
+  - [x] Update theme icon to day and night vision
 - [ ] Logs:
   - [ ] Add Action '...' column with sub menu to export to CVS, GPX
   - [ ] Add button with icon to export to CVS to log list page
-  - [ ] Add button with to export to GPX to log details page
 - [ ] Log:
   - [ ] Add trash and save icon to log details page next to text
+  - [x] Add button with icon to export to CVS to log details page
+  - [x] Add button with icon to export to GPX to log details page
 - [ ] Add Profile/Settings page
-  - [ ] require backend update
+  - [x] require backend update
 - [x] Add new vessel page
   - [x] require backend update
-- [ ] Add Stays page
-  - [ ] require backend update
+- [x] Add Stays page
+  - [x] require backend update
 - [ ] Add Moorage page
-  - [ ] require backend update
-- [ ] Add Monitoring page
-  - [ ] require backend update
-- [ ] Menu icon png? svg?
-  - [ ] boats - icon basic sailboat
+  - [x] require backend update
+- [x] Add Monitoring page
+  - [x] require backend update
+- [x] Menu icon
+  - [x] boats - icon basic sailboat
   - [ ] moorages - icon anchor
   - [ ] stays - icon alone
   - [ ] logs - icon logbook
@@ -57,19 +58,22 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Security
   - [ ] Implement refresh token
     - [ ] require backend update
-  - [ ] Add Auth0 authentification
+  - [ ] Add external authentification
     - [ ] require backend update
+- [ ] Login
+  - [x] Force email validation via One Time code on login
+    - [x] require backend update
 - [ ] Singup
-  - [ ] Create `/activate` page for OTP validation via QS?
-  - [ ] Force email validation via One Time code
-    - [ ] require backend update
+  - [x] Create `/activate` page for OTP validation via QS?
+  - [x] Force email validation via One Time code on Singup
+    - [x] require backend update
 - [ ] Implement notifications
   - [ ] require backend update
 - [ ] Add Activity page with a timeline of events, history of notifications?
   - [ ] require backend update
 - [ ] Vessels:
-  - [ ] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
-  - [ ] Disable boat details page when missing lat_contact null
+  - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
+  - [x] Disable boat details page when missing lat_contact null
   - [ ] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
   - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
   - [ ] Add vessel type or even all vessel data?
@@ -80,25 +84,21 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Add telegram bot in the main menu page with QR Code
   - [ ] Account verification
     - [x] require backend update OTP
-- [x] Toggle sample data on build
+- [x] Sample data in build
   - [x] include in dev
   - [x] exclude in prod
 - [ ] Settings
+  - [ ] Update parameters
   - [ ] PushOver Web-Based Subscription Process
     - [ ] Subscription URL format
     - [x] require backend update OTP
-
-```
-"https://pushover.net/subscribe/PostgSail-23uvrho1d5y6n3e"
-+ "?success=" + urlencode("https://beta.openplotter.cloud/api/rpc/pushover_fn?token=" + generate_otp_fn({{email}}))
-+ "&failure=" + urlencode("https://beta.openplotter.cloud/settings");
-```
-
+  - [ ] Telegram bot subscription process
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
   - [ ] require backend update
 - [ ] Timelapse
-  - [ ] Geojson replay functionality
+  - [x] Log Geojson replay functionality
+  - [ ] Generic Geojson replay functionality base on date or multiple logbook
 - [ ] Loading screen
   - [ ] Based on variable isLoading from store
   - [ ] Display an animated gif while loading content, like in app.bromera.eu
@@ -116,24 +116,25 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 - [ ] /, Home, Dashboard
   - [ ] Widget - Current Boats position map
-  - [ ] Widget Total of logs
-  - [ ] Widget Total Stays, Moorage,
+  - [x] Widget Total of Logs, Stays, Moorage,
+  - [ ] Widget ?!?
   - [ ] Widget Meteo
-- [ ] /logs/, Logs
-  - [ ] Table layout from api view, filter and sort
-- [ ] /log/:id
-  - [ ] Map layout from api
-  - [ ] Table layout from api
-  - [ ] Edit notes and name
+- [x] /logs/, Logs
+  - [x] Table layout from api view, filter and sort
+- [x] /log/:id
+  - [x] Map layout from api
+  - [x] Table layout from api
+  - [x] Edit notes and name
+  - [x] Link to timelapse
 - [ ] /moorages, Moorages
   - [ ] Map layout from api
-  - [ ] Table layout from api view, filter and sort
+  - [x] Table layout from api view, filter and sort
 - [ ] /moorage/:id
   - [ ] Map layout from api
   - [ ] Table layout from api,
   - [ ] Edit notes and name and Stayed at (select)
 - [ ] /stays, stays
-  - [ ] Table layout from api view, filter and sort
+  - [x] Table layout from api view, filter and sort
 - [ ] /stay/:id
   - [ ] Map layout from api
   - [ ] Table layout from api
@@ -141,17 +142,17 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] /map, Map
   - [ ] Same as Moorage Map layout from api?
     - [ ] Link to /moorages/map/?
-- [ ] /boats, Boats
-  - [ ] Table layout editable?
-  - [ ] Add geojson we properties and popupcontent
-  - [ ] Satellite view
+- [x] /boats, Boats
+  - [x] Table layout editable?
+  - [x] Add geojson we properties and popupcontent
+  - [x] Satellite view
 - [ ] /timelapse, Timelapse
   - [ ] Map layout from api? todo
 - [ ] /stats, Stats/Dashboard
   - [ ] Cards layout
   - [ ] Editable date value range
-- [ ] /monitoring, Monitoring
-  - [ ] Steering layout from api? todo
+- [x] /monitoring, Monitoring
+  - [x] Steering layout from api? todo
 - [ ] /signup, Sign up
   - [ ] Form layout register from api
 - [ ] /singin, Sign in
@@ -160,4 +161,4 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Table & Form layout from api?
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
-- [ ] /grafana, external link, open a new window/tab
+- [x] /grafana, external link, open a new window/tab

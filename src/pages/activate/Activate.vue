@@ -3,7 +3,7 @@
     <va-card-title>{{ $t('auth.otp') }}</va-card-title>
     <va-card-content>
       <div class="box layout gutter-md">
-        <strong>{{ $t('auth.otp') }}</strong>
+        <strong>{{ $t('auth.otp_message') }}</strong>
         <form @submit.prevent="onsubmit()">
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
@@ -71,10 +71,13 @@
       const response = await api.otp_email(payload)
       if (typeof response.data === 'boolean' && response.data) {
         otpSuccess.value = true
-        //GlobalStore.email_valid = response.data || true
-        setTimeout(() => {
+        // Fetch updated settings then route
+        await GlobalStore.fetchSettings()
+        router.push({ path: '/' })
+        /*setTimeout(() => {
           router.push({ path: '/' })
-        }, 1100)
+        }, 1000)
+        */
       } else {
         throw { response }
       }

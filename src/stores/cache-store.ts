@@ -4,7 +4,7 @@ import PostgSail from '../services/postgsail.js'
 
 // Types
 
-type JSObj = Record<string, unknown>
+type JSObj = Record<string, any>
 type Callback = (argument: unknown) => unknown
 
 interface Response {
@@ -12,6 +12,9 @@ interface Response {
 }
 interface Data extends Response {
   ts: number
+}
+interface JSONObject {
+  [k: string]: number[]
 }
 
 // Config
@@ -59,6 +62,7 @@ export const useCacheStore = defineStore('cache', {
         moorages: { data: [] },
         stats: new Array(12).fill(0),
         tiles: new Array(3).fill(0),
+        lines: {},
       },
     })
   },
@@ -74,8 +78,10 @@ export const useCacheStore = defineStore('cache', {
     async getData(addr: string[], assertion: Callback[]) {
       const now: number = new Date().getTime(),
         [parent, index]: [JSObj, string] = resolveAddr(this.data, addr)
-      let entry = (parent[index] ?? { ts: 0 }) as Data
+      let entry = (parent[index] ? (parent[index].data.length > 0 ? parent[index] : { ts: 0 }) : { ts: 0 }) as Data
+      console.log(entry)
       if (navigator.onLine) {
+        console.log('navigator.onLine')
         if (now - entry.ts > ttl) {
           entry = {
             data: ((await this.API_get(...addr)) as Response).data,
@@ -86,6 +92,9 @@ export const useCacheStore = defineStore('cache', {
           } else {
             console.error('CacheStore.getData: ' + assertion[1](entry.data))
           }
+        } else {
+          const fresh = now - entry.ts > ttl
+          console.log(`ttl is fresh, ${fresh}`)
         }
       } else {
         if (!entry.data) {
@@ -131,8 +140,20 @@ export const useCacheStore = defineStore('cache', {
       this.data.logs
         ? this.data.logs.data.forEach(({ Started }) => (this.data.stats[new Date(Started).getMonth()] += 1))
         : this.data.stats
+      return this.data.stats
     },
-    //mixedChart() {},
+    lineChartbyYear() {
+      const obj = {} as JSONObject
+      // Extract the year and create a 12 months array
+      this.data.logs.data.forEach(({ Started }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)))
+      // Extract the month and sum the months.
+      this.data.logs.data.forEach(
+        ({ Started }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1),
+      )
+      console.log(obj)
+      this.data.lines = obj
+      return obj
+    },
   },
 
   getters: {

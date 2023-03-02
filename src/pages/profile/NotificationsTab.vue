@@ -21,18 +21,26 @@
           </tr>
           <template v-if="settings.preferences.phone_notifications">
             <tr>
-              <td>{{ t('profile.pushover') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.pushover') }}</td>
               <td>
                 <div class="centerContainer">
-                  <a :href="pushover_link" target="_bank">Link Your Pushover Account to Enable</a>
+                  <template
+                    v-if="!settings.preferences['pushover_user_key'] || !settings.preferences.pushover_user_key.length"
+                  >
+                    <a :href="pushover_link" target="_bank">Link Your Pushover Account to Enable</a>
+                  </template>
+                  <template v-else> Your user is connected to Pushover. </template>
                 </div>
               </td>
             </tr>
             <tr>
-              <td>{{ t('profile.telegram_bot') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.telegram_bot') }}</td>
               <td>
                 <div class="centerContainer">
-                  <a :href="telegram_link" target="_bank">Add PostgSail bot to a group or direct chat.</a>
+                  <template v-if="!settings.preferences['telegram'] || settings.preferences.telegram.length">
+                    <a :href="telegram_link" target="_bank">Add PostgSail bot to a group or direct chat.</a>
+                  </template>
+                  <template v-else> Your user is connected to @postgsail_bot. </template>
                 </div>
               </td>
             </tr>
@@ -170,6 +178,13 @@
   const telegram_link = ref('https://t.me/pgsail_bot')
 
   async function handleLink() {
+    if (
+      settings.preferences &&
+      settings.preferences['pushover_user_key'] &&
+      settings.preferences.pushover_user_key.length > 10
+    ) {
+      return
+    }
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

@@ -64,7 +64,7 @@ class PostgSail {
    */
   check() {
     if (!navigator.onLine || this.app_url == '' || this.app_url == null) {
-      console.log('PostgSail: NetworkError when attempting to fetch resource.')
+      console.warn('PostgSail: NetworkError when attempting to fetch resource.')
     }
   }
 
@@ -158,15 +158,15 @@ class PostgSail {
   }
 
   async log_export_gpx(payload) {
-    return this.API.get(`rpc/export_logbook_gpx_fn`, payload)
+    return this.API.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 
   async log_export_geojson(payload) {
-    return this.API.get(`rpc/export_logbook_geojson_fn`, payload)
+    return this.API.post(`rpc/export_logbook_geojson_fn`, payload)
   }
 
   async log_export_geojson_point_fn(payload) {
-    return this.API.get(`rpc/export_logbook_geojson_point_fn`, payload)
+    return this.API.post(`rpc/export_logbook_geojson_point_fn`, payload)
   }
 
   /*

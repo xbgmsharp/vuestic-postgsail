@@ -158,16 +158,17 @@ class PostgSail {
   }
 
   async log_export_gpx(payload) {
-    return this.API.post(`rpc/export_logbook_gpx_fn`, payload)
+    return this.API.get(`rpc/export_logbook_gpx_fn`, payload)
   }
 
   async log_export_geojson(payload) {
-    return this.API.post(`rpc/export_logbook_geojson_fn`, payload)
+    return this.API.get(`rpc/export_logbook_geojson_fn`, payload)
   }
 
   async log_export_geojson_point_fn(payload) {
-    return this.API.post(`rpc/export_logbook_geojson_point_fn`, payload)
+    return this.API.get(`rpc/export_logbook_geojson_point_fn`, payload)
   }
+
   /*
    * Moorages API endpoint
    */

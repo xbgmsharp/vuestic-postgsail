@@ -45,11 +45,11 @@ export const useGlobalStore = defineStore('global', {
             low_outdoor_temperature_threshold: 3.0,
           },
           pushover: {} /* not used */,
-          telegram: {} /* should be expose? */,
+          telegram: {},
           email_valid: false,
           public_logs: true,
           public_stats: true,
-          pushover_user_key: '' /* should be expose? */,
+          pushover_user_key: '',
           public_profile: true,
           instagram_handle: '',
           public_logs_list: false,
@@ -75,11 +75,11 @@ export const useGlobalStore = defineStore('global', {
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
     },
-    changeUserName(username: string) {
+    changeUserName(username) {
       this.userName = username
     },
 
-    async fetchVersions(web_version: string) {
+    async fetchVersions(web_version) {
       const api = new PostgSail()
       try {
         const response = await api.versions()
@@ -111,7 +111,7 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    async updatePref(key: string, value: any) {
+    async updatePref(key, value) {
       const api = new PostgSail()
       try {
         const response = await api.update_user_preferences({ key: `{${key}}`, value: value })
@@ -123,7 +123,7 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    set_web_version(web_version: string) {
+    set_web_version(web_version) {
       this.versions.web_version = web_version
     },
   },

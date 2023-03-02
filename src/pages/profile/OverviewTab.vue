@@ -83,7 +83,7 @@
           </tr>
           <template v-if="settings.preferences.public_profile">
             <tr>
-              <td>{{ t('profile.public_stats') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_stats') }}</td>
               <td>
                 <div class="centerContainer">
                   <va-switch
@@ -100,7 +100,7 @@
               </td>
             </tr>
             <tr>
-              <td>{{ t('profile.public_timelapse') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_timelapse') }}</td>
               <td>
                 <div class="centerContainer">
                   <va-switch
@@ -117,7 +117,7 @@
               </td>
             </tr>
             <tr>
-              <td>{{ t('profile.public_logs_list') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_logs_list') }}</td>
               <td>
                 <div class="centerContainer">
                   <va-switch
@@ -134,7 +134,7 @@
               </td>
             </tr>
             <tr>
-              <td>{{ t('profile.public_logs') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_logs') }}</td>
               <td>
                 <div class="centerContainer">
                   <va-switch

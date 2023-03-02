@@ -10,18 +10,18 @@
         </va-card>
       </div>
     </div>
-    <!--
+
     <div class="row">
       <div class="flex md12 xs12">
-        <va-card v-if="mixedChartData" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.verticalBarChart') }}</va-card-title>
+        <va-card v-if="mixedChartDataComputed" class="chart-widget">
+          <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
           <va-card-content>
-            <va-chart :data="mixedChartData" type="bar" />
+            <va-chart :data="mixedChartDataComputed" type="bar" />
           </va-card-content>
         </va-card>
       </div>
     </div>
-    -->
+
     <!--
     <div class="row row-equal">
       <div class="flex xl6 xs12 lg6">
@@ -100,7 +100,7 @@
 
   const CacheStore = useCacheStore()
   const { data, logs_by_month } = storeToRefs(CacheStore)
-  const { barChart } = CacheStore
+  const { barChart, lineChartbyYear } = CacheStore
 
   const barChartData = {
     labels: [
@@ -128,7 +128,6 @@
   }
 
   //console.log(barChartData)
-  //const barChartDataGenerated = useChartData(barChartData)
 
   const mixedChartData = {
     labels: [
@@ -148,10 +147,13 @@
     datasets: [
       {
         label: 'Bar Dataset',
+        //label: 'Total',
         data: [62, 10, 3, 1, 7, 5, 17, 6, 6, 4, 9, 25],
+        //data: logs_by_month.value,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
       },
+      /*
       {
         type: 'line',
         label: 'Line Dataset',
@@ -159,28 +161,65 @@
         fill: false,
         borderColor: 'rgb(54, 162, 235)',
       },
+      */
     ],
   }
 
+  function random_rgba() {
+    var o = Math.round,
+      r = Math.random,
+      s = 255
+    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')'
+  }
+
+  function random_rgb_dark() {
+    var o = Math.floor,
+      r = Math.random,
+      s = 256
+    return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')'
+  }
+
+  const dataset = {
+    type: 'line',
+    label: 'Line Dataset',
+    data: [62, 10, 3, 1, 7, 5, 17, 6, 6, 4, 9, 25],
+    borderColor: 'rgb(255, 99, 132)',
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    fill: false,
+  }
+
+  const bar = barChart()
+  const lines = lineChartbyYear()
+
+  const mixedChartDataComputed = computed(() => {
+    const mymixedChartData = mixedChartData
+    mymixedChartData.datasets[0].data = bar
+    mymixedChartData.datasets[0].label = 'Total'
+    Object.entries(lines).forEach((elm) => {
+      const line = structuredClone(dataset)
+      line.label = elm[0]
+      line.data = elm[1]
+      line.borderColor = random_rgb_dark()
+      line.backgroundColor = line.borderColor
+      mymixedChartData.datasets.push(line)
+    })
+    console.log('mixedChartDataComputed')
+    return mymixedChartData
+  })
+
   onMounted(async () => {
-    console.log('onMounted!')
-    barChart()
-    console.log(logs_by_month.value)
-    console.log(data.value.stats)
-    //barChartData.datasets.data = data.value.stats
+    console.log('onMounted! Charts')
   })
 
   watch(logs_by_month, () => {
     console.log('logs_by_month ref changed, do something!')
     console.log(logs_by_month.value)
-    //barChartData.datasets.data = data.value.stats
   })
 
   watch(
     () => CacheStore.data.stats,
     () => {
       console.log('CacheStore state changed, do something!')
-      //barChartData.datasets.data = data.value.stats
     },
   )
 </script>

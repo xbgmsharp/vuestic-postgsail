@@ -15,9 +15,12 @@
               <div class="centerContainer">
                 <va-select
                   v-model="settings.preferences.preferred_homepage"
-                  :options="options"
+                  :options="homepage_options"
+                  text-by="description"
+                  track-by="id"
                   placeholder="Dashboard"
-                  @change="
+                  :value-by="(option) => option.id"
+                  @focusout="
                     UpdatePref(
                       'preferred_homepage',
                       settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : 0,
@@ -172,7 +175,25 @@
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
 
-  const options = ['Dashboard', 'Ship Logs', 'Monitoring', 'Statistics']
+  const homepage_options = ref([
+    {
+      id: 1,
+      description: 'Dashboard',
+    },
+    {
+      id: 2,
+      description: 'Ship Logs',
+    },
+    {
+      id: 3,
+      description: 'Monitoring',
+    },
+    {
+      id: 4,
+      description: 'Statistics',
+    },
+  ])
+  // TODO should be computed?
   console.log(`${settings.value.first} ${settings.value.last}`)
   const fullName = ref(`${settings.value.first} ${settings.value.last}`)
   // TODO Issue getting default value as per store setup
@@ -184,7 +205,7 @@
 
   //const UpdatePref = async (key: string, value: any) => {
   const UpdatePref = async (key, value) => {
-    if (!key) {
+    if (!key || typeof value == 'undefined') {
       return
     }
     console.debug(`Updating ${key}:${value}`)

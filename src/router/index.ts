@@ -143,6 +143,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'timelapse/:id?',
         component: () => import('../pages/timelapse/Timelapse.vue'),
       },
+      {
+        name: 'pushover',
+        path: 'pushover',
+        component: () => import('../pages/activate/Pushover.vue'),
+      },
     ],
   },
   {

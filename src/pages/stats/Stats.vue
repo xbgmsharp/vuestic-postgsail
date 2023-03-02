@@ -43,8 +43,8 @@
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'
 
-  import stats_logs from '../../data/stats_logs.json'
-  import stats_moorages from '../../data/stats_moorages.json'
+  //import stats_logs from '../../data/stats_logs.json'
+  //import stats_moorages from '../../data/stats_moorages.json'
 
   const { t } = useI18n()
   const isBusy = ref(false)
@@ -66,12 +66,12 @@
       if (response.data && response.data[0]) {
         moorages.value = response.data[0]
       }
-    } catch (e) {
+    } catch (e: any) {
       apiError.value = e
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
-        logs.value = stats_logs[0]
-        moorages.value = stats_moorages[0]
+        logs.value = 2 //stats_logs[0]
+        moorages.value = 1 //stats_moorages[0]
       }
     } finally {
       isBusy.value = false

@@ -1,9 +1,9 @@
 <template>
-  <template v-if="isLoading">
+  <!--<template v-if="isLoading">
     <div class="row justify-center">
       <LoadingScreen />
     </div>
-  </template>
+  </template>-->
   <template v-if="!isLoading">
     <div class="app-layout">
       <navbar />
@@ -44,7 +44,7 @@
 
   import Navbar from '../components/navbar/Navbar.vue'
   import Sidebar from '../components/sidebar/Sidebar.vue'
-  import LoadingScreen from '../components/loadingScreen.vue'
+  //  import LoadingScreen from '../components/loadingScreen.vue'
 
   import PostgSail from '../services/postgsail.js'
 

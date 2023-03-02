@@ -75,11 +75,11 @@ export const useGlobalStore = defineStore('global', {
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
     },
-    changeUserName(username) {
+    changeUserName(username: string) {
       this.userName = username
     },
 
-    async fetchVersions(web_version) {
+    async fetchVersions(web_version: string) {
       const api = new PostgSail()
       try {
         const response = await api.versions()
@@ -111,19 +111,20 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    async updatePref(key, value) {
+    async updatePref(key: string, value: any) {
       const api = new PostgSail()
       try {
-        const response = await api.update_user_preferences({ key: `{${key}}`, value: value })
-        this.$state.settings.preferences[key] = value
-        this.settings.preferences[key] = value
+        const response = await api.update_user_preferences({ key: `{${key}}`, value: value }),
+          preferences: Record<string, any> = this.settings.preferences
+        //preferences: Record<string, any> = this.$state.settings.preferences
+        preferences[key] = value
         console.log(response)
         return response
       } catch (error) {
         console.log(error)
       }
     },
-    set_web_version(web_version) {
+    set_web_version(web_version: string) {
       this.versions.web_version = web_version
     },
   },

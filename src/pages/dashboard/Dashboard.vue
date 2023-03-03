@@ -42,7 +42,7 @@
 
   const CacheStore = useCacheStore()
   const { data, getInfoTiles } = storeToRefs(CacheStore)
-  const { logs, stays, moorages, InfoTiles, barChart } = CacheStore
+  const { logs, stays, moorages, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
   console.log(import.meta.env)
   console.log(import.meta.env.VITE_GIT_VERSION)
@@ -98,9 +98,10 @@
     console.log(mystays)
     const mymoorages = await moorages()
     console.log(mymoorages)
-    // Load Dashboard
+    // Load Charts Dashboard
     InfoTiles()
     barChart()
+    lineChartbyYear()
     console.log(getInfoTiles.value)
     infoTiles.value[0].value = data.value.tiles[0]
     infoTiles.value[1].value = data.value.tiles[1]

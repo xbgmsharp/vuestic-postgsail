@@ -1,5 +1,6 @@
 <template>
   <div class="charts">
+    <!--
     <div class="row">
       <div class="flex md12 xs12">
         <va-card v-if="barChartData" class="chart-widget">
@@ -10,6 +11,7 @@
         </va-card>
       </div>
     </div>
+    -->
 
     <div class="row">
       <div class="flex md12 xs12">
@@ -32,18 +34,15 @@
           </va-card-content>
         </va-card>
       </div>
-      -->
-    <!--
+
       <div class="flex xl6 xs12 lg6">
-        <va-card v-if="horizontalBarChartDataGenerated" class="chart-widget">
+        <va-card v-if="barChartData" class="chart-widget">
           <va-card-title>{{ t('dashboard.charts.horizontalBarChart') }}</va-card-title>
           <va-card-content>
-            <va-chart :data="horizontalBarChartDataGenerated" type="horizontal-bar" />
+            <va-chart :data="mixedChartDataComputed" type="horizontal-bar" />
           </va-card-content>
         </va-card>
       </div>
-      -->
-    <!--
       <div class="flex xl6 xs12 lg6">
         <va-card v-if="barChartData" class="chart-widget">
           <va-card-title>{{ t('dashboard.charts.lineChart') }}</va-card-title>
@@ -52,8 +51,10 @@
           </va-card-content>
         </va-card>
       </div>
-    </div>
-    -->
+
+    </div> //"row row-equal"
+-->
+
     <!--
     <div class="row">
       <div class="flex md12 xs12">
@@ -131,18 +132,18 @@
 
   const mixedChartData = {
     labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      t('dashboard.months.january'),
+      t('dashboard.months.february'),
+      t('dashboard.months.march'),
+      t('dashboard.months.april'),
+      t('dashboard.months.may'),
+      t('dashboard.months.june'),
+      t('dashboard.months.july'),
+      t('dashboard.months.august'),
+      t('dashboard.months.september'),
+      t('dashboard.months.october'),
+      t('dashboard.months.november'),
+      t('dashboard.months.december'),
     ],
     datasets: [
       {
@@ -203,7 +204,6 @@
       line.backgroundColor = line.borderColor
       mymixedChartData.datasets.push(line)
     })
-    console.log('mixedChartDataComputed')
     return mymixedChartData
   })
 

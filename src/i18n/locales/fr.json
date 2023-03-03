@@ -19,6 +19,7 @@
     "otp": "Enter the verification code",
     "otp_validate": "Validate",
     "otp_validated": "OTP code validated successfully.",
+    "pushover_message": "Pushover validation",
     "reset": "Your password has been reset successfully.",
     "errors": {
       "cedentials": "Wrong credentials",
@@ -72,8 +73,22 @@
     "versions": "Versions",
     "charts": {
       "verticalBarChart": "Log entry per month",
-      "horizontalBarChart": "Log entry per month per year",
+      "mixedChart": "Log entry per month per year",
       "lineChart": "Log entry per year"
+    },
+    "months": {
+      "january": "Janvier",
+      "february": "Fevrier",
+      "march": "Mars",
+      "april": "Avril",
+      "may": "Mai",
+      "june": "Juin",
+      "july": "Juillet",
+      "august": "Aout",
+      "september": "Setembre",
+      "october": "Octobre",
+      "november": "Novembre",
+      "december": "Decembre"
     }
   },
   "api": {

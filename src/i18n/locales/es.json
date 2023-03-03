@@ -19,6 +19,7 @@
     "otp": "Enter the verification code",
     "otp_validate": "Validate",
     "otp_validated": "OTP code validated successfully.",
+    "pushover_message": "Pushover validation",
     "reset": "Your password has been reset successfully.",
     "errors": {
       "cedentials": "Wrong credentials",
@@ -72,8 +73,22 @@
     "versions": "Versions",
     "charts": {
       "verticalBarChart": "Log entry per month",
-      "horizontalBarChart": "Log entry per month per year",
+      "mixedChart": "Log entry per month per year",
       "lineChart": "Log entry per year"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
     }
   },
   "api": {
@@ -185,7 +200,6 @@
         "token": "Token",
         //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
         "message": "Copy paste this token into your postgsail plugin instance of signalk."
-
       }
     },
     "errors": {

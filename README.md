@@ -61,22 +61,23 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Add external authentification
     - [ ] require backend update
 - [ ] Login
+  - [x] Create `/activate` page for OTP validation
   - [x] Force email validation via One Time code on login
     - [x] require backend update
 - [ ] Singup
-  - [x] Create `/activate` page for OTP validation via QS?
+  - [x] Create `/activate` page for OTP validation
   - [x] Force email validation via One Time code on Singup
     - [x] require backend update
-- [ ] Implement notifications
-  - [ ] require backend update
-- [ ] Add Activity page with a timeline of events, history of notifications?
+- [x] Implement notifications Pushover, Telegram
+  - [x] require backend update
+- [ ] Add Activity page with a timeline of events, history of notifications
   - [ ] require backend update
 - [ ] Vessels:
   - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
   - [x] Disable boat details page when missing lat_contact null
   - [ ] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
   - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
-  - [ ] Add vessel type or even all vessel data?
+  - [ ] Add vessel type or even all vessel data
     - [ ] require backend update
 - [ ] Add Terms of Use page
 - [ ] Update translation

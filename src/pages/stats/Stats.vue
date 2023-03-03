@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+  // TODO update setup with lang="ts"
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'

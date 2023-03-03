@@ -38,7 +38,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+  // TODO update setup with lang="ts"
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'
@@ -67,6 +68,7 @@
         moorages.value = response.data[0]
       }
     } catch (e) {
+      // error TS2322: Type 'unknown' is not assignable to type 'null'.
       apiError.value = e
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)

@@ -163,3 +163,8 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
 - [x] /grafana, external link, open a new window/tab
+
+## Dependencies
+
+- [ ] Remove axios dependencies in favor of fetch
+- [ ] Update to the latest vestion chart.js and vue-chart.js

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-import PostgSail from '../services/postgsail.js'
+import PostgSail from '../services/api-client.js'
 
 // Types
 
@@ -84,7 +84,7 @@ export const useCacheStore = defineStore('cache', {
         console.log('navigator.onLine')
         if (now - entry.ts > ttl) {
           entry = {
-            data: ((await this.API_get(...addr)) as Response).data,
+            data: (await this.API_get(...addr)) as Response,
             ts: now,
           } as Data
           if (assertion[0](entry.data)) {
@@ -159,5 +159,6 @@ export const useCacheStore = defineStore('cache', {
   getters: {
     getInfoTiles: (state) => state.data.tiles,
     logs_by_month: (state) => state.data.stats,
+    logs_by_year_by_month: (state) => state.data.lines,
   },
 })

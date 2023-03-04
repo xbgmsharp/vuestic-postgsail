@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-import PostgSail from '../services/postgsail.js'
+import PostgSail from '../services/api-client.js'
 
 export const useGlobalStore = defineStore('global', {
   state: () => {
@@ -83,7 +83,7 @@ export const useGlobalStore = defineStore('global', {
       const api = new PostgSail()
       try {
         const response = await api.versions()
-        this.versions = response.data
+        this.versions = response
         this.versions.web_version = web_version
         console.log(this.versions)
       } catch (error) {
@@ -94,18 +94,17 @@ export const useGlobalStore = defineStore('global', {
       const api = new PostgSail()
       try {
         const response = await api.settings()
-        this.settings = response.data.settings
-        this.userName = response.data.settings?.username
-        this.validEmail = response.data.settings?.preferences?.email_valid
-        this.hasVessel = response.data.settings?.has_vessel
+        this.settings = response.settings
+        this.userName = response.settings?.username
+        this.validEmail = response.settings?.preferences?.email_valid
+        this.hasVessel = response.settings?.has_vessel
         this.$state.settings.preferences = {
           ...this.$state.settings.preferences,
-          ...response.data.settings.preferences,
+          ...response.settings.preferences,
         }
-        //this.$state.settings = response.data.settings
-        this.$state.userName = response.data.settings?.username
-        this.$state.validEmail = response.data.settings?.preferences?.email_valid
-        this.$state.hasVessel = response.data.settings?.has_vessel
+        this.$state.userName = response.settings?.username
+        this.$state.validEmail = response.settings?.preferences?.email_valid
+        this.$state.hasVessel = response.settings?.has_vessel
         console.log(this.settings)
       } catch (error) {
         console.log(error)

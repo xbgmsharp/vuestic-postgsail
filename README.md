@@ -90,10 +90,10 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] exclude in prod
 - [ ] Settings
   - [ ] Update parameters
-  - [ ] PushOver Web-Based Subscription Process
-    - [ ] Subscription URL format
+  - [x] PushOver Web-Based Subscription Process
+    - [x] Subscription URL format
     - [x] require backend update OTP
-  - [ ] Telegram bot subscription process
+  - [x] Telegram bot link
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
   - [ ] require backend update
@@ -103,6 +103,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Loading screen
   - [ ] Based on variable isLoading from store
   - [ ] Display an animated gif while loading content, like in app.bromera.eu
+  - [x] page loadingScreen
 
 #### Core
 
@@ -166,5 +167,10 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 ## Dependencies
 
-- [ ] Remove axios dependencies in favor of fetch
+- [ ] Remove axios dependency in favor of nodejs fetch
 - [ ] Update to the latest vestion chart.js and vue-chart.js
+- [ ] Update to the latest vestion vue-i18n
+- [ ] Update to the latest vestion vitejs and plugins
+- [ ] Remove medium-editor dependency
+- [ ] Remove amcharts dependency
+- [ ] Remove date-fns dependency

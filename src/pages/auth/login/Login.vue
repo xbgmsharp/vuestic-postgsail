@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-  import PostgSail from '../../../services/postgsail.js'
+  import PostgSail from '../../../services/api-client.js'
   import { computed, ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
@@ -82,12 +82,9 @@
     try {
       const api = new PostgSail(),
         response = await api.login(payload)
-      //const api = new ApiClient(),
-      //  response = await api.login(payload)
-      if (response.data.token) {
-        //api.token = response.token
-        //api.setBearerAuth((GlobalStore.token = response.token))
-        api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
+      if (response.token) {
+        api.token = response.token
+        api.setBearerAuth((GlobalStore.token = response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()
         router.push({ name: 'dashboard' })
@@ -95,7 +92,7 @@
         throw { response }
       }
     } catch ({ response }) {
-      loginError.value = response.data.message
+      loginError.value = response.message
     } finally {
       isBusy.value = false
     }

@@ -13,13 +13,14 @@ class HttpClient {
       headers: this._headers,
     })
 
-    console.log(res)
     if (res.status === 401) {
       // Unauthorized or token expired
+      console.warn('Unauthorized or token expired')
       this.router.push({ name: 'logout', params: { is401: true } })
     }
-    if (res.status === 401) {
+    if (res.status === 551) {
       // No vessel register
+      console.warn('No vessel register')
       this.router.push({ name: 'boat-new' })
     }
     if (!res.ok) throw new Error(res.statusText)

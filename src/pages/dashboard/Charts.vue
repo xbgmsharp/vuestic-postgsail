@@ -17,7 +17,7 @@
       </va-card>
       -->
       <va-card v-if="mixedChartDataComputed" class="chart-widget col-span-12">
-        <va-card-title>{{ t('charts.lineChart') }}</va-card-title>
+        <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
         <va-card-content>
           <va-chart :data="mixedChartDataComputed" type="bar" />
         </va-card-content>

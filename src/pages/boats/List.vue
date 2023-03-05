@@ -8,7 +8,7 @@
       <va-data-table :columns="columns" :items="items" :loading="isBusy" striped hoverable>
         <template #cell(name)="{ value, rowData }">
           <template v-if="vesselSuccess">
-            <router-link class="text--bold" :to="{ name: 'boat-details', params: { name: rowData.name } }">
+            <router-link class="font-bold" :to="{ name: 'boat-details', params: { name: rowData.name } }">
               {{ value }}
             </router-link>
           </template>
@@ -20,14 +20,14 @@
           {{ value }}
         </template>
         <template #cell(createdAt)="{ value }">
-          {{ dateFormat(value) }}
+          {{ value }}
         </template>
         <template #cell(actions)="{ rowData }">
           <GetBoatToken :item="rowData" />
         </template>
       </va-data-table>
       <template v-if="items.length > perPage">
-        <div class="mt-3 row justify--center">
+        <div class="mt-3 row justify-center">
           <va-pagination v-model="currentPage" input :pages="pages" />
         </div>
       </template>
@@ -40,11 +40,11 @@
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/postgsail.js'
   import GetBoatToken from './GetBoatToken.vue'
-  import { dateFormat } from '../../utils/dateFormater.js'
+  import { dateFormatUTC } from '../../utils/dateFormater.js'
 
   import vesselsDatas from '../../data/boats.json'
 
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const isBusy = ref(false)
   const vesselSuccess = ref(false)
   const apiError = ref(null)
@@ -68,8 +68,8 @@
           return {
             name: name,
             mmsi: mmsi,
-            lastContact: last_contact ? dateFormat(last_contact) : 'Pending',
-            createdAt: created_at,
+            lastContact: last_contact ? dateFormatUTC(last_contact, locale.value) : 'Pending',
+            createdAt: dateFormatUTC(created_at, locale.value),
           }
         })
       : []
@@ -117,8 +117,4 @@
   })
 </script>
 
-<style lang="scss" scoped>
-  .va-table {
-    width: 100%;
-  }
-</style>
+<style lang="scss" scoped></style>

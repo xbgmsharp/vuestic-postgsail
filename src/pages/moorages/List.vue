@@ -4,25 +4,23 @@
       <va-card-title>{{ $t('moorages.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
-          <div class="row">
-            <div class="flex xs6">
+          <div class="py-2 grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-input
                 v-model="filter.name"
                 :label="$t('moorages.list.filter.name')"
                 placeholder="Filter by name..."
               />
             </div>
-            <div class="flex xs6">
-              <va-date-input
-                v-model="filter.dateRange"
-                :label="$t('moorages.list.filter.date_range')"
-                style="width: 100%"
-                :readonly="false"
-                mode="range"
+            <div class="col-span-12 md:col-span-6 flex flex-col">
+              <va-input
+                v-model="filter.default_stay"
+                :label="$t('moorages.list.filter.default_stay')"
+                placeholder="Filter by stay..."
               />
             </div>
             <div class="flex xs12">
-              <div class="d-flex justify--end">
+              <div class="flex flex-row-reverse justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('moorages.list.filter.reset') }}</va-button>
               </div>
             </div>
@@ -56,6 +54,11 @@
           </template>
           <template #cell(default_stay)="{ value }">
             {{ value }}
+            <!--
+            <div style="max-width: 150px;">
+              <va-select class="mb-6" v-model="stayed_at[value]" :options="stayed_at" />
+            </div>
+            -->
           </template>
           <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
           <template #cell(arrivals)="{ value }">
@@ -82,6 +85,7 @@
 
   import staysDatas from '../../data/stays.json'
 
+  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
@@ -125,8 +129,8 @@
               switch (fkey) {
                 case 'name':
                   return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-                case 'dateRange':
-                  return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+                case 'default_stay':
+                  return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
               }
             })
           })
@@ -159,6 +163,32 @@
 
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
+  }
+
+  const updateDefaultStay = async (id, update_stayed_at) => {
+    console.log(id, update_stayed_at)
+    if (update_stayed_at) {
+      isBusy.value = true
+      updateError.value = null
+      const api = new PostgSail()
+      const payload = {
+        default_stay: update_stayed_at,
+      }
+      try {
+        const response = api.moorage_update(id, payload)
+        if (response.data) {
+          console.log('log_update success', response.data)
+        } else {
+          throw { response }
+        }
+      } catch (err) {
+        const { response } = err
+        console.log('log_update failed', response)
+        updateError.value = response.data.message
+      } finally {
+        isBusy.value = false
+      }
+    }
   }
 </script>
 

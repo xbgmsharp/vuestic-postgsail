@@ -5,14 +5,14 @@
     </template>
     <va-input
       v-model="email"
-      class="mb-3"
+      class="mb-4"
       type="email"
       :label="t('auth.email')"
       :error="!!emailErrors.length"
       :error-messages="emailErrors"
     />
 
-    <div class="d-flex justify-center mt-3">
+    <div class="flex justify-center mt-4">
       <va-button type="submit" class="my-0">{{ t('auth.reset_password') }}</va-button>
     </div>
   </form>

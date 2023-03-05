@@ -1,40 +1,36 @@
 <template>
-  <div class="row">
-    <div class="flex xs12 lg6">
-      <va-card class="mb-4 px-3">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content>
-          <table class="va-table va-table--hoverable va-table--striped">
-            <tbody>
-              <tr v-for="(value, index) in Object.entries(logs)" :key="index">
-                <td>
-                  <b>{{ value[0] }}</b>
-                </td>
-                <td>{{ value[1] }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </va-card-content>
-      </va-card>
-    </div>
+  <div class="grid grid-cols-12 items-start gap-6">
+    <va-card class="col-span-12 lg:col-span-6 p-4">
+      <va-card-title>{{ t('stats.stats') }}</va-card-title>
+      <va-card-content>
+        <table class="va-table va-table--hoverable va-table--striped">
+          <tbody>
+            <tr v-for="(value, index) in Object.entries(logs)" :key="index">
+              <td>
+                <b>{{ value[0] }}</b>
+              </td>
+              <td>{{ value[1] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </va-card-content>
+    </va-card>
 
-    <div class="flex xs12 lg6">
-      <va-card class="mb-4 px-3">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content>
-          <table class="va-table va-table--hoverable va-table--striped">
-            <tbody>
-              <tr v-for="(value, index) in Object.entries(moorages)" :key="index">
-                <td>
-                  <b>{{ value[0] }}</b>
-                </td>
-                <td>{{ value[1] }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </va-card-content>
-      </va-card>
-    </div>
+    <va-card class="col-span-12 lg:col-span-6 p-4">
+      <va-card-title>{{ t('stats.stats') }}</va-card-title>
+      <va-card-content>
+        <table class="va-table va-table--hoverable va-table--striped">
+          <tbody>
+            <tr v-for="(value, index) in Object.entries(moorages)" :key="index">
+              <td>
+                <b>{{ value[0] }}</b>
+              </td>
+              <td>{{ value[1] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </va-card-content>
+    </va-card>
   </div>
 </template>
 

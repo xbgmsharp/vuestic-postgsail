@@ -1,5 +1,5 @@
 <template>
-  <div class="made-by-component va-text-center pb-3">
+  <div class="made-by-component va-text-center pb-4">
     <span>
       ©2020-{{ year }}. Made by
       <a href="https://openplotter.cloud" class="va-link">openplotter</a>

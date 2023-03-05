@@ -1,15 +1,11 @@
 <template>
   <div class="leaflet-maps-page">
-    <div class="row">
-      <div class="flex md12 xs12">
-        <template v-if="apiError">
-          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
-        </template>
-        <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-          <div ref="mapContainer" style="height: 80vh" />
-        </va-card>
-      </div>
-    </div>
+    <template v-if="apiError">
+      <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+    </template>
+    <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
+      <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
+    </va-card>
   </div>
 </template>
 

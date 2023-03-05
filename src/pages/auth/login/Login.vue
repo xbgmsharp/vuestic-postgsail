@@ -9,7 +9,7 @@
       </template>
       <va-input
         v-model="email"
-        class="mb-3"
+        class="mb-4"
         type="email"
         :label="t('auth.email')"
         :error="!!emailErrors.length"
@@ -18,19 +18,21 @@
 
       <va-input
         v-model="password"
-        class="mb-3"
+        class="mb-4"
         type="password"
-        autocomplete="off"
         :label="t('auth.password')"
         :error="!!passwordErrors.length"
         :error-messages="passwordErrors"
       />
 
-      <div class="auth-layout__options d-flex align-center justify-space-between">
-        <router-link class="ml-1 link" :to="{ name: 'recover-password' }">{{ t('auth.recover_password') }}</router-link>
+      <div class="auth-layout__options flex items-center justify-between">
+        <va-checkbox v-model="keepLoggedIn" class="mb-0" :label="t('auth.keep_logged_in')" />
+        <router-link class="ml-1 va-link text-right" :to="{ name: 'recover-password' }">{{
+          t('auth.recover_password')
+        }}</router-link>
       </div>
 
-      <div class="d-flex justify-center mt-3">
+      <div class="flex justify-center mt-4">
         <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
       </div>
     </form>
@@ -51,6 +53,7 @@
   const email = ref(GlobalStore.settings?.email || '')
   //const email = ref('')
   const password = ref('')
+  const keepLoggedIn = ref(false)
   const emailErrors = ref('')
   const passwordErrors = ref('')
   const loginError = ref(null)
@@ -79,8 +82,11 @@
     try {
       const api = new PostgSail(),
         response = await api.login(payload)
+      //const api = new ApiClient(),
+      //  response = await api.login(payload)
       if (response.data.token) {
-        // TODO force email validation via code
+        //api.token = response.token
+        //api.setBearerAuth((GlobalStore.token = response.token))
         api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()

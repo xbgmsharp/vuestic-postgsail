@@ -1,28 +1,21 @@
 <template>
-  <div class="row">
-    <div v-for="(info, idx) in infoTiles" :key="idx" class="flex xs12 sm4">
-      <va-card class="mb-4" :color="info.color">
-        <va-card-content>
-          <va-icon :name="info.icon" />
-          <h2 class="va-h2 ma-0" style="color: white">{{ info.value }}</h2>
-          <p style="color: white">{{ t('menu.' + info.text) }}</p>
-        </va-card-content>
-      </va-card>
-    </div>
-  </div>
+  <div class="dashboard grid grid-cols-12 items-start gap-6">
+    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-12 md:col-span-4">
+      <va-card-content>
+        <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>
+        <p class="text-white">{{ t('menu.' + info.text) }}</p>
+      </va-card-content>
+    </va-card>
 
-  <charts />
+    <charts class="col-span-12" />
 
-  <div class="row">
-    <div class="flex md12 xs12">
-      <va-card>
-        <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
-        <va-card-content>
-          FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}<br />
-          Backend version: {{ versions.api_version }}, {{ versions.sys_version }}<br />
-        </va-card-content>
-      </va-card>
-    </div>
+    <va-card class="col-span-12">
+      <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
+      <va-card-content>
+        FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}<br />
+        Backend version: {{ versions.api_version }}, {{ versions.sys_version }}<br />
+      </va-card-content>
+    </va-card>
   </div>
 </template>
 
@@ -123,4 +116,14 @@
   })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .dashboard {
+    .va-card {
+      margin-bottom: 0 !important;
+      &__title {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+</style>

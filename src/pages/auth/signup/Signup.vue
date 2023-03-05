@@ -9,7 +9,7 @@
 
     <va-input
       v-model="email"
-      class="mb-3"
+      class="mb-4"
       type="email"
       :label="t('auth.email')"
       :error="!!emailErrors.length"
@@ -18,7 +18,7 @@
 
     <va-input
       v-model="password"
-      class="mb-3"
+      class="mb-4"
       type="password"
       :label="t('auth.password')"
       :error="!!passwordErrors.length"
@@ -27,7 +27,7 @@
 
     <va-input
       v-model="firstName"
-      class="mb-3"
+      class="mb-4"
       type="firstName"
       :label="t('auth.first_name')"
       :error="!!firstNameErrors.length"
@@ -36,14 +36,14 @@
 
     <va-input
       v-model="lastName"
-      class="mb-3"
+      class="mb-4"
       type="lastName"
       :label="t('auth.last_name')"
       :error="!!lastNameErrors.length"
       :error-messages="lastNameErrors"
     />
 
-    <div class="auth-layout__options d-flex align-center justify-space-between">
+    <div class="auth-layout__options flex items-center justify-between">
       <va-checkbox
         v-model="agreedToTerms"
         class="mb-0"
@@ -57,12 +57,12 @@
           </span>
         </template>
       </va-checkbox>
-      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">
+      <router-link class="ml-1 va-link text-right" :to="{ name: 'recover-password' }">
         {{ t('auth.recover_password') }}
       </router-link>
     </div>
 
-    <div class="d-flex justify-center mt-3">
+    <div class="flex justify-center mt-4">
       <va-button class="my-0" @click="onsubmit">{{ t('auth.sign_up') }}</va-button>
     </div>
   </form>

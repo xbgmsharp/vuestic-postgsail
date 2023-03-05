@@ -52,6 +52,7 @@
 </script>
 
 <script setup>
+  // TODO update setup with lang="ts"
   import PostgSail from '../../services/postgsail.js'
   import moment from 'moment/min/moment-with-locales'
   import { computed, ref, reactive, onMounted } from 'vue'
@@ -149,7 +150,7 @@
       if (Array.isArray(response.data) && response.data[0]) {
         apiSuccess.value = true
         //offline.value = true
-        offline.value = response.data[0].offline
+        //offline.value = response.data[0].offline
         apiData.row = response.data[0]
         //console.log(apiData)
         console.log(moment_locale.value)
@@ -174,7 +175,7 @@
   })
 </script>
 
-<style>
+<style scoped>
   .box {
     align-items: center;
     justify-content: center;
@@ -184,21 +185,5 @@
     padding: 20px 10px;
     text-align: center;
     width: 40%;
-  }
-
-  strong {
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  .code {
-    border: 0px;
-    text-align: center;
-    border-bottom: 3px solid #999;
-    width: 30px;
-    margin: 0px 10px;
-    font-weight: bold;
-    font-size: 20px;
-    padding-bottom: 5px;
   }
 </style>

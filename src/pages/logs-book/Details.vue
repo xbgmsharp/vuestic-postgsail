@@ -84,7 +84,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/postgsail'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat } from '../../utils/dateFormater.js'
+  import { dateFormat, durationFormatHours } from '../../utils/dateFormater.js'
   import { distanceFormat } from '../../utils/distanceFormater.js'
   import { speedFormat } from '../../utils/speedFormater.js'
   import lMap from '../../components/maps/leafletMap.vue'

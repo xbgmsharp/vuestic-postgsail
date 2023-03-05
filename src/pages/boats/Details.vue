@@ -14,13 +14,13 @@
           </div>
           <template v-if="item">
             <dl class="dl-details row">
-              <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.name') }}</dt>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.name') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.name }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.mmsi') }}</dt>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.mmsi') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.mmsi }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.last_contact') }}</dt>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.last_contact') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.lastContact) }}</dd>
-              <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('boats.boat.created_at') }}</dt>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
             </dl>
           </template>

@@ -1,93 +1,51 @@
 <template>
   <div class="charts">
-    <!--
-    <div class="row">
-      <div class="flex md12 xs12">
-        <va-card v-if="barChartData" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.verticalBarChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="barChartData" type="bar" />
-          </va-card-content>
-        </va-card>
-      </div>
+    <div class="grid grid-cols-12 gap-6">
+      <!--
+      <va-card v-if="barChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.verticalBarChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="barChartDataGenerated" type="bar" />
+        </va-card-content>
+      </va-card>
+
+      <va-card v-if="horizontalBarChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.horizontalBarChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="horizontalBarChartDataGenerated" type="horizontal-bar" />
+        </va-card-content>
+      </va-card>
+      -->
+      <va-card v-if="mixedChartDataComputed" class="chart-widget col-span-12">
+        <va-card-title>{{ t('charts.lineChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="mixedChartDataComputed" type="bar" />
+        </va-card-content>
+      </va-card>
+      <!--
+      <va-card v-if="pieChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.pieChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="pieChartDataGenerated" type="pie" />
+        </va-card-content>
+      </va-card>
+
+      <va-card v-if="doughnutChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.donutChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="doughnutChartDataGenerated" type="doughnut" />
+        </va-card-content>
+      </va-card>
+
+      <va-card v-if="bubbleChartDataGenerated" class="chart-widget col-span-12">
+        <va-card-title>{{ t('charts.bubbleChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="bubbleChartDataGenerated" type="bubble" />
+        </va-card-content>
+      </va-card>
+      -->
     </div>
-    -->
-
-    <div class="row">
-      <div class="flex md12 xs12">
-        <va-card v-if="mixedChartDataComputed" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="mixedChartDataComputed" type="bar" />
-          </va-card-content>
-        </va-card>
-      </div>
-    </div>
-
-    <!--
-    <div class="row row-equal">
-      <div class="flex xl6 xs12 lg6">
-        <va-card v-if="barChartData" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.verticalBarChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="barChartData" type="bar" />
-          </va-card-content>
-        </va-card>
-      </div>
-
-      <div class="flex xl6 xs12 lg6">
-        <va-card v-if="barChartData" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.horizontalBarChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="mixedChartDataComputed" type="horizontal-bar" />
-          </va-card-content>
-        </va-card>
-      </div>
-      <div class="flex xl6 xs12 lg6">
-        <va-card v-if="barChartData" class="chart-widget">
-          <va-card-title>{{ t('dashboard.charts.lineChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="barChartData" type="line" />
-          </va-card-content>
-        </va-card>
-      </div>
-
-    </div> //"row row-equal"
--->
-
-    <!--
-    <div class="row">
-      <div class="flex md12 xs12">
-        <va-card v-if="lineChartDataGenerated" class="chart-widget">
-          <va-card-title>{{ t('charts.lineChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="lineChartDataGenerated" type="line" />
-          </va-card-content>
-        </va-card>
-      </div>
-    </div>
--->
-    <!--
-    <div class="row">
-      <div class="flex md6 xs12">
-        <va-card v-if="pieChartDataGenerated" class="chart-widget">
-          <va-card-title>{{ t('charts.pieChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="pieChartDataGenerated" type="pie" />
-          </va-card-content>
-        </va-card>
-      </div>
-
-      <div class="flex md6 xs12">
-        <va-card v-if="doughnutChartDataGenerated" class="chart-widget">
-          <va-card-title>{{ t('charts.donutChart') }}</va-card-title>
-          <va-card-content>
-            <va-chart :data="doughnutChartDataGenerated" type="doughnut" />
-          </va-card-content>
-        </va-card>
-      </div>
-    </div>
-  --></div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -100,7 +58,7 @@
   const { t } = useI18n()
 
   const CacheStore = useCacheStore()
-  const { data, logs_by_month } = storeToRefs(CacheStore)
+  const { data, logs_by_month, logs_by_year_by_month } = storeToRefs(CacheStore)
   const { barChart, lineChartbyYear } = CacheStore
 
   const barChartData = {
@@ -189,14 +147,14 @@
     fill: false,
   }
 
-  const bar = barChart()
-  const lines = lineChartbyYear()
+  //const bar = barChart()
+  //const lines = lineChartbyYear()
 
   const mixedChartDataComputed = computed(() => {
     const mymixedChartData = mixedChartData
-    mymixedChartData.datasets[0].data = bar
+    mymixedChartData.datasets[0].data = logs_by_month.value
     mymixedChartData.datasets[0].label = 'Total'
-    Object.entries(lines).forEach((elm) => {
+    Object.entries(logs_by_year_by_month.value).forEach((elm) => {
       const line = structuredClone(dataset)
       line.label = elm[0]
       line.data = elm[1]

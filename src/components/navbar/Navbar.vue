@@ -10,18 +10,18 @@
             @click="isSidebarMinimized = !isSidebarMinimized"
           />
           <router-link to="/">
-            <postgsail-logo class="logo" />
+            <postgsail-logo class="logo" height="32" />
           </router-link>
         </div>
       </template>
       <template #center> </template>
       <template #right>
-        <div class="app-navbar__actions md5 lg4">
+        <div class="app-navbar__actions">
           <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
             <va-icon name="github-svg" style="width: 100%; height: 32px" />
           </a>
         </div>
-        <app-navbar-actions class="app-navbar__actions md5 lg4" :user-name="userName" />
+        <app-navbar-actions class="app-navbar__actions" :user-name="userName" />
       </template>
     </va-navbar>
   </div>

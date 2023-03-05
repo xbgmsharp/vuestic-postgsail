@@ -130,16 +130,7 @@
               <td>{{ t('profile.low_battery_voltage_threshold') }}</td>
               <td>
                 <div>
-                  <va-input
-                    v-model="settings.preferences.alerting.low_battery_voltage_threshold"
-                    class="mb-6"
-                    @focusout="
-                      UpdatePref(
-                        'low_battery_voltage_threshold',
-                        settings.preferences.alerting.low_battery_voltage_threshold,
-                      )
-                    "
-                  />
+                  <va-input v-model="settings.preferences.alerting.low_battery_voltage_threshold" class="mb-6" />
                 </div>
               </td>
             </tr>
@@ -203,7 +194,7 @@
 
   //const UpdatePref = async (key: string, value: any) => {
   const UpdatePref = async (key, value) => {
-    if (!key) {
+    if (!key || typeof value == 'undefined') {
       return
     }
     console.debug(`Updating ${key}:${value}`)

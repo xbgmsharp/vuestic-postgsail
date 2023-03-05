@@ -4,21 +4,20 @@
       <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
-          <div class="row">
-            <div class="flex xs6">
+          <div class="py-2 grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-input v-model="filter.name" :label="$t('logs.list.filter.name')" placeholder="Filter by name..." />
             </div>
-            <div class="flex xs6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-date-input
                 v-model="filter.dateRange"
                 :label="$t('logs.list.filter.date_range')"
-                style="width: 100%"
                 :readonly="false"
                 mode="range"
               />
             </div>
             <div class="flex xs12">
-              <div class="d-flex justify--end">
+              <div class="flex flex-1 flex-wrap justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('logs.list.filter.reset') }}</va-button>
               </div>
             </div>
@@ -54,6 +53,7 @@
           </template>
           <template #cell(distance)="{ value }">
             {{ distanceFormat(value) }}
+            <!--{{ value }}-->
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatHours(value) }} {{ $t('logs.log.duration_unit') }}

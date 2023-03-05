@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-  import PostgSail from '../../../services/postgsail.js'
+  import PostgSail from '../../../services/api-client.js'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
@@ -126,14 +126,14 @@
     try {
       const api = new PostgSail()
       const response = await api.signin(payload)
-      if (response.data && response.data.token) {
+      if (response && response.token) {
         signupSuccess.value = true
-        api.API.defaults.headers['Authorization'] = 'Bearer ' + (GlobalStore.token = response.data.token)
+        api.setBearerAuth((GlobalStore.token = response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()
         setTimeout(() => {
           router.push({ name: 'activate' })
-        }, 1000)
+        }, 1100)
       } else {
         throw { response }
       }

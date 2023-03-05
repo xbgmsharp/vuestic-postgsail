@@ -14,7 +14,6 @@
   GlobalStore.token = ''
   delete new PostgSail()._headers.Authorization
   GlobalStore.userName = ''
-  //localStorage.removeItem('settings')
   localStorage.removeItem('global')
 
   useRouter().push({

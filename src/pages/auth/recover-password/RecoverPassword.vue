@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
   import { useGlobalStore } from '../../../stores/global-store'
-  import PostgSail from '../../../services/postgsail.js'
+  import PostgSail from '../../../services/api-client.js'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
@@ -31,7 +31,6 @@
 
   GlobalStore.token = ''
   GlobalStore.userName = ''
-  localStorage.removeItem('settings')
   localStorage.removeItem('global')
 
   const resetSuccess = ref('')
@@ -53,7 +52,7 @@
         const api = new PostgSail(),
           response = await api.recover(payload)
         console.warn(response)
-        if (response.data) {
+        if (response) {
           resetSuccess.value = t('auth.reset')
           setTimeout(() => {
             router.push({ path: '/' })

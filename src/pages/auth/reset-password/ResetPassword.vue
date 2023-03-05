@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import PostgSail from '../../../services/postgsail.js'
+  import PostgSail from '../../../services/api-client.js'
   import { ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
@@ -89,8 +89,8 @@
       try {
         const api = new PostgSail(),
           response = await api.reset(payload)
-        //console.log(response)
-        if (response.data) {
+        console.warn(response)
+        if (response) {
           resetSuccess.value = true
           setTimeout(() => {
             router.push({ path: '/login' })

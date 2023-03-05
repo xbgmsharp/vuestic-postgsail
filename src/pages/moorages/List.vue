@@ -15,7 +15,7 @@
             <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-input
                 v-model="filter.default_stay"
-                :label="$t('moorages.list.filter.default_stay')"
+                :label="$t('moorages.list.default_stay')"
                 placeholder="Filter by stay..."
               />
             </div>

@@ -4,11 +4,11 @@
       <va-card-title>{{ $t('stays.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
-          <div class="row">
-            <div class="flex xs6">
+          <div class="py-2 grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-input v-model="filter.name" :label="$t('stays.list.filter.name')" placeholder="Filter by name..." />
             </div>
-            <div class="flex xs6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-date-input
                 v-model="filter.dateRange"
                 :label="$t('stays.list.filter.date_range')"
@@ -18,7 +18,7 @@
               />
             </div>
             <div class="flex xs12">
-              <div class="d-flex justify-end">
+              <div class="flex flex-1 flex-wrap justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('stays.list.filter.reset') }}</va-button>
               </div>
             </div>
@@ -40,6 +40,7 @@
           :current-page="currentPage"
           striped
           hoverable
+          class="datatable"
         >
           <template #cell(name)="{ value }">
             <!--
@@ -62,10 +63,10 @@
           <template #cell(stayed_at)="{ value }">
             {{ value }}
             <!--
-            <div style="max-width: 150px;">
-              <va-select class="mb-6" label="With label" v-model="stayed_at[value]" :options="stayed_at" />
+            <div style="min-height: 270px;">
+              <va-select class="mb-6" v-model="stayed_at[value]" :options="stayed_at" />
             </div>
-            -->
+           -->
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -174,6 +175,32 @@
 
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
+  }
+
+  const updateDefaultStay = async (id, update_stayed_at) => {
+    console.log(id, update_stayed_at)
+    if (update_stayed_at) {
+      isBusy.value = true
+      updateError.value = null
+      const api = new PostgSail()
+      const payload = {
+        default_stay: update_stayed_at,
+      }
+      try {
+        const response = api.moorage_update(id, payload)
+        if (response.data) {
+          console.log('log_update success', response.data)
+        } else {
+          throw { response }
+        }
+      } catch (err) {
+        const { response } = err
+        console.log('log_update failed', response)
+        updateError.value = response.data.message
+      } finally {
+        isBusy.value = false
+      }
+    }
   }
 </script>
 

@@ -19,11 +19,28 @@
 
 <script setup lang="ts">
   import { useColors } from 'vuestic-ui'
-  import { ref, watchEffect } from 'vue'
+  import { ref, watchEffect, watch } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useGlobalStore } from '../../../../stores/global-store'
+
+  const GlobalStore = useGlobalStore()
   const { applyPreset } = useColors()
-  const currentTheme = ref('light')
+  const { currentTheme } = storeToRefs(GlobalStore)
   const value = ref(true)
   watchEffect(() => {
     applyPreset(currentTheme.value)
+  })
+
+  function activateDarkMode() {
+    console.log('matchMedia ref changed!')
+    currentTheme.value = 'dark'
+  }
+  const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)')
+  darkModePreference.addEventListener('change', (e) => e.matches && activateDarkMode())
+
+  watch(currentTheme, () => {
+    console.log('currentTheme ref changed!')
+    console.log('currentTheme:', currentTheme.value)
+    GlobalStore.$state.currentTheme = currentTheme.value
   })
 </script>

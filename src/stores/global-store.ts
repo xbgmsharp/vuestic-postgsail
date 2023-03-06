@@ -4,12 +4,14 @@ import PostgSail from '../services/api-client.js'
 import mergeDeep from '../utils/mergeDeep.ts'
 
 const defaultState = useStorage('global', {
+  keepLoggedIn: false,
   isLoggedIn: false,
   isSidebarMinimized: false,
+  currentTheme: 'light',
   token: '',
-  //userName: '',
-  //validEmail: false,
-  //hasVessel: false,
+  userName: '',
+  validEmail: false,
+  hasVessel: false,
   count: 0,
   unsplash: null,
   postgsail: {

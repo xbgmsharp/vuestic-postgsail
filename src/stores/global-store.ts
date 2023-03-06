@@ -5,8 +5,10 @@ import PostgSail from '../services/api-client.js'
 export const useGlobalStore = defineStore('global', {
   state: () => {
     return useStorage('global', {
+      keepLoggedIn: false,
       isLoggedIn: false,
       isSidebarMinimized: false,
+      currentTheme: 'light',
       token: '',
       userName: '',
       validEmail: false,

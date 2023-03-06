@@ -136,7 +136,7 @@
     const CacheStore = useCacheStore()
     const id = route.params.id
     try {
-      const response = await CacheStore.log_get(id)
+      const response = await CacheStore.getAPI('log_get')(id)
       apiData.row = response[0]
       formData.name = apiData.row.Name || null
       formData.notes = apiData.row.Notes || null

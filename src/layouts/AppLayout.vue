@@ -80,11 +80,9 @@
     //console.log(GlobalStore.userName)
     //GlobalStore.userName = userName.value
     //changeUserName(userName.value)
-    /*
-    if (localStorage.getItem('settings') === null) {
+    /*if (localStorage.getItem('settings') === null) {
       handleSettings()
-    }
-    */
+    }*/
   })
 
   onBeforeMount(async () => {
@@ -94,6 +92,31 @@
     }
     console.log(GlobalStore.settings)
   })
+
+  /*const handleSettings = async () => {
+    isBusy.value = true
+    apiError.value = null
+    const api = new PostgSail()
+    try {
+      const response = await api.settings()
+      if (response.data && response.data.settings) {
+        console.log(response.data.settings)
+        //localStorage.setItem('settings', JSON.stringify(response.data.settings))
+        GlobalStore.userName = response.data.settings.username
+        GlobalStore.settings = response.data.settings
+        //changeUserName(response.data.settings.username)
+      } else {
+        throw {
+          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
+        }
+      }
+    } catch ({ response }) {
+      apiError.value = response
+      console.warn('Unable to get settings...', apiError.value)
+    } finally {
+      isBusy.value = false
+    }
+  }*/
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)

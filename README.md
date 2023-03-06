@@ -64,9 +64,9 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Create `/activate` page for OTP validation
   - [x] Force email validation via One Time code on login
     - [x] require backend update
-- [ ] Singup
+- [ ] Signup
   - [x] Create `/activate` page for OTP validation
-  - [x] Force email validation via One Time code on Singup
+  - [x] Force email validation via One Time code on Signup
     - [x] require backend update
 - [x] Implement notifications Pushover, Telegram
   - [x] require backend update
@@ -107,12 +107,12 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 #### Core
 
-- [ ] Use vuejs/pinia store to access API instead of by compoments
-  - [ ] Offline mode store all API data in browser local storage
-    - [ ] Refresh if data is older than 10min old
-    - [ ] Fallback to localstorage is no internet
-  - [ ] Implement global store username, token, cache: logs, moorages, stays
-    - [ ] Implement offline mode
+- [x] Use vuejs/pinia store to access API instead of by compoments
+  - [x] Offline mode store all API data in browser local storage
+    - [x] Refresh if data is older than 10min old
+    - [x] Fallback to localstorage if no internet
+  - [x] Implement global store username, token, cache: logs, moorages, stays
+    - [x] Implement offline mode
 
 #### Pages:
 
@@ -157,10 +157,10 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Steering layout from api? todo
 - [ ] /signup, Sign up
   - [ ] Form layout register from api
-- [ ] /singin, Sign in
+- [ ] /signin, Sign in
   - [ ] Form layout login from api
 - [ ] /settings, User settings
-  - [ ] Table & Form layout from api?
+  - [x] Table & Form layout from api
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
 - [x] /grafana, external link, open a new window/tab

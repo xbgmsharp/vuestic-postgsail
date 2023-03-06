@@ -175,7 +175,7 @@
   })
 
   watch(
-    () => CacheStore.data.stats,
+    () => CacheStore.stats,
     () => {
       console.log('CacheStore state changed, do something!')
     },

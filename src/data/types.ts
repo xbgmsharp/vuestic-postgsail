@@ -11,3 +11,13 @@ export type TDoughnutChartData = ChartData<'doughnut'>
 export type TPieChartData = ChartData<'pie'>
 
 export type TChartData = TLineChartData | TBarChartData | TBubbleChartData | TDoughnutChartData | TPieChartData
+
+type JSObj = Record<string, any>
+type Callback_1Param = (argument: any) => any
+
+interface Response {
+  data: any
+}
+interface JSONObject {
+  [k: string]: number[]
+}

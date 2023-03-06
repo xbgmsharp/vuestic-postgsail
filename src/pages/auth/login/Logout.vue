@@ -9,12 +9,14 @@
   import { useGlobalStore } from '../../../stores/global-store'
   import PostgSail from '../../../services/api-client.js'
 
-  const GlobalStore = useGlobalStore()
-
-  GlobalStore.token = ''
+  useGlobalStore().logout()
   delete new PostgSail()._headers.Authorization
-  GlobalStore.userName = ''
-  localStorage.removeItem('global')
+
+  //const GlobalStore = useGlobalStore()
+  //GlobalStore.token = ''
+  //delete new PostgSail()._headers.Authorization
+  //GlobalStore.userName = ''
+  //localStorage.removeItem('global')
 
   useRouter().push({
     name: 'login',

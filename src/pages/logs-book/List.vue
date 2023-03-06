@@ -79,6 +79,8 @@
 
   import logsDatas from '../../data/logs.json'
 
+  const CacheStore = useCacheStore()
+
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
@@ -143,9 +145,8 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const CacheStore = useCacheStore()
     try {
-      const response = await CacheStore.logs()
+      const response = await CacheStore.getAPI('logs')
       rowsData.value.splice(0, rowsData.value.length || [])
       rowsData.value.push(...response)
     } catch (e) {

@@ -84,7 +84,7 @@
         response = await api.login(payload)
       if (response.token) {
         api.token = response.token
-        api.setBearerAuth((GlobalStore.token = response.token))
+        api.setBearerAuth(GlobalStore.login(response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()
         router.push({ name: 'dashboard' })

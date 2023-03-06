@@ -1,26 +1,8 @@
-import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
-import PostgSail from '../services/api-client.js'
+import defineAPIStore from './defineAPIStore.ts'
+import '../data/types.ts'
 
-// Types
-
-type JSObj = Record<string, any>
-type Callback = (argument: unknown) => unknown
-
-interface Response {
-  data: any
-}
-interface Data extends Response {
-  ts: number
-}
-interface JSONObject {
-  [k: string]: number[]
-}
-
-// Config
-
-const ttl = 10 * 60 * 1000, // m * s * ms
-  assertions = {
+const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
+  assertions: JSObj = {
     notArray: [
       (res: any) => Array.isArray(res),
       // De-duplication opportunity in next assertion's message
@@ -32,133 +14,57 @@ const ttl = 10 * 60 * 1000, // m * s * ms
     ],
   }
 
-// Functions
-
-function resolveAddr(parent: JSObj, addr: string[]): [JSObj, string] {
-  return [
-    addr.slice(0, -1).reduce(
-      (
-        parent: JSObj,
-        index: string,
-        curr: number,
-        arr: string[],
-        // curr & arr unused; needed to skip TS err
-      ) => parent[index] as JSObj,
-      parent,
-    ),
-    addr[addr.length - 1] as string,
-  ]
-}
-
-// Export
-
-export const useCacheStore = defineStore('cache', {
-  state: () => {
-    return useStorage('cache', {
-      data: {
-        logs: { data: [] },
-        log_get: [],
-        stays: { data: [] },
-        moorages: { data: [] },
-        stats: new Array(12).fill(0),
-        tiles: new Array(3).fill(0),
-        lines: {},
-      },
-    })
-  },
+export const useCacheStore = defineAPIStore('cache', {
+  state: () => ({
+    ttl: ttl,
+    logs: [],
+    log_get: [],
+    stays: [],
+    stay_get: [],
+    moorages: [],
+    moorage_get: [],
+    stats: new Array(12).fill(0),
+    tiles: new Array(3).fill(0),
+    lines: {},
+  }),
 
   actions: {
-    async API_get(...addr: string[]): Promise<Response> {
-      const api = new PostgSail() as unknown as JSObj,
-        endpoint: string = addr[0],
-        param: string | undefined = addr[1]
-      return (api[endpoint] as Callback)(param) as Promise<Response>
-    },
-
-    async getData(addr: string[], assertion: Callback[]) {
-      const now: number = new Date().getTime(),
-        [parent, index]: [JSObj, string] = resolveAddr(this.data, addr)
-      let entry = (parent[index] ? (parent[index].data.length > 0 ? parent[index] : { ts: 0 }) : { ts: 0 }) as Data
-      console.log(entry)
-      if (navigator.onLine) {
-        console.log('navigator.onLine')
-        if (now - entry.ts > ttl) {
-          entry = {
-            data: (await this.API_get(...addr)) as Response,
-            ts: now,
-          } as Data
-          if (assertion[0](entry.data)) {
-            parent[index] = entry
-          } else {
-            console.error('CacheStore.getData: ' + assertion[1](entry.data))
-          }
-        } else {
-          const fresh = now - entry.ts > ttl
-          console.log(`ttl is fresh, ${fresh}`)
-        }
-      } else {
-        if (!entry.data) {
-          throw 'Offline and uncached; load when online again'
-        }
-      }
-      return (parent[index] as Data).data
-    },
-
-    async logs() {
-      return await this.getData(['logs'], assertions.notArray)
-    },
-
-    async log_get(id: string) {
-      return await this.getData(['log_get', id], assertions.notPopulatedArray)
-    },
-
-    async moorages() {
-      return await this.getData(['moorages'], assertions.notArray)
-    },
-
-    async moorage_get(id: string) {
-      return await this.getData(['moorage_get', id], assertions.notPopulatedArray)
-    },
-
-    async stays() {
-      return await this.getData(['stays'], assertions.notArray)
-    },
-
-    async stay_get(id: string) {
-      return await this.getData(['stay_get', id], assertions.notPopulatedArray)
+    async getAPI(endpoint: string, param: string | undefined) {
+      const assertion: Callback_1Param =
+          endpoint[0].slice(-4) === '_get' ? assertions.notPopulatedArray : assertions.notArray,
+        addr: string[] = [endpoint]
+      param && addr.push(param)
+      return await this.getCached(addr, assertion)
     },
 
     InfoTiles() {
-      if (this.data.logs && this.data.stays && this.data.moorages) {
-        this.data.tiles = [this.data.logs.data.length, this.data.stays.data.length, this.data.moorages.data.length]
+      if (this.logs && this.stays && this.moorages) {
+        this.tiles = [this.logs.length, this.stays.length, this.moorages.length]
       } else {
-        this.data.tiles = [0, 0, 0]
+        this.tiles = [0, 0, 0]
       }
+      return this.tiles
     },
     barChart() {
-      this.data.stats.fill(0)
-      this.data.logs
-        ? this.data.logs.data.forEach(({ Started }) => (this.data.stats[new Date(Started).getMonth()] += 1))
-        : this.data.stats
-      return this.data.stats
+      this.stats.fill(0)
+      this.logs ? this.logs.forEach(({ Started }) => (this.stats[new Date(Started).getMonth()] += 1)) : this.stats
+      return this.stats
     },
     lineChartbyYear() {
       const obj = {} as JSONObject
       // Extract the year and create a 12 months array
-      this.data.logs.data.forEach(({ Started }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)))
+      this.logs.forEach(({ Started }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)))
       // Extract the month and sum the months.
-      this.data.logs.data.forEach(
-        ({ Started }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1),
-      )
+      this.logs.forEach(({ Started }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1))
       console.log(obj)
-      this.data.lines = obj
+      this.lines = obj
       return obj
     },
   },
 
   getters: {
-    getInfoTiles: (state) => state.data.tiles,
-    logs_by_month: (state) => state.data.stats,
-    logs_by_year_by_month: (state) => state.data.lines,
+    getInfoTiles: (state) => state.tiles,
+    logs_by_month: (state) => state.stats,
+    logs_by_year_by_month: (state) => state.lines,
   },
 })

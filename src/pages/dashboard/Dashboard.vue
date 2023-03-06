@@ -34,8 +34,8 @@
   const { fetchVersions, fetchSettings } = GlobalStore
 
   const CacheStore = useCacheStore()
-  const { data, getInfoTiles } = storeToRefs(CacheStore)
-  const { logs, stays, moorages, InfoTiles, barChart, lineChartbyYear } = CacheStore
+  const { getInfoTiles } = storeToRefs(CacheStore)
+  const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
   console.log(import.meta.env)
   console.log(import.meta.env.VITE_GIT_VERSION)
@@ -85,20 +85,18 @@
     // Load version
     fetchVersions(ver.value)
     // Load cache
-    const mylogs = await logs()
+    const mylogs = await getAPI('logs')
     console.log(mylogs)
-    const mystays = await stays()
+    const mystays = await getAPI('stays')
     console.log(mystays)
-    const mymoorages = await moorages()
+    const mymoorages = await getAPI('moorages')
     console.log(mymoorages)
     // Load Charts Dashboard
     InfoTiles()
     barChart()
     lineChartbyYear()
     console.log(getInfoTiles.value)
-    infoTiles.value[0].value = data.value.tiles[0]
-    infoTiles.value[1].value = data.value.tiles[1]
-    infoTiles.value[2].value = data.value.tiles[2]
+    for (let tile in CacheStore.tiles) infoTiles.value[tile].value = CacheStore.tiles[tile]
   })
 
   onMounted(() => {

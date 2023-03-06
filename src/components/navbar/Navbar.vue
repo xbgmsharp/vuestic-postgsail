@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
   import { useColors } from 'vuestic-ui'
@@ -39,6 +39,11 @@
   const GlobalStore = useGlobalStore()
 
   const { isSidebarMinimized, userName } = storeToRefs(GlobalStore)
+  watch(isSidebarMinimized, () => {
+    console.log('isSidebarMinimized ref changed!')
+    console.log('isSidebarMinimized:', isSidebarMinimized.value)
+    GlobalStore.$state.isSidebarMinimized = isSidebarMinimized.value
+  })
 
   const { getColors } = useColors()
   const colors = computed(() => getColors())

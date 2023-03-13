@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-import PostgSail from '../services/api-client.js'
-import mergeDeep from '../utils/mergeDeep.ts'
+import PostgSail from '../services/api-client'
+import mergeDeep from '../utils/mergeDeep'
 
-const defaultState = useStorage('global', {
+const defaultState = {
   keepLoggedIn: false,
   isLoggedIn: false,
   isSidebarMinimized: false,
   currentTheme: 'light',
   token: '',
-  userName: '',
-  validEmail: false,
-  hasVessel: false,
+  // de-duplication to reduce syncing requirements; now in getters:
+  //userName: '',
+  //validEmail: false,
   count: 0,
   unsplash: null,
   postgsail: {
@@ -62,32 +62,28 @@ const defaultState = useStorage('global', {
     },
     created_at: '',
     username: '',
+    has_vessel: false,
   },
   vessel: {},
-})
+}
 
 export const useGlobalStore = defineStore('global', {
-  state: () => defaultState,
+  state: () => useStorage('global', structuredClone(defaultState)),
   actions: {
     login(token: string) {
       this.token = token
       this.isLoggedIn = true
       //this.fetchSettings()
+      return token
     },
     logout() {
-      // [WIP] for single-instance API:
-      //delete new PostgSail().API.defaults.headers.Authorization
       this.$reset() // this line doesn't seem to do anything, so:
       //console.log('CacheStore.token after .$reset()', this.token, this)
       this.isLoggedIn = false
       this.token = ''
+      // to update refs pointing to preferences:
       mergeDeep(this.settings, defaultState.settings)
-      console.log('GlobalStore.logout()', this.settings.email, this)
-      // to update all refs pointing to preferences:
-      //  [WIP] must update every single ref within preferences too
-      //this.settings = { preferences: this.settings.preferences = {} }
-      // not sure if above working, as changing accounts displays cached
-      localStorage.removeItem('global')
+      //localStorage.removeItem('global')
     },
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
@@ -107,36 +103,21 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    async fetchSettings() {
-      //if (this.userName) return this.settings
+    async fetchSettings(): Promise<Record<string, any>> {
+      if (this.userName) return this.settings
       const api = new PostgSail()
       try {
-        return mergeDeep(this.settings, (await api.settings()).settings)
-        //this.settings = (await api.settings()).settings
-        // The following no longer requires syncing due to getters & actions:
-        /*const response = await api.settings()
-        this.settings = response.settings
-        this.userName = response.settings?.username
-        this.validEmail = response.settings?.preferences?.email_valid
-        this.hasVessel = response.settings?.has_vessel
-        this.$state.settings.preferences = {
-          ...this.$state.settings.preferences,
-          ...response.settings.preferences,
-        }
-        this.$state.userName = response.settings?.username
-        this.$state.validEmail = response.settings?.preferences?.email_valid
-        this.$state.hasVessel = response.settings?.has_vessel
-        console.log(this.settings)*/
+        mergeDeep(this.settings, (await api.settings()).settings)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
+      return this.settings
     },
-    async updatePref(key: string, value: any) {
+    async updatePref(key: string, value: any): Promise<any> {
       const api = new PostgSail()
       try {
         const response = await api.update_user_preferences({ key: `{${key}}`, value: value }),
           preferences: Record<string, any> = this.settings.preferences
-        //preferences: Record<string, any> = this.$state.settings.preferences
         preferences[key] = value
         console.log(response)
         return response
@@ -149,9 +130,9 @@ export const useGlobalStore = defineStore('global', {
     },
   },
   getters: {
-    doubleCount: (state) => state.count * 2,
     userName: (state) => state.settings?.username,
     validEmail: (state) => state.settings?.preferences?.email_valid,
     hasVessel: (state) => state.settings?.has_vessel,
+    doubleCount: (state) => state.count * 2,
   },
 })

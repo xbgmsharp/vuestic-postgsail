@@ -12,12 +12,12 @@ export type TPieChartData = ChartData<'pie'>
 
 export type TChartData = TLineChartData | TBarChartData | TBubbleChartData | TDoughnutChartData | TPieChartData
 
-type JSObj = Record<string, any>
-type Callback_1Param = (argument: any) => any
+export type JSObj = Record<string, any>
+export type Callback_1Param = (argument: any) => any
 
-interface Response {
+export interface Response {
   data: any
 }
-interface JSONObject {
+export interface JSONObject {
   [k: string]: number[]
 }

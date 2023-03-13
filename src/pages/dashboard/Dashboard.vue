@@ -96,7 +96,9 @@
     barChart()
     lineChartbyYear()
     console.log(getInfoTiles.value)
-    for (let tile in CacheStore.tiles) infoTiles.value[tile].value = CacheStore.tiles[tile]
+    for (let tile in CacheStore.tiles) {
+      infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]
+    }
   })
 
   onMounted(() => {

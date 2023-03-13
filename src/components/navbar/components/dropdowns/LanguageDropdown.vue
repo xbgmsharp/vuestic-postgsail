@@ -8,7 +8,8 @@
       <div
         v-for="(option, id) in options"
         :key="id"
-        class="language-dropdown__item flex flex-1 flex-wrap items-center pt-1 pb-1 mt-2 mb-2"
+        class="language-dropdown__item flex-1 flex-wrap pt-1 pb-1 mt-2 mb-2"
+        style="vertical-align: middle"
         :class="{ active: option.code === locale }"
         @click="locale = option.code"
       >
@@ -96,6 +97,10 @@
 
     .va-dropdown__anchor {
       display: inline-block;
+    }
+
+    .dropdown-item__text {
+      vertical-align: middle;
     }
   }
 </style>

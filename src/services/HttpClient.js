@@ -15,7 +15,7 @@ class HttpClient {
 
     if (res.status === 401) {
       // Unauthorized or token expired
-      console.warn('Unauthorized or token expired')
+      console.warn('Unauthorized or token expired', res, this, this.router)
       this.router.push({ name: 'logout', params: { is401: true } })
     }
     if (res.status === 551) {
@@ -45,6 +45,7 @@ class HttpClient {
   }
 
   setBearerAuth(token) {
+    this.token = token
     this._headers.Authorization = `Bearer ${token}`
     return this
   }

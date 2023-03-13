@@ -17,8 +17,9 @@ class ApiClient extends HttpClient {
       headers: { Test: 'qwerty', Accept: 'application/json', 'Content-Type': 'application/json' },
     })
     // Assing Bearer Token if exist in cache
-    if (useGlobalStore().token) {
-      this.setBearerAuth(useGlobalStore().token)
+    const globalToken = useGlobalStore().token
+    if (globalToken) {
+      this.setBearerAuth(globalToken)
     }
     // Check online status
     this.check()
@@ -61,7 +62,7 @@ class ApiClient extends HttpClient {
    * User settings
    */
   async settings() {
-    return this.get(`rpc/settings_fn`)
+    return this.get(`rpc/settings_fn`, { cache: 'reload' })
   }
   async update_user_preferences(payload) {
     return this.post(`rpc/update_user_preferences_fn`, payload)

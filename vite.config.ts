@@ -11,7 +11,7 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          // i am ignorning my custom '<container>' tag
+          // i am ignoring my custom '<container>' tag
           isCustomElement: (tag) => tag.startsWith('steelseries'),
         },
       },

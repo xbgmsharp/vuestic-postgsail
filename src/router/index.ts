@@ -174,6 +174,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = useGlobalStore().token
   const validEmail = useGlobalStore().validEmail || false
   const hasVessel = useGlobalStore().hasVessel || false
+
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     // If not login redirect to login page.
     next({ name: 'login' })

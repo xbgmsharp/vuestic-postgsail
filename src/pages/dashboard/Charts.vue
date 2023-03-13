@@ -58,7 +58,7 @@
   const { t } = useI18n()
 
   const CacheStore = useCacheStore()
-  const { data, logs_by_month, logs_by_year_by_month } = storeToRefs(CacheStore)
+  const { getAPI, logs_by_month, logs_by_year_by_month } = storeToRefs(CacheStore)
   const { barChart, lineChartbyYear } = CacheStore
 
   const barChartData = {
@@ -157,7 +157,7 @@
     Object.entries(logs_by_year_by_month.value).forEach((elm) => {
       const line = structuredClone(dataset)
       line.label = elm[0]
-      line.data = elm[1]
+      line.data = elm[1] as number[]
       line.borderColor = random_rgb_dark()
       line.backgroundColor = line.borderColor
       mymixedChartData.datasets.push(line)

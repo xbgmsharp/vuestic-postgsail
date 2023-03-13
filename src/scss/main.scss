@@ -38,3 +38,7 @@ pre {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.flexStatic {
+  flex: 0 0 auto;
+}

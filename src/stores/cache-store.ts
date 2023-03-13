@@ -1,5 +1,5 @@
-import defineAPIStore from './defineAPIStore.ts'
-import '../data/types.ts'
+import defineAPIStore from './defineAPIStore'
+import type { JSObj, Callback_1Param, JSONObject } from '../data/types'
 
 const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
   assertions: JSObj = {
@@ -15,8 +15,9 @@ const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
   }
 
 export const useCacheStore = defineAPIStore('cache', {
+  ttl,
+
   state: () => ({
-    ttl: ttl,
     logs: [],
     log_get: [],
     stays: [],
@@ -29,7 +30,7 @@ export const useCacheStore = defineAPIStore('cache', {
   }),
 
   actions: {
-    async getAPI(endpoint: string, param: string | undefined) {
+    async getAPI(endpoint: string, param: string | undefined): Promise<any> {
       const assertion: Callback_1Param =
           endpoint[0].slice(-4) === '_get' ? assertions.notPopulatedArray : assertions.notArray,
         addr: string[] = [endpoint]
@@ -37,7 +38,7 @@ export const useCacheStore = defineAPIStore('cache', {
       return await this.getCached(addr, assertion)
     },
 
-    InfoTiles() {
+    InfoTiles(): Array<number> {
       if (this.logs && this.stays && this.moorages) {
         this.tiles = [this.logs.length, this.stays.length, this.moorages.length]
       } else {
@@ -45,26 +46,32 @@ export const useCacheStore = defineAPIStore('cache', {
       }
       return this.tiles
     },
-    barChart() {
+    barChart(): Array<number> {
       this.stats.fill(0)
-      this.logs ? this.logs.forEach(({ Started }) => (this.stats[new Date(Started).getMonth()] += 1)) : this.stats
+      this.logs
+        ? this.logs.forEach(({ Started }: { Started: string }) => (this.stats[new Date(Started).getMonth()] += 1))
+        : this.stats
       return this.stats
     },
-    lineChartbyYear() {
+    lineChartbyYear(): JSONObject {
       const obj = {} as JSONObject
       // Extract the year and create a 12 months array
-      this.logs.forEach(({ Started }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)))
+      this.logs.forEach(
+        ({ Started }: { Started: string }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)),
+      )
       // Extract the month and sum the months.
-      this.logs.forEach(({ Started }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1))
+      this.logs.forEach(
+        ({ Started }: { Started: string }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1),
+      )
       console.log(obj)
       this.lines = obj
       return obj
     },
-  },
+  } as JSObj,
 
   getters: {
-    getInfoTiles: (state) => state.tiles,
-    logs_by_month: (state) => state.stats,
-    logs_by_year_by_month: (state) => state.lines,
+    getInfoTiles: (state: JSObj) => state.tiles,
+    logs_by_month: (state: JSObj) => state.stats,
+    logs_by_year_by_month: (state: JSObj) => state.lines,
   },
 })

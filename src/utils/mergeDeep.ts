@@ -1,14 +1,13 @@
-// src: https://stackoverflow.com/a/34749873
-//  + TS & export default
+// adapted src: https://stackoverflow.com/a/34749873
 
-import '../data/types.ts'
+import type { JSObj } from '../data/types'
 
 /**
  * Simple object check.
  * @param item
  * @returns {boolean}
  */
-export function isObject(item: JSObj) {
+export function isObject(item: JSObj): boolean {
   return item && typeof item === 'object' && !Array.isArray(item)
 }
 
@@ -17,19 +16,20 @@ export function isObject(item: JSObj) {
  * @param target
  * @param ...sources
  */
-export default function mergeDeep(target: JSObj, ...sources: JSObj[]) {
+export default function mergeDeep(target: JSObj, ...sources: JSObj[]): JSObj {
   if (!sources.length) return target
-  const source = sources.shift()
+  const source = sources.shift() as JSObj
 
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} })
-        mergeDeep(target[key], source[key])
-      } else {
-        Object.assign(target, { [key]: source[key] })
-      }
+  //if (isObject(target) && isObject(source)) {
+  for (const key in source) {
+    if (isObject(source[key])) {
+      if (!target[key]) target[key] = {}
+      mergeDeep(target[key], source[key])
+    } else {
+      target[key] = source[key]
     }
+    //}
+    return target
   }
 
   return mergeDeep(target, ...sources)

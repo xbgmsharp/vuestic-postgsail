@@ -27,11 +27,8 @@
   const { t } = useI18n()
   const router = useRouter()
 
-  const GlobalStore = useGlobalStore()
-
-  GlobalStore.token = ''
-  GlobalStore.userName = ''
-  localStorage.removeItem('global')
+  debugger
+  useGlobalStore().logout()
 
   const resetSuccess = ref('')
   const email = ref('')

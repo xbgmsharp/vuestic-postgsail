@@ -33,7 +33,7 @@
       </div>
 
       <div class="flex justify-center mt-4">
-        <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
+        <va-button class="my-0 flexStatic" @click="onsubmit">{{ t('auth.login') }}</va-button>
       </div>
     </form>
   </va-inner-loading>
@@ -83,7 +83,6 @@
       const api = new PostgSail(),
         response = await api.login(payload)
       if (response.token) {
-        api.token = response.token
         api.setBearerAuth(GlobalStore.login(response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()

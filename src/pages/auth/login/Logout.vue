@@ -12,12 +12,6 @@
   useGlobalStore().logout()
   delete new PostgSail()._headers.Authorization
 
-  //const GlobalStore = useGlobalStore()
-  //GlobalStore.token = ''
-  //delete new PostgSail()._headers.Authorization
-  //GlobalStore.userName = ''
-  //localStorage.removeItem('global')
-
   useRouter().push({
     name: 'login',
     params: { is401: useRoute().params.is401 },

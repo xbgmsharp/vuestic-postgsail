@@ -5,11 +5,12 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "vite",
-    "build": "npm run lint && vue-tsc --noEmit && vite build",
+    "build": "npm run lint && npm run tsc && vite build",
     "build:ci": "vite build",
     "prelint": "npm run format",
     "lint": "eslint --fix './src/**/*.{ts,js,vue}'",
     "format": "prettier --write .",
+    "tsc": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "lint-staged": {

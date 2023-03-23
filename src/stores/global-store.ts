@@ -73,15 +73,13 @@ export const useGlobalStore = defineStore('global', {
     login(token: string) {
       this.token = token
       this.isLoggedIn = true
-      //this.fetchSettings()
       return token
+      //return this.fetchSettings()
     },
     logout() {
-      this.$reset() // this line doesn't seem to do anything, so:
-      //console.log('CacheStore.token after .$reset()', this.token, this)
       this.isLoggedIn = false
       this.token = ''
-      // to update refs pointing to preferences:
+      // to update existing refs pointing to preferences:
       mergeDeep(this.settings, defaultState.settings)
       //localStorage.removeItem('global')
     },
@@ -98,12 +96,13 @@ export const useGlobalStore = defineStore('global', {
         const response = await api.versions()
         this.versions = response
         this.versions.web_version = web_version
-        console.log(this.versions)
+        console.log('GlobalStore fetchVersions this.versions', this.versions)
       } catch (error) {
         console.log(error)
       }
     },
     async fetchSettings(): Promise<Record<string, any>> {
+      console.log('fetchSettings', this.userName, this.settings)
       if (this.userName) return this.settings
       const api = new PostgSail()
       try {
@@ -133,6 +132,7 @@ export const useGlobalStore = defineStore('global', {
     userName: (state) => state.settings?.username,
     validEmail: (state) => state.settings?.preferences?.email_valid,
     hasVessel: (state) => state.settings?.has_vessel,
+    imperialUnits: (state) => state.settings?.preferences?.use_imperial_units,
     doubleCount: (state) => state.count * 2,
   },
 })

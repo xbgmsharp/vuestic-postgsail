@@ -79,9 +79,9 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/postgsail.js'
-  import { dateFormat, durationFormat } from '../../utils/dateFormater.js'
-  import { distanceFormat } from '../../utils/distanceFormater.js'
+  import PostgSail from '../../services/api-client.js'
+  import { dateFormat, durationFormat } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
 
   import staysDatas from '../../data/stays.json'
 
@@ -148,7 +148,7 @@
     try {
       const response = await api.moorages()
       rowsData.value.splice(0, rowsData.value.length || [])
-      rowsData.value.push(...response.data)
+      rowsData.value.push(...response)
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {

@@ -147,7 +147,7 @@
   import { ref, onBeforeMount } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
   import { useToast } from 'vuestic-ui'
   import settingsData from '../../data/settings.json'
 

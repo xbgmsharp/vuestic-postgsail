@@ -10,7 +10,7 @@
   import PostgSail from '../../../services/api-client.js'
 
   useGlobalStore().logout()
-  delete new PostgSail()._headers.Authorization
+  new PostgSail().setBearerAuth('')
 
   useRouter().push({
     name: 'login',

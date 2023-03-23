@@ -15,7 +15,7 @@
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.name') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.name') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
                     v-model="formData.name"
@@ -24,37 +24,37 @@
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.from') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.from') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.from_time') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.from_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.fromTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.to') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.to') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.to_time') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.to_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.duration') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.distance') }}</dt>
-                <dd class="flex xs12 md6 pa-2">
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.distance') }}</dt>
+                <dd class="xs12 md6 pa-2">
                   {{ distanceFormat(item.distance) }} (<router-link
                     v-if="typeof item.id !== 'undefined'"
-                    class="text--bold"
+                    class="va-text-bold"
                     :to="{ name: 'timelapse', params: { id: item.id } }"
                   >
                     timelapse </router-link
                   >)
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Average / Max Speed</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">Average / Max Speed</dt>
                 <dd class="flex xs12 md6 pa-2">
                   {{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">Max Wind Speed</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">Max Wind Speed</dt>
                 <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.note') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('logs.log.export') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX" />
                   <va-icon name="geojson" :size="44" @click="handleGeoJSON" />
@@ -82,11 +82,11 @@
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  import PostgSail from '../../services/postgsail'
+  import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, durationFormatHours } from '../../utils/dateFormater.js'
-  import { distanceFormat } from '../../utils/distanceFormater.js'
-  import { speedFormat } from '../../utils/speedFormater.js'
+  import { dateFormat, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
   import logsBooks from '../../data/logbook.json'

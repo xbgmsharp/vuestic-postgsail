@@ -84,7 +84,7 @@ export default function defineAPIStore<T extends APIStoreDef>(name: string, def:
         return (cache[index] = res)
       })
       .catch((err) => {
-        console.error(err)
+        console.warn(err)
         return (cache[index] = cached)
       }))
   }

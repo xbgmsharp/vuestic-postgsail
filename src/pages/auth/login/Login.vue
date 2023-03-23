@@ -51,7 +51,6 @@
 
   const isBusy = ref(false)
   const email = ref(GlobalStore.settings?.email || '')
-  //const email = ref('')
   const password = ref('')
   const keepLoggedIn = ref(false)
   const emailErrors = ref('')
@@ -86,7 +85,9 @@
         api.setBearerAuth(GlobalStore.login(response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()
-        router.push({ name: 'dashboard' })
+        // To trigger preferred_homepage logic:
+        await router.push({ name: 'login' })
+        router.go(0)
       } else {
         throw { response }
       }

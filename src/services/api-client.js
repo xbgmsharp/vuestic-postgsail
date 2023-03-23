@@ -206,10 +206,10 @@ class ApiClient extends HttpClient {
    * Stats API endpoint
    */
   async stats_logs_view() {
-    return this.API.get(`stats_logs_view`)
+    return this.get(`stats_logs_view`)
   }
   async stats_moorages_view() {
-    return this.API.get(`stats_moorages_view`)
+    return this.get(`stats_moorages_view`)
   }
 
   /*
@@ -221,7 +221,7 @@ class ApiClient extends HttpClient {
       all: () => this.get(`logs_view`),
       get: (id) => this.get(`log_view?id=eq.${id}`),
       delete: (id) => this.delete(`log_view?id=eq.${id}`),
-      update: (id, payload) => this.API.patch(`logbook?id=eq.${id}`, payload),
+      update: (id, payload) => this.patch(`logbook?id=eq.${id}`, payload),
     }
   }
 

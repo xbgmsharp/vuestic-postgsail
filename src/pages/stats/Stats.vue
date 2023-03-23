@@ -38,7 +38,7 @@
   // TODO update setup with lang="ts"
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
@@ -56,12 +56,12 @@
     const api = new PostgSail()
     try {
       let response = await api.stats_logs_view()
-      if (response.data && response.data[0]) {
-        logs.value = response.data[0]
+      if (Array.isArray(response) && response[0]) {
+        logs.value = response[0]
       }
       response = await api.stats_moorages_view()
-      if (response.data && response.data[0]) {
-        moorages.value = response.data[0]
+      if (Array.isArray(response) && response[0]) {
+        moorages.value = response[0]
       }
     } catch (e: any) {
       apiError.value = e

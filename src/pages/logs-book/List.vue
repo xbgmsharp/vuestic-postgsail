@@ -74,8 +74,8 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, dateFormatUTC, durationFormat, durationFormatHours } from '../../utils/dateFormater.js'
-  import { distanceFormat } from '../../utils/distanceFormater.js'
+  import { dateFormat, dateFormatUTC, durationFormat, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
 
   import logsDatas from '../../data/logs.json'
 

@@ -15,29 +15,32 @@
 
   import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
+  import { useGlobalStore } from '../../stores/global-store'
   import timelapseGeoJSON from '../../data/timelapse.json'
 
-  const route = useRoute()
-  const isBusy = ref(false)
-  const apiError = ref(null)
-  const mapContainer = ref()
-  const map = ref()
-  const polyLine = ref()
-  const marker = ref()
-  const timelapse = ref()
+  const route = useRoute(),
+    GlobalStore = useGlobalStore(),
+    isBusy = ref(false),
+    apiError = ref(null),
+    mapContainer = ref(),
+    map = ref(),
+    polyLine = ref(),
+    marker = ref(),
+    timelapse = ref()
 
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
-    const payload = {
-      _id: route.params.id,
-    }
+    const api = new PostgSail(),
+      payload = {
+        _id: route.params.id,
+      }
     try {
       const response = await api.log_export_geojson_point_fn(payload)
-      if (response.data.geojson && response.data.geojson.features) {
-        timelapse.value = response.data.geojson
+      if (response.geojson?.features) {
+        timelapse.value = response.geojson
+        patchLMapPositions()
         map_setup()
       } else {
         console.error('error log_export_geojson_point_fn')
@@ -56,11 +59,9 @@
   })
 
   const map_setup = () => {
-    let geojson = timelapse.value
-    console.log(geojson.features[0].geometry.coordinates)
-    let coord_rev = geojson.features[0].geometry.coordinates.reverse()
+    const geojson = timelapse.value,
+      coord_rev = geojson.features[0].geometry.coordinates.reverse()
     map.value = L.map(mapContainer.value).setView(coord_rev, 13)
-
     const layer = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -70,10 +71,16 @@
       },
     ).addTo(map.value)
 
-    const legend = L.control({ position: 'bottomleft' })
+    const legend = L.control({ position: 'bottomcenter' })
     legend.onAdd = function (map) {
-      var div = L.DomUtil.create('div', 'legend')
-      div.innerHTML = '<span>miles</span>'
+      const div = L.DomUtil.create('div', 'legend')
+      L.DomUtil.create('span', 'distance', div)
+      console.log(
+        'map_setup GlobalStore.imperialUnits',
+        GlobalStore.imperialUnits,
+        GlobalStore.settings.use_imperial_units,
+      )
+      L.DomUtil.create('span', null, div).innerText = GlobalStore.imperialUnits ? 'miles' : 'kilometres'
       return div
     }
     legend.addTo(map.value)
@@ -92,37 +99,92 @@
   }
 
   const map_update = () => {
-    let geojson = timelapse.value
-    let index = 1
-    var interval = setInterval(function () {
-      console.log('map_update')
-      let coord_rev = geojson.features[index].geometry.coordinates.reverse()
-      polyLine.value.addLatLng(coord_rev)
-      marker.value.setLatLngs([coord_rev, coord_rev])
-      map.value.panTo(coord_rev, { animate: true })
-      // TODO Distance
-      if (index == geojson.features.length - 1) {
-        clearInterval(interval)
-      }
-      index++
-    }, 200)
+    let index = 1,
+      last,
+      distance = 0,
+      distanceView = map.value._container.querySelector('.legend > .distance')
+
+    const geojson = timelapse.value,
+      km = !GlobalStore.imperialUnits,
+      interval = setInterval(function () {
+        let coord_rev = geojson.features[index].geometry.coordinates.reverse()
+        polyLine.value.addLatLng(coord_rev)
+        marker.value.setLatLngs([coord_rev, coord_rev])
+        map.value.panTo(coord_rev, { animate: true })
+        if (last) {
+          distanceView.innerText = (distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)) // 1609.34? if non-nautical miles
+            .toFixed(3)
+        }
+        last = L.latLng(coord_rev)
+        if (index == geojson.features.length - 1) clearInterval(interval)
+        index++
+      }, 200)
   }
+
+  // adapted src: https://stackoverflow.com/a/60391674
+  const patchLMapPositions = () =>
+    L.Map.include({
+      _initControlPos: function () {
+        var corners = (this._controlCorners = {}),
+          l = 'leaflet-',
+          container = (this._controlContainer = L.DomUtil.create('div', l + 'control-container', this._container))
+
+        function createCorner(vSide, hSide) {
+          var className = l + vSide + ' ' + l + hSide
+          corners[vSide + hSide] = L.DomUtil.create('div', className, container)
+        }
+
+        createCorner('top', 'left')
+        createCorner('top', 'right')
+        createCorner('bottom', 'left')
+        createCorner('bottom', 'right')
+
+        createCorner('top', 'center')
+        createCorner('middle', 'center')
+        createCorner('middle', 'left')
+        createCorner('middle', 'right')
+        createCorner('bottom', 'center')
+      },
+    })
 </script>
 
-<style scoped>
-  .legend {
-    /*position: absolute;
-      z-index: 99;*/
-    width: 250px;
-    height: 50px;
-    left: 50%;
-    /*bottom: 75px;
+<style lang="scss" scoped>
+  .leaflet-map:deep() {
+    .legend {
+      /*position: absolute;
+      width: 250px;
+      height: 50px;
+      left: 50%;
       margin-left: -125px;*/
-    background: #000;
-    opacity: 0.5;
-    color: #fff;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 24pt;
+      padding: 0 0.7rem;
+      bottom: 75px;
+      background: #000;
+      opacity: 0.5;
+      color: #fff;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 24pt;
+
+      .distance {
+        margin-right: 1rem;
+      }
+    }
+
+    .leaflet-center {
+      left: 50%;
+      transform: translate(-50%, 0%);
+    }
+
+    .leaflet-middle {
+      top: 50%;
+      position: absolute;
+      z-index: 1000;
+      pointer-events: none;
+      transform: translate(0%, -50%);
+    }
+
+    .leaflet-center.leaflet-middle {
+      transform: translate(-50%, -50%);
+    }
   }
 </style>

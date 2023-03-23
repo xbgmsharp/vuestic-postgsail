@@ -53,12 +53,12 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
   import moment from 'moment/min/moment-with-locales'
   import { computed, ref, reactive, onMounted } from 'vue'
-  import { kelvinToCelsius } from '../../utils/temperatureFormater.js'
-  import { pascalToHectoPascal } from '../../utils/presureFormater.js'
-  import { floatToPercentage } from '../../utils/percentageFormater.js'
+  import { kelvinToCelsius } from '../../utils/temperatureFormatter.js'
+  import { pascalToHectoPascal } from '../../utils/presureFormatter.js'
+  import { floatToPercentage } from '../../utils/percentageFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { useI18n } from 'vue-i18n'
 
@@ -147,15 +147,15 @@
     const api = new PostgSail()
     try {
       const response = await api.monitoring()
-      if (Array.isArray(response.data) && response.data[0]) {
+      if (Array.isArray(response) && response[0]) {
         apiSuccess.value = true
         //offline.value = true
         //offline.value = response.data[0].offline
-        apiData.row = response.data[0]
+        apiData.row = response[0]
         //console.log(apiData)
         console.log(moment_locale.value)
-        console.log(response.data[0].time)
-        console.log(moment.utc(response.data[0].time).locale('es').fromNow())
+        console.log(response[0].time)
+        console.log(moment.utc(response[0].time).locale('es').fromNow())
         setTimeout(() => monitor(), 60 * 1000) // 1 min
       } else {
         throw { response }

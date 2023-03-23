@@ -12,6 +12,13 @@ export default {
   },
   routes: [
     {
+      name: 'dashboard',
+      displayName: 'menu.dashboard',
+      meta: {
+        icon: 'gear',
+      },
+    },
+    {
       name: 'logs',
       displayName: 'menu.logs',
       meta: {

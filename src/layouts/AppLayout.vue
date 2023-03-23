@@ -90,7 +90,7 @@
     if (!Object.keys(GlobalStore.settings).length) {
       await fetchSettings()
     }
-    console.log(GlobalStore.settings)
+    console.log('AppLayout onBeforeMount', GlobalStore.settings)
   })
 
   /*const handleSettings = async () => {

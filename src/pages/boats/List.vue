@@ -38,9 +38,9 @@
 <script setup>
   import { computed, ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
   import GetBoatToken from './GetBoatToken.vue'
-  import { dateFormatUTC } from '../../utils/dateFormater.js'
+  import { dateFormatUTC } from '../../utils/dateFormatter.js'
 
   import vesselsDatas from '../../data/boats.json'
 
@@ -84,28 +84,26 @@
     const api = new PostgSail()
     try {
       const response = await api.vessels()
-      if (response.data && Array.isArray(response.data)) {
-        if (response.data.length > 0) {
-          //console.warn('api.vessels() response...', response.data)
+      if (Array.isArray(response)) {
+        if (response.length > 0) {
+          //console.warn('api.vessels() response...', response)
           rowsData.value.splice(0, rowsData.value.length || [])
-          rowsData.value.push(...response.data)
+          rowsData.value.push(...response)
         } else {
           console.warn('pending boat metadata?')
           const response = await api.vessels_pending()
-          if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          if (Array.isArray(response) && response.length > 0) {
             rowsData.value.splice(0, rowsData.value.length || [])
-            rowsData.value.push(...response.data)
+            rowsData.value.push(...response)
           }
         }
       } else {
         throw {
-          response: {
-            data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' + response.data },
-          },
+          response: { message: 'Wrong API response. Expected array, got ' + typeof response + '.' + response },
         }
       }
     } catch ({ response }) {
-      apiError.value = response.data.message
+      apiError.value = response.message
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
         rowsData.value.splice(0, vesselsDatas.length)

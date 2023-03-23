@@ -37,9 +37,12 @@
   const { getInfoTiles } = storeToRefs(CacheStore)
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
-  console.log(import.meta.env)
-  console.log(import.meta.env.VITE_GIT_VERSION)
-  console.log(__APP_VERSION__)
+  console.log(
+    'Dashboard import.meta.env.VITE_GIT_VERSION',
+    import.meta.env.VITE_GIT_VERSION,
+    __APP_VERSION__,
+    import.meta.env,
+  )
   let ver = ref('')
   ver.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {
@@ -47,9 +50,8 @@
   } else {
     ver.value += '-' + 'prod'
   }
-  console.log('app_version:', ver.value)
+  console.log('app_version:', ver.value, userName.value)
   //set_web_version(ver.value)
-  console.log(userName.value)
 
   const infoTiles = ref([
     {
@@ -86,16 +88,14 @@
     fetchVersions(ver.value)
     // Load cache
     const mylogs = await getAPI('logs')
-    console.log(mylogs)
     const mystays = await getAPI('stays')
-    console.log(mystays)
     const mymoorages = await getAPI('moorages')
-    console.log(mymoorages)
+    console.log('Dashboard onMounted my(logs|stays|moorages)', mylogs, mystays, mymoorages)
     // Load Charts Dashboard
     InfoTiles()
     barChart()
     lineChartbyYear()
-    console.log(getInfoTiles.value)
+    console.log('Dashboard onMounted getInfoTiles.value', getInfoTiles.value)
     for (let tile in CacheStore.tiles) {
       infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]
     }

@@ -6,6 +6,7 @@ import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 import { useGlobalStore } from '../stores/global-store'
+//import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -171,27 +172,33 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const loggedIn = useGlobalStore().token
-  const validEmail = useGlobalStore().validEmail || false
-  const hasVessel = useGlobalStore().hasVessel || false
-
-  if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
-    // If not login redirect to login page.
+  const {
+    isLoggedIn,
+    validEmail,
+    hasVessel,
+    settings: {
+      preferences: { preferred_homepage },
+    },
+  } = useGlobalStore()
+  if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
+    // If not logged in, yet required, redirect to login page:
     next({ name: 'login' })
   } else {
     // Enforce email otp validation
-    if (to.name != 'activate' && loggedIn && !validEmail) {
+    if (to.name != 'activate' && isLoggedIn && !validEmail) {
       next({ name: 'activate' })
       return
     }
     // Enforce vessel creation
-    if (to.name != 'boat-new' && loggedIn && validEmail && !hasVessel) {
+    if (to.name != 'boat-new' && isLoggedIn && validEmail && !hasVessel) {
       next({ name: 'boat-new' })
       return
     }
     // All good go to dashboard
-    if (to.name === 'login' && loggedIn && validEmail && hasVessel) {
-      next({ name: 'dashboard' })
+    if (to.name === 'login' && isLoggedIn && validEmail && hasVessel) {
+      next({
+        name: ['dashboard', 'dashboard', 'logs', 'monitoring', 'stats'][preferred_homepage || 0],
+      })
       return
     }
     next()

@@ -46,7 +46,7 @@
 
 <script setup>
   import { computed, ref } from 'vue'
-  import PostgSail from '../../services/postgsail.js'
+  import PostgSail from '../../services/api-client.js'
   import { useI18n } from 'vue-i18n'
   import { useGlobalStore } from '../../stores/global-store'
 

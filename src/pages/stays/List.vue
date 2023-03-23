@@ -87,8 +87,8 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   //import { useCacheStore } from '../../stores/cache-store'
-  import PostgSail from '../../services/postgsail.js'
-  import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormater.js'
+  import PostgSail from '../../services/api-client.js'
+  import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
 
   import staysDatas from '../../data/stays.json'
 
@@ -160,7 +160,7 @@
     try {
       const response = await api.stays()
       rowsData.value.splice(0, rowsData.value.length || [])
-      rowsData.value.push(...response.data)
+      rowsData.value.push(...response)
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {

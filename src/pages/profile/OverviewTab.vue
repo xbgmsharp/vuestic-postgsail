@@ -214,7 +214,7 @@
     const response = await updatePref(key, value)
     // Notify user on success or failure using va-toast.
     initToast({
-      message: response.ok ? `Successfully updated ${key} with ${value}` : `Error updated ${key} with ${value}`,
+      message: response ? `Successfully updated ${key} with ${value}` : `Error updating ${key} with ${value}`,
       position: 'top-right',
       color: 'primary',
       //color: response.ok ? 'success' : 'warning',
@@ -230,6 +230,9 @@
         min-width: 65px;
         max-width: 65px;
       }
+    }
+    td:first-child {
+      font-weight: 700;
     }
   }
   .centerContainer {

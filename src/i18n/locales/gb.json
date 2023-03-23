@@ -8,7 +8,7 @@
     "first_name": "Firstname",
     "last_name": "Lastname",
     "login": "Login",
-    "logout": "Loging out...",
+    "logout": "Logging out...",
     "password": "Password",
     "recover_password": "Recover password",
     "sign_up": "Sign Up",

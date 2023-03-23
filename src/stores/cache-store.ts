@@ -63,7 +63,7 @@ export const useCacheStore = defineAPIStore('cache', {
       this.logs.forEach(
         ({ Started }: { Started: string }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1),
       )
-      console.log(obj)
+      console.log('CacheStore barChart obj', obj)
       this.lines = obj
       return obj
     },

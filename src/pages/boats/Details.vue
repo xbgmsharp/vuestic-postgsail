@@ -33,8 +33,8 @@
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  import PostgSail from '../../services/postgsail.js'
-  import { dateFormat } from '../../utils/dateFormater.js'
+  import PostgSail from '../../services/api-client.js'
+  import { dateFormat } from '../../utils/dateFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
   import vesselsDatas from '../../data/boats.json'

@@ -19,18 +19,13 @@ export function isObject(item: JSObj): boolean {
 export default function mergeDeep(target: JSObj, ...sources: JSObj[]): JSObj {
   if (!sources.length) return target
   const source = sources.shift() as JSObj
-
-  //if (isObject(target) && isObject(source)) {
-  for (const key in source) {
+  for (const key of Object.getOwnPropertyNames(source)) {
     if (isObject(source[key])) {
       if (!target[key]) target[key] = {}
       mergeDeep(target[key], source[key])
     } else {
       target[key] = source[key]
     }
-    //}
-    return target
   }
-
-  return mergeDeep(target, ...sources)
+  return target
 }

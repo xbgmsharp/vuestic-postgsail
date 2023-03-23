@@ -1,5 +1,7 @@
 import { useRouter } from 'vue-router'
 
+let reqs = 20
+
 class HttpClient {
   constructor(options = {}) {
     this._baseURL = options.baseURL || ''
@@ -8,6 +10,7 @@ class HttpClient {
   }
 
   async _fetchJSON(endpoint, options = {}) {
+    if (!--reqs) return {}
     const res = await fetch(this._baseURL + endpoint, {
       ...options,
       headers: this._headers,
@@ -15,7 +18,7 @@ class HttpClient {
 
     if (res.status === 401) {
       // Unauthorized or token expired
-      console.warn('Unauthorized or token expired', res, this, this.router)
+      console.warn('Unauthorized or token expired')
       this.router.push({ name: 'logout', params: { is401: true } })
     }
     if (res.status === 551) {
@@ -26,7 +29,6 @@ class HttpClient {
     if (!res.ok) throw new Error(res.statusText)
 
     if (options.parseResponse !== false && res.status !== 204) return res.json()
-
     return undefined
   }
 

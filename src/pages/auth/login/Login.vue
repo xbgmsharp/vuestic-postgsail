@@ -85,9 +85,7 @@
         api.setBearerAuth(GlobalStore.login(response.token))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings()
-        // To trigger preferred_homepage logic:
-        await router.push({ name: 'login' })
-        router.go(0)
+        router.push({ name: GlobalStore.preferredHomepage })
       } else {
         throw { response }
       }

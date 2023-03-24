@@ -18,7 +18,6 @@
                   :options="homepage_options"
                   text-by="description"
                   track-by="id"
-                  placeholder="Dashboard"
                   :value-by="(option) => option.id"
                   @focusout="
                     UpdatePref(
@@ -200,7 +199,7 @@
   onBeforeMount(async () => {
     console.log(`onBeforeMount Overviewtab`)
     await fetchSettings()
-    console.log(`${settings.value.first} ${settings.value.last}`)
+    console.log('OverviewTab onBeforeMount', `${settings.value.first} ${settings.value.last}`)
   })
 
   //const UpdatePref = async (key: string, value: any) => {
@@ -208,7 +207,7 @@
     if (!key || typeof value == 'undefined') {
       return
     }
-    console.debug(`Updating ${key}:${value}`)
+    console.debug('OverviewTab UpdatePref', `Updating ${key}:${value}`)
     // Update GlobalStore should be automatic maybe need to use reactive()
     // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     const response = await updatePref(key, value)

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import PostgSail from '../services/api-client'
-import mergeDeep from '../utils/mergeDeep'
+import deepMerge from '../utils/deepMerge'
 
 const defaultState = {
   keepLoggedIn: false,
@@ -68,7 +68,14 @@ const defaultState = {
 }
 
 export const useGlobalStore = defineStore('global', {
-  state: () => useStorage('global', structuredClone(defaultState)),
+  state: () =>
+    useStorage(
+      'global',
+      structuredClone(defaultState),
+      localStorage,
+      { mergeDefaults: true },
+      //{ mergeDefaults: (storageValue, defaults) => deepMerge(defaultState, storageValue) }
+    ),
   actions: {
     login(token: string) {
       this.token = token
@@ -80,7 +87,7 @@ export const useGlobalStore = defineStore('global', {
       this.isLoggedIn = false
       this.token = ''
       // to update existing refs pointing to preferences:
-      mergeDeep(this.settings, defaultState.settings)
+      deepMerge(this.settings, defaultState.settings)
       //localStorage.removeItem('global')
     },
     toggleSidebar() {
@@ -106,7 +113,8 @@ export const useGlobalStore = defineStore('global', {
       if (this.userName) return this.settings
       const api = new PostgSail()
       try {
-        mergeDeep(this.settings, (await api.settings()).settings)
+        this.settings = (await api.settings()).settings
+        //deepMerge(this.settings, (await api.settings()).settings)
       } catch (error) {
         console.error(error)
       }
@@ -132,6 +140,8 @@ export const useGlobalStore = defineStore('global', {
     userName: (state) => state.settings?.username,
     validEmail: (state) => state.settings?.preferences?.email_valid,
     hasVessel: (state) => state.settings?.has_vessel,
+    preferredHomepage: (state) =>
+      ['dashboard', 'dashboard', 'logs', 'monitoring', 'stats'][state.settings?.preferences?.preferred_homepage || 0],
     imperialUnits: (state) => state.settings?.preferences?.use_imperial_units,
     doubleCount: (state) => state.count * 2,
   },

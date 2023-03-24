@@ -172,14 +172,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const {
-    isLoggedIn,
-    validEmail,
-    hasVessel,
-    settings: {
-      preferences: { preferred_homepage },
-    },
-  } = useGlobalStore()
+  const { isLoggedIn, validEmail, hasVessel, preferredHomepage } = useGlobalStore()
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
     // If not logged in, yet required, redirect to login page:
     next({ name: 'login' })
@@ -196,9 +189,7 @@ router.beforeEach((to, from, next) => {
     }
     // All good go to dashboard
     if (to.name === 'login' && isLoggedIn && validEmail && hasVessel) {
-      next({
-        name: ['dashboard', 'dashboard', 'logs', 'monitoring', 'stats'][preferred_homepage || 0],
-      })
+      next({ name: preferredHomepage })
       return
     }
     next()

@@ -113,8 +113,8 @@ export const useGlobalStore = defineStore('global', {
       if (this.userName) return this.settings
       const api = new PostgSail()
       try {
-        this.settings = (await api.settings()).settings
-        //deepMerge(this.settings, (await api.settings()).settings)
+        //this.settings = (await api.settings()).settings
+        deepMerge(this.settings, (await api.settings()).settings)
       } catch (error) {
         console.error(error)
       }

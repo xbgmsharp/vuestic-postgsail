@@ -90,6 +90,6 @@ export default function defineAPIStore<T extends APIStoreDef>(name: string, def:
   }
   //def.actions.getCached = getCached
   //def.actions.setTTL = setTTL
-  def.state = () => useStorage(name, state())
+  def.state = () => useStorage(name, state(), localStorage, { mergeDefaults: true })
   return defineStore(name, def)
 }

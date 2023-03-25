@@ -12,7 +12,7 @@
     <va-card class="col-span-12">
       <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
       <va-card-content>
-        FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}<br />
+        FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
         Backend version: {{ versions.api_version }}, {{ versions.sys_version }}<br />
       </va-card-content>
     </va-card>
@@ -30,29 +30,23 @@
   const { t } = useI18n()
 
   const GlobalStore = useGlobalStore()
-  const { userName, versions, postgsail } = storeToRefs(GlobalStore)
-  const { fetchVersions, fetchSettings } = GlobalStore
+  const { userName, versions } = storeToRefs(GlobalStore)
+  const { fetchVersions } = GlobalStore
 
   const CacheStore = useCacheStore()
   const { getInfoTiles } = storeToRefs(CacheStore)
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
-  /* Commented out because... Vite build transform step fails..?
-  console.log(
-    'Dashboard import.meta.env.VITE_GIT_VERSION',
-    import.meta.env.VITE_GIT_VERSION,
-    __APP_VERSION__,
-    import.meta.env,
-  )*/
-  let ver = ref('')
-  ver.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
+  console.log('Dashboard', __APP_VERSION__, import.meta.env)
+  const vite_version = ref(__VITE_VERSION__)
+  let app_version = ref('')
+  app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {
-    ver.value += '-' + 'dev'
+    app_version.value += '-' + 'dev'
   } else {
-    ver.value += '-' + 'prod'
+    app_version.value += '-' + 'prod'
   }
-  console.log('app_version:', ver.value, userName.value)
-  //set_web_version(ver.value)
+  console.log('app_version:', app_version.value, userName.value)
 
   const infoTiles = ref([
     {
@@ -75,18 +69,9 @@
     },
   ])
 
-  /*
-  fetchVersions(ver.value)
-  fetchinfoTiles()
-  infoTiles.value[0].value = GlobalStore.postgsail.infoTiles.logs
-  infoTiles.value[1].value = GlobalStore.postgsail.infoTiles.stays
-  infoTiles.value[2].value = GlobalStore.postgsail.infoTiles.moorages
-  fetchCharts()
-  */
-
   onMounted(async () => {
     // Load version
-    fetchVersions(ver.value)
+    fetchVersions(app_version.value)
     // Load cache
     const mylogs = await getAPI('logs')
     const mystays = await getAPI('stays')
@@ -100,20 +85,6 @@
     for (let tile in CacheStore.tiles) {
       infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]
     }
-  })
-
-  onMounted(() => {
-    //fetchVersions(ver.value)
-    //TODO
-    //fetchLogs()
-    //fetchStays()
-    //fetchMoorages()
-    // Count array length of each instead of an api call.
-    //fetchinfoTiles()
-    //infoTiles.value[0].value = GlobalStore.postgsail.infoTiles.logs
-    //infoTiles.value[1].value = GlobalStore.postgsail.infoTiles.stays
-    //infoTiles.value[2].value = GlobalStore.postgsail.infoTiles.moorages
-    //fetchCharts()
   })
 </script>
 

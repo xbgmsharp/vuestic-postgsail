@@ -77,9 +77,10 @@ export const useGlobalStore = defineStore('global', {
       //{ mergeDefaults: (storageValue, defaults) => deepMerge(defaultState, storageValue) }
     ),
   actions: {
-    login(token: string) {
+    login(token: string, keepLoggedIn: boolean) {
       this.token = token
       this.isLoggedIn = true
+      this.keepLoggedIn = keepLoggedIn
       return token
       //return this.fetchSettings()
     },
@@ -108,9 +109,9 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    async fetchSettings(): Promise<Record<string, any>> {
-      console.log('fetchSettings', this.userName, this.settings)
-      if (this.userName) return this.settings
+    async fetchSettings(_refresh = false): Promise<Record<string, any>> {
+      console.log('fetchSettings', _refresh, this.userName, this.settings)
+      if (!_refresh && this.userName) return this.settings /* Force refresh */
       const api = new PostgSail()
       try {
         //this.settings = (await api.settings()).settings

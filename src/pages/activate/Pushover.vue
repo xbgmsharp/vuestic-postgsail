@@ -59,15 +59,11 @@
     try {
       const api = new PostgSail()
       const response = await api.pushover(payload)
-      if (typeof response.data === 'boolean' && response.data) {
+      if (typeof response === 'boolean' && response) {
         otpSuccess.value = true
         // Fetch updated settings then route
-        GlobalStore.fetchSettings()
-        router.push({ path: '/profile' })
-        /*setTimeout(() => {
-          router.push({ path: '/' })
-        }, 1000)
-        */
+        await GlobalStore.fetchSettings(true)
+        router.push({ name: GlobalStore.preferredHomepage })
       } else {
         throw { response }
       }

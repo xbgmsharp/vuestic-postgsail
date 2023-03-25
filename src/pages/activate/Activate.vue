@@ -69,15 +69,11 @@
     try {
       const api = new PostgSail()
       const response = await api.otp_email(payload)
-      if (typeof response.data === 'boolean' && response.data) {
+      if (typeof response === 'boolean' && response) {
         otpSuccess.value = true
         // Fetch updated settings then route
-        await GlobalStore.fetchSettings()
-        router.push({ path: '/' })
-        /*setTimeout(() => {
-          router.push({ path: '/' })
-        }, 1000)
-        */
+        await GlobalStore.fetchSettings(true)
+        router.push({ name: GlobalStore.preferredHomepage })
       } else {
         throw { response }
       }

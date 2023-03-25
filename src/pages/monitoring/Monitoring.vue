@@ -180,7 +180,7 @@
     align-items: center;
     justify-content: center;
     /*background: white;*/
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     /*border: 1px solid #ccc;*/
     padding: 20px 10px;
     text-align: center;

@@ -14,9 +14,9 @@ export const durationFormat = (durationString) => {
   */
   return durationString
 }
-export const dateFormatUTC = (dateString) => {
+export const dateFormatUTC = (dateString, local = 'en') => {
   if (!dateString) return null
-  const date = moment.utc(dateString).local().format('L LT')
+  const date = moment.utc(dateString).locale(local).format('L LT')
   return date
 }
 export const durationFormatHours = (durationString) => {

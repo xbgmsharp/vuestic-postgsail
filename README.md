@@ -55,6 +55,7 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] faq -
   - [ ] monitoring -
   - [ ] observability - icon grafana
+  - [ ] badges - icon
 - [ ] Security
   - [ ] Implement refresh token
     - [ ] require backend update
@@ -64,9 +65,9 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Create `/activate` page for OTP validation
   - [x] Force email validation via One Time code on login
     - [x] require backend update
-- [ ] Signup
+- [ ] Singup
   - [x] Create `/activate` page for OTP validation
-  - [x] Force email validation via One Time code on Signup
+  - [x] Force email validation via One Time code on Singup
     - [x] require backend update
 - [x] Implement notifications Pushover, Telegram
   - [x] require backend update
@@ -75,9 +76,9 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Vessels:
   - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
   - [x] Disable boat details page when missing lat_contact null
-  - [ ] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
-  - [ ] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
-  - [ ] Add vessel type or even all vessel data
+  - [x] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
+  - [x] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
+  - [ ] Add vessel type or even all vessel metadata
     - [ ] require backend update
 - [ ] Add Terms of Use page
 - [ ] Update translation
@@ -100,6 +101,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Timelapse
   - [x] Log Geojson replay functionality
   - [ ] Generic Geojson replay functionality base on date or multiple logbook
+  - [ ] require backend update
 - [ ] Loading screen
   - [ ] Based on variable isLoading from store
   - [ ] Display an animated gif while loading content, like in app.bromera.eu
@@ -107,12 +109,12 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 #### Core
 
-- [x] Use vuejs/pinia store to access API instead of by compoments
-  - [x] Offline mode store all API data in browser local storage
-    - [x] Refresh if data is older than 10min old
-    - [x] Fallback to localstorage if no internet
-  - [x] Implement global store username, token, cache: logs, moorages, stays
-    - [x] Implement offline mode
+- [ ] Use vuejs/pinia store to access API instead of by compoments
+  - [ ] Offline mode store all API data in browser local storage
+    - [ ] Refresh if data is older than 10min old
+    - [ ] Fallback to localstorage is no internet
+  - [ ] Implement global store username, token, cache: logs, moorages, stays
+    - [ ] Implement offline mode
 
 #### Pages:
 
@@ -160,17 +162,24 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] /signin, Sign in
   - [ ] Form layout login from api
 - [ ] /settings, User settings
-  - [x] Table & Form layout from api
+  - [ ] Table & Form layout from api?
+- [ ] /badges, User badges
+  - [ ] Table from api?
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
 - [x] /grafana, external link, open a new window/tab
 
 ## Dependencies
 
-- [ ] Remove axios dependency in favor of nodejs fetch
+- [x] Remove axios dependency in favor of nodejs fetch
 - [ ] Update to the latest vestion chart.js and vue-chart.js
 - [ ] Update to the latest vestion vue-i18n
 - [ ] Update to the latest vestion vitejs and plugins
 - [ ] Remove medium-editor dependency
-- [ ] Remove amcharts dependency
+- [x] Remove amcharts dependency
 - [ ] Remove date-fns dependency
+
+## Icons/SVG
+
+- https://fonts.google.com/icons?icon.set=Material+Icons
+- https://www.svgrepo.com/

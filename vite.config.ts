@@ -4,6 +4,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import VueI18nPlugin from '@intlify/vite-plugin-vue-i18n'
 import { VitePWA } from 'vite-plugin-pwa'
+import { packages } from './package-lock.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,6 +32,7 @@ export default defineConfig({
   ],
   define: {
     'process.env': {},
+    'import.meta.env.VITE_GIT_VERSION': JSON.stringify(packages['node_modules/vite'].version),
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
   server: {

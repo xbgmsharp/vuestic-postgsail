@@ -37,12 +37,13 @@
   const { getInfoTiles } = storeToRefs(CacheStore)
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
+  /* Commented out because... Vite build transform step fails..?
   console.log(
     'Dashboard import.meta.env.VITE_GIT_VERSION',
     import.meta.env.VITE_GIT_VERSION,
     __APP_VERSION__,
     import.meta.env,
-  )
+  )*/
   let ver = ref('')
   ver.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {

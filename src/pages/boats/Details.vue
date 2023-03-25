@@ -22,6 +22,16 @@
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.lastContact) }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
+              <template v-if="item.mmsi">
+                <dd class="flex xs12 md6 pa-2">
+                  <a href="https://www.vesselfinder.com/vessels/details/+ {{ item.mmsi }}">vesselfinder</a>
+                </dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <a href="https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=/+ {{ item.mmsi }}"
+                    >marinevesseltraffic</a
+                  >
+                </dd>
+              </template>
             </dl>
           </template>
         </va-inner-loading>
@@ -69,15 +79,15 @@
     try {
       const response = await api.vessel_get()
       // API return null when vessel is pending metadata
-      if (response.data && response.data.vessel) {
-        apiData.row = response.data.vessel
+      if (response && response.vessel) {
+        apiData.row = response.vessel
         //console.log(`geoJson ${apiData.row.geojson}`)
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
-      apiError.value = response.data.message
+      apiError.value = response.message
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
         console.warn('Get data from json...', apiError.value)

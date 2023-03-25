@@ -83,8 +83,8 @@
     try {
       const api = new PostgSail()
       const response = await api.vessel_reg(payload)
-      if (response.data.token) {
-        rowData.value = response.data.token
+      if (response.token) {
+        rowData.value = response.token
       } else {
         throw { response }
       }

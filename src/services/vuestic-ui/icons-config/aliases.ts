@@ -188,4 +188,8 @@ export default [
     name: 'menu-timelapse',
     to: 'timelapse',
   },
+  {
+    name: 'menu-badges',
+    to: 'military_tech',
+  },
 ]

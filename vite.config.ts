@@ -32,7 +32,7 @@ export default defineConfig({
   ],
   define: {
     'process.env': {},
-    'import.meta.env.VITE_GIT_VERSION': JSON.stringify(packages['node_modules/vite'].version),
+    __VITE_VERSION__: JSON.stringify(packages['node_modules/vite'].version),
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
   server: {

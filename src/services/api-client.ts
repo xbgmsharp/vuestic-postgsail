@@ -89,7 +89,7 @@ class ApiClient extends HttpClient {
    * Vessels API endpoint
    */
   async vessel_reg(payload: JSObj) {
-    return this.post(`/rpc/register_vessel`, payload)
+    return this.post(`rpc/register_vessel`, payload)
   }
 
   async vessels() {

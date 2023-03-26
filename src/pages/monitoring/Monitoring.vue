@@ -53,7 +53,7 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import moment from 'moment/min/moment-with-locales'
   import { computed, ref, reactive, onMounted } from 'vue'
   import { kelvinToCelsius } from '../../utils/temperatureFormatter.js'

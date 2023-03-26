@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import PostgSail from '../../../services/api-client.js'
+  import PostgSail from '../../../services/api-client'
   import { ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'

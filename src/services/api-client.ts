@@ -1,22 +1,24 @@
 /*
- * Service that fetch and parse data from PostgSail API.
+ * Service that fetches and parses data from PostgSail API.
  *
  */
 import HttpClient from './HttpClient'
 import { useGlobalStore } from '../stores/global-store'
+import type { JSObj } from '../data/types'
 
 class ApiClient extends HttpClient {
+  static #instance: ApiClient
   /*
    * Create ApiClient instance.
    */
   constructor() {
-    if (ApiClient.instance) return ApiClient.instance
+    if (ApiClient.#instance) return ApiClient.#instance
 
     super({
       baseURL: import.meta.env.VITE_PGSAIL_URL + '/',
       headers: { Test: 'qwerty', Accept: 'application/json', 'Content-Type': 'application/json' },
     })
-    // Assing Bearer Token if exist in cache
+    // Passing Bearer Token if it exists in cache
     const globalToken = useGlobalStore().token
     if (globalToken) {
       this.setBearerAuth(globalToken)
@@ -24,7 +26,7 @@ class ApiClient extends HttpClient {
     // Check online status
     this.check()
 
-    ApiClient.instance = this
+    ApiClient.#instance = this
   }
 
   /*
@@ -43,19 +45,19 @@ class ApiClient extends HttpClient {
   /*
    * Auth API endpoint
    */
-  async login(payload) {
+  async login(payload: JSObj) {
     return this.post(`rpc/login`, payload)
   }
 
-  async signin(payload) {
+  async signin(payload: JSObj) {
     return this.post(`rpc/signup`, payload)
   }
 
-  async recover(payload) {
+  async recover(payload: JSObj) {
     return this.post(`rpc/recover`, payload)
   }
 
-  async reset(payload) {
+  async reset(payload: JSObj) {
     return this.post(`rpc/reset`, payload)
   }
   /*
@@ -64,19 +66,19 @@ class ApiClient extends HttpClient {
   async settings() {
     return this.get(`rpc/settings_fn`, { cache: 'reload' })
   }
-  async update_user_preferences(payload) {
+  async update_user_preferences(payload: JSObj) {
     return this.post(`rpc/update_user_preferences_fn`, payload)
   }
   async versions() {
     return this.get(`rpc/versions_fn`)
   }
-  async otp_generate(payload) {
+  async otp_generate(payload: JSObj) {
     return this.post(`rpc/generate_otp_fn`, payload)
   }
-  async otp_email(payload) {
+  async otp_email(payload: JSObj) {
     return this.post(`rpc/email_fn`, payload)
   }
-  async pushover(payload) {
+  async pushover(payload: JSObj) {
     return this.post(`rpc/pushover_fn`, payload)
   }
   async pushover_link() {
@@ -86,8 +88,8 @@ class ApiClient extends HttpClient {
   /*
    * Vessels API endpoint
    */
-  async vessel_reg(payload) {
-    return this.post(`rpc/register_vessel`, payload)
+  async vessel_reg(payload: JSObj) {
+    return this.post(`/rpc/register_vessel`, payload)
   }
 
   async vessels() {
@@ -102,7 +104,7 @@ class ApiClient extends HttpClient {
     return this.get(`rpc/vessel_fn`)
   }
 
-  async vessel_get_token(data) {
+  async vessel_get_token(data: JSObj) {
     return this.vessel_reg(data)
   }
 
@@ -113,27 +115,27 @@ class ApiClient extends HttpClient {
     return this.get(`logs_view`)
   }
 
-  async log_get(id) {
+  async log_get(id: string) {
     return this.get(`log_view?id=eq.${id}`)
   }
 
-  async log_update(id, payload) {
+  async log_update(id: string, payload: JSObj) {
     return this.patch(`logbook?id=eq.${id}`, payload)
   }
 
-  async log_delete(id) {
+  async log_delete(id: string) {
     return this.delete(`logbook?id=eq.${id}`)
   }
 
-  async log_export_gpx(payload) {
+  async log_export_gpx(payload: JSObj) {
     return this.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 
-  async log_export_geojson(payload) {
+  async log_export_geojson(payload: JSObj) {
     return this.post(`rpc/export_logbook_geojson_fn`, payload)
   }
 
-  async log_export_geojson_point_fn(payload) {
+  async log_export_geojson_point_fn(payload: JSObj) {
     return this.post(`rpc/export_logbook_geojson_point_fn`, payload)
   }
 
@@ -144,15 +146,15 @@ class ApiClient extends HttpClient {
     return this.get(`moorages_view`)
   }
 
-  async moorage_get(id) {
+  async moorage_get(id: string) {
     return this.get(`moorage_view?id=eq.${id}`)
   }
 
-  async moorage_update(id, payload) {
+  async moorage_update(id: string, payload: JSObj) {
     return this.patch(`moorages?id=eq.${id}`, payload)
   }
 
-  async moorage_delete(id) {
+  async moorage_delete(id: string) {
     return this.delete(`moorages?id=eq.${id}`)
   }
 
@@ -163,15 +165,15 @@ class ApiClient extends HttpClient {
     return this.get(`stays_view`)
   }
 
-  async stay_get(id) {
+  async stay_get(id: string) {
     return this.get(`stay_view?id=eq.${id}`)
   }
 
-  async stay_update(id, payload) {
+  async stay_update(id: string, payload: JSObj) {
     return this.patch(`stays?id=eq.${id}`, payload)
   }
 
-  async stay_delete(id) {
+  async stay_delete(id: string) {
     return this.delete(`stays?id=eq.${id}`)
   }
 
@@ -219,9 +221,9 @@ class ApiClient extends HttpClient {
   get log() {
     return {
       all: () => this.get(`logs_view`),
-      get: (id) => this.get(`log_view?id=eq.${id}`),
-      delete: (id) => this.delete(`log_view?id=eq.${id}`),
-      update: (id, payload) => this.patch(`logbook?id=eq.${id}`, payload),
+      get: (id: string) => this.get(`log_view?id=eq.${id}`),
+      delete: (id: string) => this.delete(`log_view?id=eq.${id}`),
+      update: (id: string, payload: JSObj) => this.patch(`logbook?id=eq.${id}`, payload),
     }
   }
 
@@ -232,9 +234,10 @@ class ApiClient extends HttpClient {
   get stay() {
     return {
       all: () => this.get(`stays_view`),
-      get: (id) => this.get(`stay_view?id=eq.${id}`),
-      delete: (id) => this.delete(`stay_view?id=eq.${id}`),
-      update: (id, payload) => this.checkpatch(`stays?id=eq.${id}`, payload),
+      get: (id: string) => this.get(`stay_view?id=eq.${id}`),
+      delete: (id: string) => this.delete(`stay_view?id=eq.${id}`),
+      // Method 'checkpatch' does not exist on type 'ApiClient'
+      //update: (id: string, payload: JSObj) => this.checkpatch(`stays?id=eq.${id}`, payload),
     }
   }
 
@@ -245,9 +248,9 @@ class ApiClient extends HttpClient {
   get moorage() {
     return {
       all: () => this.get(`moorages_view`),
-      get: (id) => this.get(`moorage_view?id=eq.${id}`),
-      delete: (id) => this.delete(`moorage_view?id=eq.${id}`),
-      update: (id, payload) => this.patch(`moorages?id=eq.${id}`, payload),
+      get: (id: string) => this.get(`moorage_view?id=eq.${id}`),
+      delete: (id: string) => this.delete(`moorage_view?id=eq.${id}`),
+      update: (id: string, payload: JSObj) => this.patch(`moorages?id=eq.${id}`, payload),
     }
   }
 }

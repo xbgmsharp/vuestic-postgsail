@@ -49,7 +49,7 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'

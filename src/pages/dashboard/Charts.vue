@@ -154,13 +154,13 @@
     const mymixedChartData = mixedChartData
     mymixedChartData.datasets[0].data = logs_by_month.value
     mymixedChartData.datasets[0].label = 'Total'
-    Object.entries(logs_by_year_by_month.value).forEach((elm) => {
+    Object.entries(logs_by_year_by_month.value).forEach((elm, ind) => {
       const line = structuredClone(dataset)
       line.label = elm[0]
       line.data = elm[1] as number[]
       line.borderColor = random_rgb_dark()
       line.backgroundColor = line.borderColor
-      mymixedChartData.datasets.push(line)
+      mymixedChartData.datasets[ind + 1] = line
     })
     return mymixedChartData
   })

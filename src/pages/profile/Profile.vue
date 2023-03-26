@@ -44,4 +44,19 @@
   }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .va-table tbody > tr > td:first-child {
+    font-weight: 700;
+  }
+  .va-table--striped tbody > tr:nth-child(even) {
+    .va-input {
+      --va-input-wrapper-background: var(--va-background-secondary);
+    }
+    .va-select .va-input-wrapper {
+      --va-input-wrapper-background: var(--va-background-secondary);
+    }
+    .va-switch .va-switch__checker-wrapper {
+      background-color: var(--va-background-secondary);
+    }
+  }
+</style>

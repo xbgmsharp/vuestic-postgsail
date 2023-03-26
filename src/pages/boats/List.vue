@@ -38,7 +38,7 @@
 <script setup>
   import { computed, ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
 

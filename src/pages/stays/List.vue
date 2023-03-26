@@ -87,7 +87,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   //import { useCacheStore } from '../../stores/cache-store'
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
 
   import staysDatas from '../../data/stays.json'

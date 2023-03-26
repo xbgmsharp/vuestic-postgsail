@@ -7,11 +7,12 @@
 <script setup>
   import { useRouter, useRoute } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
-  import PostgSail from '../../../services/api-client.js'
+  import PostgSail from '../../../services/api-client'
 
   useGlobalStore().logout()
   new PostgSail().setBearerAuth('')
 
+  console.debug('Logout')
   useRouter().push({
     name: 'login',
     params: { is401: useRoute().params.is401 },

@@ -15,7 +15,7 @@
 
   import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import { useGlobalStore } from '../../stores/global-store'
   import timelapseGeoJSON from '../../data/timelapse.json'
 
@@ -112,8 +112,8 @@
         marker.value.setLatLngs([coord_rev, coord_rev])
         map.value.panTo(coord_rev, { animate: true })
         if (last) {
-          distanceView.innerText = (distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)) // 1609.34? if non-nautical miles
-            .toFixed(3)
+          distanceView.innerText = // 1609.34? if non-nautical miles
+            (distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)).toFixed(3)
         }
         last = L.latLng(coord_rev)
         if (index == geojson.features.length - 1) clearInterval(interval)

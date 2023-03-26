@@ -18,7 +18,9 @@
                   :options="homepage_options"
                   text-by="description"
                   track-by="id"
+                  placeholder="Dashboard"
                   :value-by="(option) => option.id"
+                  outline
                   @focusout="
                     UpdatePref(
                       'preferred_homepage',
@@ -36,6 +38,7 @@
                 <va-switch
                   v-model="settings.preferences.use_imperial_units"
                   size="small"
+                  outline
                   @click="UpdatePref('use_imperial_units', settings.preferences.use_imperial_units)"
                 />
               </div>
@@ -49,6 +52,7 @@
                   v-model="settings.preferences.website"
                   class="mb-6"
                   style=""
+                  outline
                   @focusout="UpdatePref('website', settings.preferences.website)"
                 />
               </div>
@@ -61,6 +65,7 @@
                 <va-input
                   v-model="settings.preferences.instagram_handle"
                   class="mb-6"
+                  outline
                   @focusout="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
                 />
               </div>
@@ -73,6 +78,7 @@
                 <va-switch
                   v-model="settings.preferences.public_profile"
                   size="small"
+                  outline
                   @click="
                     UpdatePref(
                       'public_profile',
@@ -91,6 +97,7 @@
                   <va-switch
                     v-model="settings.preferences.public_stats"
                     size="small"
+                    outline
                     @click="
                       UpdatePref(
                         'public_stats',
@@ -108,6 +115,7 @@
                   <va-switch
                     v-model="settings.preferences.public_timelapse"
                     size="small"
+                    outline
                     @click="
                       UpdatePref(
                         'public_timelapse',
@@ -125,6 +133,7 @@
                   <va-switch
                     v-model="settings.preferences.public_logs_list"
                     size="small"
+                    outline
                     @click="
                       UpdatePref(
                         'public_logs_list',
@@ -142,6 +151,7 @@
                   <va-switch
                     v-model="settings.preferences.public_logs"
                     size="small"
+                    outline
                     @click="
                       UpdatePref(
                         'public_logs',
@@ -229,9 +239,6 @@
         min-width: 65px;
         max-width: 65px;
       }
-    }
-    td:first-child {
-      font-weight: 700;
     }
   }
   .centerContainer {

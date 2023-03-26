@@ -1,7 +1,5 @@
 import { useRouter } from 'vue-router'
 
-let reqs = 20
-
 class HttpClient {
   constructor(options = {}) {
     this._baseURL = options.baseURL || ''
@@ -10,7 +8,6 @@ class HttpClient {
   }
 
   async _fetchJSON(endpoint, options = {}) {
-    if (!--reqs) return {}
     const res = await fetch(this._baseURL + endpoint, {
       ...options,
       headers: this._headers,

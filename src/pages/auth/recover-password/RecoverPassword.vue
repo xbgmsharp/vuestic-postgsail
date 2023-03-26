@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
   import { useGlobalStore } from '../../../stores/global-store'
-  import PostgSail from '../../../services/api-client.js'
+  import PostgSail from '../../../services/api-client'
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'

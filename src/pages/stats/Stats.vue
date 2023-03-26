@@ -38,7 +38,7 @@
   // TODO update setup with lang="ts"
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'

@@ -79,7 +79,7 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/api-client.js'
+  import PostgSail from '../../services/api-client'
   import { dateFormat, durationFormat } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
 

@@ -46,6 +46,11 @@
   import { useI18n } from 'vue-i18n'
   import { useGlobalStore } from '../../../stores/global-store'
 
+  // Clean up previous localStorage
+  localStorage.removeItem('settings')
+  localStorage.removeItem('cache')
+  localStorage.removeItem('global')
+
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
@@ -82,9 +87,9 @@
       const api = new PostgSail(),
         response = await api.login(payload)
       if (response.token) {
-        api.setBearerAuth(GlobalStore.login(response.token))
+        api.setBearerAuth(GlobalStore.login(response.token, keepLoggedIn.value))
         // Fetch updated settings then route
-        await GlobalStore.fetchSettings()
+        await GlobalStore.fetchSettings(true)
         router.push({ name: GlobalStore.preferredHomepage })
       } else {
         throw { response }

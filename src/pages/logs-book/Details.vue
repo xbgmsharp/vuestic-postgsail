@@ -162,15 +162,15 @@
     }
     try {
       const response = await api.log_update(id, payload)
-      if (response.ok) {
-        console.log('log_update success', response.status)
+      if (response) {
+        console.log('log_update success', response)
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
       console.log('log_update failed', response)
-      updateError.value = response.data.message
+      updateError.value = response.message
     } finally {
       isBusy.value = false
     }

@@ -1,13 +1,7 @@
-//import { useRouter } from 'vue-router'
-import router from '../router'
-
 class HttpClient {
   constructor(options = {}) {
     this._baseURL = options.baseURL || ''
     this._headers = options.headers || {}
-    //this.router = useRouter()
-    this.router = router
-    //console.debug('HttpClient constructor router', this.router)
   }
 
   async _fetchJSON(endpoint, options = {}) {
@@ -15,7 +9,6 @@ class HttpClient {
       ...options,
       headers: this._headers,
     })
-    //console.debug('HttpClient _fetchJSON router', this.router)
 
     if (res.status === 401) {
       // Unauthorized or token expired

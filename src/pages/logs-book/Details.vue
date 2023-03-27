@@ -182,21 +182,17 @@
 
     const api = new PostgSail()
     const id = route.params.id
-    const payload = {
-      name: formData.name,
-      notes: formData.notes,
-    }
     try {
       const response = await api.log_delete(id)
-      if (response.data) {
-        console.log('log_delete success', response.data)
+      if (response) {
+        console.log('log_delete success', response)
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
       console.log('log_delete failed', response)
-      updateError.value = response.data.message
+      updateError.value = response.message
     } finally {
       isBusy.value = false
     }
@@ -213,9 +209,9 @@
     }
     try {
       const response = await api.log_export_gpx(payload)
-      if (response.data) {
-        console.log('log_export_gpx success', response.data)
-        const blob = new Blob([response.data], { type: 'text/xml' })
+      if (response) {
+        console.log('log_export_gpx success', response)
+        const blob = new Blob([response], { type: 'text/xml' })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
         link.download = `log_${id}.xml`
@@ -226,7 +222,7 @@
     } catch (err) {
       const { response } = err
       console.log('log_export_gpx failed', response)
-      updateError.value = response.data.message
+      updateError.value = response.message
     } finally {
       isBusy.value = false
     }
@@ -243,9 +239,9 @@
     }
     try {
       const response = await api.log_export_geojson(payload)
-      if (response.data) {
-        console.log('log_export_geojson success', response.data)
-        const jsonse = JSON.stringify(response.data.geojson)
+      if (response) {
+        console.log('log_export_geojson success', response)
+        const jsonse = JSON.stringify(response.geojson)
         const blob = new Blob([jsonse], { type: 'application/json' })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
@@ -257,7 +253,7 @@
     } catch (err) {
       const { response } = err
       console.log('log_export_geojson failed', response)
-      updateError.value = response.data.message
+      updateError.value = response.message
     } finally {
       isBusy.value = false
     }

@@ -34,6 +34,7 @@ const defaultState = {
     preferences: {
       website: '',
       alerting: {
+        enabled: true,
         min_notification_interval: 6,
         low_pressure_threshold: 990,
         high_wind_speed_threshold: 30,

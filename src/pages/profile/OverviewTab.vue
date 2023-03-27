@@ -1,165 +1,142 @@
 <template>
   <div class="overview-tab pt-2 layout">
     <div class="va-table-responsive">
-      <table class="va-table full-table va-table--striped va-table--hoverable">
+      <table class="va-table va-table--striped va-table--hoverable">
         <tbody>
           <tr>
-            <td>
-              <b>{{ t('profile.name') }}</b>
-            </td>
-            <td>{{ fullName }}</td>
+            <td>{{ t('profile.name') }}</td>
+            <td style="font-weight: 600">{{ fullName }}</td>
           </tr>
           <tr>
             <td>{{ t('profile.preferred_homepage') }}</td>
-            <td>
-              <div class="centerContainer">
-                <va-select
-                  v-model="settings.preferences.preferred_homepage"
-                  :options="homepage_options"
-                  text-by="description"
-                  track-by="id"
-                  placeholder="Dashboard"
-                  :value-by="(option) => option.id"
-                  outline
-                  @focusout="
-                    UpdatePref(
-                      'preferred_homepage',
-                      settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : 0,
-                    )
-                  "
-                />
-              </div>
+            <td class="centerContainer">
+              <va-select
+                v-model="settings.preferences.preferred_homepage"
+                :options="homepage_options"
+                text-by="description"
+                track-by="id"
+                placeholder="Dashboard"
+                :value-by="(option) => option.id"
+                outline
+                @focusout="
+                  UpdatePref(
+                    'preferred_homepage',
+                    settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : 0,
+                  )
+                "
+              />
             </td>
           </tr>
           <tr>
             <td>{{ t('profile.use_imperial_units') }}</td>
-            <td>
-              <div class="centerContainer">
-                <va-switch
-                  v-model="settings.preferences.use_imperial_units"
-                  size="small"
-                  outline
-                  @click="UpdatePref('use_imperial_units', settings.preferences.use_imperial_units)"
-                />
-              </div>
+            <td class="centerContainer">
+              <va-switch
+                v-model="settings.preferences.use_imperial_units"
+                size="small"
+                outline
+                @click="UpdatePref('use_imperial_units', settings.preferences.use_imperial_units)"
+              />
             </td>
           </tr>
           <tr>
             <td>{{ t('profile.website') }}</td>
-            <td>
-              <div class="centerContainer">
-                <va-input
-                  v-model="settings.preferences.website"
-                  class="mb-6"
-                  style=""
-                  outline
-                  @focusout="UpdatePref('website', settings.preferences.website)"
-                />
-              </div>
+            <td class="centerContainer">
+              <va-input
+                v-model="settings.preferences.website"
+                outline
+                @focusout="UpdatePref('website', settings.preferences.website)"
+              />
             </td>
           </tr>
           <tr>
             <td>{{ t('profile.instagram_handle') }}</td>
-            <td>
-              <div class="centerContainer">
-                <va-input
-                  v-model="settings.preferences.instagram_handle"
-                  class="mb-6"
-                  outline
-                  @focusout="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
-                />
-              </div>
+            <td class="centerContainer">
+              <va-input
+                v-model="settings.preferences.instagram_handle"
+                outline
+                @focusout="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
+              />
             </td>
           </tr>
           <tr>
             <td>{{ t('profile.public_profile') }}</td>
-            <td>
-              <div class="centerContainer">
+            <td class="centerContainer">
+              <va-switch
+                v-model="settings.preferences.public_profile"
+                size="small"
+                outline
+                @click="
+                  UpdatePref(
+                    'public_profile',
+                    settings.preferences.public_profile ? settings.preferences.public_profile : false,
+                  )
+                "
+              />
+            </td>
+          </tr>
+          <template v-if="settings.preferences.public_profile">
+            <tr class="sub-setting">
+              <td>{{ t('profile.public_stats') }}</td>
+              <td class="centerContainer">
                 <va-switch
-                  v-model="settings.preferences.public_profile"
+                  v-model="settings.preferences.public_stats"
                   size="small"
                   outline
                   @click="
                     UpdatePref(
-                      'public_profile',
-                      settings.preferences.public_profile ? settings.preferences.public_profile : false,
+                      'public_stats',
+                      settings.preferences.public_stats ? settings.preferences.public_stats : true,
                     )
                   "
                 />
-              </div>
-            </td>
-          </tr>
-          <template v-if="settings.preferences.public_profile">
-            <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_stats') }}</td>
-              <td>
-                <div class="centerContainer">
-                  <va-switch
-                    v-model="settings.preferences.public_stats"
-                    size="small"
-                    outline
-                    @click="
-                      UpdatePref(
-                        'public_stats',
-                        settings.preferences.public_stats ? settings.preferences.public_stats : true,
-                      )
-                    "
-                  />
-                </div>
               </td>
             </tr>
-            <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_timelapse') }}</td>
-              <td>
-                <div class="centerContainer">
-                  <va-switch
-                    v-model="settings.preferences.public_timelapse"
-                    size="small"
-                    outline
-                    @click="
-                      UpdatePref(
-                        'public_timelapse',
-                        settings.preferences.public_timelapse ? settings.preferences.public_timelapse : true,
-                      )
-                    "
-                  />
-                </div>
+            <tr class="sub-setting">
+              <td>{{ t('profile.public_timelapse') }}</td>
+              <td class="centerContainer">
+                <va-switch
+                  v-model="settings.preferences.public_timelapse"
+                  size="small"
+                  outline
+                  @click="
+                    UpdatePref(
+                      'public_timelapse',
+                      settings.preferences.public_timelapse ? settings.preferences.public_timelapse : true,
+                    )
+                  "
+                />
               </td>
             </tr>
-            <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_logs_list') }}</td>
-              <td>
-                <div class="centerContainer">
-                  <va-switch
-                    v-model="settings.preferences.public_logs_list"
-                    size="small"
-                    outline
-                    @click="
-                      UpdatePref(
-                        'public_logs_list',
-                        settings.preferences.public_logs_list ? settings.preferences.public_logs_list : true,
-                      )
-                    "
-                  />
-                </div>
+            <tr class="sub-setting">
+              <td>{{ t('profile.public_logs_list') }}</td>
+              <td class="centerContainer">
+                <va-switch
+                  v-model="settings.preferences.public_logs_list"
+                  size="small"
+                  outline
+                  @click="
+                    UpdatePref(
+                      'public_logs_list',
+                      settings.preferences.public_logs_list ? settings.preferences.public_logs_list : true,
+                    )
+                  "
+                />
               </td>
             </tr>
-            <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.public_logs') }}</td>
-              <td>
-                <div class="centerContainer">
-                  <va-switch
-                    v-model="settings.preferences.public_logs"
-                    size="small"
-                    outline
-                    @click="
-                      UpdatePref(
-                        'public_logs',
-                        settings.preferences.public_logs ? settings.preferences.public_logs : false,
-                      )
-                    "
-                  />
-                </div>
+            <tr class="sub-setting">
+              <td>{{ t('profile.public_logs') }}</td>
+              <td class="centerContainer">
+                <va-switch
+                  v-model="settings.preferences.public_logs"
+                  size="small"
+                  outline
+                  @click="
+                    UpdatePref(
+                      'public_logs',
+                      settings.preferences.public_logs ? settings.preferences.public_logs : false,
+                    )
+                  "
+                />
               </td>
             </tr>
           </template>
@@ -223,32 +200,10 @@
     const response = await updatePref(key, value)
     // Notify user on success or failure using va-toast.
     initToast({
-      message: response ? `Successfully updated ${key} with ${value}` : `Error updating ${key} with ${value}`,
+      message: `${response ? 'Successfully updated' : 'Error updating'} ${key} with ${value}`,
       position: 'top-right',
       color: 'primary',
       //color: response.ok ? 'success' : 'warning',
     })
   }
 </script>
-
-<style lang="scss">
-  .overview-tab {
-    &__item {
-      height: 55px;
-      &-icon {
-        min-width: 65px;
-        max-width: 65px;
-      }
-    }
-  }
-  .centerContainer {
-    display: flex;
-    justify-content: center;
-  }
-  .full-table {
-    width: 100%;
-  }
-  .form-control {
-    background-color: #fff;
-  }
-</style>

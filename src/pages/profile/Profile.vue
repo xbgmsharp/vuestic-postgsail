@@ -11,7 +11,7 @@
               {{ t('profile.tabs.overview.title') }}
             </va-tab>
             <va-tab name="NotificationsTab">
-              {{ t('profile.tabs.notification.title') }}
+              {{ t('profile.tabs.notifications.title') }}
             </va-tab>
           </template>
         </va-tabs>
@@ -45,8 +45,23 @@
 </script>
 
 <style lang="scss">
+  .centerContainer {
+    display: flex;
+    justify-content: center;
+  }
+  .va-table {
+    width: 100%;
+  }
+  .va-table .va-input-wrapper:not(.va-select__anchor) {
+    margin-bottom: 1rem;
+  }
   .va-table tbody > tr > td:first-child {
     font-weight: 700;
+  }
+  .sub-setting > td:first-child {
+    padding-left: 2em;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
   .va-table--striped tbody > tr:nth-child(even) {
     .va-input {
@@ -57,6 +72,16 @@
     }
     .va-switch .va-switch__checker-wrapper {
       background-color: var(--va-background-secondary);
+    }
+  }
+  .overview-tab,
+  .notifications-tab {
+    &__item {
+      height: 55px;
+      &-icon {
+        min-width: 65px;
+        max-width: 65px;
+      }
     }
   }
 </style>

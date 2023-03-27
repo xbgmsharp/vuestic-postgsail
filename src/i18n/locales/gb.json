@@ -220,8 +220,8 @@
       "overview": {
         "title": "Overview"
       },
-      "notification": {
-        "title": "Notification"
+      "notifications": {
+        "title": "Notifications"
       }
     },
     "name": "Name",

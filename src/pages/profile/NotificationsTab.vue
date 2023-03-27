@@ -1,7 +1,7 @@
 <template>
-  <div class="notification-tab pt-2 layout">
+  <div class="notifications-tab pt-2 layout">
     <div class="va-table-responsive">
-      <table class="va-table full-table va-table--striped va-table--hoverable">
+      <table class="va-table va-table--striped va-table--hoverable">
         <tbody>
           <tr>
             <td>{{ t('profile.email_notifications') }}</td>
@@ -49,88 +49,88 @@
             <td>{{ t('profile.alerting') }}</td>
             <td>
               <div class="centerContainer">
-                <va-switch v-model="settings.preferences.alerting" size="small" />
+                <va-switch v-model="settings.preferences.alerting.enabled" size="small" />
               </div>
             </td>
           </tr>
-          <template v-if="settings.preferences.alerting">
-            <tr>
+          <template v-if="settings.preferences.alerting.enabled">
+            <tr class="sub-setting">
               <td>{{ t('profile.min_notification_interval') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.min_notification_interval" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.min_notification_interval" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.high_wind_speed_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.high_wind_speed_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.high_wind_speed_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_outdoor_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_outdoor_temperature_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_outdoor_temperature_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_indoor_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_indoor_temperature_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_indoor_temperature_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_water_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_water_temperature_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_water_temperature_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_water_depth_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_water_depth_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_water_depth_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_pressure_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_pressure_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_pressure_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.high_pressure_drop_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.high_pressure_drop_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.high_pressure_drop_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_battery_charge_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_battery_charge_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_battery_charge_threshold" />
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="sub-setting">
               <td>{{ t('profile.low_battery_voltage_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_battery_voltage_threshold" class="mb-6" />
+                  <va-input v-model="settings.preferences.alerting.low_battery_voltage_threshold" />
                 </div>
               </td>
             </tr>
@@ -158,7 +158,7 @@
   const { fetchSettings, updatePref } = GlobalStore
 
   onBeforeMount(async () => {
-    console.log(`onBeforeMount Notificationtab`)
+    console.log(`onBeforeMount NotificationsTab`)
     await fetchSettings()
     console.log(`${settings.value.first} ${settings.value.last}`)
   })
@@ -210,25 +210,3 @@
     })
   }
 </script>
-
-<style lang="scss" scoped>
-  .notification-tab {
-    &__item {
-      height: 55px;
-      &-icon {
-        min-width: 65px;
-        max-width: 65px;
-      }
-    }
-  }
-  .va-input-wrapper {
-    margin-bottom: 1rem;
-  }
-  .centerContainer {
-    display: flex;
-    justify-content: center;
-  }
-  .full-table {
-    width: 100%;
-  }
-</style>

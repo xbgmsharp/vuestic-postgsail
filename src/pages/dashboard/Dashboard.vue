@@ -38,9 +38,10 @@
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
   console.log('Dashboard', __APP_VERSION__, import.meta.env)
-  const vite_version = ref(__VITE_VERSION__)
+  //const vite_version = ref(__VITE_VERSION__)
+  const vite_version = ref(import.meta.env.VITE_GIT_VERSION)
   let app_version = ref('')
-  app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
+  app_version.value = __APP_VERSION__ + '-' + vite_version.value
   if (import.meta.env.DEV) {
     app_version.value += '-' + 'dev'
   } else {

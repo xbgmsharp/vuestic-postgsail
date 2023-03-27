@@ -20,6 +20,11 @@ class HttpClient {
       console.warn('No vessel register')
       return 551
     }
+    if (res.status === 204) {
+      // No Content on PATH method
+      //console.warn('No Content')
+      return true
+    }
     if (!res.ok) throw new Error(res.statusText)
 
     if (options.parseResponse !== false && res.status !== 204) return res.json()

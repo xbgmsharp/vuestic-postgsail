@@ -30,15 +30,20 @@
     timelapse = ref()
 
   // Query-string
-  //?start_log=7953&end_log=7953&start_date=None&end_date=None&map_type=1&speed=250&delay=1&zoom=13
-  const start_log = ref(route.params.start_log || route.params.id || null),
-    end_log = ref(route.params.end_log || route.params.id || null),
-    start_date = ref(route.params.start_date || null),
-    end_date = ref(route.params.end_date || null),
-    map_type = ref(route.params.map_type || 1),
-    speed = ref(route.params.speed || 250),
-    delay = ref(route.params.delay || 0),
-    zoom = ref(route.params.zoom || 13)
+  // ?start_log=7953&end_log=7953&start_date=None&end_date=None&map_type=1&speed=250&delay=1&zoom=13
+  // /timelapse?start_log=1&end_log=2
+  // /timelapse?start_date=25-03-2023&end_date=25-03-2023
+  // /timelapse?start_date=03-25-2023&end_date=03-25-2023
+  // /timelapse?map_type=0
+  // /timelapse?speed=100&delay=100&zoom=9
+  const start_log = ref(route.query.start_log || route.params.id || null),
+    end_log = ref(route.query.end_log || route.params.id || null),
+    start_date = ref(route.query.start_date || null),
+    end_date = ref(route.query.end_date || null),
+    map_type = ref(route.query.map_type || 1),
+    speed = ref(route.query.speed || 250),
+    delay = ref(route.query.delay || 0),
+    zoom = ref(route.query.zoom || 13)
 
   console.debug(
     'QS',
@@ -116,7 +121,7 @@
     }
     const overlays = {}
     L.control.layers(baseMaps, overlays).addTo(map.value)
-    baseMaps['Satellite'].addTo(map.value)
+    baseMaps[Object.keys(baseMaps)[map_type.value]].addTo(map.value)
 
     const legend = L.control({ position: 'bottomcenter' })
     legend.onAdd = function (map) {
@@ -142,7 +147,7 @@
     }).addTo(map.value)
     setTimeout(() => {
       map_update()
-    }, 1000 + delay.value)
+    }, 1000 + delay.value * 1000) //ms
   }
 
   const map_update = () => {

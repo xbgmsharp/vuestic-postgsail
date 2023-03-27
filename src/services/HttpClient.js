@@ -1,10 +1,7 @@
-import { useRouter } from 'vue-router'
-
 class HttpClient {
   constructor(options = {}) {
     this._baseURL = options.baseURL || ''
     this._headers = options.headers || {}
-    this.router = useRouter()
   }
 
   async _fetchJSON(endpoint, options = {}) {
@@ -16,12 +13,12 @@ class HttpClient {
     if (res.status === 401) {
       // Unauthorized or token expired
       console.warn('Unauthorized or token expired')
-      this.router.push({ name: 'logout', params: { is401: true } })
+      return 401
     }
     if (res.status === 551) {
       // No vessel register
       console.warn('No vessel register')
-      this.router.push({ name: 'boat-new' })
+      return 551
     }
     if (!res.ok) throw new Error(res.statusText)
 

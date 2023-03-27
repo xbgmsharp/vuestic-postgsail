@@ -13,7 +13,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
 
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useGlobalStore } from '../../stores/global-store'
@@ -29,22 +29,48 @@
     marker = ref(),
     timelapse = ref()
 
+  // Query-string
+  //?start_log=7953&end_log=7953&start_date=None&end_date=None&map_type=1&speed=250&delay=1&zoom=13
+  const start_log = ref(route.params.start_log || route.params.id || null),
+    end_log = ref(route.params.end_log || route.params.id || null),
+    start_date = ref(route.params.start_date || null),
+    end_date = ref(route.params.end_date || null),
+    map_type = ref(route.params.map_type || 1),
+    speed = ref(route.params.speed || 250),
+    delay = ref(route.params.delay || 0),
+    zoom = ref(route.params.zoom || 13)
+
+  console.debug(
+    'QS',
+    start_log.value,
+    end_log.value,
+    start_date.value,
+    end_date.value,
+    map_type.value,
+    speed.value,
+    delay.value,
+    zoom.value,
+  )
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail(),
       payload = {
-        _id: route.params.id,
+        start_log: start_log.value,
+        end_log: end_log.value,
+        start_date: start_date.value,
+        end_date: end_date.value,
       }
     try {
-      const response = await api.log_export_geojson_point_fn(payload)
+      const response = await api.timelapse(payload)
       if (response.geojson?.features) {
         timelapse.value = response.geojson
         patchLMapPositions()
         map_setup()
       } else {
-        console.error('error log_export_geojson_point_fn')
-        apiError.value = 'error log_export_geojson_point_fn'
+        console.error('error timelapse')
+        apiError.value = 'error timelapse'
       }
     } catch (e) {
       apiError.value = e
@@ -61,15 +87,36 @@
   const map_setup = () => {
     const geojson = timelapse.value,
       coord_rev = geojson.features[0].geometry.coordinates.reverse()
-    map.value = L.map(mapContainer.value).setView(coord_rev, 13)
-    const layer = L.tileLayer(
+    map.value = L.map(mapContainer.value).setView(coord_rev, zoom.value)
+
+    // OSM
+    const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    })
+    // Satellite
+    const sat = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 18,
+        maxZoom: 17,
       },
-    ).addTo(map.value)
+    )
+    // NOAA
+    const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
+      attribution: 'NOAA',
+      maxZoom: 18,
+    })
+
+    const baseMaps = {
+      OpenStreetMap: osm,
+      Satellite: sat,
+      NOAA: noaa,
+    }
+    const overlays = {}
+    L.control.layers(baseMaps, overlays).addTo(map.value)
+    baseMaps['Satellite'].addTo(map.value)
 
     const legend = L.control({ position: 'bottomcenter' })
     legend.onAdd = function (map) {
@@ -95,12 +142,12 @@
     }).addTo(map.value)
     setTimeout(() => {
       map_update()
-    }, 1000)
+    }, 1000 + delay.value)
   }
 
   const map_update = () => {
     let index = 1,
-      last,
+      last = null,
       distance = 0,
       distanceView = map.value._container.querySelector('.legend > .distance')
 
@@ -112,13 +159,13 @@
         marker.value.setLatLngs([coord_rev, coord_rev])
         map.value.panTo(coord_rev, { animate: true })
         if (last) {
-          distanceView.innerText = // 1609.34? if non-nautical miles
+          distanceView.innerText = // default to non-nautical miles
             (distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)).toFixed(3)
         }
         last = L.latLng(coord_rev)
         if (index == geojson.features.length - 1) clearInterval(interval)
         index++
-      }, 200)
+      }, speed.value)
   }
 
   // adapted src: https://stackoverflow.com/a/60391674

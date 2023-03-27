@@ -135,8 +135,8 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/export_logbook_geojson_fn`, payload)
   }
 
-  async log_export_geojson_point_fn(payload: JSObj) {
-    return this.post(`rpc/export_logbook_geojson_point_fn`, payload)
+  async timelapse(payload: JSObj) {
+    return this.post(`rpc/timelapse_fn`, payload)
   }
 
   /*

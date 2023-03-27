@@ -32,7 +32,7 @@
 
 <script setup>
   import PostgSail from '../../services/api-client'
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useGlobalStore } from '../../stores/global-store'
@@ -83,6 +83,13 @@
       isBusy.value = false
     }
   }
+
+  onMounted(() => {
+    /* redirect to homepage when valid email */
+    if (GlobalStore.validEmail) {
+      router.push({ name: GlobalStore.preferredHomepage })
+    }
+  })
 </script>
 
 <style>

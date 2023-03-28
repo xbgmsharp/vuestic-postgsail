@@ -5,16 +5,18 @@
 </template>
 
 <script setup>
-  import { useRouter, useRoute } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
   import PostgSail from '../../../services/api-client'
+
+  const router = useRouter()
 
   useGlobalStore().logout()
   new PostgSail().setBearerAuth('')
 
-  console.debug('Logout')
-  useRouter().push({
+  console.debug('Logout router push login')
+  router.push({
     name: 'login',
-    params: { is401: useRoute().params.is401 },
+    query: { is401: true },
   })
 </script>

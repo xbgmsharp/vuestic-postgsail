@@ -48,8 +48,6 @@
 
   // Clean up previous localStorage
   localStorage.removeItem('settings')
-  localStorage.removeItem('cache')
-  localStorage.removeItem('global')
 
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
@@ -66,7 +64,7 @@
 
   const route = useRoute()
 
-  const tokenExpired = route.params.is401
+  const tokenExpired = route.query.is401
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 

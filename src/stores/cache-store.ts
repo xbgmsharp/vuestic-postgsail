@@ -1,4 +1,5 @@
 import defineAPIStore from './defineAPIStore'
+import { useStorage } from '@vueuse/core'
 import type { JSObj, Callback_1Param, JSONObject } from '../data/types'
 
 const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
@@ -17,17 +18,23 @@ const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
 export const useCacheStore = defineAPIStore('cache', {
   ttl,
 
-  state: () => ({
-    logs: [],
-    log_get: [],
-    stays: [],
-    stay_get: [],
-    moorages: [],
-    moorage_get: [],
-    stats: new Array(12).fill(0),
-    tiles: new Array(3).fill(0),
-    lines: {},
-  }),
+  state: () =>
+    useStorage(
+      'cache',
+      {
+        logs: [],
+        log_get: [],
+        stays: [],
+        stay_get: [],
+        moorages: [],
+        moorage_get: [],
+        stats: new Array(12).fill(0),
+        tiles: new Array(3).fill(0),
+        lines: {},
+      },
+      localStorage,
+      { mergeDefaults: true },
+    ),
 
   actions: {
     async getAPI(endpoint: string, param: string | undefined): Promise<any> {

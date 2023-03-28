@@ -11,13 +11,15 @@ export default {
     displayName: 'navigationRoutes.home',
   },
   routes: [
+    /*
     {
       name: 'dashboard',
       displayName: 'menu.dashboard',
       meta: {
-        icon: 'gear',
+        icon: 'vuestic-iconset-dashboard',
       },
     },
+    */
     {
       name: 'logs',
       displayName: 'menu.logs',
@@ -59,14 +61,14 @@ export default {
       meta: {
         icon: 'menu-stats',
       },
-    } /*
+    },
     {
       name: 'timelapse',
       displayName: 'menu.timelapse',
       meta: {
         icon: 'menu-timelapse',
       },
-    },*/,
+    },
     {
       name: 'grafana',
       displayName: 'menu.grafana',

@@ -38,8 +38,7 @@
 <script setup>
   import { computed, onBeforeUnmount, onBeforeMount, onMounted, ref } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { onBeforeRouteUpdate } from 'vue-router'
-
+  import { onBeforeRouteUpdate, useRouter } from 'vue-router'
   import { useGlobalStore } from '../stores/global-store'
 
   import Navbar from '../components/navbar/Navbar.vue'
@@ -47,6 +46,7 @@
   //  import LoadingScreen from '../components/loadingScreen.vue'
 
   const GlobalStore = useGlobalStore()
+  const router = useRouter()
 
   const mobileBreakPointPX = 640
   const tabletBreakPointPX = 768
@@ -76,47 +76,19 @@
   onMounted(() => {
     isLoading.value = false
     window.addEventListener('resize', onResize)
-    //fetchSettings()
-    //console.log(GlobalStore.userName)
-    //GlobalStore.userName = userName.value
-    //changeUserName(userName.value)
-    /*if (localStorage.getItem('settings') === null) {
-      handleSettings()
-    }*/
   })
 
   onBeforeMount(async () => {
-    console.log('onBeforeMount AppLayout')
-    if (!Object.keys(GlobalStore.settings).length) {
-      await fetchSettings()
+    console.log('AppLayout onBeforeMount')
+    await fetchSettings(true)
+    if (!GlobalStore.isLoggedIn) {
+      console.log('AppLayout router push logout')
+      router.push({
+        name: 'logout',
+      })
     }
-    console.log('AppLayout onBeforeMount', GlobalStore.settings)
+    console.log('AppLayout onBeforeMount fetchSettings', GlobalStore.settings)
   })
-
-  /*const handleSettings = async () => {
-    isBusy.value = true
-    apiError.value = null
-    const api = new PostgSail()
-    try {
-      const response = await api.settings()
-      if (response.data && response.data.settings) {
-        console.log(response.data.settings)
-        //localStorage.setItem('settings', JSON.stringify(response.data.settings))
-        GlobalStore.userName = response.data.settings.username
-        GlobalStore.settings = response.data.settings
-        //changeUserName(response.data.settings.username)
-      } else {
-        throw {
-          response: { data: { message: 'Wrong API response. Expected array, got ' + typeof response.data + '.' } },
-        }
-      }
-    } catch ({ response }) {
-      apiError.value = response
-      console.warn('Unable to get settings...', apiError.value)
-    } finally {
-      isBusy.value = false
-    }
-  }*/
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)

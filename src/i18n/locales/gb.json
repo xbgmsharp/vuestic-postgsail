@@ -256,7 +256,9 @@
       "telegram_bot": "Telegram Bot",
       "link": "Add PostgSail bot to a group or direct chat.",
       "connected": "Your user is connected to {'@'}postgsail_bot."
-    }
+    },
+    "success": "Successfully updated {key} with {value}",
+    "failure": "Error updating {key} with {value}"
   },
   "privacy": {
     "title": "Privacy"

@@ -213,10 +213,10 @@
     "title": "Profile",
     "tabs": {
       "overview": {
-        "title": "overview"
+        "title": "Em geral"
       },
-      "notification": {
-        "title": "notification"
+      "notifications": {
+        "title": "Notificações"
       }
     },
     "name": "Name",

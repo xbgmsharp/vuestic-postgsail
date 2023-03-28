@@ -247,8 +247,16 @@
     "high_pressure_drop_threshold": "Pressure Drop in 12 hours (hpa)",
     "low_battery_charge_threshold": "Battery Charge (%)",
     "low_battery_voltage_threshold": "Battery Voltage (V)",
-    "pushover": "Pushover",
-    "telegram_bot": "Telegram Bot"
+    "pushover": {
+      "pushover": "Pushover",
+      "link": "Link Your Pushover Account to Enable",
+      "connected": "Your user is connected to Pushover."
+    },
+    "telegram_bot": {
+      "telegram_bot": "Telegram Bot",
+      "link": "Add PostgSail bot to a group or direct chat.",
+      "connected": "Your user is connected to {'@'}postgsail_bot."
+    }
   },
   "privacy": {
     "title": "Privacy"

@@ -7,7 +7,11 @@
             <td>{{ t('profile.email_notifications') }}</td>
             <td>
               <div class="centerContainer">
-                <va-switch v-model="settings.preferences.email_notifications" size="small" />
+                <va-switch
+                  v-model="settings.preferences.email_notifications"
+                  size="small"
+                  @click="UpdatePref('email_notifications', settings.preferences.email_notifications)"
+                />
               </div>
             </td>
           </tr>
@@ -21,26 +25,26 @@
           </tr>
           <template v-if="settings.preferences.phone_notifications">
             <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.pushover') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.pushover.pushover') }}</td>
               <td>
                 <div class="centerContainer">
                   <template
                     v-if="!settings.preferences['pushover_user_key'] || !settings.preferences.pushover_user_key.length"
                   >
-                    <a :href="pushover_link" target="_bank">Link Your Pushover Account to Enable</a>
+                    <a :href="pushover_link" target="_bank"> {{ t('profile.pushover.link') }} </a>
                   </template>
-                  <template v-else> Your user is connected to Pushover. </template>
+                  <template v-else> {{ t('profile.pushover.connected') }} </template>
                 </div>
               </td>
             </tr>
             <tr>
-              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.telegram_bot') }}</td>
+              <td>&nbsp;&nbsp;&nbsp;{{ t('profile.telegram_bot.telegram_bot') }}</td>
               <td>
                 <div class="centerContainer">
-                  <template v-if="!settings.preferences['telegram'] || settings.preferences.telegram.length">
-                    <a :href="telegram_link" target="_bank">Add PostgSail bot to a group or direct chat.</a>
+                  <template v-if="!settings.preferences['telegram'] || !settings.preferences.telegram.length">
+                    <a :href="telegram_link" target="_bank">{{ t('profile.telegram.link') }}</a>
                   </template>
-                  <template v-else> Your user is connected to @postgsail_bot. </template>
+                  <template v-else> {{ t('profile.telegram.connected') }} </template>
                 </div>
               </td>
             </tr>
@@ -49,7 +53,15 @@
             <td>{{ t('profile.alerting') }}</td>
             <td>
               <div class="centerContainer">
-                <va-switch v-model="settings.preferences.alerting.enabled" size="small" />
+                <va-switch
+                  v-model="settings.preferences.alerting.enabled"
+                  size="small"
+                  @click="
+                    UpdatePref('alerting', {
+                      enabled: settings.preferences.alerting.enabled,
+                    })
+                  "
+                />
               </div>
             </td>
           </tr>
@@ -58,7 +70,14 @@
               <td>{{ t('profile.min_notification_interval') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.min_notification_interval" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.min_notification_interval"
+                    @click="
+                      UpdatePref('alerting', {
+                        min_notification_interval: settings.preferences.alerting.min_notification_interval,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -66,7 +85,14 @@
               <td>{{ t('profile.high_wind_speed_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.high_wind_speed_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.high_wind_speed_threshold"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        high_wind_speed_threshold: settings.preferences.alerting.high_wind_speed_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -74,7 +100,15 @@
               <td>{{ t('profile.low_outdoor_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_outdoor_temperature_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_outdoor_temperature_threshold"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_outdoor_temperature_threshold:
+                          settings.preferences.alerting.low_outdoor_temperature_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -82,7 +116,15 @@
               <td>{{ t('profile.low_indoor_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_indoor_temperature_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_indoor_temperature_threshold"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_indoor_temperature_threshold:
+                          settings.preferences.alerting.low_indoor_temperature_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -90,7 +132,14 @@
               <td>{{ t('profile.low_water_temperature_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_water_temperature_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_water_temperature_threshold"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_water_temperature_threshold: settings.preferences.alerting.low_water_temperature_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -98,7 +147,14 @@
               <td>{{ t('profile.low_water_depth_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_water_depth_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_water_depth_threshold"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_water_depth_threshold: settings.preferences.alerting.low_water_depth_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -106,7 +162,16 @@
               <td>{{ t('profile.low_pressure_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_pressure_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_pressure_threshold"
+                    type="number"
+                    @keypress="isNumber($event)"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_pressure_threshold: settings.preferences.alerting.low_pressure_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -114,7 +179,15 @@
               <td>{{ t('profile.high_pressure_drop_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.high_pressure_drop_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.high_pressure_drop_threshold"
+                    type="number"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        high_pressure_drop_threshold: settings.preferences.alerting.high_pressure_drop_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -122,7 +195,15 @@
               <td>{{ t('profile.low_battery_charge_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_battery_charge_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_battery_charge_threshold"
+                    type="number"
+                    @focusout="
+                      UpdatePref('alerting', {
+                        low_battery_charge_threshold: settings.preferences.alerting.low_battery_charge_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -130,7 +211,15 @@
               <td>{{ t('profile.low_battery_voltage_threshold') }}</td>
               <td>
                 <div>
-                  <va-input v-model="settings.preferences.alerting.low_battery_voltage_threshold" />
+                  <va-input
+                    v-model.number="settings.preferences.alerting.low_battery_voltage_threshold"
+                    type="number"
+                    @change="
+                      UpdatePref('alerting', {
+                        low_battery_voltage_threshold: settings.preferences.alerting.low_battery_voltage_threshold,
+                      })
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -159,7 +248,7 @@
 
   onBeforeMount(async () => {
     console.log(`onBeforeMount NotificationsTab`)
-    await fetchSettings()
+    await fetchSettings(true)
     console.log(`${settings.value.first} ${settings.value.last}`)
   })
   // TODO Issue getting default value as per store setup
@@ -181,8 +270,8 @@
     const api = new PostgSail()
     try {
       const response = await api.pushover_link()
-      if (response.data && response.data.pushover_link && response.data.pushover_link.link) {
-        pushover_link.value = response.data.pushover_link.link
+      if (response && response.pushover_link && response.pushover_link.link) {
+        pushover_link.value = response.pushover_link.link
       }
     } catch (e) {
       apiError.value = e
@@ -197,16 +286,24 @@
     if (!key || typeof value == 'undefined') {
       return
     }
-    console.debug(`Updating ${key}:${value}`)
+    if (key === 'alerting' && typeof value === 'object') {
+      console.debug(`Updating ${key}:`, JSON.stringify(value))
+    } else {
+      console.debug(`Updating ${key}:${value}`)
+    }
     // Update GlobalStore should be automatic maybe need to use reactive()
     // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     const response = await updatePref(key, value)
+    // Transform json obj value into a string for display
+    if (typeof value === 'object') {
+      value = JSON.stringify(value)
+    }
     // Notify user on success or failure using va-toast.
     initToast({
-      message: response.ok ? `Successfully updated ${key} with ${value}` : `Error updated ${key} with ${value}`,
+      message: response ? `Successfully updated ${key} with ${value}` : `Error updated ${key} with ${value}`,
       position: 'top-right',
       color: 'primary',
-      //color: response.ok ? 'success' : 'warning',
+      //color: response ? 'success' : 'warning',
     })
   }
 </script>

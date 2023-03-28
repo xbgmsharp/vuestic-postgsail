@@ -183,3 +183,9 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 - https://fonts.google.com/icons?icon.set=Material+Icons
 - https://www.svgrepo.com/
+
+## Debugger
+
+- JSON Web Tokens, https://jwt.io/
+- GeoJSON, https://geojson.io/
+- Nominatim, https://nominatim.openstreetmap.org/ui/reverse.html

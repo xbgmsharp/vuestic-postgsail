@@ -18,12 +18,7 @@
                 placeholder="Dashboard"
                 :value-by="(option) => option.id"
                 outline
-                @focusout="
-                  UpdatePref(
-                    'preferred_homepage',
-                    settings.preferences.preferred_homepage ? settings.preferences.preferred_homepage : 0,
-                  )
-                "
+                @focusout="UpdatePref('preferred_homepage', settings.preferences.preferred_homepage)"
               />
             </td>
           </tr>
@@ -65,12 +60,7 @@
                 v-model="settings.preferences.public_profile"
                 size="small"
                 outline
-                @click="
-                  UpdatePref(
-                    'public_profile',
-                    settings.preferences.public_profile ? settings.preferences.public_profile : false,
-                  )
-                "
+                @click="UpdatePref('public_profile', settings.preferences.public_profile)"
               />
             </td>
           </tr>
@@ -82,12 +72,7 @@
                   v-model="settings.preferences.public_stats"
                   size="small"
                   outline
-                  @click="
-                    UpdatePref(
-                      'public_stats',
-                      settings.preferences.public_stats ? settings.preferences.public_stats : true,
-                    )
-                  "
+                  @click="UpdatePref('public_stats', settings.preferences.public_stats)"
                 />
               </td>
             </tr>
@@ -98,12 +83,7 @@
                   v-model="settings.preferences.public_timelapse"
                   size="small"
                   outline
-                  @click="
-                    UpdatePref(
-                      'public_timelapse',
-                      settings.preferences.public_timelapse ? settings.preferences.public_timelapse : true,
-                    )
-                  "
+                  @click="UpdatePref('public_timelapse', settings.preferences.public_timelapse)"
                 />
               </td>
             </tr>
@@ -114,12 +94,7 @@
                   v-model="settings.preferences.public_logs_list"
                   size="small"
                   outline
-                  @click="
-                    UpdatePref(
-                      'public_logs_list',
-                      settings.preferences.public_logs_list ? settings.preferences.public_logs_list : true,
-                    )
-                  "
+                  @click="UpdatePref('public_logs_list', settings.preferences.public_logs_list)"
                 />
               </td>
             </tr>
@@ -130,12 +105,7 @@
                   v-model="settings.preferences.public_logs"
                   size="small"
                   outline
-                  @click="
-                    UpdatePref(
-                      'public_logs',
-                      settings.preferences.public_logs ? settings.preferences.public_logs : false,
-                    )
-                  "
+                  @click="UpdatePref('public_logs', settings.preferences.public_logs)"
                 />
               </td>
             </tr>
@@ -180,7 +150,7 @@
     },
   ])
   // TODO should be computed?
-  console.log(`${settings.value.first} ${settings.value.last}`)
+  console.log(`First Last: ${settings.value.first} ${settings.value.last}`)
   const fullName = ref(`${settings.value.first} ${settings.value.last}`)
   // TODO Issue getting default value as per store setup
   onBeforeMount(async () => {

@@ -42,9 +42,9 @@
               <td>
                 <div class="centerContainer">
                   <template v-if="!settings.preferences['telegram'] || !settings.preferences.telegram.length">
-                    <a :href="telegram_link" target="_bank">{{ t('profile.telegram.link') }}</a>
+                    <a :href="telegram_link" target="_bank">{{ t('profile.telegram_bot.link') }}</a>
                   </template>
-                  <template v-else> {{ t('profile.telegram.connected') }} </template>
+                  <template v-else> {{ t('profile.telegram_bot.connected') }} </template>
                 </div>
               </td>
             </tr>
@@ -56,11 +56,7 @@
                 <va-switch
                   v-model="settings.preferences.alerting.enabled"
                   size="small"
-                  @click="
-                    UpdatePref('alerting', {
-                      enabled: settings.preferences.alerting.enabled,
-                    })
-                  "
+                  @click="UpdatePref('alerting', settings.preferences.alerting)"
                 />
               </div>
             </td>
@@ -72,11 +68,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.min_notification_interval"
-                    @click="
-                      UpdatePref('alerting', {
-                        min_notification_interval: settings.preferences.alerting.min_notification_interval,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -87,11 +80,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.high_wind_speed_threshold"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        high_wind_speed_threshold: settings.preferences.alerting.high_wind_speed_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -102,12 +92,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_outdoor_temperature_threshold"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_outdoor_temperature_threshold:
-                          settings.preferences.alerting.low_outdoor_temperature_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -118,12 +104,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_indoor_temperature_threshold"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_indoor_temperature_threshold:
-                          settings.preferences.alerting.low_indoor_temperature_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -134,11 +116,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_water_temperature_threshold"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_water_temperature_threshold: settings.preferences.alerting.low_water_temperature_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -149,11 +128,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_water_depth_threshold"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_water_depth_threshold: settings.preferences.alerting.low_water_depth_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -164,13 +140,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_pressure_threshold"
-                    type="number"
-                    @keypress="isNumber($event)"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_pressure_threshold: settings.preferences.alerting.low_pressure_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -181,12 +152,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.high_pressure_drop_threshold"
-                    type="number"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        high_pressure_drop_threshold: settings.preferences.alerting.high_pressure_drop_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -197,12 +164,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_battery_charge_threshold"
-                    type="number"
-                    @focusout="
-                      UpdatePref('alerting', {
-                        low_battery_charge_threshold: settings.preferences.alerting.low_battery_charge_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -213,12 +176,8 @@
                 <div>
                   <va-input
                     v-model.number="settings.preferences.alerting.low_battery_voltage_threshold"
-                    type="number"
-                    @change="
-                      UpdatePref('alerting', {
-                        low_battery_voltage_threshold: settings.preferences.alerting.low_battery_voltage_threshold,
-                      })
-                    "
+                    mask="numeral"
+                    @change="UpdatePref('alerting', settings.preferences.alerting)"
                   />
                 </div>
               </td>
@@ -283,7 +242,7 @@
 
   //const UpdatePref = async (key: string, value: any) => {
   const UpdatePref = async (key, value) => {
-    if (!key || typeof value == 'undefined') {
+    if (!key || typeof value === 'undefined') {
       return
     }
     if (key === 'alerting' && typeof value === 'object') {
@@ -291,12 +250,9 @@
     } else {
       console.debug(`Updating ${key}:${value}`)
     }
-    // Update GlobalStore should be automatic maybe need to use reactive()
-    // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     const response = await updatePref(key, value)
-    // Transform json obj value into a string for display
     if (typeof value === 'object') {
-      value = JSON.stringify(value)
+      value = ''
     }
     // Notify user on success or failure using va-toast.
     initToast({

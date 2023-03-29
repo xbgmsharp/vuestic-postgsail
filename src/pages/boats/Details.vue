@@ -23,12 +23,18 @@
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
               <template v-if="item.mmsi">
+                <dt class="flex xs12 md6 pa-2 font-bold">VesselFinder</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <a href="https://www.vesselfinder.com/vessels/details/+ {{ item.mmsi }}">vesselfinder</a>
+                  <a :href="`https://www.vesselfinder.com/vessels/details/${item.mmsi}`" target="_blank"
+                    >VesselFinder</a
+                  >
                 </dd>
+                <dt class="flex xs12 md6 pa-2 font-bold">MarineVesselTraffic</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <a href="https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=/+ {{ item.mmsi }}"
-                    >marinevesseltraffic</a
+                  <a
+                    :href="`https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=${item.mmsi}`"
+                    target="_blank"
+                    >MarineVesselTraffic</a
                   >
                 </dd>
               </template>

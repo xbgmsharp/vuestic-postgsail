@@ -55,7 +55,7 @@
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
-                <dd class="flex xs12 md6 pa-1">
+                <dd class="export-buttons xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX" />
                   <va-icon name="geojson" :size="44" @click="handleGeoJSON" />
                 </dd>
@@ -266,6 +266,11 @@
       &,
       & + dd {
         background-color: var(--va-background);
+      }
+    }
+    > .export-buttons {
+      > .va-icon {
+        display: inline-block;
       }
     }
   }

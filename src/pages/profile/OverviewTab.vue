@@ -18,6 +18,7 @@
                 placeholder="Dashboard"
                 :value-by="(option) => option.id"
                 outline
+                @click="log('homepage_options click', $event)"
                 @focusout="UpdatePref('preferred_homepage', settings.preferences.preferred_homepage)"
               />
             </td>
@@ -176,4 +177,6 @@
       //color: response.ok ? 'success' : 'warning',
     })
   }
+
+  const log = console.debug
 </script>

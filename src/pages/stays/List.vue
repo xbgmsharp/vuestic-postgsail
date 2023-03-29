@@ -63,10 +63,10 @@
           <template #cell(stayed_at)="{ value }">
             {{ value }}
             <!--
-            <div style="min-height: 270px;">
-              <va-select class="mb-6" v-model="stayed_at[value]" :options="stayed_at" />
+            <div style="min-height: 100px;">
+              <va-select v-model="stayed_at[value]" :options="stayed_at" />
             </div>
-           -->
+            -->
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -86,13 +86,13 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
-  //import { useCacheStore } from '../../stores/cache-store'
+  import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
 
   import staysDatas from '../../data/stays.json'
 
-  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -156,9 +156,10 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    //const api = new PostgSail()
     try {
-      const response = await api.stays()
+      //const response = await api.stays()
+      const response = await useCacheStore().getAPI('stays')
       rowsData.value.splice(0, rowsData.value.length || [])
       rowsData.value.push(...response)
     } catch (e) {

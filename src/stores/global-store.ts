@@ -60,6 +60,8 @@ const defaultState = {
       use_imperial_units: false,
       email_notifications: true,
       phone_notifications: false,
+      /*cache_minutes: 10,
+      cache_clear_on_logout: true*/
     },
     created_at: '',
     username: '',
@@ -90,7 +92,8 @@ export const useGlobalStore = defineStore('global', {
       this.token = ''
       // to update existing refs pointing to preferences:
       deepMerge(this.settings, defaultState.settings)
-      //localStorage.removeItem('global')
+      localStorage.removeItem('global')
+      localStorage.removeItem('cache')
     },
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
@@ -133,7 +136,7 @@ export const useGlobalStore = defineStore('global', {
       try {
         const response = await api.update_user_preferences({ key: `{${key}}`, value: value }),
           preferences: Record<string, any> = this.settings.preferences
-        preferences[key] = value
+        //preferences[key] = value
         console.log(response)
         return response
       } catch (error) {

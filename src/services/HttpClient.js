@@ -1,4 +1,7 @@
 class HttpClient {
+  _baseURL
+  _headers
+
   constructor(options = {}) {
     this._baseURL = options.baseURL || ''
     this._headers = options.headers || {}
@@ -47,7 +50,7 @@ class HttpClient {
 
   setBearerAuth(token) {
     this.token = token
-    this._headers.Authorization = `Bearer ${token}`
+    this._headers.Authorization = token ? `Bearer ${token}` : ''
     return this
   }
 

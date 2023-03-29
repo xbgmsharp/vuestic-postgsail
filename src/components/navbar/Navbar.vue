@@ -7,7 +7,7 @@
             :class="{ 'x-flip': isSidebarMinimized }"
             class="va-navbar__item"
             :color="colors.primary"
-            @click="isSidebarMinimized = !isSidebarMinimized"
+            @click="GlobalStore.toggleSidebar"
           />
           <router-link to="/">
             <postgsail-logo class="logo" height="32" />
@@ -38,11 +38,12 @@
 
   const GlobalStore = useGlobalStore()
 
+  const { toggleSidebar } = GlobalStore
   const { isSidebarMinimized, userName } = storeToRefs(GlobalStore)
   watch(isSidebarMinimized, () => {
     console.log('isSidebarMinimized ref changed!')
     console.log('isSidebarMinimized:', isSidebarMinimized.value)
-    GlobalStore.$state.isSidebarMinimized = isSidebarMinimized.value
+    //GlobalStore.$state.isSidebarMinimized = isSidebarMinimized.value
   })
 
   const { getColors } = useColors()

@@ -146,7 +146,8 @@
     apiError.value = null
     const api = new PostgSail()
     try {
-      const response = await api.moorages()
+      //const response = await api.moorages()
+      const response = await useCacheStore().getAPI('stays')
       rowsData.value.splice(0, rowsData.value.length || [])
       rowsData.value.push(...response)
     } catch (e) {

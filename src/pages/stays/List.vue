@@ -177,7 +177,7 @@
     console.log(id, update_stayed_at)
     if (update_stayed_at) {
       isBusy.value = true
-      updateError.value = null
+      apiError.value = null
       const api = new PostgSail()
       const payload = {
         default_stay: update_stayed_at,
@@ -192,7 +192,7 @@
       } catch (err) {
         const { response } = err
         console.log('log_update failed', response)
-        updateError.value = response.data.message
+        apiError.value = response.data.message
       } finally {
         isBusy.value = false
       }

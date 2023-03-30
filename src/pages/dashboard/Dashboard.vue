@@ -1,10 +1,12 @@
 <template>
   <div class="dashboard grid grid-cols-12 items-start gap-6">
     <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-12 md:col-span-4">
-      <va-card-content>
-        <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>
-        <p class="text-white">{{ t('menu.' + info.text) }}</p>
-      </va-card-content>
+      <router-link :to="info.text">
+        <va-card-content>
+          <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>
+          <p class="text-white">{{ t('menu.' + info.text) }}</p>
+        </va-card-content>
+      </router-link>
     </va-card>
 
     <charts class="col-span-12" />

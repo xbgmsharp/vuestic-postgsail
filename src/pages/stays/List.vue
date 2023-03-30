@@ -61,12 +61,7 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ value }">
-            {{ value }}
-            <!--
-            <div style="min-height: 100px;">
-              <va-select v-model="stayed_at[value]" :options="stayed_at" />
-            </div>
-            -->
+            <va-select v-model="stayed_at[value]" :placeholder="value" :options="stayed_at" />
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -205,8 +200,10 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .va-table {
-    width: 100%;
+<style lang="scss">
+  /* va-select below content fix: */
+  .va-data-table .va-data-table__table.striped .va-data-table__table-tr,
+  .va-data-table .va-data-table__table.striped .va-data-table__table-tr:nth-child(2n):not(.selected) {
+    z-index: unset;
   }
 </style>

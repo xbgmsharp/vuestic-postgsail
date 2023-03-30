@@ -215,6 +215,13 @@ class ApiClient extends HttpClient {
   }
 
   /*
+   * Badges API endpoint
+   */
+  async badges() {
+    return this.get(`rpc/badges_fn`)
+  }
+
+  /*
    * Logs
    *
    * */
@@ -236,8 +243,7 @@ class ApiClient extends HttpClient {
       all: () => this.get(`stays_view`),
       get: (id: string) => this.get(`stay_view?id=eq.${id}`),
       delete: (id: string) => this.delete(`stay_view?id=eq.${id}`),
-      // Method 'checkpatch' does not exist on type 'ApiClient'
-      //update: (id: string, payload: JSObj) => this.checkpatch(`stays?id=eq.${id}`, payload),
+      update: (id: string, payload: JSObj) => this.patch(`stays?id=eq.${id}`, payload),
     }
   }
 

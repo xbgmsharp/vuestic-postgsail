@@ -134,19 +134,19 @@
 
   const homepage_options = ref([
     {
-      id: 1,
+      id: 0,
       description: 'Dashboard',
     },
     {
-      id: 2,
+      id: 1,
       description: 'Ship Logs',
     },
     {
-      id: 3,
+      id: 2,
       description: 'Monitoring',
     },
     {
-      id: 4,
+      id: 3,
       description: 'Statistics',
     },
   ])

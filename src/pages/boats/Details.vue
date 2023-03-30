@@ -26,16 +26,16 @@
                 <dt class="flex xs12 md6 pa-2 font-bold">VesselFinder</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <a :href="`https://www.vesselfinder.com/vessels/details/${item.mmsi}`" target="_blank"
-                    >VesselFinder</a
-                  >
+                    >VesselFinder <va-icon name="fa-external-link" size="small"
+                  /></a>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 font-bold">MarineVesselTraffic</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <a
                     :href="`https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=${item.mmsi}`"
                     target="_blank"
-                    >MarineVesselTraffic</a
-                  >
+                    >MarineVesselTraffic <va-icon name="fa-external-link" size="small"
+                  /></a>
                 </dd>
               </template>
             </dl>

@@ -34,7 +34,7 @@ const defaultState = {
     preferences: {
       website: '',
       alerting: {
-        enabled: true,
+        enabled: false,
         min_notification_interval: 6,
         low_pressure_threshold: 990,
         high_wind_speed_threshold: 30,
@@ -50,7 +50,7 @@ const defaultState = {
       telegram: {},
       email_valid: false,
       public_logs: true,
-      public_stats: true,
+      public_stats: false,
       pushover_user_key: '',
       public_profile: true,
       instagram_handle: '',
@@ -152,7 +152,7 @@ export const useGlobalStore = defineStore('global', {
     validEmail: (state) => state.settings?.preferences?.email_valid,
     hasVessel: (state) => state.settings?.has_vessel,
     preferredHomepage: (state) =>
-      ['dashboard', 'dashboard', 'logs', 'monitoring', 'stats'][state.settings?.preferences?.preferred_homepage || 0],
+      ['dashboard', 'logs', 'monitoring', 'stats'][state.settings?.preferences?.preferred_homepage || 0],
     imperialUnits: (state) => state.settings?.preferences?.use_imperial_units,
     doubleCount: (state) => state.count * 2,
   },

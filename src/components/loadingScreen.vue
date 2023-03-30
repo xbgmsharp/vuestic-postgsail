@@ -1,7 +1,9 @@
 <template>
-  <div class="flex">
-    <h2>Still loading... sorry for the long wait!</h2>
-    <img class="img-thumbnail" src="/boat.gif" alt="loading..." />
+  <div class="flex flex-col">
+    <div class="text-center">
+      <h2>Still loading... sorry for the long wait!</h2>
+      <img class="img-thumbnail" src="/boat.gif" alt="loading..." />
+    </div>
   </div>
 </template>
 

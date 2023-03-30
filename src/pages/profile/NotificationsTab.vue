@@ -41,7 +41,7 @@
               <td>&nbsp;&nbsp;&nbsp;{{ t('profile.telegram_bot.telegram_bot') }}</td>
               <td>
                 <div class="centerContainer">
-                  <template v-if="!settings.preferences['telegram'] || !settings.preferences.telegram.length">
+                  <template v-if="!settings.preferences['telegram'] || !settings.preferences['telegram']['id']">
                     <a :href="telegram_link" target="_bank">{{ t('profile.telegram_bot.link') }}</a>
                   </template>
                   <template v-else> {{ t('profile.telegram_bot.connected') }} </template>

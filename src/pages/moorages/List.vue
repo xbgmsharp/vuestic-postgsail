@@ -77,15 +77,14 @@
 
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
-  import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
+  import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
-  import { dateFormat, durationFormat } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
 
-  import staysDatas from '../../data/stays.json'
+  import mooragesDatas from '../../data/moorages.json'
 
   const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
+
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
@@ -147,7 +146,7 @@
     const api = new PostgSail()
     try {
       //const response = await api.moorages()
-      const response = await useCacheStore().getAPI('stays')
+      const response = await useCacheStore().getAPI('moorages')
       rowsData.value.splice(0, rowsData.value.length || [])
       rowsData.value.push(...response)
     } catch (e) {
@@ -155,7 +154,7 @@
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...staysDatas)
+        rowsData.value.push(...mooragesDatas)
       }
     } finally {
       isBusy.value = false
@@ -170,7 +169,7 @@
     console.log(id, update_stayed_at)
     if (update_stayed_at) {
       isBusy.value = true
-      updateError.value = null
+      apiError.value = null
       const api = new PostgSail()
       const payload = {
         default_stay: update_stayed_at,
@@ -185,7 +184,7 @@
       } catch (err) {
         const { response } = err
         console.log('log_update failed', response)
-        updateError.value = response.data.message
+        apiError.value = response.data.message
       } finally {
         isBusy.value = false
       }

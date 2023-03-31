@@ -147,8 +147,12 @@
     apiError.value = null
     try {
       const response = await CacheStore.getAPI('logs')
-      rowsData.value.splice(0, rowsData.value.length || [])
-      rowsData.value.push(...response)
+      if (Array.isArray(response)) {
+        rowsData.value.splice(0, rowsData.value.length || [])
+        rowsData.value.push(...response)
+      } else {
+        throw { response }
+      }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {

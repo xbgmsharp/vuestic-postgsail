@@ -42,20 +42,23 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] require backend update
 - [x] Add Stays page
   - [x] require backend update
-- [ ] Add Moorage page
+- [ ] Add Moorages page
+  - [x] require backend update
+- [x] Add Map page
   - [x] require backend update
 - [x] Add Monitoring page
   - [x] require backend update
 - [x] Menu icon
   - [x] boats - icon basic sailboat
-  - [ ] moorages - icon anchor
-  - [ ] stays - icon alone
-  - [ ] logs - icon logbook
+  - [x] moorages - icon anchor
+  - [x] stays - icon alone
+  - [x] logs - icon logbook
   - [ ] privacy -
   - [ ] faq -
-  - [ ] monitoring -
-  - [ ] observability - icon grafana
-  - [ ] badges - icon
+  - [x] monitoring -
+  - [x] observability - icon grafana
+  - [x] badges - icon
+  - [x] map - icon
 - [ ] Security
   - [ ] Implement refresh token
     - [ ] require backend update
@@ -130,8 +133,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Table layout from api
   - [x] Edit notes and name
   - [x] Link to timelapse
-- [ ] /moorages, Moorages
-  - [ ] Map layout from api
+- [x] /moorages, Moorages
+  - [x] Map layout from api
   - [x] Table layout from api view, filter and sort
 - [ ] /moorage/:id
   - [ ] Map layout from api
@@ -143,28 +146,28 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Map layout from api
   - [ ] Table layout from api
   - [ ] Edit notes and name and Stayed at (select)
-- [ ] /map, Map
-  - [ ] Same as Moorage Map layout from api?
-    - [ ] Link to /moorages/map/?
+- [x] /map, Map
+  - [x] Same as Moorage Map layout from api
+    - [x] Link to /moorages/map/
 - [x] /boats, Boats
   - [x] Table layout editable?
   - [x] Add geojson we properties and popupcontent
   - [x] Satellite view
-- [ ] /timelapse, Timelapse
-  - [ ] Map layout from api? todo
+- [x] /timelapse, Timelapse
+  - [x] Map layout from api
 - [ ] /stats, Stats/Dashboard
   - [ ] Cards layout
   - [ ] Editable date value range
 - [x] /monitoring, Monitoring
   - [x] Steering layout from api? todo
-- [ ] /signup, Sign up
-  - [ ] Form layout register from api
-- [ ] /signin, Sign in
-  - [ ] Form layout login from api
-- [ ] /settings, User settings
-  - [ ] Table & Form layout from api?
+- [x] /signup, Sign up
+  - [x] Form layout register from api
+- [x] /signin, Sign in
+  - [x] Form layout login from api
+- [x] /settings, User settings
+  - [x] Table & Form layout from api
 - [ ] /badges, User badges
-  - [ ] Table from api?
+  - [ ] Table from api
 - [ ] /faq, FAQ
 - [ ] /privacy, Privacy
 - [x] /grafana, external link, open a new window/tab
@@ -189,3 +192,4 @@ Based on [vuestic-admin](https://vuestic.dev)
 - JSON Web Tokens, https://jwt.io/
 - GeoJSON, https://geojson.io/
 - Nominatim, https://nominatim.openstreetmap.org/ui/reverse.html
+- GPX validaiton, https://opencpn.org/OpenCPN/info/gpxvalidation.html

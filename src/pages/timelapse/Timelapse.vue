@@ -69,13 +69,14 @@
       }
     try {
       const response = await api.timelapse(payload)
-      if (response.geojson?.features) {
+      if (response && response.geojson?.features) {
         timelapse.value = response.geojson
         patchLMapPositions()
         map_setup()
       } else {
         console.error('error timelapse')
         apiError.value = 'error timelapse'
+        throw { response }
       }
     } catch (e) {
       apiError.value = e

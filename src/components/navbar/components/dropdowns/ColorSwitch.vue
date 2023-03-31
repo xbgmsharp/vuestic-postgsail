@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
   import { useColors } from 'vuestic-ui'
-  import { ref, watchEffect, watch } from 'vue'
+  import { ref, watchEffect, watch, computed } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../../../stores/global-store'
 
@@ -43,4 +43,11 @@
     console.log('currentTheme:', currentTheme.value)
     GlobalStore.$state.currentTheme = currentTheme.value
   })
+
+  /*
+  computed(() => {
+    console.log('currentTheme set to system!')
+    GlobalStore.$state.currentTheme = darkModePreference.value ? 'light' : 'dark'
+  })
+  */
 </script>

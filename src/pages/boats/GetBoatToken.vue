@@ -1,12 +1,12 @@
 <template>
   <div>
     <va-button @click="handleGetToken">
-      {{ $t('boats.boat.token_modal.button') }}
+      {{ t('boats.boat.token_modal.button') }}
     </va-button>
     <va-modal v-model="showModal" no-padding>
       <template #content="{ ok }">
         <va-card-title>
-          {{ $t('boats.boat.token_modal.title') }}
+          {{ t('boats.boat.token_modal.title') }}
         </va-card-title>
         <va-card-content>
           <va-inner-loading :loading="isBusy">
@@ -14,7 +14,7 @@
               {{ item.name }} <template v-if="item.mmsi">({{ item.mmsi }})</template>
             </p>
             <template v-if="apiError">
-              <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+              <va-alert color="danger" outline class="mb-4">{{ t('api.error') }}: {{ apiError }}</va-alert>
             </template>
             <!-- TODO use better CSS -->
             <div style="width: 700px; max-width: 800px">
@@ -22,7 +22,7 @@
                 ref="clone"
                 v-model="boatToken"
                 type="textarea"
-                :label="$t('boats.boat.token_modal.token') + ':'"
+                :label="t('boats.boat.token_modal.token') + ':'"
                 placeholder="Readonly Token"
                 :min-rows="3"
                 :max-rows="5"
@@ -32,12 +32,12 @@
                   <va-icon name="content_copy" @click="$vaToast.init({ message: copyToClipboard, color: 'primary' })" />
                 </template>
               </va-input>
-              <va-alert color="warning" outline class="mb-4">{{ $t('boats.boat.token_modal.message') }}</va-alert>
+              <va-alert color="warning" outline class="mb-4">{{ t('boats.boat.token_modal.message') }}</va-alert>
             </div>
           </va-inner-loading>
         </va-card-content>
         <va-card-actions>
-          <va-button class="ml-auto" color="primary" @click="ok">{{ $t('modals.close') }}</va-button>
+          <va-button class="ml-auto" color="primary" @click="ok">{{ t('modals.close') }}</va-button>
         </va-card-actions>
       </template>
     </va-modal>
@@ -91,7 +91,7 @@
     } catch ({ response }) {
       console.log(response)
       /*
-      apiError.value = response.data.message
+      apiError.value = response.message
       console.warn("Could not get vessel's token", apiError)
       */
     } finally {

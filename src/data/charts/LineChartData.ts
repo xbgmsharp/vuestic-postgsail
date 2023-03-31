@@ -15,7 +15,7 @@ const months = [
   'December',
 ]
 
-const getSize = (minSize = 5) => Math.max(minSize, new Date().getMonth())
+const getSize = (minSize = 12) => Math.max(minSize, new Date().getMonth())
 const size = getSize()
 
 const generateValue = () => Math.floor(Math.random() * 100)

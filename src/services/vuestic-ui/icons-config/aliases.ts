@@ -149,6 +149,11 @@ export default [
     color: 'primary',
   },
   {
+    name: 'menu-moorages-map',
+    to: 'explore',
+    color: 'primary',
+  },
+  {
     name: 'csv',
     component: IconCSV,
     color: 'primary',

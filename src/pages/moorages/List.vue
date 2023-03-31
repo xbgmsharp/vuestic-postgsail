@@ -1,6 +1,11 @@
 <template>
   <div>
     <va-card class="mb-3">
+      <va-card-content>
+        <Map style="height: 30vh" />
+      </va-card-content>
+    </va-card>
+    <va-card class="mb-3">
       <va-card-title>{{ $t('moorages.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
@@ -28,7 +33,7 @@
         </div>
       </va-card-content>
     </va-card>
-    <va-card>
+    <va-card class="mb-3">
       <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
@@ -80,6 +85,7 @@
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
+  import Map from './Map.vue'
 
   import mooragesDatas from '../../data/moorages.json'
 
@@ -139,16 +145,19 @@
   const pages = computed(() => {
     return Math.ceil(items.value.length / perPage.value)
   })
-
+  // TODO Default sort on duration
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
     try {
-      //const response = await api.moorages()
-      const response = await useCacheStore().getAPI('moorages')
-      rowsData.value.splice(0, rowsData.value.length || [])
-      rowsData.value.push(...response)
+      const response = await api.moorages()
+      if (Array.isArray(response)) {
+        rowsData.value.splice(0, rowsData.value.length || [])
+        rowsData.value.push(...response)
+      } else {
+        throw { response }
+      }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
@@ -163,32 +172,6 @@
 
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
-  }
-
-  const updateDefaultStay = async (id, update_stayed_at) => {
-    console.log(id, update_stayed_at)
-    if (update_stayed_at) {
-      isBusy.value = true
-      apiError.value = null
-      const api = new PostgSail()
-      const payload = {
-        default_stay: update_stayed_at,
-      }
-      try {
-        const response = api.moorage_update(id, payload)
-        if (response.data) {
-          console.log('log_update success', response.data)
-        } else {
-          throw { response }
-        }
-      } catch (err) {
-        const { response } = err
-        console.log('log_update failed', response)
-        apiError.value = response.data.message
-      } finally {
-        isBusy.value = false
-      }
-    }
   }
 </script>
 

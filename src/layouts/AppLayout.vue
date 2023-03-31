@@ -43,7 +43,7 @@
 
   import Navbar from '../components/navbar/Navbar.vue'
   import Sidebar from '../components/sidebar/Sidebar.vue'
-  //  import LoadingScreen from '../components/loadingScreen.vue'
+  //import LoadingScreen from '../components/loadingScreen.vue'
 
   const GlobalStore = useGlobalStore()
   const router = useRouter()
@@ -63,10 +63,10 @@
   const checkIsMobile = () => window.innerWidth <= mobileBreakPointPX
 
   const onResize = () => {
+    isSidebarMinimized.value = checkIsTablet()
+
     isMobile.value = checkIsMobile()
     isTablet.value = checkIsTablet()
-    // always over-writes stored:
-    //isSidebarMinimized.value = checkIsTablet()
     sidebarMinimizedWidth.value = isMobile.value ? '0' : '4.5rem'
     sidebarWidth.value = isTablet.value ? '100%' : '16rem'
   }

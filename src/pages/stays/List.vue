@@ -151,12 +151,15 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    //const api = new PostgSail()
+    const api = new PostgSail()
     try {
-      //const response = await api.stays()
-      const response = await useCacheStore().getAPI('stays')
-      rowsData.value.splice(0, rowsData.value.length || [])
-      rowsData.value.push(...response)
+      const response = await api.stays()
+      if (Array.isArray(response)) {
+        rowsData.value.splice(0, rowsData.value.length || [])
+        rowsData.value.push(...response)
+      } else {
+        throw { response }
+      }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {

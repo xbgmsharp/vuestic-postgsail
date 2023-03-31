@@ -81,6 +81,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'moorages',
         component: () => import('../pages/moorages/List.vue'),
       },
+      {
+        name: 'map',
+        path: 'moorages/map',
+        component: () => import('../pages/moorages/Map.vue'),
+      },
       /*{
         name: 'moorage-details',
         path: 'moorage/:id',
@@ -173,6 +178,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { isLoggedIn, validEmail, hasVessel, preferredHomepage } = useGlobalStore()
+  console.log(
+    'isLoggedIn',
+    isLoggedIn,
+    'validEmail',
+    validEmail,
+    'hasVessel',
+    hasVessel,
+    'preferredHomepage',
+    preferredHomepage,
+  )
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
     // If not logged in, yet required, redirect to login page:
     next({ name: 'login' })
@@ -187,7 +202,7 @@ router.beforeEach((to, from, next) => {
       next({ name: 'boat-new' })
       return
     }
-    // All good go to dashboard
+    // All good go to dashboard or preferredHomepage
     if (to.name === 'login' && isLoggedIn && validEmail && hasVessel) {
       next({ name: preferredHomepage })
       return
@@ -197,8 +212,13 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
+  const { isLoggedIn, validEmail } = useGlobalStore()
+  if (to.name === 'activate' && isLoggedIn && validEmail) {
+    console.warn('vue-router afterEach activate -> /', isLoggedIn, validEmail, to)
+    router.push({ path: '/' })
+  }
   nextTick(() => {
-    document.title = (to.meta.title as string) || 'PostgSail Dashboard'
+    document.title = (to.meta.title as string) || `${import.meta.env.VITE_APP_TITLE} PostgSail Dashboard`
   })
 })
 

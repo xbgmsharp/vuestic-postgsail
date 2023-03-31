@@ -85,6 +85,7 @@
   }
 
   onMounted(() => {
+    console.log('Active onMounted')
     /* redirect to homepage when valid email */
     if (GlobalStore.validEmail) {
       router.push({ name: GlobalStore.preferredHomepage })

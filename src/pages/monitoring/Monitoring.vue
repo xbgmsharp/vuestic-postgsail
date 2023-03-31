@@ -175,7 +175,7 @@
   })
 </script>
 
-<style scoped>
+<style>
   .box {
     align-items: center;
     justify-content: center;

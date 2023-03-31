@@ -146,6 +146,10 @@ class ApiClient extends HttpClient {
     return this.get(`moorages_view`)
   }
 
+  async moorages_map() {
+    return this.post('rpc/moorages_geojson_fn')
+  }
+
   async moorage_get(id: string) {
     return this.get(`moorage_view?id=eq.${id}`)
   }
@@ -156,6 +160,10 @@ class ApiClient extends HttpClient {
 
   async moorage_delete(id: string) {
     return this.delete(`moorages?id=eq.${id}`)
+  }
+
+  async find_log_from_moorage_fn(payload: JSObj) {
+    return this.post('rpc/find_log_from_moorage_fn', payload)
   }
 
   /*
@@ -218,7 +226,7 @@ class ApiClient extends HttpClient {
    * Badges API endpoint
    */
   async badges() {
-    return this.get(`rpc/badges_fn`)
+    return this.get(`badges_view`)
   }
 
   /*

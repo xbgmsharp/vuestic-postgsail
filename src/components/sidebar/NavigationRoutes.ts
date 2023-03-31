@@ -11,7 +11,6 @@ export default {
     displayName: 'navigationRoutes.home',
   },
   routes: [
-    /*
     {
       name: 'dashboard',
       displayName: 'menu.dashboard',
@@ -19,7 +18,6 @@ export default {
         icon: 'vuestic-iconset-dashboard',
       },
     },
-    */
     {
       name: 'logs',
       displayName: 'menu.logs',
@@ -39,6 +37,13 @@ export default {
       displayName: 'menu.moorages',
       meta: {
         icon: 'menu-moorages',
+      },
+    },
+    {
+      name: 'map',
+      displayName: 'menu.map',
+      meta: {
+        icon: 'menu-moorages-map',
       },
     },
     {

@@ -1,0 +1,54 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.4321, 59.976883333]
+      },
+      "properties": {
+        "id": 2,
+        "name": "Hamnterassen Baywatch",
+        "total_stay": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.7358807, 59.7231605]
+      },
+      "properties": {
+        "id": 3,
+        "name": "Harju maakond",
+        "total_stay": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.530866667, 60.077666667]
+      },
+      "properties": {
+        "id": 1,
+        "name": "patch moorage name 3",
+        "total_stay": 0
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.7299463, 59.7139716]
+      },
+      "properties": {
+        "id": 4,
+        "name": "patch moorage name",
+        "total_stay": 0
+      }
+    }
+  ]
+}

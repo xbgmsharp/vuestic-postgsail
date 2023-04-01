@@ -147,7 +147,11 @@ class ApiClient extends HttpClient {
   }
 
   async moorages_map() {
-    return this.post('rpc/moorages_geojson_fn')
+    return this.post('rpc/export_moorages_geojson_fn')
+  }
+
+  async moorages_gpx() {
+    return this.post('rpc/export_moorages_gpx_fn')
   }
 
   async moorage_get(id: string) {

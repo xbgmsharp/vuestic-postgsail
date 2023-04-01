@@ -4,7 +4,7 @@
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
     <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-      <div ref="mapContainer" style="width: 100%; height: 250px" class="leaflet-map h-full" />
+      <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
     </va-card>
   </div>
 </template>
@@ -14,14 +14,10 @@
   import * as L from 'leaflet'
 
   import { ref, onMounted } from 'vue'
-  import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
-  import { useGlobalStore } from '../../stores/global-store'
   import mooragesGeoJSON from '../../data/moorages_map.json'
 
-  const route = useRoute(),
-    GlobalStore = useGlobalStore(),
-    isBusy = ref(false),
+  const isBusy = ref(false),
     apiError = ref(null),
     mapContainer = ref(),
     map = ref(),
@@ -106,9 +102,9 @@
       var popupContent =
         '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
       if (feature.properties && feature.properties.id) {
-        console.log('popup')
-        let text = `<div class='center'><h5><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h5></div><br/>
-        <a href="/stay/${feature.properties.id}">${feature.properties.total_stay}<a/> day(s) stay<br/>`
+        console.log('popup onEachMoorageFeaturePopup')
+        let text = `<div class='center'><h5><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h5><br/>
+        <a href="/stay/${feature.properties.id}">${feature.properties.total_stay}<a/> day(s) stay<br/></div>`
         // Should be done using i18n
         popupContent = text
       }
@@ -127,45 +123,33 @@
     map.value.fitBounds(layer.getBounds(), { maxZoom: 17 })
   }
 
+  // TODO Zoom and fit on click
+  // TODO convert _from_time to date
+  // TODO convert _duration to hours
   const onEachLineStringFeaturePopup = function (feature, layer) {
     var popupContent = '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
     if (feature.properties && feature.properties.id) {
       console.log('popup onEachLineStringFeaturePopup')
-      let text = `<div class='center'><h5><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h5></div><br/>
-        <a href="/stay/${feature.properties.id}">${feature.properties.total_stay}<a/> day(s) stay<br/>`
-      // Should be done using i18n
+      let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h6><br/>
+        ${feature.properties._from_time}, ${feature.properties.distance} miles, ${feature.properties.duration} hours<br/></div>`
+      // TODO should be done using i18n
       popupContent = text
     }
     layer.bindPopup(popupContent)
-    //bind click
-    layer.on({
-      click: whenClicked,
-    })
-  }
-
-  function getColor() {
-    var o = Math.floor,
-      r = Math.random,
-      s = 256
-    return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')'
   }
 
   const GetStyle = function (feature) {
     return {
-      fillColor: getColor(feature.properties.density),
-      weight: 2,
-      opacity: 1,
-      color: 'white',
-      dashArray: '3',
-      fillOpacity: 0.7,
+      color: 'blue',
     }
   }
 
   // https://leafletjs.com/examples/geojson/
   // https://leafletjs.com/examples/choropleth/
+  // TODO Zoom and fit on click
   const whenClicked = async (e) => {
     // e = event
-    console.log('event', e)
+    console.log('event whenClicked', e)
     if (logs_map.value) {
       map.value.removeLayer(logs_map.value)
     }
@@ -185,9 +169,7 @@
     try {
       const response = await api.find_log_from_moorage_fn(payload)
       if (response && response.geojson?.features) {
-        //logs_map.value = response.geojson
         return response.geojson
-        // TODO Add to map ?!?
       } else {
         console.error('error find_log_from_moorage_fn', response)
         apiError.value = 'error find_log_from_moorage_fn'

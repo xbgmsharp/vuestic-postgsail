@@ -2,7 +2,7 @@
   <div>
     <va-card class="mb-3">
       <va-card-content>
-        <Map style="height: 30vh" />
+        <Map style="width: 100%" />
       </va-card-content>
     </va-card>
     <va-card class="mb-3">

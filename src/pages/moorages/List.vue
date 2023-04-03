@@ -28,6 +28,15 @@
               <div class="flex flex-row-reverse justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('moorages.list.filter.reset') }}</va-button>
               </div>
+              <div class="flex flex-row-reverse justify-center">
+                <va-icon name="csv" :size="36" outline @click="handleCSV" />
+              </div>
+              <div class="flex flex-row-reverse justify-center">
+                <va-icon name="gpx" :size="36" outline @click="handleGPX" />
+              </div>
+              <div class="flex flex-row-reverse justify-center">
+                <va-icon name="geojson" :size="36" outline @click="handleGeoJSON" />
+              </div>
             </div>
           </div>
         </div>
@@ -58,12 +67,10 @@
             {{ value }}
           </template>
           <template #cell(default_stay)="{ value }">
-            {{ value }}
-            <!--
-            <div style="max-width: 150px;">
-              <va-select class="mb-6" v-model="stayed_at[value]" :options="stayed_at" />
+            <!--{{ value }}-->
+            <div style="max-width: 150px">
+              <va-select v-model="stayed_at[value]" :options="stayed_at" class="mb-6" />
             </div>
-            -->
           </template>
           <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
           <template #cell(arrivals)="{ value }">
@@ -172,6 +179,72 @@
 
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
+  }
+
+  const handleGPX = async () => {
+    isBusy.value = true
+    apiError.value = null
+
+    const api = new PostgSail()
+    try {
+      const response = await api.moorages_export_gpx()
+      if (response) {
+        console.log('moorages_export_gpx success', response)
+        const blob = new Blob([response], { type: 'text/xml' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = 'PostgSailMoorages.gpx'
+        link.click()
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('moorages_export_gpx failed', err)
+      apiError.value = response.message
+    } finally {
+      isBusy.value = false
+    }
+  }
+
+  const handleGeoJSON = async () => {
+    isBusy.value = true
+    apiError.value = null
+
+    const api = new PostgSail()
+    try {
+      const response = await api.moorages_export_geojson()
+      if (response) {
+        console.log('moorages_export_geojson success', response)
+        const blob = new Blob([response], { type: 'application/json' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = 'PostgSailMoorages.geojson'
+        link.click()
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('moorages_export_geojson failed', err)
+      apiError.value = response.message
+    } finally {
+      isBusy.value = false
+    }
+  }
+
+  const handleCSV = async () => {
+    let csv = Object.keys(items.value[0]) + '\n'
+    csv += items.value
+      .map((row) => {
+        return Object.values(row).toString()
+      })
+      .join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'PostgSailMoorages.csv'
+    link.click()
   }
 </script>
 

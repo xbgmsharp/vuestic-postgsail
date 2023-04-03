@@ -96,10 +96,6 @@ class ApiClient extends HttpClient {
     return this.get(`vessels_view`)
   }
 
-  async vessels_pending() {
-    return this.get(`vessel_p_view`)
-  }
-
   async vessel_get() {
     return this.get(`rpc/vessel_fn`)
   }
@@ -146,11 +142,11 @@ class ApiClient extends HttpClient {
     return this.get(`moorages_view`)
   }
 
-  async moorages_map() {
+  async moorages_export_geojson() {
     return this.post('rpc/export_moorages_geojson_fn')
   }
 
-  async moorages_gpx() {
+  async moorages_export_gpx() {
     return this.post('rpc/export_moorages_gpx_fn')
   }
 

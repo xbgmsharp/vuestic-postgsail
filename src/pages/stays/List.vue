@@ -87,7 +87,7 @@
 
   import staysDatas from '../../data/stays.json'
 
-  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {

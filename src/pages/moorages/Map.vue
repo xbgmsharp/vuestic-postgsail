@@ -29,7 +29,7 @@
     apiError.value = null
     const api = new PostgSail()
     try {
-      const response = await api.moorages_map()
+      const response = await api.moorages_export_geojson()
       if (response && response.geojson?.features) {
         moorages_map.value = response.geojson
         map_setup()

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <filter-card></filter-card>
     <va-card class="mb-3">
       <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
       <va-card-content>
@@ -29,7 +28,7 @@
               icon="csv"
               outline
               style="grid-column-end: 11"
-              @click="() => runBusy(handleCSV, items)"
+              @click="() => runBusy(handleCSV, items, 'logs')"
             ></va-button>
             <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
             <va-button

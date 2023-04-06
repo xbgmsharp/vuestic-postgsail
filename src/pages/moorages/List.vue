@@ -32,7 +32,12 @@
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('moorages.list.filter.reset')
             }}</va-button>
-            <va-button icon="csv" outline style="grid-column-end: 11" @click="runBusy(handleCSV, items)"></va-button>
+            <va-button
+              icon="csv"
+              outline
+              style="grid-column-end: 11"
+              @click="runBusy(handleCSV, items, 'moorages')"
+            ></va-button>
             <va-button icon="gpx" outline style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-button>
             <va-button icon="geojson" outline style="grid-column-end: 13" @click="runBusy(handleGeoJSON)"></va-button>
           </div>
@@ -154,9 +159,10 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    //const api = new PostgSail()
     try {
-      const response = await api.moorages()
+      //const response = await api.moorages()
+      const response = await useCacheStore().getAPI('moorages')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
@@ -180,7 +186,6 @@
   }
 
   function runBusy(fn, ...args) {
-    console.debug('runBusy apiError', apiError, args)
     asBusy(isBusy, apiError, fn, ...args)
   }
 

@@ -1,6 +1,6 @@
 import i18n from '../i18n'
 import { defineStore } from 'pinia'
-import type { Store, StoreDefinition } from 'pinia'
+import type { StoreDefinition } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import PostgSail from '../services/api-client'
 import type { JSObj, Callback_1Param, Response } from '../data/types'

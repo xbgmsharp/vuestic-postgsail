@@ -29,7 +29,7 @@
               icon="csv"
               outline
               style="grid-column-end: 11"
-              @click="() => runBusy(handleCSV, items)"
+              @click="() => runBusy(handleCSV, items, 'stays')"
             ></va-button>
             <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
             <va-button
@@ -168,9 +168,10 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    //const api = new PostgSail()
     try {
-      const response = await api.stays()
+      //const response = await api.stays()
+      const response = await useCacheStore().getAPI('stays')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)

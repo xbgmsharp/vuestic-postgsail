@@ -21,6 +21,25 @@
                 @click="log('homepage_options click', $event)"
                 @focusout="UpdatePref('preferred_homepage', settings.preferences.preferred_homepage)"
               />
+              <!--<va-select
+                v-model="settings.preferences.preferred_homepage"
+                :options="homepage_options"
+                :text-by="(option) => option.description"
+                :track-by="(option) => option.id"
+                placeholder="Dashboard"
+                :value-by="(option) => option.id"
+                outline
+                @click="
+                  $event.target !== this
+                  && log(
+                    $event,
+                    $event.target.innerText,
+                    $event.srcElement.innerText,
+                    $event.originalTarget.innerText,
+                    $event.explicitOriginalTarget.innerText,
+                  )
+                "
+              />-->
             </td>
           </tr>
           <tr>
@@ -178,5 +197,8 @@
     })
   }
 
-  const log = console.debug
+  const log = (...args) => {
+    console.debug(...args)
+    return args[0]
+  }
 </script>

@@ -83,8 +83,10 @@
       mylogs,
       mystays,
       mymoorages,
-      mylogs[0],
+      '\nmylogs[0].Distance, mystays[0].duration, mymoorages[0].total_stay',
       mylogs[0].Distance,
+      mystays[0].duration,
+      mymoorages[0].total_stay,
     )
     // Load Charts Dashboard
     InfoTiles()

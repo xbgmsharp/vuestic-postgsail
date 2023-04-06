@@ -134,8 +134,8 @@ export const useGlobalStore = defineStore('global', {
     async updatePref(key: string, value: any): Promise<any> {
       const api = new PostgSail()
       try {
-        const response = await api.update_user_preferences({ key: `{${key}}`, value: value }),
-          preferences: Record<string, any> = this.settings.preferences
+        const response = await api.update_user_preferences({ key: `{${key}}`, value: value })
+        //const preferences: Record<string, any> = this.settings.preferences
         //preferences[key] = value
         console.log(response)
         return response

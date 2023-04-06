@@ -7,7 +7,8 @@ import { useGlobalStore } from '../stores/global-store'
 import type { JSObj } from '../data/types'
 
 class ApiClient extends HttpClient {
-  static #instance: ApiClient
+  static #instance: ApiClient;
+  [index: string]: any
   /*
    * Create ApiClient instance.
    */

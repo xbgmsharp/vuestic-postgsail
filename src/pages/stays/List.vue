@@ -209,4 +209,7 @@
   .va-data-table .va-data-table__table.striped .va-data-table__table-tr:nth-child(2n):not(.selected) {
     z-index: unset;
   }
+  .va-data-table:not(.va-data-table--virtual-scroller) {
+    overflow: unset;
+  }
 </style>

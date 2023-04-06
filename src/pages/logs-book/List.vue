@@ -17,10 +17,24 @@
               />
             </div>
             <div class="flex xs12">
-              <div class="flex flex-1 flex-wrap justify-center">
+              <div class="flex flex-1 justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('logs.list.filter.reset') }}</va-button>
               </div>
             </div>
+            <va-button
+              icon="csv"
+              outline
+              class="export-button"
+              style="grid-column-end: 12"
+              @click="handleCSV"
+            ></va-button>
+            <va-button
+              icon="gpx"
+              outline
+              class="export-button"
+              style="grid-column-end: 13"
+              @click="handleGPX"
+            ></va-button>
           </div>
         </div>
       </va-card-content>

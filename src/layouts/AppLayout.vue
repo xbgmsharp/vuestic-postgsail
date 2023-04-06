@@ -156,6 +156,19 @@
     &__page {
       flex-grow: 2;
       overflow-y: scroll;
+      .va-card {
+        background-color: #f00;
+      }
+      /*&:deep()*/
+      .va-button:deep() {
+        background-color: #f00 !important;
+        > .va-button__content > svg.va-icon {
+          fill: var(--va-on-background-primary);
+          path {
+            fill: var(--va-on-background-primary);
+          }
+        }
+      }
     }
   }
 </style>

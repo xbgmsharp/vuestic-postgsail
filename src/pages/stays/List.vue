@@ -17,11 +17,27 @@
                 mode="range"
               />
             </div>
-            <div class="flex xs12">
-              <div class="flex flex-1 flex-wrap justify-center">
+            <!--<div class="flex xs12">
+              <div class="flex flex-row-reverse justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('stays.list.filter.reset') }}</va-button>
               </div>
-            </div>
+            </div>-->
+            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
+              $t('stays.list.filter.reset')
+            }}</va-button>
+            <va-button
+              icon="csv"
+              outline
+              style="grid-column-end: 11"
+              @click="() => runBusy(handleCSV, items)"
+            ></va-button>
+            <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
+            <va-button
+              icon="geojson"
+              outline
+              style="grid-column-end: 13"
+              @click="() => runBusy(handleGeoJSON)"
+            ></va-button>
           </div>
         </div>
       </va-card-content>
@@ -61,7 +77,7 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ value }">
-            <va-select v-model="stayed_at[value]" :placeholder="value" :options="stayed_at" />
+            <va-select v-model="stayed_at[value]" :placeholder="value" :options="stayed_at" outline />
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -84,10 +100,11 @@
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
+  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
 
   import staysDatas from '../../data/stays.json'
 
-  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -201,15 +218,8 @@
       }
     }
   }
-</script>
 
-<style lang="scss">
-  /* va-select below content fix: */
-  .va-data-table .va-data-table__table.striped .va-data-table__table-tr,
-  .va-data-table .va-data-table__table.striped .va-data-table__table-tr:nth-child(2n):not(.selected) {
-    z-index: unset;
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
   }
-  .va-data-table:not(.va-data-table--virtual-scroller) {
-    overflow: unset;
-  }
-</style>
+</script>

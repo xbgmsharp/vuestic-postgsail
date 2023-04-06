@@ -1,5 +1,6 @@
 <template>
   <div>
+    <filter-card></filter-card>
     <va-card class="mb-3">
       <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
       <va-card-content>
@@ -16,24 +17,26 @@
                 mode="range"
               />
             </div>
-            <div class="flex xs12">
-              <div class="flex flex-1 justify-center">
+            <!--<div class="flex xs12">
+              <div class="flex flex-row-reverse justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('logs.list.filter.reset') }}</va-button>
               </div>
-            </div>
+            </div>-->
+            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
+              $t('logs.list.filter.reset')
+            }}</va-button>
             <va-button
               icon="csv"
               outline
-              class="export-button"
-              style="grid-column-end: 12"
-              @click="handleCSV"
+              style="grid-column-end: 11"
+              @click="() => runBusy(handleCSV, items)"
             ></va-button>
+            <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
             <va-button
-              icon="gpx"
+              icon="geojson"
               outline
-              class="export-button"
               style="grid-column-end: 13"
-              @click="handleGPX"
+              @click="() => runBusy(handleGeoJSON)"
             ></va-button>
           </div>
         </div>
@@ -90,6 +93,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { dateFormat, dateFormatUTC, durationFormat, durationFormatHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
 
   import logsDatas from '../../data/logs.json'
 
@@ -181,6 +185,10 @@
 
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
+  }
+
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
   }
 </script>
 

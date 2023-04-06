@@ -156,19 +156,35 @@
     &__page {
       flex-grow: 2;
       overflow-y: scroll;
-      .va-card {
-        background-color: #f00;
-      }
-      /*&:deep()*/
-      .va-button:deep() {
-        background-color: #f00 !important;
-        > .va-button__content > svg.va-icon {
-          fill: var(--va-on-background-primary);
-          path {
-            fill: var(--va-on-background-primary);
-          }
+
+      .va-button > .va-button__content > svg.va-icon {
+        fill: var(--va-on-primary);
+        path {
+          fill: var(--va-on-primary);
         }
       }
+    }
+  }
+
+  /* va-select below content fix: */
+  .va-data-table .va-data-table__table.striped .va-data-table__table-tr,
+  .va-data-table .va-data-table__table.striped .va-data-table__table-tr:nth-child(2n):not(.selected) {
+    z-index: unset;
+  }
+  .va-data-table:not(.va-data-table--virtual-scroller) {
+    overflow: unset;
+  }
+  /* va inputs on striped tables*/
+  .va-table--striped tbody > tr:nth-child(even),
+  .va-data-table__table.striped tbody > tr:nth-child(even) {
+    .va-input {
+      --va-input-wrapper-background: var(--va-background-secondary);
+    }
+    .va-select .va-input-wrapper {
+      --va-input-wrapper-background: var(--va-background-secondary);
+    }
+    .va-switch .va-switch__checker-wrapper {
+      background-color: var(--va-background-secondary);
     }
   }
 </style>

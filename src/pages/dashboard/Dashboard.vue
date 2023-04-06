@@ -78,7 +78,14 @@
     const mylogs = await getAPI('logs')
     const mystays = await getAPI('stays')
     const mymoorages = await getAPI('moorages')
-    console.log('Dashboard onMounted my(logs|stays|moorages)', mylogs, mystays, mymoorages)
+    console.log(
+      'Dashboard onMounted my(logs|stays|moorages)',
+      mylogs,
+      mystays,
+      mymoorages,
+      mylogs[0],
+      mylogs[0].Distance,
+    )
     // Load Charts Dashboard
     InfoTiles()
     barChart()

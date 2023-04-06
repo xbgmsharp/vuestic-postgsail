@@ -2,7 +2,7 @@
   <div>
     <va-card class="mb-3">
       <va-card-content>
-        <Map style="width: 100%" />
+        <Map style="width: 100%; height: 40vh" />
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
@@ -24,20 +24,17 @@
                 placeholder="Filter by stay..."
               />
             </div>
-            <div class="flex xs12">
+            <!--<div class="flex xs12">
               <div class="flex flex-row-reverse justify-center">
                 <va-button icon="clear" outline @click="resetFilter">{{ $t('moorages.list.filter.reset') }}</va-button>
               </div>
-              <div class="flex flex-row-reverse justify-center">
-                <va-icon name="csv" :size="36" outline @click="handleCSV" />
-              </div>
-              <div class="flex flex-row-reverse justify-center">
-                <va-icon name="gpx" :size="36" outline @click="handleGPX" />
-              </div>
-              <div class="flex flex-row-reverse justify-center">
-                <va-icon name="geojson" :size="36" outline @click="handleGeoJSON" />
-              </div>
-            </div>
+            </div>-->
+            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
+              $t('moorages.list.filter.reset')
+            }}</va-button>
+            <va-button icon="csv" outline style="grid-column-end: 11" @click="runBusy(handleCSV, items)"></va-button>
+            <va-button icon="gpx" outline style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-button>
+            <va-button icon="geojson" outline style="grid-column-end: 13" @click="runBusy(handleGeoJSON)"></va-button>
           </div>
         </div>
       </va-card-content>
@@ -69,7 +66,7 @@
           <template #cell(default_stay)="{ value }">
             <!--{{ value }}-->
             <div style="max-width: 150px">
-              <va-select v-model="stayed_at[value]" :options="stayed_at" class="mb-6" />
+              <va-select v-model="stayed_at[value]" :options="stayed_at" outline class="mb-6" />
             </div>
           </template>
           <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
@@ -93,10 +90,11 @@
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import Map from './Map.vue'
+  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
 
   import mooragesDatas from '../../data/moorages.json'
 
-  const stayed_at = ref(['Unknow', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -181,7 +179,12 @@
     Object.assign(filter, { ...getDefaultFilter() })
   }
 
-  const handleGPX = async () => {
+  function runBusy(fn, ...args) {
+    console.debug('runBusy apiError', apiError, args)
+    asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  /*const handleGPX = async () => {
     isBusy.value = true
     apiError.value = null
 
@@ -245,11 +248,28 @@
     link.href = URL.createObjectURL(blob)
     link.download = 'PostgSailMoorages.csv'
     link.click()
-  }
+  }*/
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .va-table {
     width: 100%;
+  }
+  .leaflet-maps-page {
+    display: flex;
+    flex-direction: column;
+
+    .va-alert {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    .leaflet-maps-page__widget {
+      flex: 1 1 auto;
+
+      .leaflet-map {
+        height: 100% !important;
+      }
+    }
   }
 </style>

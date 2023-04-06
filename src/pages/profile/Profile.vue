@@ -63,17 +63,6 @@
     font-size: 0.9rem;
     font-weight: 600;
   }
-  .va-table--striped tbody > tr:nth-child(even) {
-    .va-input {
-      --va-input-wrapper-background: var(--va-background-secondary);
-    }
-    .va-select .va-input-wrapper {
-      --va-input-wrapper-background: var(--va-background-secondary);
-    }
-    .va-switch .va-switch__checker-wrapper {
-      background-color: var(--va-background-secondary);
-    }
-  }
   .overview-tab,
   .notifications-tab {
     &__item {

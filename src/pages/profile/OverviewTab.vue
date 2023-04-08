@@ -13,33 +13,10 @@
               <va-select
                 v-model="settings.preferences.preferred_homepage"
                 :options="homepage_options"
-                text-by="description"
-                track-by="id"
                 placeholder="Dashboard"
-                :value-by="(option) => option.id"
                 outline
-                @click="log('homepage_options click', $event)"
-                @focusout="UpdatePref('preferred_homepage', settings.preferences.preferred_homepage)"
+                @update:modelValue="UpdatePref('preferred_homepage', $event.value)"
               />
-              <!--<va-select
-                v-model="settings.preferences.preferred_homepage"
-                :options="homepage_options"
-                :text-by="(option) => option.description"
-                :track-by="(option) => option.id"
-                placeholder="Dashboard"
-                :value-by="(option) => option.id"
-                outline
-                @click="
-                  $event.target !== this
-                  && log(
-                    $event,
-                    $event.target.innerText,
-                    $event.srcElement.innerText,
-                    $event.originalTarget.innerText,
-                    $event.explicitOriginalTarget.innerText,
-                  )
-                "
-              />-->
             </td>
           </tr>
           <tr>
@@ -49,7 +26,7 @@
                 v-model="settings.preferences.use_imperial_units"
                 size="small"
                 outline
-                @click="UpdatePref('use_imperial_units', settings.preferences.use_imperial_units)"
+                @update:modelValue="UpdatePref('use_imperial_units', $event)"
               />
             </td>
           </tr>
@@ -59,7 +36,7 @@
               <va-input
                 v-model="settings.preferences.website"
                 outline
-                @focusout="UpdatePref('website', settings.preferences.website)"
+                @change="UpdatePref('website', settings.preferences.website)"
               />
             </td>
           </tr>
@@ -69,7 +46,7 @@
               <va-input
                 v-model="settings.preferences.instagram_handle"
                 outline
-                @focusout="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
+                @change="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
               />
             </td>
           </tr>
@@ -80,7 +57,7 @@
                 v-model="settings.preferences.public_profile"
                 size="small"
                 outline
-                @click="UpdatePref('public_profile', settings.preferences.public_profile)"
+                @update:modelValue="UpdatePref('public_profile', $event)"
               />
             </td>
           </tr>
@@ -92,7 +69,7 @@
                   v-model="settings.preferences.public_stats"
                   size="small"
                   outline
-                  @click="UpdatePref('public_stats', settings.preferences.public_stats)"
+                  @update:modelValue="UpdatePref('public_stats', $event)"
                 />
               </td>
             </tr>
@@ -103,7 +80,7 @@
                   v-model="settings.preferences.public_timelapse"
                   size="small"
                   outline
-                  @click="UpdatePref('public_timelapse', settings.preferences.public_timelapse)"
+                  @update:modelValue="UpdatePref('public_timelapse', $event)"
                 />
               </td>
             </tr>
@@ -114,7 +91,7 @@
                   v-model="settings.preferences.public_logs_list"
                   size="small"
                   outline
-                  @click="UpdatePref('public_logs_list', settings.preferences.public_logs_list)"
+                  @update:modelValue="UpdatePref('public_logs_list', $event)"
                 />
               </td>
             </tr>
@@ -125,7 +102,7 @@
                   v-model="settings.preferences.public_logs"
                   size="small"
                   outline
-                  @click="UpdatePref('public_logs', settings.preferences.public_logs)"
+                  @update:modelValue="log('public_logs', $event)"
                 />
               </td>
             </tr>
@@ -151,7 +128,7 @@
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
 
-  const homepage_options = ref([
+  /*const homepage_options = ref([
     {
       id: 0,
       description: 'Dashboard',
@@ -168,6 +145,24 @@
       id: 3,
       description: 'Statistics',
     },
+  ])*/
+  const homepage_options = ref([
+    {
+      value: 0,
+      text: 'Dashboard',
+    },
+    {
+      value: 1,
+      text: 'Ship Logs',
+    },
+    {
+      value: 2,
+      text: 'Monitoring',
+    },
+    {
+      value: 3,
+      text: 'Statistics',
+    },
   ])
   // TODO should be computed?
   console.log(`First Last: ${settings.value.first} ${settings.value.last}`)
@@ -181,10 +176,8 @@
 
   //const UpdatePref = async (key: string, value: any) => {
   const UpdatePref = async (key, value) => {
-    if (!key || typeof value == 'undefined') {
-      return
-    }
-    console.debug('OverviewTab UpdatePref', `Updating ${key}:${value}`)
+    if (!key || typeof value == 'undefined') return
+    console.debug('OverviewTab UpdatePref', `Updating ${key}: ${value}`)
     // Update GlobalStore should be automatic maybe need to use reactive()
     // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     const response = await updatePref(key, value)

@@ -10,7 +10,7 @@
                 <va-switch
                   v-model="settings.preferences.email_notifications"
                   size="small"
-                  @click="UpdatePref('email_notifications', settings.preferences.email_notifications)"
+                  @update:modelValue="UpdatePref('email_notifications', $event)"
                 />
               </div>
             </td>
@@ -56,7 +56,7 @@
                 <va-switch
                   v-model="settings.preferences.alerting.enabled"
                   size="small"
-                  @click="UpdatePref('alerting', settings.preferences.alerting)"
+                  @update:modelValue="UpdatePref('alerting', $event)"
                 />
               </div>
             </td>

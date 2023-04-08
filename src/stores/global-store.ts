@@ -137,7 +137,7 @@ export const useGlobalStore = defineStore('global', {
         const response = await api.update_user_preferences({ key: `{${key}}`, value: value })
         //const preferences: Record<string, any> = this.settings.preferences
         //preferences[key] = value
-        console.log(response)
+        console.log('updatePref response', response)
         return response
       } catch (error) {
         console.log(error)

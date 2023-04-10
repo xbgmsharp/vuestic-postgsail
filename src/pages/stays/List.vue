@@ -25,25 +25,13 @@
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('stays.list.filter.reset')
             }}</va-button>
-            <va-button
-              icon="csv"
-              outline
-              style="grid-column-end: 11"
-              @click="() => runBusy(handleCSV, items, 'stays')"
-            ></va-button>
-            <va-button
-              icon="gpx"
-              style="grid-column-end: 12"
-              hover-behavior="opacity"
-              :hover-opacity="0.4"
-              @click="() => runBusy(handleGPX)"
-            />
-            <va-button
-              icon="geojson"
+            <va-icon
+              name="csv"
+              :size="34"
               outline
               style="grid-column-end: 13"
-              @click="() => runBusy(handleGeoJSON)"
-            ></va-button>
+              @click="() => runBusy(handleCSV, items, 'stays')"
+            ></va-icon>
           </div>
         </div>
       </va-card-content>

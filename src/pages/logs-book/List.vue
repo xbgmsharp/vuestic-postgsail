@@ -24,19 +24,13 @@
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('logs.list.filter.reset')
             }}</va-button>
-            <va-button
-              icon="csv"
-              outline
-              style="grid-column-end: 11"
-              @click="() => runBusy(handleCSV, items, 'logs')"
-            ></va-button>
-            <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
-            <va-button
-              icon="geojson"
+            <va-icon
+              name="csv"
+              :size="34"
               outline
               style="grid-column-end: 13"
-              @click="() => runBusy(handleGeoJSON)"
-            ></va-button>
+              @click="() => runBusy(handleCSV, items, 'logs')"
+            ></va-icon>
           </div>
         </div>
       </va-card-content>

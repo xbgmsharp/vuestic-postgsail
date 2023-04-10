@@ -76,15 +76,15 @@
             {{ value }}
           </template>
           <template #cell(default_stay)="{ value }">
-            <!--{{ value }}-->
             <div style="max-width: 150px">
               <va-select
                 v-model="stayed_at[value]"
                 :placeholder="value"
                 :options="stayed_at"
                 outline
+                style="max-width: 150px"
                 class="mb-6"
-                @update="updateDefaultStay($event, rowData.id)"
+                @update:modelValue="updateDefaultStay(rowData.id, $event)"
               />
             </div>
           </template>
@@ -205,7 +205,7 @@
 
   const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
-    if (update_stayed_at) {
+    /*if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
@@ -226,7 +226,7 @@
       } finally {
         isBusy.value = false
       }
-    }
+    }*/
   }
 
   /*const handleGPX = async () => {

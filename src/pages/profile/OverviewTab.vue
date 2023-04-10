@@ -189,9 +189,4 @@
       //color: response.ok ? 'success' : 'warning',
     })
   }
-
-  const log = (...args) => {
-    console.debug(...args)
-    return args[0]
-  }
 </script>

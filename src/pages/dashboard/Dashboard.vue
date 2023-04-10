@@ -39,10 +39,19 @@
   const { getInfoTiles } = storeToRefs(CacheStore)
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
-  console.log('Dashboard', __APP_VERSION__, import.meta.env)
+  console.log('Dashboard versions', {
+    __APP_VERSION__,
+    __VITE_VERSION__,
+    'import.meta.env.VITE_GIT_VERSION': import.meta.env.VITE_GIT_VERSION,
+    'import.meta.env': import.meta.env,
+  })
   const vite_version = ref(__VITE_VERSION__)
   let app_version = ref('')
-  app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
+  //[ToDo]
+  //  delete from /vite.config.ts one of:
+  //  __VITE_VERSION__ or import.meta.env.VITE_GIT_VERSION
+  app_version.value = __APP_VERSION__ + '-' + vite_version.value
+  //app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {
     app_version.value += '-' + 'dev'
   } else {
@@ -78,16 +87,15 @@
     const mylogs = await getAPI('logs')
     const mystays = await getAPI('stays')
     const mymoorages = await getAPI('moorages')
-    console.log(
-      'Dashboard onMounted my(logs|stays|moorages)',
-      mylogs,
-      mystays,
-      mymoorages,
-      '\nmylogs[0].Distance, mystays[0].duration, mymoorages[0].total_stay',
-      mylogs[0].Distance,
-      mystays[0].duration,
-      mymoorages[0].total_stay,
-    )
+    // for manual expanding in console:
+    console.log('Dashboard onMounted my(logs|stays|moorages)', [
+      [mylogs, mystays, mymoorages],
+      {
+        'mylogs[0].Distance': mylogs[0].Distance,
+        'mystays[0].duration': mystays[0].duration,
+        'mymoorages[0].total_stay': mymoorages[0].total_stay,
+      },
+    ])
     // Load Charts Dashboard
     InfoTiles()
     barChart()
@@ -96,6 +104,7 @@
     for (let tile in CacheStore.tiles) {
       infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]
     }
+    console.debug('Dashboard onMounted CacheStore', CacheStore)
   })
 </script>
 

@@ -87,9 +87,10 @@
               v-model="stayed_at[value]"
               :placeholder="value"
               :options="stayed_at"
+              :cell-bind="cellBind"
               outline
               style="max-width: 150px"
-              @update:modelValue="updateDefaultStay($event)"
+              @update:modelValue="updateDefaultStay(value, $event)"
             />
           </template>
           <template #cell(duration)="{ value }">
@@ -209,7 +210,7 @@
 
   const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
-    if (update_stayed_at) {
+    /*if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
@@ -230,7 +231,11 @@
       } finally {
         isBusy.value = false
       }
-    }
+    }*/
+  }
+
+  function cellBind(...args) {
+    console.debug('cellBind', ...args)
   }
 
   function runBusy(fn, ...args) {

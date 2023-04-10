@@ -26,6 +26,11 @@ export default function defineAPIStore(name: string, ttl: number, def: APIStoreD
   timestamps[name] = { [sym_ttl]: ttl }
   def.state = () => useStorage(name, state(), localStorage, { mergeDefaults: true })
 
+  def.actions.api = new Proxy(new PostgSail() as unknown as JSObj, {
+    get(...args) {
+      //console.debug('PostgSail Proxy args', ...args)
+    },
+  })
   def.actions.getCached = async function getCached(addr: string[], assertion: Callback_1Param[]): Promise<any> {
     const endpoint: string = addr[0],
       param: string | undefined = addr[1],

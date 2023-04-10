@@ -32,14 +32,21 @@
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('moorages.list.filter.reset')
             }}</va-button>
-            <va-button
-              icon="csv"
+            <va-icon
+              name="csv"
               outline
+              :size="34"
               style="grid-column-end: 11"
               @click="runBusy(handleCSV, items, 'moorages')"
-            ></va-button>
-            <va-button icon="gpx" outline style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-button>
-            <va-button icon="geojson" outline style="grid-column-end: 13" @click="runBusy(handleGeoJSON)"></va-button>
+            ></va-icon>
+            <va-icon name="gpx" outline :size="34" style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-icon>
+            <va-icon
+              name="geojson"
+              outline
+              :size="34"
+              style="grid-column-end: 13"
+              @click="runBusy(handleGeoJSON)"
+            ></va-icon>
           </div>
         </div>
       </va-card-content>
@@ -71,7 +78,14 @@
           <template #cell(default_stay)="{ value }">
             <!--{{ value }}-->
             <div style="max-width: 150px">
-              <va-select v-model="stayed_at[value]" :options="stayed_at" outline class="mb-6" />
+              <va-select
+                v-model="stayed_at[value]"
+                :placeholder="value"
+                :options="stayed_at"
+                outline
+                class="mb-6"
+                @update="updateDefaultStay($event, rowData.id)"
+              />
             </div>
           </template>
           <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
@@ -187,6 +201,32 @@
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  const updateDefaultStay = async (id, update_stayed_at) => {
+    console.log('updateDefaultStay', id, update_stayed_at)
+    if (update_stayed_at) {
+      isBusy.value = true
+      apiError.value = null
+      const api = new PostgSail()
+      const payload = {
+        default_stay: update_stayed_at,
+      }
+      try {
+        const response = api.moorage_update(id, payload)
+        if (response) {
+          console.log('updateDefaultStay success', response)
+        } else {
+          throw { response }
+        }
+      } catch (err) {
+        const { response } = err
+        console.log('updateDefaultStay failed', response)
+        apiError.value = response.message
+      } finally {
+        isBusy.value = false
+      }
+    }
   }
 
   /*const handleGPX = async () => {

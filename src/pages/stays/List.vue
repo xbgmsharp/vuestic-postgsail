@@ -31,7 +31,13 @@
               style="grid-column-end: 11"
               @click="() => runBusy(handleCSV, items, 'stays')"
             ></va-button>
-            <va-button icon="gpx" outline style="grid-column-end: 12" @click="() => runBusy(handleGPX)"></va-button>
+            <va-button
+              icon="gpx"
+              style="grid-column-end: 12"
+              hover-behavior="opacity"
+              :hover-opacity="0.4"
+              @click="() => runBusy(handleGPX)"
+            />
             <va-button
               icon="geojson"
               outline
@@ -77,7 +83,14 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ value }">
-            <va-select v-model="stayed_at[value]" :placeholder="value" :options="stayed_at" outline />
+            <va-select
+              v-model="stayed_at[value]"
+              :placeholder="value"
+              :options="stayed_at"
+              outline
+              style="max-width: 150px"
+              @update:modelValue="updateDefaultStay($event)"
+            />
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -195,7 +208,7 @@
   }
 
   const updateDefaultStay = async (id, update_stayed_at) => {
-    console.log(id, update_stayed_at)
+    console.log('updateDefaultStay', id, update_stayed_at)
     if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
@@ -204,16 +217,16 @@
         default_stay: update_stayed_at,
       }
       try {
-        const response = api.moorage_update(id, payload)
-        if (response.data) {
-          console.log('log_update success', response.data)
+        const response = api.stay_update(id, payload)
+        if (response) {
+          console.log('updateDefaultStay success', response)
         } else {
           throw { response }
         }
       } catch (err) {
         const { response } = err
-        console.log('log_update failed', response)
-        apiError.value = response.data.message
+        console.log('updateDefaultStay failed', response)
+        apiError.value = response.message
       } finally {
         isBusy.value = false
       }

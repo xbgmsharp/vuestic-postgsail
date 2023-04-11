@@ -13,7 +13,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
 
-  import { ref, onMounted, defineProps } from 'vue'
+  import { ref, onMounted } from 'vue'
   import PostgSail from '../../services/api-client'
   import mooragesGeoJSON from '../../data/moorages_map.json'
 

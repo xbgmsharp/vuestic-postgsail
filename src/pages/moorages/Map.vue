@@ -3,8 +3,8 @@
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
-    <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-      <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
+    <va-card class="leaflet-maps-page__widget">
+      <div ref="mapContainer" style="height: 40vh" class="leaflet-map h-full" />
     </va-card>
   </div>
 </template>
@@ -13,7 +13,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
 
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, defineProps } from 'vue'
   import PostgSail from '../../services/api-client'
   import mooragesGeoJSON from '../../data/moorages_map.json'
 
@@ -23,6 +23,20 @@
     map = ref(),
     moorages_map = ref(),
     logs_map = ref()
+
+  const props = defineProps({
+    map_zoom: {
+      type: Number,
+      default: 8,
+      required: false,
+    },
+    moorage_map_id: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+  })
+  console.log('props map_zoom,moorage_map_id', props.map_zoom, props.moorage_map_id)
 
   onMounted(async () => {
     isBusy.value = true
@@ -52,8 +66,13 @@
 
   const map_setup = () => {
     const geojson = moorages_map.value,
-      coord = geojson.features[0].geometry.coordinates
-    map.value = L.map(mapContainer.value).setView(coord, 8)
+      geog = geojson.features
+    let coord = geojson.features[0].geometry.coordinates
+    if (props.moorage_map_id != 0) {
+      coord = geojson.features.filter((geog) => geog.properties.id == props.moorage_map_id)[0].geometry.coordinates
+    }
+    map.value = L.map(mapContainer.value).setView(coord, props.map_zoom)
+    console.log(coord)
 
     // OSM
     const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -121,6 +140,9 @@
     }).addTo(map.value)
 
     map.value.fitBounds(layer.getBounds(), { maxZoom: 17 })
+    if (props.moorage_map_id != 0) {
+      map.value.flyTo(coord.reverse(), props.map_zoom)
+    }
   }
 
   // TODO Zoom and fit on click

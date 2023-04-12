@@ -157,10 +157,10 @@
       flex-grow: 2;
       overflow-y: scroll;
 
-      .va-button > .va-button__content > svg.va-icon {
-        fill: var(--va-on-primary);
+      svg.va-icon.themed {
+        fill: var(--va-on-background-primary);
         path {
-          fill: var(--va-on-primary);
+          fill: var(--va-on-background-primary);
         }
       }
     }

@@ -28,25 +28,9 @@
               name="csv"
               outline
               :size="34"
-              style="grid-column-end: 11"
-              class="themed"
-              @click="runBusy(handleCSV, items, 'logs')"
-            ></va-icon>
-            <va-icon
-              name="gpx"
-              outline
-              :size="34"
-              style="grid-column-end: 12"
-              class="themed"
-              @click="runBusy(handleGPX)"
-            ></va-icon>
-            <va-icon
-              name="geojson"
-              outline
-              :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleGeoJSON)"
+              @click="runBusy(handleCSV, items, 'logs')"
             ></va-icon>
           </div>
         </div>

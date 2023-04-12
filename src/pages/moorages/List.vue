@@ -2,7 +2,7 @@
   <div>
     <va-card class="mb-3">
       <va-card-content>
-        <Map style="width: 100%; height: 40vh" />
+        <Map style="width: 100%; height: 45vh" :map_zoom="8" :moorage_map_id="0" />
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
@@ -66,14 +66,15 @@
           striped
           hoverable
         >
+          <!--
           <template #cell(moorage)="{ value }">
-            <!--
-              <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.id } }">
+            {{ value }}
+          </template>
+          -->
+          <template #cell(moorage)="{ value, rowData }">
+            <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
               {{ value }}
             </router-link>
-            -->
-            {{ value }}
           </template>
           <template #cell(default_stay)="{ value }">
             <div style="max-width: 150px">

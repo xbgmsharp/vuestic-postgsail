@@ -71,11 +71,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'stays',
         component: () => import('../pages/stays/List.vue'),
       },
-      /*{
+      {
         name: 'stay-details',
         path: 'stay/:id',
         component: () => import('../pages/stays/Details.vue'),
-      },*/
+      },
       {
         name: 'moorages',
         path: 'moorages',
@@ -86,11 +86,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'moorages/map',
         component: () => import('../pages/moorages/Map.vue'),
       },
-      /*{
+      {
         name: 'moorage-details',
         path: 'moorage/:id',
         component: () => import('../pages/moorages/Details.vue'),
-      },*/
+      },
       {
         name: 'boats',
         path: 'boats',

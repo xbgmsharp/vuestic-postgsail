@@ -88,8 +88,8 @@
           <template #cell(default_stay)="{ rowData, value }">
             <va-select
               v-model="rowData.default_stay"
-              :placeholder="value"
               :options="stayed_at_options"
+              :placeholder="value"
               outline
               style="max-width: 150px"
               class="mb-6"
@@ -121,7 +121,24 @@
 
   import mooragesDatas from '../../data/moorages.json'
 
-  const stayed_at_options = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at_options = ref([
+    {
+      value: 1,
+      text: 'Unknown',
+    },
+    {
+      value: 2,
+      text: 'Anchor',
+    },
+    {
+      value: 3,
+      text: 'Mooring Buoy',
+    },
+    {
+      value: 4,
+      text: 'Dock',
+    },
+  ])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -214,8 +231,9 @@
 
   function updateDefaultStay(id, default_stay) {
     // runBusy handles isBusy & apiError
+    console.log(default_stay)
     new PostgSail()
-      .moorage_update(id, { default_stay })
+      .moorage_update(id, { stay_code: default_stay.value })
       .then((response) => {
         console.log('updateDefaultStay success', response)
       })

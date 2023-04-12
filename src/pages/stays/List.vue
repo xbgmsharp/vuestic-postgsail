@@ -123,7 +123,24 @@
 
   import staysDatas from '../../data/stays.json'
 
-  const stayed_at_options = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at_options = ref([
+    {
+      value: 1,
+      text: 'Unknown',
+    },
+    {
+      value: 2,
+      text: 'Anchor',
+    },
+    {
+      value: 3,
+      text: 'Mooring Buoy',
+    },
+    {
+      value: 4,
+      text: 'Dock',
+    },
+  ])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -220,8 +237,9 @@
 
   function updateStayedAt(id, stayed_at) {
     // runBusy handles isBusy & apiError
+    console.log(stayed_at)
     new PostgSail()
-      .stay_update(id, { stayed_at })
+      .stay_update(id, { stay_code: stayed_at.value })
       .then((response) => {
         console.log('updateStayedAt success', response)
       })

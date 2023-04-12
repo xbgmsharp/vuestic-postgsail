@@ -36,7 +36,7 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] Add trash and save icon to log details page next to text
   - [x] Add button with icon to export to CVS to log details page
   - [x] Add button with icon to export to GPX to log details page
-- [ ] Add Profile/Settings page
+- [x] Add Profile/Settings page
   - [x] require backend update
 - [x] Add new vessel page
   - [x] require backend update
@@ -103,8 +103,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [ ] require backend update
 - [ ] Timelapse
   - [x] Log Geojson replay functionality
-  - [ ] Generic Geojson replay functionality base on date or multiple logbook
-  - [ ] require backend update
+  - [x] Generic Geojson replay functionality base on date or multiple logbook
+  - [x] require backend update
 - [ ] Loading screen
   - [ ] Based on variable isLoading from store
   - [ ] Display an animated gif while loading content, like in app.bromera.eu
@@ -178,7 +178,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Update to the latest vestion chart.js and vue-chart.js
 - [ ] Update to the latest vestion vue-i18n
 - [ ] Update to the latest vestion vitejs and plugins
-- [ ] Remove medium-editor dependency
+- [x] Remove medium-editor dependency
 - [x] Remove amcharts dependency
 - [ ] Remove date-fns dependency
 
@@ -192,4 +192,4 @@ Based on [vuestic-admin](https://vuestic.dev)
 - JSON Web Tokens, https://jwt.io/
 - GeoJSON, https://geojson.io/
 - Nominatim, https://nominatim.openstreetmap.org/ui/reverse.html
-- GPX validaiton, https://opencpn.org/OpenCPN/info/gpxvalidation.html
+- GPX validation, https://opencpn.org/OpenCPN/info/gpxvalidation.html

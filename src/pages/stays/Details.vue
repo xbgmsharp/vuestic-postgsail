@@ -6,7 +6,7 @@
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
-      <va-card-title>{{ $t('moorages.details.title') }}</va-card-title>
+      <va-card-title>{{ $t('stays.details.title') }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -19,10 +19,10 @@
           -->
         </div>
         <va-inner-loading :loading="isBusy">
-          <template v-if="item">
+          <template v-if="item && item.moorage_id">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.moorage') }}</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.name') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
                     v-model="formData.name"
@@ -31,11 +31,20 @@
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.departed') }}</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.moorage') }}</dt>
+                <!--<dd class="flex xs12 md6 pa-2">{{ item.moorage }}</dd>-->
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                    {{ item.moorage }}
+                  </router-link>
+                </dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.duration') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <div>
                     <va-select
-                      v-model="stayed_at[item.default_stay]"
+                      v-model="stayed_at[item.stayed_at]"
                       :placeholder="value"
                       :options="stayed_at"
                       outline
@@ -43,15 +52,23 @@
                     />
                   </div>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.home') }}</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrival') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.arrived }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-switch v-model="item.home" size="small" />
+                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                    {{ item.moorage }}
+                  </router-link>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.total_stay }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.arrivals') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.arrivals_departures }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.note') }}</dt>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departure') }}</dt>
+                <dd class="flex xs12 md6 pa-2">{{ item.departed }}</dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departed') }}</dt>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                    {{ item.moorage }}
+                  </router-link>
+                </dd>
+                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
@@ -82,7 +99,7 @@
   import { speedFormat } from '../../utils/speedFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
 
-  import moorages from '../../data/moorages.json'
+  import stays from '../../data/stays.json'
 
   const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
@@ -102,10 +119,12 @@
       ? {
           id: apiData.row.id,
           name: apiData.row.name,
-          default_stay: apiData.row.default_stay,
-          home: apiData.row.home,
-          total_stay: apiData.row.total_stay,
-          arrivals_departures: apiData.row.arrivals_departures,
+          moorage: apiData.row.moorage,
+          moorage_id: apiData.row.moorage_id,
+          duration: apiData.row.duration,
+          stayed_at: apiData.row.stayed_at,
+          departed: apiData.row.departed,
+          arrived: apiData.row.arrived,
           notes: apiData.row.notes,
         }
       : {}
@@ -125,14 +144,14 @@
     const api = new PostgSail()
     const id = route.params.id
     try {
-      const response = await api.moorage_get(id)
+      const response = await api.stay_get(id)
       apiData.row = response[0]
       formData.name = apiData.row.name || null
       formData.notes = apiData.row.notes || null
     } catch (e) {
       apiError.value = e
       console.warn('Get sample data from local json...', apiError.value)
-      const row = moorages.find((row) => row.id == route.params.id)
+      const row = stays.find((row) => row.id == route.params.id)
       apiData.row = row
     } finally {
       isBusy.value = false
@@ -150,15 +169,15 @@
       notes: formData.notes,
     }
     try {
-      const response = await api.moorage_update(id, payload)
+      const response = await api.stay_update(id, payload)
       if (response.ok) {
-        console.log('moorage_update success', response.status)
+        console.log('stay_update success', response.status)
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
-      console.log('moorage_update failed', response)
+      console.log('stay_update failed', response)
       updateError.value = response.data.message
     } finally {
       isBusy.value = false
@@ -172,23 +191,6 @@
       &,
       & + dd {
         background-color: var(--va-background);
-      }
-    }
-  }
-  .leaflet-maps-page {
-    display: flex;
-    flex-direction: column;
-
-    .va-alert {
-      flex: 0 0 auto;
-      width: 100%;
-    }
-
-    .leaflet-maps-page__widget {
-      flex: 1 1 auto;
-
-      .leaflet-map {
-        height: 100% !important;
       }
     }
   }

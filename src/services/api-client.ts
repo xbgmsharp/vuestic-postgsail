@@ -167,6 +167,10 @@ class ApiClient extends HttpClient {
     return this.post('rpc/find_log_from_moorage_fn', payload)
   }
 
+  async find_log_to_moorage_fn(payload: JSObj) {
+    return this.post('rpc/find_log_to_moorage_fn', payload)
+  }
+
   /*
    * Stays API endpoint
    */

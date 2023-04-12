@@ -146,11 +146,14 @@
     "stay": {
       "name": "Name | Names",
       "moorage": "Moorage",
-      "departed": "Departed",
-      "arrived": "Arrived",
+      "departure": "Departure Time",
+      "arrival": "Arrival Time",
+      "departed": "Departed To",
+      "arrived": "Arrived From",
       "stayed_at": "Stayed at",
       "duration": "Duration",
-      "note": "Note | Notes"
+      "note": "Note | Notes",
+      "duration_unit": "days"
     }
   },
   "moorages": {

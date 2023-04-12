@@ -35,9 +35,9 @@
                 <dd class="flex xs12 md6 pa-2">
                   <div>
                     <va-select
-                      v-model="stayed_at[item.default_stay]"
+                      v-model="stayed_at_options[item.default_stay_id]"
                       :placeholder="value"
-                      :options="stayed_at"
+                      :options="stayed_at_options"
                       outline
                       class="mb-6"
                     />
@@ -84,7 +84,24 @@
 
   import moorages from '../../data/moorages.json'
 
-  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at_options = ref([
+    {
+      value: 1,
+      text: 'Unknown',
+    },
+    {
+      value: 2,
+      text: 'Anchor',
+    },
+    {
+      value: 3,
+      text: 'Mooring Buoy',
+    },
+    {
+      value: 4,
+      text: 'Dock',
+    },
+  ])
 
   const route = useRoute()
   const isBusy = ref(false)
@@ -163,6 +180,20 @@
     } finally {
       isBusy.value = false
     }
+  }
+
+  function updateDefaultStay(id, default_stay) {
+    // runBusy handles isBusy & apiError
+    console.log(default_stay)
+    new PostgSail()
+      .moorage_update(id, { stay_code: default_stay.value })
+      .then((response) => {
+        console.log('updateDefaultStay success', response)
+      })
+      .catch((err) => {
+        console.log('updateDefaultStay failed', err.message ?? err)
+        //throw err.message ?? err
+      })
   }
 </script>
 

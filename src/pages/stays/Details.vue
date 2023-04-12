@@ -44,11 +44,11 @@
                 <dd class="flex xs12 md6 pa-2">
                   <div>
                     <va-select
-                      v-model="stayed_at[item.stayed_at]"
+                      v-model="apiData.stayed_at"
+                      :options="stayed_at_options"
                       :placeholder="value"
-                      :options="stayed_at"
                       outline
-                      class="mb-6"
+                      @update:modelValue="runBusy(updateStayedAt, route.params.id, $event)"
                     />
                   </div>
                 </dd>
@@ -101,8 +101,24 @@
 
   import stays from '../../data/stays.json'
 
-  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
-
+  const stayed_at_options = ref([
+    {
+      value: 1,
+      text: 'Unknown',
+    },
+    {
+      value: 2,
+      text: 'Anchor',
+    },
+    {
+      value: 3,
+      text: 'Mooring Buoy',
+    },
+    {
+      value: 4,
+      text: 'Dock',
+    },
+  ])
   const route = useRoute()
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -182,6 +198,20 @@
     } finally {
       isBusy.value = false
     }
+  }
+
+  function updateStayedAt(id, stayed_at) {
+    // runBusy handles isBusy & apiError
+    console.log(stayed_at)
+    new PostgSail()
+      .stay_update(id, { stay_code: stayed_at.value })
+      .then((response) => {
+        console.log('updateStayedAt success', response)
+      })
+      .catch((err) => {
+        console.log('updateStayedAt failed', err.message ?? err)
+        //throw err.message ?? err
+      })
   }
 </script>
 

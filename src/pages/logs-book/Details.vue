@@ -214,7 +214,7 @@
         const blob = new Blob([response], { type: 'text/xml' })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
-        link.download = `log_${id}.xml`
+        link.download = `log_${id}.gpx`
         link.click()
       } else {
         throw { response }

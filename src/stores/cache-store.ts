@@ -2,23 +2,21 @@ import type { JSObj, Callback_1Param, JSONObject } from '../data/types'
 import defineAPIStore from './defineAPIStore'
 //import useGlobalStore from './useGlobalStore'
 
-const ttl: number = (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms,
-  //preferences: JSObj = useGlobalStore()?.settings?.preferences,
-  //ttl: number = (import.meta.env.DEV ? 10 : preferences.cache_minutes) * 60 * 1000, // m * s * ms,
-  assertions: JSObj = {
-    notArray: [
-      (res: any) => Array.isArray(res),
-      // De-duplication opportunity in next assertion's message
-      (res: any) => 'Wrong API response. Expected array, got ' + typeof res,
-    ],
-    notPopulatedArray: [
-      (res: any) => Array.isArray(res) && res[0],
-      (res: any) => 'Wrong API response. Expected populated array, got ' + typeof res,
-    ],
-  }
+const assertions: JSObj = {
+  notArray: [
+    (res: any) => Array.isArray(res),
+    // De-duplication opportunity in next assertion's message
+    (res: any) => 'Wrong API response. Expected array, got ' + typeof res,
+  ],
+  notPopulatedArray: [
+    (res: any) => Array.isArray(res) && res[0],
+    (res: any) => 'Wrong API response. Expected populated array, got ' + typeof res,
+  ],
+}
 
-export const useCacheStore = defineAPIStore('cache', ttl, {
+export const useCacheStore = defineAPIStore('cache', {
   state: () => ({
+    store_ttl: (import.meta.env.DEV ? 10 : 60) * 60 * 1000, // m * s * ms
     logs: [],
     log_get: [],
     stays: [],

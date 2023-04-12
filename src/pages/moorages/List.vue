@@ -76,21 +76,19 @@
               {{ value }}
             </router-link>
           </template>
-          <template #cell(default_stay)="{ value }">
-            <div style="max-width: 150px">
-              <va-select
-                v-model="stayed_at[value]"
-                :placeholder="value"
-                :options="stayed_at"
-                outline
-                style="max-width: 150px"
-                class="mb-6"
-                @update:modelValue="updateDefaultStay(rowData.id, $event)"
-              />
-            </div>
+          <template #cell(default_stay)="{ rowData, value }">
+            <va-select
+              v-model="rowData.default_stay"
+              :placeholder="value"
+              :options="stayed_at_options"
+              outline
+              style="max-width: 150px"
+              class="mb-6"
+              @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
+            />
           </template>
           <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
-          <template #cell(arrivals)="{ value }">
+          <template #cell(arrivals_departures)="{ value }">
             {{ value }}
           </template>
         </va-data-table>
@@ -114,7 +112,7 @@
 
   import mooragesDatas from '../../data/moorages.json'
 
-  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at_options = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -133,20 +131,21 @@
     { key: 'moorage', label: t('moorages.list.moorage'), sortable: true },
     { key: 'default_stay', label: t('moorages.list.default_stay'), sortable: true },
     { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true },
-    { key: 'arrivals', label: t('moorages.list.arrivals'), sortable: true },
+    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true },
   ])
   const filter = reactive(getDefaultFilter())
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value
-          .map((row) => ({
-            id: row.id,
-            moorage: row.moorage,
-            default_stay: row.default_stay,
-            total_stay: row.total_stay,
-            arrivals: row.arrivals_departures,
-          }))
+          // Commented pending removal since it breaks ref connection from Pinia:
+          /*.map((row) => ({
+          id: row.id,
+          moorage: row.moorage,
+          default_stay: row.default_stay,
+          total_stay: row.total_stay,
+          arrivals: row.arrivals_departures,
+        }))*/
           .filter((row) => {
             const f = filter
             if (Object.keys(f).every((fkey) => !f[fkey])) {
@@ -204,9 +203,23 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
-  const updateDefaultStay = async (id, update_stayed_at) => {
+  function updateDefaultStay(id, default_stay) {
+    // runBusy handles isBusy & apiError
+    new PostgSail()
+      .moorage_update(id, { default_stay })
+      .then((response) => {
+        console.log('updateDefaultStay success', response)
+      })
+      .catch((err) => {
+        console.log('updateDefaultStay failed', err.message ?? err)
+        //throw err.message ?? err
+      })
+  }
+
+  // Comments below are pending removal:
+  /*const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
-    /*if (update_stayed_at) {
+    if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
@@ -227,8 +240,8 @@
       } finally {
         isBusy.value = false
       }
-    }*/
-  }
+    }
+  }*/
 
   /*const handleGPX = async () => {
     isBusy.value = true

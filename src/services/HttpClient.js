@@ -48,7 +48,7 @@ class HttpClient {
     return this
   }
 
-  setBearerAuth(token) {
+  setBearerAuth(token, keepLoggedIn) {
     this.token = token
     this._headers.Authorization = token ? `Bearer ${token}` : ''
     return this

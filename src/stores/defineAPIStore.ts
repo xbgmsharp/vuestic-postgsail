@@ -12,25 +12,25 @@ interface APIStoreDef {
   getters: JSObj
 }
 
-const { t } = i18n.global,
-  sym_ttl = Symbol('ttl'),
-  timestamps: JSObj = {}
+const { t } = i18n.global
 
 export async function API_get(endpoint: string, param?: string): Promise<Response> {
   const api = new PostgSail() as unknown as JSObj
   return (api[endpoint] as Callback_1Param)(param) as Promise<Response>
 }
 
-export default function defineAPIStore(name: string, ttl: number, def: APIStoreDef): StoreDefinition {
-  const state = def.state
-  timestamps[name] = { [sym_ttl]: ttl }
-  def.state = () => useStorage(name, state(), localStorage, { mergeDefaults: true })
-
-  def.actions.api = new Proxy(new PostgSail() as unknown as JSObj, {
+export default function defineAPIStore(name: string, def: APIStoreDef): StoreDefinition {
+  const origState = def.state
+  def.state = () => {
+    const state = origState()
+    state.timestamps = {}
+    return useStorage(name, state, localStorage, { mergeDefaults: true })
+  }
+  /*def.actions.api = new Proxy(new PostgSail() as unknown as JSObj, {
     get(...args) {
       //console.debug('PostgSail Proxy args', ...args)
     },
-  })
+  })*/
   def.actions.getCached = async function getCached(addr: string[], assertion: Callback_1Param[]): Promise<any> {
     const endpoint: string = addr[0],
       param: string | undefined = addr[1],
@@ -40,10 +40,9 @@ export default function defineAPIStore(name: string, ttl: number, def: APIStoreD
     // Promise setup is for when a request is already pending
     if (cached instanceof Promise) return await cache[index]
     const now: number = new Date().getTime(),
-      tsStore: JSObj = timestamps[this.$id],
-      ts = param ? tsStore[endpoint] ?? (tsStore[endpoint] = {}) : tsStore
+      ts = param ? this.timestamps[endpoint] ?? (this.timestamps[endpoint] = {}) : this.timestamps
     // when ts is undefined, the resulting NaN yields false:
-    if (ts[sym_ttl] > now - ts[index]) return cached
+    if (this.store_ttl > now - ts[index]) return cached
     if (!navigator.onLine) throw new Error(t('api.errors.offlineUncached'))
     return await (cache[index] = API_get(addr[0], addr[1])
       .then((res: Record<string, any>) => {

@@ -71,11 +71,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'stays',
         component: () => import('../pages/stays/List.vue'),
       },
-      {
+      /*{
         name: 'stay-details',
         path: 'stay/:id',
         component: () => import('../pages/stays/Details.vue'),
-      },
+      },*/
       {
         name: 'moorages',
         path: 'moorages',

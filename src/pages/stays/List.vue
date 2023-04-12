@@ -27,10 +27,18 @@
             }}</va-button>
             <va-icon
               name="csv"
-              :size="34"
               outline
+              :size="34"
+              style="grid-column-end: 11"
+              @click="runBusy(handleCSV, items, 'stays')"
+            ></va-icon>
+            <va-icon name="gpx" outline :size="34" style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-icon>
+            <va-icon
+              name="geojson"
+              outline
+              :size="34"
               style="grid-column-end: 13"
-              @click="() => runBusy(handleCSV, items, 'stays')"
+              @click="runBusy(handleGeoJSON)"
             ></va-icon>
           </div>
         </div>
@@ -71,15 +79,14 @@
           <template #cell(departed)="{ value }">
             {{ dateFormatUTC(value) }}
           </template>
-          <template #cell(stayed_at)="{ value }">
+          <template #cell(stayed_at)="{ rowData, value }">
             <va-select
-              v-model="stayed_at[value]"
+              v-model="rowData.stayed_at"
+              :options="stayed_at_options"
               :placeholder="value"
-              :options="stayed_at"
-              :cell-bind="cellBind"
               outline
               style="max-width: 150px"
-              @update:modelValue="updateDefaultStay(value, $event)"
+              @update:modelValue="runBusy(updateStayedAt, rowData.id, $event)"
             />
           </template>
           <template #cell(duration)="{ value }">
@@ -107,7 +114,7 @@
 
   import staysDatas from '../../data/stays.json'
 
-  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
+  const stayed_at_options = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -135,15 +142,16 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value
-          .map((row) => ({
-            id: row.id,
-            name: row.name,
-            moorage: row.moorage,
-            arrived: row.arrived,
-            departed: row.departed,
-            stayed_at: row.stayed_at,
-            duration: row.duration,
-          }))
+          // Commented pending removal since it breaks ref connection from Pinia:
+          /*.map((row) => ({
+          id: row.id,
+          name: row.name,
+          moorage: row.moorage,
+          arrived: row.arrived,
+          departed: row.departed,
+          stayed_at: row.stayed_at,
+          duration: row.duration,
+        }))*/
           .filter((row) => {
             const f = filter
             if (Object.keys(f).every((fkey) => !f[fkey])) {
@@ -197,9 +205,27 @@
     Object.assign(filter, { ...getDefaultFilter() })
   }
 
-  const updateDefaultStay = async (id, update_stayed_at) => {
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  function updateStayedAt(id, stayed_at) {
+    // runBusy handles isBusy & apiError
+    new PostgSail()
+      .stay_update(id, { stayed_at })
+      .then((response) => {
+        console.log('updateStayedAt success', response)
+      })
+      .catch((err) => {
+        console.log('updateStayedAt failed', err.message ?? err)
+        //throw err.message ?? err
+      })
+  }
+
+  // Comment below is pending removal:
+  /*const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
-    /*if (update_stayed_at) {
+    if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
@@ -220,14 +246,6 @@
       } finally {
         isBusy.value = false
       }
-    }*/
-  }
-
-  function cellBind(...args) {
-    console.debug('cellBind', ...args)
-  }
-
-  function runBusy(fn, ...args) {
-    asBusy(isBusy, apiError, fn, ...args)
-  }
+    }
+  }*/
 </script>

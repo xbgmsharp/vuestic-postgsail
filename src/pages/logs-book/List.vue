@@ -26,10 +26,18 @@
             }}</va-button>
             <va-icon
               name="csv"
-              :size="34"
               outline
+              :size="34"
+              style="grid-column-end: 11"
+              @click="runBusy(handleCSV, items, 'logs')"
+            ></va-icon>
+            <va-icon name="gpx" outline :size="34" style="grid-column-end: 12" @click="runBusy(handleGPX)"></va-icon>
+            <va-icon
+              name="geojson"
+              outline
+              :size="34"
               style="grid-column-end: 13"
-              @click="() => runBusy(handleCSV, items, 'logs')"
+              @click="runBusy(handleGeoJSON)"
             ></va-icon>
           </div>
         </div>

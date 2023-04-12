@@ -81,5 +81,12 @@ export default {
         icon: 'menu-grafana',
       },
     },
+    {
+      name: 'faq',
+      displayName: 'menu.faq',
+      meta: {
+        icon: 'menu-faq',
+      },
+    },
   ] as INavigationRoute[],
 }

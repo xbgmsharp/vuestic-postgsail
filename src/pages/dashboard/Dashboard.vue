@@ -40,12 +40,7 @@
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
   // temporarily commented to pass build:
-  console.log('Dashboard versions', {
-    __APP_VERSION__,
-    __VITE_VERSION__,
-    'import.meta.env.VITE_GIT_VERSION': import.meta.env.VITE_GIT_VERSION,
-    'import.meta.env': import.meta.env,
-  })
+  console.log('Dashboard', __APP_VERSION__, __VITE_VERSION__, import.meta.env)
   const vite_version = ref(__VITE_VERSION__)
   let app_version = ref('')
   //[ToDo]

@@ -52,14 +52,15 @@
           hoverable
           class="datatable"
         >
+          <!--
           <template #cell(name)="{ value }">
-            <!--
-              <template #cell(name)="{ value, rowData }">
+            {{ value }}
+          </template>
+          -->
+          <template #cell(name)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.id } }">
               {{ value }}
             </router-link>
-            -->
-            {{ value }}
           </template>
           <template #cell(moorage)="{ value }">
             {{ value }}

@@ -109,7 +109,7 @@
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
-  import Map from './Map.vue'
+  import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
 
   import mooragesDatas from '../../data/moorages.json'

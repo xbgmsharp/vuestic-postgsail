@@ -19,7 +19,7 @@
           -->
         </div>
         <va-inner-loading :loading="isBusy">
-          <template v-if="item">
+          <template v-if="item && item.moorage_id">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.name') }}</dt>
@@ -34,19 +34,29 @@
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.moorage') }}</dt>
                 <!--<dd class="flex xs12 md6 pa-2">{{ item.moorage }}</dd>-->
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link :to="{ name: 'moorage-details', params: { id: 0 } }">
+                  <router-link :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.stayed_at') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.stayed_at }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <div>
+                    <va-select
+                      v-model="stayed_at[item.stayed_at]"
+                      :placeholder="value"
+                      :options="stayed_at"
+                      outline
+                      class="mb-6"
+                    />
+                  </div>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrival') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.arrived }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: 0 } }">
+                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
@@ -54,7 +64,7 @@
                 <dd class="flex xs12 md6 pa-2">{{ item.departed }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: 0 } }">
+                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
@@ -90,6 +100,8 @@
   import Map from '../../components/maps/leafletMapMoorages.vue'
 
   import stays from '../../data/stays.json'
+
+  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const route = useRoute()
   const isBusy = ref(false)

@@ -32,14 +32,29 @@
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.departed') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.default_stay }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <div>
+                    <va-select
+                      v-model="stayed_at[item.default_stay]"
+                      :placeholder="value"
+                      :options="stayed_at"
+                      outline
+                      class="mb-6"
+                    />
+                  </div>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.home') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.home }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <va-switch v-model="item.home" size="small" />
+                </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.total_stay }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.arrivals') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.arrivals_departures }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.note') }}</dt>
+                <dd class="flex xs12 md6 pa-1">
+                  <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
+                </dd>
               </dl>
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
@@ -65,9 +80,11 @@
   import { dateFormat } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
-  import Map from './Map.vue'
+  import Map from '../../components/maps/leafletMapMoorages.vue'
 
   import moorages from '../../data/moorages.json'
+
+  const stayed_at = ref(['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'])
 
   const route = useRoute()
   const isBusy = ref(false)

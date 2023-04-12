@@ -143,14 +143,20 @@
     const id = route.params.id
     try {
       const response = await api.moorage_get(id)
-      apiData.row = response[0]
-      formData.name = apiData.row.name || null
-      formData.notes = apiData.row.notes || null
+      if (Array.isArray(response)) {
+        apiData.row = response[0]
+        formData.name = apiData.row.name || null
+        formData.notes = apiData.row.notes || null
+      } else {
+        throw { response }
+      }
     } catch (e) {
       apiError.value = e
-      console.warn('Get sample data from local json...', apiError.value)
-      const row = moorages.find((row) => row.id == route.params.id)
-      apiData.row = row
+      if (!import.meta.env.PROD) {
+        console.warn('Get sample data from local json...', apiError.value)
+        const row = moorages.find((row) => row.id == route.params.id)
+        apiData.row = row
+      }
     } finally {
       isBusy.value = false
     }

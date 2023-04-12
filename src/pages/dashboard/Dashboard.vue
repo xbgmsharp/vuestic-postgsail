@@ -40,19 +40,19 @@
   const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
 
   // temporarily commented to pass build:
-  /*console.log('Dashboard versions', {
+  console.log('Dashboard versions', {
     __APP_VERSION__,
     __VITE_VERSION__,
     'import.meta.env.VITE_GIT_VERSION': import.meta.env.VITE_GIT_VERSION,
     'import.meta.env': import.meta.env,
-  })*/
+  })
   const vite_version = ref(__VITE_VERSION__)
   let app_version = ref('')
   //[ToDo]
   //  delete from /vite.config.ts one of:
   //  __VITE_VERSION__ or import.meta.env.VITE_GIT_VERSION
-  app_version.value = __APP_VERSION__ + '-' + vite_version.value
-  //app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
+  //app_version.value = __APP_VERSION__ + '-' + vite_version.value
+  app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {
     app_version.value += '-' + 'dev'
   } else {

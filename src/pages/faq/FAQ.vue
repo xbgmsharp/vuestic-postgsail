@@ -53,7 +53,7 @@
                 zoom: Specifies default zoom. Default: 10<br />
                 <br />
                 Example:
-                https://saillogger.com/timelapse/2/?color=yellow&start_date=2020-06-01&end_date=2020-07-31&map_type=1&speed=90&delay=1&zoom=11
+                https://iot.openplotter.cloud/timelapse/2/?color=yellow&start_date=2020-06-01&end_date=2020-07-31&map_type=1&speed=90&delay=1&zoom=11
               </p>
             </div>
           </va-collapse>

@@ -46,7 +46,7 @@
               :size="34"
               style="grid-column-end: 12"
               class="themed"
-              @click="runBusy(handleGPX)"
+              @click="handleGPX()"
             ></va-icon>
             <va-icon
               name="geojson"
@@ -54,7 +54,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleGeoJSON)"
+              @click="handleGeoJSON()"
             ></va-icon>
           </div>
         </div>
@@ -117,7 +117,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import Map from '../../components/maps/leafletMapMoorages.vue'
-  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
+  import { asBusy, handleCSV } from '../../utils/handleExports'
 
   import mooragesDatas from '../../data/moorages.json'
 
@@ -229,6 +229,7 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
+  /*
   function updateDefaultStay(id, default_stay) {
     // runBusy handles isBusy & apiError
     console.log(default_stay)
@@ -242,16 +243,16 @@
         //throw err.message ?? err
       })
   }
+  */
 
-  // Comments below are pending removal:
-  /*const updateDefaultStay = async (id, update_stayed_at) => {
+  const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
     if (update_stayed_at) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
       const payload = {
-        default_stay: update_stayed_at,
+        stay_code: update_stayed_at.value,
       }
       try {
         const response = api.moorage_update(id, payload)
@@ -268,9 +269,9 @@
         isBusy.value = false
       }
     }
-  }*/
+  }
 
-  /*const handleGPX = async () => {
+  const handleGPX = async () => {
     isBusy.value = true
     apiError.value = null
 
@@ -321,7 +322,7 @@
       isBusy.value = false
     }
   }
-
+  /*
   const handleCSV = async () => {
     let csv = Object.keys(items.value[0]) + '\n'
     csv += items.value

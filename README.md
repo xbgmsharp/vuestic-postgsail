@@ -175,6 +175,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 ## Dependencies
 
 - [x] Remove axios dependency in favor of nodejs fetch
+- [ ] Update to the latest vestion vuestic-ui and tailwindcss (css issue on pofile page)
 - [ ] Update to the latest vestion chart.js and vue-chart.js
 - [ ] Update to the latest vestion vue-i18n
 - [ ] Update to the latest vestion vitejs and plugins

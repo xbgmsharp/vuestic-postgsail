@@ -56,8 +56,16 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
-                  <va-icon name="gpx" :size="44" @click="handleGPX" />
-                  <va-icon name="geojson" :size="44" @click="handleGeoJSON" />
+                  <va-icon
+                    name="gpx"
+                    :size="44"
+                    @click="runBusy(handleExport, 'gpx', 'log', { _id: item.id }, `log_${item.id}`)"
+                  />
+                  <va-icon
+                    name="geojson"
+                    :size="44"
+                    @click="runBusy(handleExport, 'geojson', 'log', { _id: item.id }, `log_${item.id}`)"
+                  />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -88,6 +96,7 @@
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
+  import { asBusy, handleExport } from '../../utils/handleExports'
 
   import logsBooks from '../../data/logbook.json'
 
@@ -198,7 +207,7 @@
     }
   }
 
-  const handleGPX = async () => {
+  /*const handleGPX = async () => {
     isBusy.value = true
     updateError.value = null
 
@@ -257,6 +266,10 @@
     } finally {
       isBusy.value = false
     }
+  }*/
+
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
   }
 </script>
 

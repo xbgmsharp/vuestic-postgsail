@@ -17,11 +17,6 @@
                 mode="range"
               />
             </div>
-            <!--<div class="flex xs12">
-              <div class="flex flex-row-reverse justify-center">
-                <va-button icon="clear" outline @click="resetFilter">{{ $t('stays.list.filter.reset') }}</va-button>
-              </div>
-            </div>-->
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('stays.list.filter.reset')
             }}</va-button>
@@ -31,7 +26,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleCSV, items, 'stays')"
+              @click="runBusy(handleExport, 'csv', 'stays', items)"
             ></va-icon>
           </div>
         </div>
@@ -53,11 +48,6 @@
           hoverable
           class="datatable"
         >
-          <!--
-          <template #cell(name)="{ value }">
-            {{ value }}
-          </template>
-          -->
           <template #cell(name)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.moorage_id } }">
               {{ value }}
@@ -103,7 +93,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
-  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
+  import { asBusy, handleExport } from '../../utils/handleExports'
 
   import staysDatas from '../../data/stays.json'
 
@@ -151,34 +141,23 @@
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
-      ? rowsData.value
-          // Commented pending removal since it breaks ref connection from Pinia:
-          /*.map((row) => ({
-          id: row.id,
-          name: row.name,
-          moorage: row.moorage,
-          arrived: row.arrived,
-          departed: row.departed,
-          stayed_at: row.stayed_at,
-          duration: row.duration,
-        }))*/
-          .filter((row) => {
-            const f = filter
-            if (Object.keys(f).every((fkey) => !f[fkey])) {
+      ? rowsData.value.filter((row) => {
+          const f = filter
+          if (Object.keys(f).every((fkey) => !f[fkey])) {
+            return true
+          }
+          return Object.keys(f).every((fkey) => {
+            if (!f[fkey]) {
               return true
             }
-            return Object.keys(f).every((fkey) => {
-              if (!f[fkey]) {
-                return true
-              }
-              switch (fkey) {
-                case 'name':
-                  return row.name.toLowerCase().includes(f[fkey].toLowerCase())
-                case 'dateRange':
-                  return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
-              }
-            })
+            switch (fkey) {
+              case 'name':
+                return row.name.toLowerCase().includes(f[fkey].toLowerCase())
+              case 'dateRange':
+                return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+            }
           })
+        })
       : []
   })
 
@@ -189,9 +168,7 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    //const api = new PostgSail()
     try {
-      //const response = await api.stays()
       const response = await useCacheStore().getAPI('stays')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
@@ -232,31 +209,4 @@
         //throw err.message ?? err
       })
   }
-
-  // Comment below is pending removal:
-  /*const updateDefaultStay = async (id, update_stayed_at) => {
-    console.log('updateDefaultStay', id, update_stayed_at)
-    if (update_stayed_at) {
-      isBusy.value = true
-      apiError.value = null
-      const api = new PostgSail()
-      const payload = {
-        default_stay: update_stayed_at,
-      }
-      try {
-        const response = api.stay_update(id, payload)
-        if (response) {
-          console.log('updateDefaultStay success', response)
-        } else {
-          throw { response }
-        }
-      } catch (err) {
-        const { response } = err
-        console.log('updateDefaultStay failed', response)
-        apiError.value = response.message
-      } finally {
-        isBusy.value = false
-      }
-    }
-  }*/
 </script>

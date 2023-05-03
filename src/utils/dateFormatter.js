@@ -1,5 +1,8 @@
 import { format } from 'date-fns'
 import moment from 'moment/min/moment-with-locales'
+import i18n from '../i18n/index.ts'
+
+const { t } = i18n.global
 
 export const dateFormat = (dateString) => {
   if (!dateString) return null
@@ -19,9 +22,17 @@ export const dateFormatUTC = (dateString, local = 'en') => {
   const date = moment.utc(dateString).locale(local).format('L LT')
   return date
 }
-export const durationFormatHours = (durationString) => {
-  return moment.duration(durationString).as('hours').toFixed(2)
+
+export const durationHours = (durationString) => {
+  return moment.duration(durationString).as('hours')
 }
+export const durationFormatHours = (durationString) => {
+  return durationHours(durationString).toFixed(2)
+}
+export const durationI18nHours = (durationString, tr = 'units.time.hours') => {
+  return t(tr, parseInt(durationHours(durationString)))
+}
+
 export const durationFormatDays = (durationString) => {
   return moment.duration(durationString).as('days').toFixed(2)
 }

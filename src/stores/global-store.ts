@@ -157,3 +157,4 @@ export const useGlobalStore = defineStore('global', {
     doubleCount: (state) => state.count * 2,
   },
 })
+export default useGlobalStore

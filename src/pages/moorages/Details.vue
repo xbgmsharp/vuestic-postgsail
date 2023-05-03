@@ -104,6 +104,7 @@
   ])
 
   const route = useRoute()
+  const CacheStore = useCacheStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const updateError = ref(null)
@@ -142,7 +143,8 @@
     const api = new PostgSail()
     const id = route.params.id
     try {
-      const response = await api.moorage_get(id)
+      //const response = await api.moorage_get(id)
+      const response = await CacheStore.getAPI('moorage_get', id)
       if (Array.isArray(response)) {
         apiData.row = response[0]
         formData.name = apiData.row.name || null

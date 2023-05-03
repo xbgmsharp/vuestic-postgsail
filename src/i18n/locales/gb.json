@@ -303,5 +303,17 @@
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
       "lastupdate": "We have not received any data from your collector within the last 70 minutes."
     }
+  },
+  "units": {
+    "distance": {
+      "NM": "Distance NM",
+      "KM": "Distance KM",
+      "miles": "{n} mile | {n} miles",
+      "kilometres": "{n} kilometre | {n} kilometres"
+    },
+    "time": {
+      "days": "{n} days | {n} day | {n} days",
+      "hours": "hours | hour | hours"
+    }
   }
 }

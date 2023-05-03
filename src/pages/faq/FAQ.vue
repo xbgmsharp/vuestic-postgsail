@@ -59,9 +59,9 @@
           </va-collapse>
           <va-collapse header="Time and Distance Units">
             <div class="pa-3">
-              All time from the backend are UTC. The frontend is doing the local convertion.<br />
-              All distance from the backend are in Nautical Miles. The frontend is doing the local convertion if
-              imperial Units is true.
+              All times from the backend are UTC. The frontend is doing the local conversion.<br />
+              All distances from the backend are in Nautical Miles. The frontend is doing the local conversion if "Use
+              Imperial Units" is false.
             </div>
           </va-collapse>
           <va-collapse header="URLs">

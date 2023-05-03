@@ -18,8 +18,11 @@
   import PostgSail from '../../services/api-client'
   import { useGlobalStore } from '../../stores/global-store'
   import timelapseGeoJSON from '../../data/timelapse.json'
+  //import { useI18n } from 'vue-i18n'
+  import { distanceMetres } from '../../utils/distanceFormatter.js'
 
   const route = useRoute(),
+    //{ t } = useI18n(),
     GlobalStore = useGlobalStore(),
     isBusy = ref(false),
     apiError = ref(null),
@@ -125,16 +128,11 @@
     baseMaps[Object.keys(baseMaps)[map_type.value]].addTo(map.value)
 
     const legend = L.control({ position: 'bottomcenter' })
-    legend.onAdd = function (map) {
-      const div = L.DomUtil.create('div', 'legend')
-      L.DomUtil.create('span', 'distance', div)
-      console.log(
-        'map_setup GlobalStore.imperialUnits',
-        GlobalStore.imperialUnits,
-        GlobalStore.settings.use_imperial_units,
-      )
-      L.DomUtil.create('span', null, div).innerText = GlobalStore.imperialUnits ? 'miles' : 'kilometres'
-      return div
+    legend.onAdd = function (/*map*/) {
+      const distanceView = L.DomUtil.create('div', 'legend')
+      L.DomUtil.create('span', 'distance', distanceView)
+      //      L.DomUtil.create('span', null, distanceView).innerText = t(GlobalStore.imperialUnits ? 'units.distance.miles' : 'units.distance.kilometres')
+      return distanceView
     }
     legend.addTo(map.value)
     polyLine.value = L.polyline([coord_rev], {
@@ -158,15 +156,16 @@
       distanceView = map.value._container.querySelector('.legend > .distance')
 
     const geojson = timelapse.value,
-      km = !GlobalStore.imperialUnits,
+      //km = !GlobalStore.imperialUnits,
       interval = setInterval(function () {
         let coord_rev = geojson.features[index].geometry.coordinates.reverse()
         polyLine.value.addLatLng(coord_rev)
         marker.value.setLatLngs([coord_rev, coord_rev])
         map.value.panTo(coord_rev, { animate: true })
         if (last) {
-          distanceView.innerText = // default to non-nautical miles
-            (distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)).toFixed(3)
+          //distanceView.innerText = // default to non-nautical miles
+          //(distance += last.distanceTo(coord_rev) / (km ? 1000 : 1852)).toFixed(3)
+          distanceView.innerText = distanceMetres((distance += last.distanceTo(coord_rev)))
         }
         last = L.latLng(coord_rev)
         if (index == geojson.features.length - 1) clearInterval(interval)

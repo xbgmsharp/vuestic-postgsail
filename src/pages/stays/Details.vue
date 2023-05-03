@@ -11,13 +11,11 @@
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
-        <div class="mb-3 my-3">
-          <!--
+        <!--<div class="mb-3 my-3">
           <template v-if="!isBusy && item">
             <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
           </template>
-          -->
-        </div>
+        </div>-->
         <va-inner-loading :loading="isBusy">
           <template v-if="item && item.moorage_id">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
@@ -119,7 +117,9 @@
       text: 'Dock',
     },
   ])
+
   const route = useRoute()
+  const CacheStore = useCacheStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const updateError = ref(null)
@@ -160,7 +160,8 @@
     const api = new PostgSail()
     const id = route.params.id
     try {
-      const response = await api.stay_get(id)
+      //const response = await CacheStore.api.stay_get(id)
+      const response = await CacheStore.getAPI('stay_get', id)
       if (Array.isArray(response)) {
         apiData.row = response[0]
         formData.name = apiData.row.name || null

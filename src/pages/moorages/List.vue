@@ -24,11 +24,6 @@
                 placeholder="Filter by stay..."
               />
             </div>
-            <!--<div class="flex xs12">
-              <div class="flex flex-row-reverse justify-center">
-                <va-button icon="clear" outline @click="resetFilter">{{ $t('moorages.list.filter.reset') }}</va-button>
-              </div>
-            </div>-->
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('moorages.list.filter.reset')
             }}</va-button>
@@ -38,7 +33,7 @@
               :size="34"
               style="grid-column-end: 11"
               class="themed"
-              @click="runBusy(handleCSV, items, 'moorages')"
+              @click="runBusy(handleExport, 'csv', 'moorages', items)"
             ></va-icon>
             <va-icon
               name="gpx"
@@ -46,7 +41,7 @@
               :size="34"
               style="grid-column-end: 12"
               class="themed"
-              @click="handleGPX()"
+              @click="runBusy(handleExport, 'gpx', 'moorages')"
             ></va-icon>
             <va-icon
               name="geojson"
@@ -54,7 +49,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="handleGeoJSON()"
+              @click="runBusy(handleExport, 'geojson', 'moorages')"
             ></va-icon>
           </div>
         </div>
@@ -75,11 +70,6 @@
           striped
           hoverable
         >
-          <!--
-          <template #cell(moorage)="{ value }">
-            {{ value }}
-          </template>
-          -->
           <template #cell(moorage)="{ value, rowData }">
             <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
               {{ value }}
@@ -96,7 +86,7 @@
               @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
             />
           </template>
-          <template #cell(total_stay)="{ value }"> {{ value }} {{ $t('moorages.list.duration_unit') }} </template>
+          <template #cell(total_stay)="{ value }"> {{ $t('units.time.days', parseInt(value)) }}</template>
           <template #cell(arrivals_departures)="{ value }">
             {{ value }}
           </template>
@@ -117,7 +107,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import Map from '../../components/maps/leafletMapMoorages.vue'
-  import { asBusy, handleCSV } from '../../utils/handleExports'
+  import { asBusy, handleExport } from '../../utils/handleExports'
 
   import mooragesDatas from '../../data/moorages.json'
 
@@ -163,32 +153,23 @@
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
-      ? rowsData.value
-          // Commented pending removal since it breaks ref connection from Pinia:
-          /*.map((row) => ({
-          id: row.id,
-          moorage: row.moorage,
-          default_stay: row.default_stay,
-          total_stay: row.total_stay,
-          arrivals: row.arrivals_departures,
-        }))*/
-          .filter((row) => {
-            const f = filter
-            if (Object.keys(f).every((fkey) => !f[fkey])) {
+      ? rowsData.value.filter((row) => {
+          const f = filter
+          if (Object.keys(f).every((fkey) => !f[fkey])) {
+            return true
+          }
+          return Object.keys(f).every((fkey) => {
+            if (!f[fkey]) {
               return true
             }
-            return Object.keys(f).every((fkey) => {
-              if (!f[fkey]) {
-                return true
-              }
-              switch (fkey) {
-                case 'name':
-                  return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-                case 'default_stay':
-                  return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
-              }
-            })
+            switch (fkey) {
+              case 'name':
+                return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
+              case 'default_stay':
+                return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
+            }
           })
+        })
       : []
   })
 
@@ -199,9 +180,7 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    //const api = new PostgSail()
     try {
-      //const response = await api.moorages()
       const response = await useCacheStore().getAPI('moorages')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
@@ -229,22 +208,6 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
-  /*
-  function updateDefaultStay(id, default_stay) {
-    // runBusy handles isBusy & apiError
-    console.log(default_stay)
-    new PostgSail()
-      .moorage_update(id, { stay_code: default_stay.value })
-      .then((response) => {
-        console.log('updateDefaultStay success', response)
-      })
-      .catch((err) => {
-        console.log('updateDefaultStay failed', err.message ?? err)
-        //throw err.message ?? err
-      })
-  }
-  */
-
   const updateDefaultStay = async (id, update_stayed_at) => {
     console.log('updateDefaultStay', id, update_stayed_at)
     if (update_stayed_at) {
@@ -271,7 +234,7 @@
     }
   }
 
-  const handleGPX = async () => {
+  /*const handleGPX = async () => {
     isBusy.value = true
     apiError.value = null
 
@@ -321,20 +284,6 @@
     } finally {
       isBusy.value = false
     }
-  }
-  /*
-  const handleCSV = async () => {
-    let csv = Object.keys(items.value[0]) + '\n'
-    csv += items.value
-      .map((row) => {
-        return Object.values(row).toString()
-      })
-      .join('\n')
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = 'PostgSailMoorages.csv'
-    link.click()
   }*/
 </script>
 

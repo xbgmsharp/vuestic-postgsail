@@ -74,3 +74,4 @@ export const useCacheStore = defineAPIStore('cache', {
     logs_by_year_by_month: (state: JSObj) => state.lines,
   },
 })
+export default useCacheStore

@@ -16,11 +16,6 @@
                 mode="range"
               />
             </div>
-            <!--<div class="flex xs12">
-              <div class="flex flex-row-reverse justify-center">
-                <va-button icon="clear" outline @click="resetFilter">{{ $t('logs.list.filter.reset') }}</va-button>
-              </div>
-            </div>-->
             <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
               $t('logs.list.filter.reset')
             }}</va-button>
@@ -30,7 +25,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleCSV, items, 'logs')"
+              @click="runBusy(handleExport, 'csv', 'logs', items)"
             ></va-icon>
           </div>
         </div>
@@ -67,7 +62,7 @@
             <!--{{ value }}-->
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormatHours(value) }} {{ $t('logs.log.duration_unit') }}
+            {{ durationFormatHours(value) }} {{ durationI18nHours(value) }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -85,9 +80,9 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, dateFormatUTC, durationFormat, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { dateFormat, dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { asBusy, handleCSV, handleGPX, handleGeoJSON } from '../../utils/handleExports'
+  import { asBusy, handleExport } from '../../utils/handleExports'
 
   import logsDatas from '../../data/logs.json'
 

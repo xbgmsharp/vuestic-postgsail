@@ -25,7 +25,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleExport, 'csv', 'logs', items)"
+              @click="handleCSV(items)"
             ></va-icon>
           </div>
         </div>
@@ -178,6 +178,10 @@
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  function handleCSV(items) {
+    runBusy(handleExport, 'csv', 'moorages', items)
   }
 </script>
 

@@ -56,16 +56,8 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
-                  <va-icon
-                    name="gpx"
-                    :size="44"
-                    @click="runBusy(handleExport, 'gpx', 'log', { _id: item.id }, `log_${item.id}`)"
-                  />
-                  <va-icon
-                    name="geojson"
-                    :size="44"
-                    @click="runBusy(handleExport, 'geojson', 'log', { _id: item.id }, `log_${item.id}`)"
-                  />
+                  <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
+                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -268,9 +260,10 @@
     }
   }*/
 
-  function runBusy(fn, ...args) {
-    asBusy(isBusy, apiError, fn, ...args)
-  }
+  const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),
+    handleGPX = (id) => handleExport_common('gpx', id),
+    handleGeoJSON = (id) => handleExport_common('geojson', id),
+    handleExport_common = (format, id) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
 </script>
 
 <style lang="scss" scoped>

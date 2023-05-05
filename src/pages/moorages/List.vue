@@ -33,7 +33,7 @@
               :size="34"
               style="grid-column-end: 11"
               class="themed"
-              @click="runBusy(handleExport, 'csv', 'moorages', items)"
+              @click="handleCSV(items)"
             ></va-icon>
             <va-icon
               name="gpx"
@@ -41,7 +41,7 @@
               :size="34"
               style="grid-column-end: 12"
               class="themed"
-              @click="runBusy(handleExport, 'gpx', 'moorages')"
+              @click="handleGPX()"
             ></va-icon>
             <va-icon
               name="geojson"
@@ -49,7 +49,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleExport, 'geojson', 'moorages')"
+              @click="handleGeoJSON()"
             ></va-icon>
           </div>
         </div>
@@ -233,11 +233,9 @@
       }
     }
   }
-
   /*const handleGPX = async () => {
     isBusy.value = true
     apiError.value = null
-
     const api = new PostgSail()
     try {
       const response = await api.moorages_export_gpx()
@@ -259,11 +257,9 @@
       isBusy.value = false
     }
   }
-
   const handleGeoJSON = async () => {
     isBusy.value = true
     apiError.value = null
-
     const api = new PostgSail()
     try {
       const response = await api.moorages_export_geojson()
@@ -284,7 +280,31 @@
     } finally {
       isBusy.value = false
     }
+  }
+  /*
+  const handleCSV = async () => {
+    let csv = Object.keys(items.value[0]) + '\n'
+    csv += items.value
+      .map((row) => {
+        return Object.values(row).toString()
+      })
+      .join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'PostgSailMoorages.csv'
+    link.click()
   }*/
+
+  function handleCSV(items) {
+    runBusy(handleExport, 'csv', 'moorages', items)
+  }
+  function handleGPX() {
+    runBusy(handleExport, 'gpx', 'moorages')
+  }
+  function handleGeoJSON() {
+    runBusy(handleExport, 'geojson', 'moorages')
+  }
 </script>
 
 <style lang="scss">

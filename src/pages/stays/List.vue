@@ -26,7 +26,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="runBusy(handleExport, 'csv', 'stays', items)"
+              @click="handleCSV(items)"
             ></va-icon>
           </div>
         </div>
@@ -208,5 +208,9 @@
         console.log('updateStayedAt failed', err.message ?? err)
         //throw err.message ?? err
       })
+  }
+
+  function handleCSV(items) {
+    runBusy(handleExport, 'csv', 'stays', items)
   }
 </script>

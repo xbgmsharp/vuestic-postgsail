@@ -1,5 +1,5 @@
 <template>
-  <div class="leaflet-maps-page">
+  <div class="leaflet-maps" style="height: 100%">
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
@@ -203,11 +203,11 @@
 <style lang="scss" scoped>
   .leaflet-map:deep() {
     .legend {
-      /*position: absolute;
+      position: absolute;
       width: 250px;
       height: 50px;
       left: 50%;
-      margin-left: -125px;*/
+      margin-left: -125px;
       padding: 0 0.7rem;
       bottom: 75px;
       background: #000;

@@ -66,20 +66,46 @@
           </va-collapse>
           <va-collapse header="URLs">
             <div class="pa-3">
-              - Web Application: https://iot.openplotter.cloud/<br />
-              - API: https://api.openplotter.cloud/<br />
-              - Grafana: https://app.openplotter.cloud/<br />
-              - Telegram Bot: https://t.me/pgsail_bot<br />
+              - Web Application:
+              <a href="https://iot.openplotter.cloud/" target="_blank"
+                >https://iot.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
+              ><br />
+              - API:
+              <a href="https://api.openplotter.cloud/" target="_blank"
+                >https://api.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
+              ><br />
+              - Grafana:
+              <a href="https://app.openplotter.cloud/" target="_blank"
+                >https://app.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
+              ><br />
+              - Telegram Bot:
+              <a href="https://t.me/pgsail_bot" target="_blank"
+                >https://t.me/pgsail_bot <va-icon name="fa-external-link" size="small" /></a
+              ><br />
             </div>
           </va-collapse>
           <va-collapse header="Source Code">
             <div class="pa-3">
               <p>
                 Source:<br />
-                - PostgSail Signalk plugin: https://github.com/xbgmsharp/signalk-postgsail<br />
-                - PostgSail backend: https://github.com/xbgmsharp/postgsail<br />
-                - PostgSail frontend: https://github.com/xbgmsharp/vuestic-postgsail<br />
-                - PostgSail Telegram: https://github.com/xbgmsharp/postgsail-telegram-bot<br />
+                - PostgSail Signalk plugin:
+                <a href="https://github.com/xbgmsharp/signalk-postgsail" target="_blank"
+                  >https://github.com/xbgmsharp/signalk-postgsail<va-icon name="fa-external-link" size="small" /></a
+                ><br />
+                - PostgSail backend:
+                <a href="https://github.com/xbgmsharp/postgsail" target="_blank"
+                  >https://github.com/xbgmsharp/postgsail<va-icon name="fa-external-link" size="small" /></a
+                ><br />
+                - PostgSail frontend:
+                <a href="https://github.com/xbgmsharp/vuestic-postgsail" target="_blank"
+                  >https://github.com/xbgmsharp/vuestic-postgsail<va-icon name="fa-external-link" size="small" /></a
+                ><br />
+                - PostgSail Telegram:
+                <a href="https://github.com/xbgmsharp/postgsail-telegram-bot" target="_blank"
+                  >https://github.com/xbgmsharp/postgsail-telegram-bot<va-icon
+                    name="fa-external-link"
+                    size="small" /></a
+                ><br />
               </p>
             </div>
           </va-collapse>

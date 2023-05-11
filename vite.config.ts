@@ -36,6 +36,13 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
   server: {
-    hmr: { overlay: false },
+    hmr: { host: 'localhost' },
+  },
+  test: {
+    // enable jest-like global test APIs
+    globals: true,
+    // simulate DOM with happy-dom
+    // (requires installing happy-dom as a peer dependency)
+    environment: 'happy-dom',
   },
 })

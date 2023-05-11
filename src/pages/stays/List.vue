@@ -49,7 +49,7 @@
           class="datatable"
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.moorage_id } }">
+            <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.id } }">
               {{ value }}
             </router-link>
           </template>

@@ -1,9 +1,11 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-content>
-        <Map style="width: 100%; height: 40vh" :map_zoom="13" :moorage_map_id="Number.parseInt(route.params.id)" />
-      </va-card-content>
+      <template v-if="item && item.moorage_id">
+        <va-card-content>
+          <Map style="width: 100%; height: 40vh" :map_zoom="13" :moorage_map_id="Number.parseInt(item.moorage_id)" />
+        </va-card-content>
+      </template>
     </va-card>
     <va-card class="mb-3">
       <va-card-title>{{ $t('stays.details.title') }}</va-card-title>
@@ -51,7 +53,7 @@
                   </div>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrival') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.arrived }}</dd>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.arrived) }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
@@ -59,7 +61,7 @@
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departure') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.departed }}</dd>
+                <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.departed) }}</dd>
                 <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
@@ -92,9 +94,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
+  import { dateFormat, dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
 
   import stays from '../../data/stays.json'

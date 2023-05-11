@@ -33,7 +33,11 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.to_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.duration') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  {{ durationFormatHours(item.duration) }}
+                  <!-- {{ durationI18nHours(item.duration) }} -->
+                  hours
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.distance') }}</dt>
                 <dd class="xs12 md6 pa-2">
                   {{ distanceFormat(item.distance) }} (<router-link
@@ -84,7 +88,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { dateFormat, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'

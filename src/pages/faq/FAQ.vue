@@ -64,6 +64,24 @@
               Imperial Units" is false.
             </div>
           </va-collapse>
+          <va-collapse header="Monitoring">
+            <div class="pa-3">
+              <p>
+                Monitoring metrics from Signalk:<br />
+                - 'environment.water.temperature' AS waterTemperature<br />
+                - 'environment.inside.temperature' AS insideTemperature<br />
+                - 'environment.outside.temperature' AS outsideTemperature<br />
+                - 'environment.wind.speedOverGround' AS windSpeedOverGround<br />
+                - 'environment.wind.directionGround' AS windDirectionGround<br />
+                - 'environment.inside.humidity' AS insideHumidity<br />
+                - 'environment.outside.humidity' AS outsideHumidity<br />
+                - 'environment.outside.pressure' AS outsidePressure<br />
+                - 'environment.inside.pressure' AS insidePressure<br />
+                - 'electrical.batteries.House.capacity.stateOfCharge' AS batteryCharge<br />
+                - 'electrical.batteries.House.voltage' AS batteryVoltage<br />
+              </p>
+            </div>
+          </va-collapse>
           <va-collapse header="URLs">
             <div class="pa-3">
               - Web Application:

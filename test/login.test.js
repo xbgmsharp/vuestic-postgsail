@@ -5,7 +5,7 @@ test('it should work', () => {
   const { getByText } = render(Login, {
     props: {
       /* ... */
-    }
+    },
   })
 
   // assert output

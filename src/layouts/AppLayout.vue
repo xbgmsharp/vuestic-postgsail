@@ -163,6 +163,24 @@
           fill: var(--va-on-background-primary);
         }
       }
+
+      .leaflet-maps-page {
+        display: flex;
+        flex-direction: column;
+
+        .va-alert {
+          flex: 0 0 auto;
+          width: 100%;
+        }
+
+        .leaflet-maps-page__widget {
+          flex: 1 1 auto;
+
+          .leaflet-map {
+            height: 100% !important;
+          }
+        }
+      }
     }
   }
 

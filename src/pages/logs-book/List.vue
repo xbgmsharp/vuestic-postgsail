@@ -59,11 +59,9 @@
           </template>
           <template #cell(distance)="{ value }">
             {{ distanceFormat(value) }}
-            <!--{{ value }}-->
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormatHours(value) }}
-            <!-- {{ durationI18nHours(value) }} -->
+            {{ durationFormatHours(value) }} {{ durationI18nHours(value) }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">

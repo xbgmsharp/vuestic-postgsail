@@ -34,9 +34,7 @@
                 <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.toTime) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  {{ durationFormatHours(item.duration) }}
-                  <!-- {{ durationI18nHours(item.duration) }} -->
-                  hours
+                  {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }}
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.distance') }}</dt>
                 <dd class="xs12 md6 pa-2">

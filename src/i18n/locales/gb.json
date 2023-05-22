@@ -263,6 +263,10 @@
     "success": "Successfully updated {key} with {value}",
     "failure": "Error updating {key} with {value}"
   },
+  "faq": {
+    "title": "FAQ",
+    "desc": "Frequently Asked Questions"
+  },
   "privacy": {
     "title": "Privacy"
   },
@@ -313,7 +317,7 @@
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",
-      "hours": "hours | hour | hours"
+      "hours": "{n} hours | {n} hour | {n} hours"
     }
   }
 }

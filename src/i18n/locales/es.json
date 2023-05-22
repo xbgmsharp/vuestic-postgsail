@@ -257,8 +257,12 @@
       "connected": "Your user is connected to {'@'}postgsail_bot."
     }
   },
+  "faq": {
+    "title": "FAQ",
+    "desc": "Preguntas frecuentes"
+  },
   "privacy": {
-    "title": "Privacy"
+    "title": "Privacidad"
   },
   "monitoring": {
     "title": "Monitoreo",

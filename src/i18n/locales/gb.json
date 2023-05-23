@@ -263,6 +263,10 @@
     "success": "Successfully updated {key} with {value}",
     "failure": "Error updating {key} with {value}"
   },
+  "faq": {
+    "title": "FAQ",
+    "desc": "Frequently Asked Questions"
+  },
   "privacy": {
     "title": "Privacy"
   },

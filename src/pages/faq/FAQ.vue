@@ -18,7 +18,8 @@
             <div class="pa-3">
               PostgSail is a cloud based solution that is built by boaters for boaters. It automatically logs the
               details of your boat's trips. These include track, speed, distance, wind speed, etc. Each trip is
-              automatically detected and logged without requiring you take any action like starting or stopping a trip.
+              automatically detected and logged without requiring that you take any action like starting or stopping a
+              trip.
               <br />
               At the end of each trip, a new log entry is automatically created, marking start and destination moorages.
               The time you spent at moorages will also be logged under Stays (e.g. Stayed 3 days in Eagle Harbor at

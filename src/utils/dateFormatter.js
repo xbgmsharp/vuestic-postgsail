@@ -27,13 +27,16 @@ export const durationHours = (durationString) => {
   return moment.duration(durationString).as('hours')
 }
 export const durationFormatHours = (durationString) => {
-  return durationHours(durationString).toFixed(1)
+  return durationHours(durationString).toFixed(2)
 }
 export const durationI18nHours = (durationString, tr = 'units.time.hours') => {
-  // display "hour" only if exactly 1h, "hours" otherwise (e.g.: 0.8, 1.2):
-  return t(tr, durationHours(durationString) === 1 ? 1 : 0)
+  // display "hour" only if exactly 1; "hours" otherwise (e.g.: 0.8, 1.2):
+  //return t(tr, durationHours(durationString) === '1' ? 1 : 0)
   // displaying "hour" vs "hours" delegated to Vue:
   //return t(tr, parseInt(durationHours(durationString)))
+  // display "hour" up to and including 1 with gb.json "hour hours hours"
+  const durationH = durationHours(durationString)
+  return t(tr, durationH === '1' ? 0 : parseInt(durationH))
 }
 
 export const durationFormatDays = (durationString) => {

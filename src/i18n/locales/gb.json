@@ -313,7 +313,7 @@
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",
-      "hours": "hours | hour | hours"
+      "hours": "hour | hours | hours"
     }
   }
 }

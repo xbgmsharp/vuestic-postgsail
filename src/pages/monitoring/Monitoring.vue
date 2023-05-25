@@ -74,7 +74,7 @@
   const apiError = ref(null)
   const apiSuccess = ref(null)
   const apiData = reactive({ row: null })
-  const offline = ref(false)
+  const offline = ref(true)
 
   const items = computed(() => {
     return apiData.row
@@ -101,7 +101,7 @@
             detailString: t('monitoring.water.detailString'),
             lcdDecimals: 1,
             value: apiData.row.depth || 0,
-            altValue: apiData.row.watertemperature || 0.0,
+            altValue: kelvinToCelsius(apiData.row.watertemperature) || 0.0,
           },
           battery: {
             headerString: t('monitoring.battery.headerString'),
@@ -109,7 +109,7 @@
             detailString: t('monitoring.battery.detailString'),
             lcdDecimals: 1,
             value: floatToPercentage(apiData.row.batterycharge) || 0,
-            altValue: apiData.row.battery_voltage || 0,
+            altValue: apiData.row.batteryvoltage || 0,
           },
           humidity: {
             headerString: t('monitoring.humidity.headerString'),
@@ -148,11 +148,12 @@
     try {
       const response = await api.monitoring()
       if (Array.isArray(response) && response[0]) {
+        //console.log(response[0])
         apiSuccess.value = true
         //offline.value = true
-        //offline.value = response.data[0].offline
+        offline.value = response[0].offline
         apiData.row = response[0]
-        //console.log(apiData)
+        console.log(apiData)
         console.log(moment_locale.value)
         console.log(response[0].time)
         console.log(moment.utc(response[0].time).locale('es').fromNow())
@@ -161,10 +162,11 @@
         throw { response }
       }
     } catch ({ response }) {
+      console.log(response)
       apiError.value = t('monitoring.error')
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample data from local json...', apiError.value)
-        console.log(monitoringDatas[0].time)
+        //console.log(monitoringDatas[0].time)
         // Update time to now
         monitoringDatas[0].time = moment.utc()
         apiData.row = monitoringDatas[0]

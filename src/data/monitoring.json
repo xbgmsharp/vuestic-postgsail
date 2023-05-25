@@ -9,6 +9,8 @@
     "insidehumidity": 62.1,
     "outsidehumidity": 69.0,
     "outsidepressure": 1016.6,
-    "insidepressure": 1011.85594573025
+    "insidepressure": 1011.85594573025,
+    "batterycharge": 0.9,
+    "batteryvoltage": 13.29
   }
 ]

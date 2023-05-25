@@ -63,15 +63,17 @@
           <template #cell(duration)="{ value }">
             {{ durationFormatHours(value) }} {{ durationI18nHours(value) }}
           </template>
-          <template #cell(action)="{ rowData }">
+          <!--
+          <template #cell(action)="{ rowData.id }">
             <va-select
               :options="action_options"
               placeholder="..."
               style="max-width: 8rem"
               outline
-              @update:modelValue="handleAction($event, rowData)"
+              @update:modelValue="handleAction($event, rowData.id)"
             />
           </template>
+          -->
         </va-data-table>
         <template v-if="items.length > perPage">
           <div class="mt-3 row justify-center">
@@ -137,7 +139,7 @@
     { key: 'toTime', label: t('logs.log.to_time'), sortable: true },
     { key: 'distance', label: t('logs.log.distance'), sortable: true },
     { key: 'duration', label: t('logs.log.duration'), sortable: true },
-    { key: 'action', label: t('logs.log.action') },
+    //{ key: 'action', label: t('logs.log.action') },
   ])
   const filter = reactive(getDefaultFilter())
 
@@ -219,8 +221,8 @@
   function handleGPX(item) {
     runBusy(handleExport, 'gpx', 'log', item)
   }
-  function handleAction({ value }, rowData) {
-    value(rowData)
+  function handleAction({ value }, id) {
+    value(id)
   }
 </script>
 

@@ -29,9 +29,9 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [x] Layout
   - [x] Update theme icon to night/day mode theme, like openplotter.cloud
   - [x] Update theme icon to day and night vision
-- [ ] Logs:
-  - [ ] Add Action '...' column with sub menu to export to CVS, GPX
-  - [ ] Add button with icon to export to CVS to log list page
+- [x] Logs:
+  - [x] Add Action '...' column with sub menu to export to CSV, GPX
+  - [x] Add button with icon to export to CSV to log list page
 - [ ] Log:
   - [ ] Add trash and save icon to log details page next to text
   - [x] Add button with icon to export to CVS to log details page
@@ -62,7 +62,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] Security
   - [ ] Implement refresh token
     - [ ] require backend update
-  - [ ] Add external authentification
+  - [ ] Add external authentication
     - [ ] require backend update
 - [ ] Login
   - [x] Create `/activate` page for OTP validation
@@ -70,7 +70,7 @@ Based on [vuestic-admin](https://vuestic.dev)
     - [x] require backend update
 - [ ] Singup
   - [x] Create `/activate` page for OTP validation
-  - [x] Force email validation via One Time code on Singup
+  - [x] Force email validation via One Time code on Signup
     - [x] require backend update
 - [x] Implement notifications Pushover, Telegram
   - [x] require backend update

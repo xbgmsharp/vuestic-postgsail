@@ -25,7 +25,7 @@
               :size="34"
               style="grid-column-end: 13"
               class="themed"
-              @click="handleCSV(items)"
+              @click="handleCSV_all(items)"
             ></va-icon>
           </div>
         </div>
@@ -63,6 +63,15 @@
           <template #cell(duration)="{ value }">
             {{ durationFormatHours(value) }} {{ durationI18nHours(value) }}
           </template>
+          <template #cell(action)="{ rowData }">
+            <va-select
+              :options="action_options"
+              placeholder="..."
+              style="max-width: 8rem"
+              outline
+              @update:modelValue="handleAction($event, rowData)"
+            />
+          </template>
         </va-data-table>
         <template v-if="items.length > perPage">
           <div class="mt-3 row justify-center">
@@ -88,6 +97,26 @@
   const CacheStore = useCacheStore()
 
   const { t } = useI18n()
+
+  const action_options = [
+      {
+        value: null,
+        text: '...',
+      },
+      {
+        value: handleCSV,
+        text: t('logs.log.export') + ' CSV',
+      },
+      {
+        value: handleGPX,
+        text: t('logs.log.export') + ' GPX',
+      },
+    ],
+    action_verbs = {
+      handleCSV,
+      handleGPX,
+    }
+
   const getDefaultFilter = () => {
     return {
       name: null,
@@ -108,6 +137,7 @@
     { key: 'toTime', label: t('logs.log.to_time'), sortable: true },
     { key: 'distance', label: t('logs.log.distance'), sortable: true },
     { key: 'duration', label: t('logs.log.duration'), sortable: true },
+    { key: 'action', label: t('logs.log.action') },
   ])
   const filter = reactive(getDefaultFilter())
 
@@ -156,6 +186,7 @@
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
+        console.log(rowsData)
       } else {
         throw { response }
       }
@@ -179,8 +210,17 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
-  function handleCSV(items) {
-    runBusy(handleExport, 'csv', 'moorages', items)
+  function handleCSV_all(items) {
+    runBusy(handleExport, 'csv', 'logs', items)
+  }
+  function handleCSV(item) {
+    runBusy(handleExport, 'csv', 'log', [item])
+  }
+  function handleGPX(item) {
+    runBusy(handleExport, 'gpx', 'log', item)
+  }
+  function handleAction({ value }, rowData) {
+    value(rowData)
   }
 </script>
 

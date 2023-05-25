@@ -11,50 +11,59 @@
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
-      <va-card-title> Frequently Asked Questions </va-card-title>
+      <va-card-title> {{ $t('faq.desc') }} </va-card-title>
       <va-card-content class="layout gutter--md">
         <va-accordion>
           <va-collapse header="What is PostgSail">
-            <div class="pa-3">
+            <p class="pa-3"></p>
+            <p>
               PostgSail is a cloud based solution that is built by boaters for boaters. It automatically logs the
               details of your boat's trips. These include track, speed, distance, wind speed, etc. Each trip is
-              automatically detected and logged without requiring that you take any action like starting or stopping a
-              trip.
-              <br />
+              automatically detected and logged without requiring you take any action like starting or stopping a trip.
+            </p>
+            <br />
+            <p>
               At the end of each trip, a new log entry is automatically created, marking start and destination moorages.
               The time you spent at moorages will also be logged under Stays (e.g. Stayed 3 days in Eagle Harbor at
               anchor). You may need to manually categorize your stay as at anchor, mooring buoy or dock. If you choose
               to do so, that is the only manual thing to do, it is completely optional. And if you classify a stay,
               PostgSail will remember it the next time you visit the same moorage.
-              <br />
+            </p>
+            <br />
+            <p>
               PostgSail aggregates information about your trips and provides you statistics including the number of
               trips, moorages you have been to, countries you have visited, longest passages, time you spent at anchor,
               mooring buoys etc. The easiest may be to look at the statistics of one of our founders as an example.
-              <br />
+            </p>
+            <br />
+            <p>
               PostgSail also creates an automatic timelapse for all of your trips, animating the movements of your boat
               on a map. See a timelapse example here for a multi-week sail along the California coast between San
               Francisco and Ensenada.
-              <br />
+            </p>
+            <br />
+            <p>
               Your information stays private unless you explicitly decide to make it available publicly. If you choose
               to do so, your friends and others can access your statistics and timelapse.
-            </div>
+            </p>
+            <br />
           </va-collapse>
           <va-collapse header="Timelapse">
             <div class="pa-3">
               <p>
                 Timelapse takes several parameters that allow customization:<br />
                 <br />
-                color: Specifies the path color. Default: dodgerblue start_date and end_date: Specified in YYYY-MM-DD
-                format. Default: None<br />
-                map_type: 0 for OpenStreetMap, 1 for Satellite, 2 for NOAA (for US only). Default: OpenStreetMap<br />
-                speed: Measured in milliseconds, controls the speed of animation. Lower values mean faster movement.
+                - color: Specifies the path color. Default: dodgerblue<br />
+                - start_date and end_date: Specified in whatever format (YYYY-MM-DD, DD-MM-YYYY). Default: None<br />
+                - map_type: 0 for OpenStreetMap, 1 for Satellite, 2 for NOAA (for US only). Default: OpenStreetMap<br />
+                - speed: Measured in milliseconds, controls the speed of animation. Lower values mean faster movement.
                 Default: 75<br />
-                delay: Measured in seconds, allows pausing before starting the animation for screen captures. Default:
+                - delay: Measured in seconds, allows pausing before starting the animation for screen captures. Default:
                 0<br />
-                zoom: Specifies default zoom. Default: 10<br />
+                - zoom: Specifies default zoom. Default: 10<br />
                 <br />
                 Example:
-                https://iot.openplotter.cloud/timelapse/2/?color=yellow&start_date=2020-06-01&end_date=2020-07-31&map_type=1&speed=90&delay=1&zoom=11
+                https://iot.openplotter.cloud/timelapse?color=yellow&start_date=2020-06-01&end_date=2020-07-31&map_type=1&speed=90&delay=1&zoom=11
               </p>
             </div>
           </va-collapse>

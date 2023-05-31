@@ -1,4 +1,4 @@
-<template style="padding-left: 1rem; padding-right: 1rem">
+<template>
   <div>
     <va-card class="mb-3">
       <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>

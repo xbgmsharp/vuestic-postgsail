@@ -49,7 +49,7 @@
           class="datatable"
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'stay-details', params: { id: rowData.id } }">
+            <router-link class="text--bold stay-name" :to="{ name: 'stay-details', params: { id: rowData.id } }">
               {{ value }}
             </router-link>
           </template>
@@ -68,7 +68,7 @@
               :options="stayed_at_options"
               :placeholder="value"
               outline
-              style="max-width: 150px"
+              style="max-width: 120px"
               @update:modelValue="runBusy(updateStayedAt, rowData.id, $event)"
             />
           </template>

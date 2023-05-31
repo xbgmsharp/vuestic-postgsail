@@ -184,7 +184,7 @@
     }
   }
 
-  /* va-select below content fix: */
+  /* va-select below content fix */
   .va-data-table .va-data-table__table.striped .va-data-table__table-tr,
   .va-data-table .va-data-table__table.striped .va-data-table__table-tr:nth-child(2n):not(.selected) {
     z-index: unset;
@@ -192,7 +192,8 @@
   .va-data-table:not(.va-data-table--virtual-scroller) {
     overflow: unset;
   }
-  /* va inputs on striped tables*/
+
+  /* va inputs on striped tables */
   .va-table--striped tbody > tr:nth-child(even),
   .va-data-table__table.striped tbody > tr:nth-child(even) {
     .va-input {
@@ -204,5 +205,12 @@
     .va-switch .va-switch__checker-wrapper {
       background-color: var(--va-background-secondary);
     }
+  }
+
+  /* mitigate data table overextension */
+  .va-data-table__table-tr > .va-data-table__table-td:first-child > a {
+    display: inline-block;
+    max-width: 18rem;
+    overflow: hidden;
   }
 </style>

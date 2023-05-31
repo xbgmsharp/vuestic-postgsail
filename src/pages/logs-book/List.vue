@@ -1,4 +1,4 @@
-<template>
+<template style="padding-left: 1rem; padding-right: 1rem">
   <div>
     <va-card class="mb-3">
       <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
@@ -33,7 +33,7 @@
     </va-card>
     <va-card>
       <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
-      <va-card-content>
+      <va-card-content style="padding: 0">
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
@@ -67,7 +67,7 @@
             <va-select
               :options="action_options"
               placeholder="..."
-              style="max-width: 8rem"
+              style="max-width: 6rem"
               outline
               @update:modelValue="handleAction($event, rowData)"
             />
@@ -99,23 +99,19 @@
   const { t } = useI18n()
 
   const action_options = [
-      {
-        value: null,
-        text: '...',
-      },
-      {
-        value: handleCSV,
-        text: t('logs.log.export') + ' CSV',
-      },
-      {
-        value: handleGPX,
-        text: t('logs.log.export') + ' GPX',
-      },
-    ],
-    action_verbs = {
-      handleCSV,
-      handleGPX,
-    }
+    {
+      value: null,
+      text: '...',
+    },
+    {
+      value: handleCSV,
+      text: t('logs.log.export') + ' CSV',
+    },
+    {
+      value: handleGPX,
+      text: t('logs.log.export') + ' GPX',
+    },
+  ]
 
   const getDefaultFilter = () => {
     return {
@@ -137,7 +133,7 @@
     { key: 'toTime', label: t('logs.log.to_time'), sortable: true },
     { key: 'distance', label: t('logs.log.distance'), sortable: true },
     { key: 'duration', label: t('logs.log.duration'), sortable: true },
-    { key: 'action', label: t('logs.log.action') },
+    { key: 'action', label: t('logs.list.action') },
   ])
   const filter = reactive(getDefaultFilter())
 
@@ -227,5 +223,14 @@
 <style lang="scss" scoped>
   .va-table {
     width: 100%;
+  }
+  .app-layout__page > * {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* mitigate data table overextension */
+  .va-data-table__table-tr > .va-data-table__table-td:first-child > a {
+    max-width: 12rem;
   }
 </style>

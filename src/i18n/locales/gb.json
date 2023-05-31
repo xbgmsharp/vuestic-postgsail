@@ -107,7 +107,8 @@
         "name": "Name",
         "date_range": "Date range",
         "reset": "Reset"
-      }
+      },
+      "action": "Action"
     },
     "details": {
       "title": "Log's details"

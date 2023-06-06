@@ -46,7 +46,8 @@
     "grafana": "Grafana",
     "monitoring": "Monitoring",
     "privacy": "Privacy",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "badges": "Badges"
   },
   "notifications": {
     "all": "All",
@@ -300,6 +301,18 @@
     "offline": {
       "offline": "Sua embarcação está offline. O monitoramento em tempo real requer uma conexão com a Internet.",
       "lastupdate": "Não recebemos nenhum dado do seu coletor nos últimos 70 minutos."
+    }
+  },
+  "units": {
+    "distance": {
+      "NM": "Distance NM",
+      "KM": "Distance KM",
+      "miles": "{n} mile | {n} miles",
+      "kilometres": "{n} kilometre | {n} kilometres"
+    },
+    "time": {
+      "days": "{n} days | {n} day | {n} days",
+      "hours": "hour | hours | hours"
     }
   }
 }

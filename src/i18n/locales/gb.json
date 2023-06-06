@@ -48,7 +48,8 @@
     "grafana": "Grafana",
     "monitoring": "Monitoring",
     "privacy": "Privacy",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "badges": "Badges"
   },
   "notifications": {
     "all": "All",

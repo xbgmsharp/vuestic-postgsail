@@ -26,6 +26,8 @@ const defaultState = {
     web_version: '',
     api_version: '',
     sys_version: '',
+    timescaledb: '',
+    postgis: '',
   },
   settings: {
     email: '',

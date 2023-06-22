@@ -35,7 +35,7 @@ export const defaultConfig = {
     },
   },
   maintainAspectRatio: false,
-  animation: false,
+  animation: true,
 }
 
 export const chartTypesMap = {

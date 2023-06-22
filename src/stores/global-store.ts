@@ -110,8 +110,6 @@ export const useGlobalStore = defineStore('global', {
         const response = await api.versions()
         this.versions = response
         this.versions.web_version = web_version
-        /* 2 stubs pending server update: */
-        this.versions.timescaledb = this.versions.postgis = ''
         console.log('GlobalStore fetchVersions this.versions', this.versions)
       } catch (error) {
         console.log(error)

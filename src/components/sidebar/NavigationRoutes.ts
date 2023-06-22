@@ -82,6 +82,13 @@ export default {
       },
     },
     {
+      name: 'badges',
+      displayName: 'menu.badges',
+      meta: {
+        icon: 'menu-badges',
+      },
+    },
+    {
       name: 'faq',
       displayName: 'menu.faq',
       meta: {

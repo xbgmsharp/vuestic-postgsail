@@ -154,6 +154,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'pushover',
         component: () => import('../pages/activate/Pushover.vue'),
       },
+      {
+        name: 'badges',
+        path: 'badges',
+        component: () => import('../pages/badges/Badges.vue'),
+      },
     ],
   },
   {

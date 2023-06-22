@@ -207,7 +207,12 @@
         "token": "Token",
         //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
         "message": "Copy paste this token into your postgsail plugin instance of signalk."
-      }
+      },
+      "beam": "Beam",
+      "height": "Altura",
+      "length": "Comprimento",
+      "country": "Estado de bandeira",
+      "ship_type": "Tipo de navio"
     },
     "errors": {
       "name": "Name is required",

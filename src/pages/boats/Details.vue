@@ -22,6 +22,19 @@
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.lastContact) }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.beam') }}</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.beam }}</dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.height') }}</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.height }}</dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.length') }}</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.length }}</dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.country') }}</dt>
+              <dd class="flex xs12 md6 pa-2">
+                {{ item.country }}
+                <va-icon :name="getFlagIcon(item.flag, 'small')" />
+              </dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.ship_type') }}</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.ship_type }}</dd>
               <template v-if="item.mmsi">
                 <dt class="flex xs12 md6 pa-2 font-bold">VesselFinder</dt>
                 <dd class="flex xs12 md6 pa-2">
@@ -68,6 +81,12 @@
           lastContact: apiData.row.last_contact,
           createdAt: apiData.row.created_at,
           geoJson: apiData.row.geojson,
+          beam: apiData.row.beam,
+          height: apiData.row.height,
+          length: apiData.row.length,
+          country: apiData.row.country,
+          flag: apiData.row.alpha_2,
+          ship_type: apiData.row.ship_type,
         }
       : {}
   })
@@ -104,9 +123,14 @@
       isBusy.value = false
     }
   })
+
+  function getFlagIcon(code, size) {
+    return `flag-icon-${code} ${size}`
+  }
 </script>
 
 <style lang="scss" scoped>
+  @import 'flag-icons/css/flag-icons.css';
   .dl-details {
     > dt:nth-child(4n + 3) {
       &,

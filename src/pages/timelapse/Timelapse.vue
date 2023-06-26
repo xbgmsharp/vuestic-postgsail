@@ -3,9 +3,11 @@
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
-    <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-      <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
-    </va-card>
+    <va-inner-loading :loading="isBusy">
+      <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
+        <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
+      </va-card>
+    </va-inner-loading>
   </div>
 </template>
 
@@ -33,7 +35,7 @@
     timelapse = ref()
 
   // Query-string
-  // ?start_log=7953&end_log=7953&start_date=None&end_date=None&map_type=1&speed=250&delay=1&zoom=13
+  // /timelapse?start_log=7953&end_log=7953&start_date=None&end_date=None&map_type=1&speed=250&delay=1&zoom=13
   // /timelapse?start_log=1&end_log=2
   // /timelapse?start_date=25-03-2023&end_date=25-03-2023
   // /timelapse?start_date=03-25-2023&end_date=03-25-2023
@@ -46,10 +48,11 @@
     map_type = ref(route.query.map_type || 1),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
-    zoom = ref(route.query.zoom || 13)
+    zoom = ref(route.query.zoom || 13),
+    color = ref(route.query.color || 'dodgerblue')
 
   console.debug(
-    'QS',
+    'Timelapse QS',
     start_log.value,
     end_log.value,
     start_date.value,
@@ -58,6 +61,7 @@
     speed.value,
     delay.value,
     zoom.value,
+    color.value,
   )
 
   onMounted(async () => {

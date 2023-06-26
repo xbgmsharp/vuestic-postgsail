@@ -42,7 +42,7 @@
   import { useI18n } from 'vue-i18n'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
-  import { dateFormat } from '../../utils/dateFormatter'
+  import { dateFormatUTC } from '../../utils/dateFormatter'
   import IconAward from '../../components/icons/IconAward.vue'
   import IconNavigation from '../../components/icons/IconNavigation.vue'
 
@@ -75,6 +75,7 @@
       if (key in user_badges && 'date' in user_badges[key]) {
         user_badges[key] = { ...user_badges[key], ...badges.value[key] }
         user_badges[key]['disabled'] = false
+        user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
       } else {
         if (key in badges.value) {
           user_badges[key] = badges.value[key]
@@ -86,6 +87,7 @@
       if (!(key in badges.value)) {
         user_badges[key] = { ...user_badges[key], ...default_badge['default'] }
         user_badges[key]['disabled'] = false
+        user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
       }
     }
     console.log(user_badges)

@@ -339,6 +339,7 @@
     "Tropical Traveler": "Look at you with your suntan, tropical drink and southern latitude!",
     "Aloha Award": "Ticking off over 2300 NM across the great blue Pacific makes you the rare recipient of the Aloha Award. Well done and Aloha sailor!",
     "Navigator Award": "Woohoo! You made it, Ticking off over 100NM in one go, well done sailor!",
-    "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!"
+    "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
+    "default": "default_badge_description"
   }
 }

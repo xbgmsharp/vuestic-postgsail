@@ -108,14 +108,15 @@
     }
     try {
       const response = await api.vessel_reg(payload)
-      if (response.data) {
+      if (response.token) {
         apiSuccess.value = true
-        if (response.data.token) {
-          console.log('vessel_reg success', response.data.token)
+        if (response.token) {
+          console.log('vessel_reg success', response.token)
           // Fetch updated settings then route
           await GlobalStore.fetchSettings()
           router.push({ name: 'boats' })
-          /*setTimeout(() => {
+          /*
+          setTimeout(() => {
             router.push({ name: 'boats' })
           }, 1000)
           */

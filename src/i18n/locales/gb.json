@@ -27,6 +27,8 @@
       "cedentials": "Wrong credentials",
       "email": "Email is required",
       "password": "Password is required",
+      "mismatch_pass": "Password Mismatch",
+      "short_pass": "Password is too short",
       "first_name": "First name is required",
       "last_name": "Last name is required",
       "agreed_to_terms": "You must agree to the terms of use to continue",
@@ -275,7 +277,8 @@
     "desc": "Frequently Asked Questions"
   },
   "privacy": {
-    "title": "Privacy"
+    "title": "Privacy",
+    "desc": "Privacy Policy"
   },
   "monitoring": {
     "title": "Monitoring",
@@ -340,6 +343,7 @@
     "Aloha Award": "Ticking off over 2300 NM across the great blue Pacific makes you the rare recipient of the Aloha Award. Well done and Aloha sailor!",
     "Navigator Award": "Woohoo! You made it, Ticking off over 100NM in one go, well done sailor!",
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
-    "default": "default_badge_description"
+    "default": "Look at you sailling the",
+    "locked": "Locked"
   }
 }

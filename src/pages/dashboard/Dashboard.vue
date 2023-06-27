@@ -44,10 +44,7 @@
   console.log('Dashboard', __APP_VERSION__, __VITE_VERSION__, import.meta.env)
   const vite_version = ref(__VITE_VERSION__)
   let app_version = ref('')
-  //[ToDo]
-  //  delete from /vite.config.ts one of:
-  //  __VITE_VERSION__ or import.meta.env.VITE_GIT_VERSION
-  //app_version.value = __APP_VERSION__ + '-' + vite_version.value
+  // only VITE_* are exposed
   app_version.value = __APP_VERSION__ + '-' + import.meta.env.VITE_GIT_VERSION
   if (import.meta.env.DEV) {
     app_version.value += '-' + 'dev'
@@ -84,15 +81,17 @@
     const mylogs = await getAPI('logs')
     const mystays = await getAPI('stays')
     const mymoorages = await getAPI('moorages')
-    // for manual expanding in console:
-    console.log('Dashboard onMounted my(logs|stays|moorages)', [
-      [mylogs, mystays, mymoorages],
-      {
-        'mylogs[0].Distance': mylogs[0].Distance,
-        'mystays[0].duration': mystays[0].duration,
-        'mymoorages[0].total_stay': mymoorages[0].total_stay,
-      },
-    ])
+    if (mylogs && mylogs[0] && mystays && mystays[0] && mymoorages && mymoorages[0]) {
+      // for manual expanding in console:
+      console.log('Dashboard onMounted my(logs|stays|moorages)', [
+        [mylogs, mystays, mymoorages],
+        {
+          'mylogs[0].Distance': mylogs[0].Distance,
+          'mystays[0].duration': mystays[0].duration,
+          'mymoorages[0].total_stay': mymoorages[0].total_stay,
+        },
+      ])
+    }
     // Load Charts Dashboard
     InfoTiles()
     barChart()

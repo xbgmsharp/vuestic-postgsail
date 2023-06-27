@@ -55,16 +55,17 @@
 
   async function onsubmit() {
     if (!password.value || !password_confirm.value) {
-      passwordErrors.value = password.value ? [] : [t('auth.errors.password')]
+      passwordErrors.value = t('auth.errors.password')
     } else {
       if (password.value != password_confirm.value) {
-        passwordErrors.value = password.value ? [] : [t('auth.errors.password')]
-        console.warn('missmatch pass')
+        passwordErrors.value = t('auth.errors.mismatch_pass')
+        console.warn('mismatch pass')
         resetError.value = true
         return
       }
-      if (password.value.length != 1) {
+      if (password.value.length <= 4) {
         console.warn('short pass')
+        passwordErrors.value = t('auth.errors.short_pass')
         resetError.value = true
         return
       }
@@ -89,13 +90,13 @@
       try {
         const api = new PostgSail(),
           response = await api.reset(payload)
-        console.warn(response)
         if (response) {
           resetSuccess.value = true
           setTimeout(() => {
             router.push({ path: '/login' })
           }, 1100)
         } else {
+          console.warn('reset', response)
           throw { response }
         }
       } catch ({ response }) {

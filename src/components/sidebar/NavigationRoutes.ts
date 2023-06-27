@@ -95,5 +95,12 @@ export default {
         icon: 'menu-faq',
       },
     },
+    {
+      name: 'privacy',
+      displayName: 'menu.privacy',
+      meta: {
+        icon: 'menu-privacy',
+      },
+    },
   ] as INavigationRoute[],
 }

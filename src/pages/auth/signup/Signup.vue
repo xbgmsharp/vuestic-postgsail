@@ -130,15 +130,16 @@
         signupSuccess.value = true
         api.setBearerAuth((GlobalStore.token = response.token))
         // Fetch updated settings then route
-        await GlobalStore.fetchSettings()
+        await GlobalStore.fetchSettings(true)
         setTimeout(() => {
           router.push({ name: 'activate' })
         }, 1100)
       } else {
+        console.warn('signin', response)
         throw { response }
       }
     } catch ({ response }) {
-      apiError.value = response.data.message
+      apiError.value = response.message
     } finally {
       isBusy.value = false
     }

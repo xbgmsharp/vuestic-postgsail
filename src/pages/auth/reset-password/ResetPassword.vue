@@ -55,17 +55,17 @@
 
   async function onsubmit() {
     if (!password.value || !password_confirm.value) {
-      passwordErrors.value = t('auth.errors.password')
+      passwordErrors.value = [t('auth.errors.password')]
     } else {
       if (password.value != password_confirm.value) {
-        passwordErrors.value = t('auth.errors.mismatch_pass')
+        passwordErrors.value = [t('auth.errors.mismatch_pass')]
         console.warn('mismatch pass')
         resetError.value = true
         return
       }
       if (password.value.length <= 4) {
         console.warn('short pass')
-        passwordErrors.value = t('auth.errors.short_pass')
+        passwordErrors.value = [t('auth.errors.short_pass')]
         resetError.value = true
         return
       }

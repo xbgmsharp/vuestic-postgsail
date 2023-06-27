@@ -188,7 +188,7 @@
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
-        console.log(rowsData)
+        console.log('Logs list', rowsData.value)
       } else {
         throw { response }
       }

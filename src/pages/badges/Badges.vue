@@ -4,9 +4,15 @@
       v-for="(item, key) in user_badges"
       :key="key"
       :disabled="item.disabled"
-      :stripe="!item.disabled"
-      stripe-color="success"
+      stripe
+      :stripe-color="item.disabled ? 'danger' : 'success'"
+      class="box_badge"
     >
+      <template v-if="item.disabled">
+        <span class="ribbon"
+          ><h2 class="txt">{{ t('badges.locked') }}</h2></span
+        >
+      </template>
       <va-card-title
         ><h2>{{ key }}</h2></va-card-title
       >
@@ -66,53 +72,61 @@
     'Captain Award': { svg: true, description: t('badges.Captain Award') },
   })
   const default_badge = { default: { svg: false, description: t('badges.default') } }
-  let user_badges = settings.value.preferences.badges || {}
+  const user_badges = ref(settings.value.preferences.badges || {})
 
   onMounted(async () => {
     isBusy.value = true
     for (let key in badges.value) {
       //console.log(key, badges.value[key])
-      if (key in user_badges && 'date' in user_badges[key]) {
-        user_badges[key] = { ...user_badges[key], ...badges.value[key] }
-        user_badges[key]['disabled'] = false
-        user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+      if (key in user_badges.value && 'date' in user_badges.value[key]) {
+        user_badges.value[key] = { ...user_badges.value[key], ...badges.value[key] }
+        user_badges.value[key]['disabled'] = false
+        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
       } else {
         if (key in badges.value) {
-          user_badges[key] = badges.value[key]
-          user_badges[key]['disabled'] = true
+          user_badges.value[key] = badges.value[key]
+          user_badges.value[key]['disabled'] = true
         }
       }
     }
-    for (let key in user_badges) {
+    for (let key in user_badges.value) {
       if (!(key in badges.value)) {
-        user_badges[key] = { ...user_badges[key], ...default_badge['default'] }
-        user_badges[key]['disabled'] = false
-        user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+        user_badges.value[key] = { ...user_badges.value[key], ...default_badge['default'] }
+        user_badges.value[key]['description'] = `${default_badge['default']['description']} ${key}!`
+        user_badges.value[key]['disabled'] = false
+        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
       }
     }
-    console.log(user_badges)
+    console.log(user_badges.value)
   })
 </script>
 
 <style lang="scss" scoped>
-  .ribbon-2 {
-    --f: 10px; /* control the folded part*/
-    --r: 15px; /* control the ribbon shape */
-    --t: 10px; /* the top offset */
-
+  .box_badge {
+    position: relative;
+  }
+  .ribbon {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    border: 25px solid transparent;
+    border-top: 25px solid #ff0000;
     position: absolute;
-    inset: var(--t) calc(-1 * var(--f)) auto auto;
-    padding: 0 10px var(--f) calc(10px + var(--r));
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% calc(100% - var(--f)),
-      calc(100% - var(--f)) 100%,
-      calc(100% - var(--f)) calc(100% - var(--f)),
-      0 calc(100% - var(--f)),
-      var(--r) calc(50% - var(--f) / 2)
-    );
-    background: #bd1550;
-    box-shadow: 0 calc(-1 * var(--f)) 0 inset #0005;
+    bottom: 0;
+    right: -35px;
+    padding: 0 10px;
+    width: 120px;
+    color: white;
+    font-family: sans-serif;
+    size: 11px;
+    opacity: 1;
+  }
+  .ribbon .txt {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    opacity: 1;
   }
 </style>

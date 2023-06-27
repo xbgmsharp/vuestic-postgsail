@@ -113,7 +113,7 @@
         if (response.token) {
           console.log('vessel_reg success', response.token)
           // Fetch updated settings then route
-          await GlobalStore.fetchSettings()
+          await GlobalStore.fetchSettings(true)
           router.push({ name: 'boats' })
           /*
           setTimeout(() => {

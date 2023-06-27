@@ -29,7 +29,7 @@
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.length') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.length }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.country') }}</dt>
-              <dd class="flex xs12 md6 pa-2">
+              <dd v-if="item.country" class="flex xs12 md6 pa-2">
                 {{ item.country }}
                 <va-icon :name="getFlagIcon(item.flag.toLocaleLowerCase(), 'small')" />
               </dd>

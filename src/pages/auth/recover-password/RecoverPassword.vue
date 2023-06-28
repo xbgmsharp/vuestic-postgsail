@@ -27,7 +27,7 @@
   const { t } = useI18n()
   const router = useRouter()
 
-  debugger
+  //debugger
   useGlobalStore().logout()
 
   const resetSuccess = ref('')
@@ -48,13 +48,14 @@
       try {
         const api = new PostgSail(),
           response = await api.recover(payload)
-        console.warn(response)
+        // Should we report error if user does not exist. No to avoid security risk the api true.
         if (response) {
           resetSuccess.value = t('auth.reset')
           setTimeout(() => {
             router.push({ path: '/' })
           }, 1100)
         } else {
+          console.warn('recover', response)
           throw { response }
         }
       } catch ({ response }) {

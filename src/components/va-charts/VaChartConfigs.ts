@@ -3,7 +3,7 @@ import { defineAsyncComponent } from 'vue'
 export const defaultConfig = {
   plugins: {
     legend: {
-      position: 'bottom',
+      position: 'bottom' as const,
       labels: {
         font: {
           color: '#34495e',
@@ -35,7 +35,7 @@ export const defaultConfig = {
     },
   },
   maintainAspectRatio: false,
-  animation: true,
+  animation: {},
 }
 
 export const chartTypesMap = {

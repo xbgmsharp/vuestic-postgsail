@@ -59,15 +59,15 @@
   const isBusy = ref(false)
 
   const badges = ref({
-    Helmsman: { image: '/badges/helmsman.png', description: t('badges.Helmsman') },
-    'Wake Maker': { image: '/badges/wake_maker.png', description: t('badges.Wake Maker') },
-    Explorer: { image: '/badges/explorer.png', description: t('badges.Explorer') },
-    'Mooring Pro': { image: '/badges/mooring_pro.png', description: t('badges.Mooring Pro') },
-    Anchormaster: { image: '/badges/anchormaster.png', description: t('badges.Anchormaster') },
-    Traveler: { image: '/badges/traveler.png', description: t('badges.Traveler') },
-    Stormtrooper: { image: '/badges/storm_trooper.png', description: t('badges.Stormtrooper') },
-    'Club Alaska': { image: '/badges/club_alaska.png', description: t('badges.Club Alaska') },
-    'Tropical Traveler': { image: '/badges/tropical_traveler.png', description: t('badges.Tropical Traveler') },
+    Helmsman: { image: 'helmsman.png', description: t('badges.Helmsman') },
+    'Wake Maker': { image: 'wake_maker.png', description: t('badges.Wake Maker') },
+    Explorer: { image: 'explorer.png', description: t('badges.Explorer') },
+    'Mooring Pro': { image: 'mooring_pro.png', description: t('badges.Mooring Pro') },
+    Anchormaster: { image: 'anchormaster.png', description: t('badges.Anchormaster') },
+    Traveler: { image: 'traveler.png', description: t('badges.Traveler') },
+    Stormtrooper: { image: 'storm_trooper.png', description: t('badges.Stormtrooper') },
+    'Club Alaska': { image: 'club_alaska.png', description: t('badges.Club Alaska') },
+    'Tropical Traveler': { image: 'tropical_traveler.png', description: t('badges.Tropical Traveler') },
     'Navigator Award': { svg: true, description: t('badges.Navigator Award') },
     'Captain Award': { svg: true, description: t('badges.Captain Award') },
   })

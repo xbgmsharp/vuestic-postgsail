@@ -1,5 +1,5 @@
 <template>
-  <Pie :chart-options="chartOptions" :chart-data="props.chartData" />
+  <Pie :options="chartOptions" :data="props.chartData" />
 </template>
 
 <script setup lang="ts">

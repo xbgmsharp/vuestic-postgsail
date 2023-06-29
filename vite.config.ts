@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import VueI18nPlugin from '@intlify/vite-plugin-vue-i18n'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import { packages } from './package-lock.json'
 
@@ -36,13 +36,7 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
   server: {
-    hmr: { host: 'localhost' },
-  },
-  test: {
-    // enable jest-like global test APIs
-    globals: true,
-    // simulate DOM with happy-dom
-    // (requires installing happy-dom as a peer dependency)
-    environment: 'happy-dom',
+    host: '0.0.0.0',
+    hmr: { host: 'localhost', overlay: false },
   },
 })

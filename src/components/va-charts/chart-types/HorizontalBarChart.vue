@@ -1,5 +1,5 @@
 <template>
-  <Bar :chart-options="{ ...chartOptions, ...horizontalBarOptions }" :chart-data="props.chartData" />
+  <Bar :options="{ ...chartOptions, ...horizontalBarOptions }" :data="props.chartData" />
 </template>
 
 <script setup lang="ts">

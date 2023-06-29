@@ -19,7 +19,7 @@
       <va-card v-if="mixedChartDataComputed" class="chart-widget col-span-12">
         <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
         <va-card-content>
-          <va-chart :data="mixedChartDataComputed" type="bar" />
+          <va-chart v-if="mixedChartDataComputed" :data="mixedChartDataComputed" type="bar" />
         </va-card-content>
       </va-card>
       <!--
@@ -151,7 +151,7 @@
   //const lines = lineChartbyYear()
 
   const mixedChartDataComputed = computed(() => {
-    const mymixedChartData = mixedChartData
+    let mymixedChartData = structuredClone(mixedChartData)
     mymixedChartData.datasets[0].data = logs_by_month.value
     mymixedChartData.datasets[0].label = 'Total'
     Object.entries(logs_by_year_by_month.value).forEach((elm, ind) => {
@@ -164,22 +164,25 @@
     })
     return mymixedChartData
   })
-
+  /*
   onMounted(async () => {
     console.log('onMounted! Charts')
   })
-
   watch(logs_by_month, () => {
     console.log('logs_by_month ref changed, do something!')
     console.log(logs_by_month.value)
   })
-
+  watch(logs_by_year_by_month, () => {
+    console.log('logs_by_year_by_month ref changed, update graph!')
+    console.log(logs_by_year_by_month.value)
+  })
   watch(
     () => CacheStore.stats,
     () => {
       console.log('CacheStore state changed, do something!')
     },
   )
+*/
 </script>
 
 <style lang="scss">

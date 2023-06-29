@@ -1,4 +1,5 @@
-import type { TChartData as ChartData } from 'vue-chartjs/dist/types'
+/*
+import { ChartData, ChartOptions } from 'chart.js'
 
 export type ColorThemes = {
   [key: string]: string
@@ -11,8 +12,8 @@ export type TDoughnutChartData = ChartData<'doughnut'>
 export type TPieChartData = ChartData<'pie'>
 
 //export type TChartData = TLineChartData | TBarChartData | TBubbleChartData | TDoughnutChartData | TPieChartData
-export type TChartData = TBarChartData
-
+//export type TChartData = TBarChartData
+*/
 export type JSObj = Record<string, any>
 export type Callback_1Param = (argument: any) => any
 

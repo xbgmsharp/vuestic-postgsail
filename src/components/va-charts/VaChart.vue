@@ -1,16 +1,15 @@
 <template>
-  <component :is="chartComponent" ref="chart" class="va-chart" :chart-options="chartOptions" :chart-data="data" />
+  <component :is="chartComponent" ref="chart" class="va-chart" :chart-options="chartOptions" :chart-data="props.data" />
 </template>
 
 <script setup lang="ts">
   import { computed, ref } from 'vue'
-  import type { TChartOptions } from 'vue-chartjs/dist/types'
   import { defaultConfig, chartTypesMap } from './VaChartConfigs'
-  import { TChartData } from '../../data/types'
+  import { ChartData, ChartOptions, ChartType, ChartTypeRegistry } from 'chart.js'
 
   const props = defineProps<{
-    data: TChartData
-    options?: TChartOptions<'line' | 'bar' | 'bubble' | 'doughnut' | 'pie'>
+    data: ChartData<'line', number[], unknown>
+    options?: ChartOptions<'line' | 'bar' | 'bubble' | 'doughnut' | 'pie'>
     type: keyof typeof chartTypesMap
   }>()
 

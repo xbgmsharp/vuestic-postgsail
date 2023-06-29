@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
   import { Line } from 'vue-chartjs'
-  import type { TChartOptions } from 'vue-chartjs/dist/types'
   import {
     Chart as ChartJS,
     Title,
@@ -15,13 +14,14 @@
     PointElement,
     CategoryScale,
     Filler,
+    ChartData,
+    ChartOptions,
   } from 'chart.js'
-  import { TLineChartData } from '../../../data/types'
 
   ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale, Filler)
 
   const props = defineProps<{
-    chartData: TLineChartData
-    chartOptions?: TChartOptions<'line'>
+    chartData: ChartData<'line'>
+    chartOptions?: ChartOptions<'line'>
   }>()
 </script>

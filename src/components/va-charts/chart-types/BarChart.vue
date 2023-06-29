@@ -1,10 +1,9 @@
 <template>
-  <Bar :options="chartOptions" :data="props.chartData" />
+  <Bar :options="props.chartOptions" :data="props.chartData" />
 </template>
 
 <script setup lang="ts">
-  import { Bar, Line } from 'vue-chartjs'
-  import type { TChartOptions } from 'vue-chartjs/dist/types'
+  import { Bar } from 'vue-chartjs'
   import {
     Chart as ChartJS,
     Title,
@@ -12,29 +11,30 @@
     Legend,
     BarElement,
     LineElement,
-    LinearScale,
     PointElement,
+    LinearScale,
     CategoryScale,
     LineController,
     Filler,
+    ChartData,
+    ChartOptions,
   } from 'chart.js'
-  import { TBarChartData } from '../../../data/types'
 
   ChartJS.register(
     Title,
     Tooltip,
     Legend,
     BarElement,
-    LineController,
     LineElement,
-    LinearScale,
     PointElement,
+    LinearScale,
     CategoryScale,
+    LineController,
     Filler,
   )
 
   const props = defineProps<{
-    chartData: TBarChartData
-    chartOptions?: TChartOptions<'bar'>
+    chartData: ChartData<'bar'>
+    chartOptions?: ChartOptions<'bar'>
   }>()
 </script>

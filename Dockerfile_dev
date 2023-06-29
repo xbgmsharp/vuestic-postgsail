@@ -1,0 +1,9 @@
+FROM node:lts
+
+WORKDIR /app
+
+ADD . /app/
+
+EXPOSE 8080
+
+CMD npm install && bash run.sh

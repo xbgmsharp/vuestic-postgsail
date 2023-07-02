@@ -1,0 +1,30 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "Installing Dependencies",
+      "command": "npm install"
+    },
+    {
+      "name": "Building Workspace",
+      "command": "npm run build"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "run dev": {
+      "name": "Start Dev Server",
+      "command": "bash run.sh",
+      "runAtStart": true,
+      "preview": {
+        "port": 8080,
+        "prLink": "direct"
+      }
+    },
+    "run build": {
+      "name": "Build app",
+      "command": "bash build.sh"
+    }
+  }
+}

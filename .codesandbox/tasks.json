@@ -16,7 +16,7 @@
     "run dev": {
       "name": "Start Dev Server",
       "command": "bash run.sh",
-      "runAtStart": true,
+      "runAtStart": false,
       "preview": {
         "port": 8080,
         "prLink": "direct"
@@ -24,7 +24,8 @@
     },
     "run build": {
       "name": "Build app",
-      "command": "bash build.sh"
+      "command": "bash build.sh",
+      "runAtStart": false
     }
   }
 }

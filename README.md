@@ -2,6 +2,10 @@
 
 Based on [vuestic-admin](https://vuestic.dev)
 
+### Cloud development
+
+- https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live
+
 ### Setup
 
 ```bash
@@ -53,8 +57,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] moorages - icon anchor
   - [x] stays - icon alone
   - [x] logs - icon logbook
-  - [ ] privacy -
-  - [ ] faq -
+  - [x] privacy -
+  - [x] faq -
   - [x] monitoring -
   - [x] observability - icon grafana
   - [x] badges - icon
@@ -137,14 +141,14 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Map layout from api
   - [x] Table layout from api view, filter and sort
 - [ ] /moorage/:id
-  - [ ] Map layout from api
-  - [ ] Table layout from api,
+  - [x] Map layout from api
+  - [x] Table layout from api,
   - [ ] Edit notes and name and Stayed at (select)
 - [ ] /stays, stays
   - [x] Table layout from api view, filter and sort
 - [ ] /stay/:id
-  - [ ] Map layout from api
-  - [ ] Table layout from api
+  - [x] Map layout from api
+  - [x] Table layout from api
   - [ ] Edit notes and name and Stayed at (select)
 - [x] /map, Map
   - [x] Same as Moorage Map layout from api
@@ -158,6 +162,7 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] /stats, Stats/Dashboard
   - [ ] Cards layout
   - [ ] Editable date value range
+  - [ ] Pie boat usage %
 - [x] /monitoring, Monitoring
   - [x] Steering layout from api? todo
 - [x] /signup, Sign up
@@ -169,16 +174,18 @@ Based on [vuestic-admin](https://vuestic.dev)
 - [ ] /badges, User badges
   - [ ] Table from api
 - [ ] /faq, FAQ
-- [ ] /privacy, Privacy
+  - [ ] Add translation
+- [x] /privacy, Privacy
+  - [ ] Add translation
 - [x] /grafana, external link, open a new window/tab
 
 ## Dependencies
 
 - [x] Remove axios dependency in favor of nodejs fetch
 - [ ] Update to the latest vestion vuestic-ui and tailwindcss (css issue on pofile page)
-- [ ] Update to the latest vestion chart.js and vue-chart.js
-- [ ] Update to the latest vestion vue-i18n
-- [ ] Update to the latest vestion vitejs and plugins
+- [x] Update to the latest vestion chart.js and vue-chart.js
+- [x] Update to the latest vestion vue-i18n
+- [x] Update to the latest vestion vitejs and plugins
 - [x] Remove medium-editor dependency
 - [x] Remove amcharts dependency
 - [ ] Remove date-fns dependency

@@ -46,7 +46,7 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] require backend update
 - [x] Add Stays page
   - [x] require backend update
-- [ ] Add Moorages page
+- [x] Add Moorages page
   - [x] require backend update
 - [x] Add Map page
   - [x] require backend update
@@ -85,8 +85,8 @@ Based on [vuestic-admin](https://vuestic.dev)
   - [x] Disable boat details page when missing lat_contact null
   - [x] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
   - [x] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
-  - [ ] Add vessel type or even all vessel metadata
-    - [ ] require backend update
+  - [x] Add vessel type or even all vessel metadata
+    - [x] require backend update
 - [ ] Add Terms of Use page
 - [ ] Update translation
 - [ ] Fix English

@@ -1,44 +1,49 @@
 <template>
-  <div class="grid grid-cols-12 items-start gap-6">
-    <va-card class="col-span-12 lg:col-span-6 p-4">
-      <va-card-title>{{ t('stats.stats') }}</va-card-title>
-      <va-card-content>
-        <table class="va-table va-table--hoverable va-table--striped">
-          <tbody>
-            <tr v-for="(value, index) in Object.entries(logs)" :key="index">
-              <td>
-                <b>{{ value[0] }}</b>
-              </td>
-              <td>{{ value[1] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </va-card-content>
-    </va-card>
+  <template v-if="Object.keys(logs).length == 0">
+    <nodatayet />
+  </template>
+  <template v-else>
+    <div class="grid grid-cols-12 items-start gap-6">
+      <va-card class="col-span-12 lg:col-span-6 p-4">
+        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-content>
+          <table class="va-table va-table--hoverable va-table--striped">
+            <tbody>
+              <tr v-for="(value, index) in Object.entries(logs)" :key="index">
+                <td>
+                  <b>{{ value[0] }}</b>
+                </td>
+                <td>{{ value[1] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </va-card-content>
+      </va-card>
 
-    <va-card class="col-span-12 lg:col-span-6 p-4">
-      <va-card-title>{{ t('stats.stats') }}</va-card-title>
-      <va-card-content>
-        <table class="va-table va-table--hoverable va-table--striped">
-          <tbody>
-            <tr v-for="(value, index) in Object.entries(moorages)" :key="index">
-              <td>
-                <b>{{ value[0] }}</b>
-              </td>
-              <td>{{ value[1] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </va-card-content>
-    </va-card>
-  </div>
+      <va-card class="col-span-12 lg:col-span-6 p-4">
+        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-content>
+          <table class="va-table va-table--hoverable va-table--striped">
+            <tbody>
+              <tr v-for="(value, index) in Object.entries(moorages)" :key="index">
+                <td>
+                  <b>{{ value[0] }}</b>
+                </td>
+                <td>{{ value[1] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </va-card-content>
+      </va-card>
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">
-  // TODO update setup with lang="ts"
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
+  import nodatayet from '../../components/noDataScreen.vue'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'

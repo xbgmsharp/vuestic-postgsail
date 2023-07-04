@@ -22,6 +22,7 @@
   import timelapseGeoJSON from '../../data/timelapse.json'
   //import { useI18n } from 'vue-i18n'
   import { distanceMetres } from '../../utils/distanceFormatter.js'
+  import noDataScreen from '../../components/noDataScreen.vue'
 
   const route = useRoute(),
     //{ t } = useI18n(),
@@ -81,9 +82,18 @@
         patchLMapPositions()
         map_setup()
       } else {
-        console.error('error timelapse')
-        apiError.value = 'error timelapse'
-        throw { response }
+        console.warn('error timelapse', response)
+        // If empty data, display a worldmap.
+        if (!response.geojson?.features) {
+          console.warn('no data')
+          map.value = L.map(mapContainer.value).setView([0, 0], 1)
+          const cartodbAttribution =
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+          const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: cartodbAttribution,
+          }).addTo(map.value)
+          return
+        }
       }
     } catch (e) {
       apiError.value = e

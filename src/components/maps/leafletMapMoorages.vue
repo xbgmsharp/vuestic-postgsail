@@ -55,9 +55,18 @@
         moorages_map.value = response.geojson
         map_setup()
       } else {
-        console.error('error moorages map')
-        apiError.value = 'error moorages map'
-        throw { response }
+        console.warn('error moorages_map', response)
+        // If empty data, display a worldmap.
+        if (!response.geojson?.features) {
+          console.warn('no data')
+          map.value = L.map(mapContainer.value).setView([0, 0], 1)
+          const cartodbAttribution =
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: cartodbAttribution,
+          }).addTo(map.value)
+          return
+        }
       }
     } catch (e) {
       apiError.value = e
@@ -72,14 +81,13 @@
   })
 
   const map_setup = () => {
-    const geojson = moorages_map.value,
-      geog = geojson.features
+    const geojson = moorages_map.value
     let coord = geojson.features[0].geometry.coordinates
     if (props.moorage_map_id != 0) {
       coord = geojson.features.filter((geog) => geog.properties.id == props.moorage_map_id)[0].geometry.coordinates
     }
     map.value = L.map(mapContainer.value).setView(coord, props.map_zoom)
-    console.log(coord)
+    //console.log(coord)
 
     // OSM
     const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

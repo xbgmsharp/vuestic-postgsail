@@ -40,5 +40,9 @@
   }
   .link {
     color: blue;
+    cursor: pointer;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

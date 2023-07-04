@@ -159,7 +159,8 @@
         console.log(moment.utc(response[0].time).locale('es').fromNow())
         setTimeout(() => monitor(), 60 * 1000) // 1 min
       } else {
-        throw { response }
+        console.warn('monitoring', response)
+        //throw { response }
       }
     } catch ({ response }) {
       console.log(response)

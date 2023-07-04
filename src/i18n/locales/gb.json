@@ -345,5 +345,14 @@
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
     "default": "Look at you sailling the",
     "locked": "Locked"
+  },
+  "nodata": {
+    "nodata": "Nothing here yet! Please configure your signalk-instance and start sailing!",
+    "start": "Things will start showing up here. You can find the details of your vessel token on ",
+    "start_link": "your boat details page.",
+    "wait": "If you just entered your token, have a look at  ",
+    "wait_link": "your Monitoring page.",
+    "help": "If you are not clear what you need to do for logging, please see \"What do I need to use PostgSail?\" question on ",
+    "help_link": "our FAQ."
   }
 }

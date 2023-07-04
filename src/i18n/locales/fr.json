@@ -337,5 +337,14 @@
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
     "default": "Regarde-toi naviguer sur",
     "locked": "Verouillé"
+  },
+  "nodata": {
+    "nodata": "Rien ici encore! Veuillez configurer votre instance de signalk et commencer à naviguer!",
+    "start": "Les choses commenceront à apparaître ici. Vous pouvez trouver les détails de votre jeton pour votre navire sur ",
+    "start_link": "la page du détail de votre bateau.",
+    "wait": "Si vous venez d'entrer votre jeton, jetez un œil à ",
+    "wait_link": "votre page de Monitoring.",
+    "help": "If you are not clear what you need to do for logging, please see \"What do I need to use PostgSail?\" question sur .",
+    "help_link": "notre foire aux questions."
   }
 }

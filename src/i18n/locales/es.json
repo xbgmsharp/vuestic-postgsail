@@ -337,5 +337,14 @@
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
     "default": "Mírate navegando en",
     "locked": "Bloqueado"
+  },
+  "nodata": {
+    "nodata": "¡Nada aquí todavía! ¡Configura tu instancia de Signalk y comienza a navegar!",
+    "start": "Las cosas comenzarán a aparecer aquí. Puede encontrar los detalles ",
+    "start_link": "la página de detalles de su barco.",
+    "wait": "Si acaba de ingresar su token, eche un vistazo a ",
+    "wait_link": "su página de seguimiento.",
+    "help": "Si no tiene claro lo que necesita hacer para empieza, please see \"What do I need to use PostgSail?\" question on ",
+    "help_link": "nuestras preguntas frecuentes."
   }
 }

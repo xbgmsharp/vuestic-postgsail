@@ -337,5 +337,14 @@
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
     "default": "Olhe para você navegando",
     "locked": "Bloqueado"
+  },
+  "nodata": {
+    "nodata": "Nada aqui ainda! Por favor, configure sua instância de sinal e comece a navegar!",
+    "start": "As coisas vão começar a aparecer aqui. Você pode encontrar os detalhes do seu token de embarcação em ",
+    "start_link": "página de detalhes do seu barco.",
+    "wait": "Se você acabou de inserir seu token, dê uma olhada em ",
+    "wait_link": "sua página de monitoramento.",
+    "help": "Se você não estiver claro o que precisa fazer para registrar, please see \"What do I need to use PostgSail?\" question on ",
+    "help_link": "nosso FAQ."
   }
 }

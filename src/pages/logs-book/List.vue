@@ -20,6 +20,7 @@
               $t('logs.list.filter.reset')
             }}</va-button>
             <va-icon
+              v-if="items.length > 0"
               name="csv"
               outline
               :size="34"

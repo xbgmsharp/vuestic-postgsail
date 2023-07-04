@@ -1,104 +1,112 @@
 <template>
-  <div>
-    <va-card class="mb-3">
-      <va-card-content>
-        <Map style="width: 100%; height: 45vh" :map_zoom="8" :moorage_map_id="0" />
-      </va-card-content>
-    </va-card>
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('moorages.list.filter.title') }}</va-card-title>
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input
-                v-model="filter.name"
-                :label="$t('moorages.list.filter.name')"
-                placeholder="Filter by name..."
-              />
+  <template v-if="!items.length > 0">
+    <nodatayet />
+  </template>
+  <template v-else>
+    <div>
+      <va-card class="mb-3">
+        <va-card-content>
+          <Map style="width: 100%; height: 45vh" :map_zoom="8" :moorage_map_id="0" />
+        </va-card-content>
+      </va-card>
+      <va-card class="mb-3">
+        <va-card-title>{{ $t('moorages.list.filter.title') }}</va-card-title>
+        <va-card-content>
+          <div class="layout gutter--md">
+            <div class="py-2 grid grid-cols-12 gap-6">
+              <div class="col-span-12 md:col-span-6 flex flex-col">
+                <va-input
+                  v-model="filter.name"
+                  :label="$t('moorages.list.filter.name')"
+                  placeholder="Filter by name..."
+                />
+              </div>
+              <div class="col-span-12 md:col-span-6 flex flex-col">
+                <va-input
+                  v-model="filter.default_stay"
+                  :label="$t('moorages.list.default_stay')"
+                  placeholder="Filter by stay..."
+                />
+              </div>
+              <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
+                $t('moorages.list.filter.reset')
+              }}</va-button>
+              <va-icon
+                v-if="items.length > 0"
+                name="csv"
+                outline
+                :size="34"
+                style="grid-column-end: 11"
+                class="themed"
+                @click="handleCSV(items)"
+              ></va-icon>
+              <va-icon
+                v-if="items.length > 0"
+                name="gpx"
+                outline
+                :size="34"
+                style="grid-column-end: 12"
+                class="themed"
+                @click="handleGPX()"
+              ></va-icon>
+              <va-icon
+                v-if="items.length > 0"
+                name="geojson"
+                outline
+                :size="34"
+                style="grid-column-end: 13"
+                class="themed"
+                @click="handleGeoJSON()"
+              ></va-icon>
             </div>
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input
-                v-model="filter.default_stay"
-                :label="$t('moorages.list.default_stay')"
-                placeholder="Filter by stay..."
-              />
-            </div>
-            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
-              $t('moorages.list.filter.reset')
-            }}</va-button>
-            <va-icon
-              name="csv"
-              outline
-              :size="34"
-              style="grid-column-end: 11"
-              class="themed"
-              @click="handleCSV(items)"
-            ></va-icon>
-            <va-icon
-              name="gpx"
-              outline
-              :size="34"
-              style="grid-column-end: 12"
-              class="themed"
-              @click="handleGPX()"
-            ></va-icon>
-            <va-icon
-              name="geojson"
-              outline
-              :size="34"
-              style="grid-column-end: 13"
-              class="themed"
-              @click="handleGeoJSON()"
-            ></va-icon>
           </div>
-        </div>
-      </va-card-content>
-    </va-card>
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
-      <va-card-content>
-        <template v-if="apiError">
-          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
-        </template>
-        <va-data-table
-          :columns="columns"
-          :items="items"
-          :loading="isBusy"
-          :per-page="perPage"
-          :current-page="currentPage"
-          striped
-          hoverable
-        >
-          <template #cell(moorage)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
+        </va-card-content>
+      </va-card>
+      <va-card class="mb-3">
+        <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
+        <va-card-content>
+          <template v-if="apiError">
+            <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+          </template>
+          <va-data-table
+            :columns="columns"
+            :items="items"
+            :loading="isBusy"
+            :per-page="perPage"
+            :current-page="currentPage"
+            striped
+            hoverable
+          >
+            <template #cell(moorage)="{ value, rowData }">
+              <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
+                {{ value }}
+              </router-link>
+            </template>
+            <template #cell(default_stay)="{ rowData, value }">
+              <va-select
+                v-model="rowData.default_stay"
+                :options="stayed_at_options"
+                :placeholder="value"
+                outline
+                style="max-width: 150px"
+                class="mb-6"
+                @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
+              />
+            </template>
+            <template #cell(total_stay)="{ value }"> {{ $t('units.time.days', parseInt(value)) }}</template>
+            <template #cell(arrivals_departures)="{ value }">
               {{ value }}
-            </router-link>
+            </template>
+          </va-data-table>
+          <template v-if="items.length > perPage">
+            <div class="mt-3 row justify-center">
+              <va-pagination v-model="currentPage" input :pages="pages" />
+            </div>
           </template>
-          <template #cell(default_stay)="{ rowData, value }">
-            <va-select
-              v-model="rowData.default_stay"
-              :options="stayed_at_options"
-              :placeholder="value"
-              outline
-              style="max-width: 150px"
-              class="mb-6"
-              @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
-            />
-          </template>
-          <template #cell(total_stay)="{ value }"> {{ $t('units.time.days', parseInt(value)) }}</template>
-          <template #cell(arrivals_departures)="{ value }">
-            {{ value }}
-          </template>
-        </va-data-table>
-        <template v-if="items.length > perPage">
-          <div class="mt-3 row justify-center">
-            <va-pagination v-model="currentPage" input :pages="pages" />
-          </div>
-        </template>
-      </va-card-content>
-    </va-card>
-  </div>
+        </va-card-content>
+      </va-card>
+    </div>
+  </template>
 </template>
 
 <script setup>
@@ -108,6 +116,7 @@
   import PostgSail from '../../services/api-client'
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
+  import nodatayet from '../../components/noDataScreen.vue'
 
   import mooragesDatas from '../../data/moorages.json'
 

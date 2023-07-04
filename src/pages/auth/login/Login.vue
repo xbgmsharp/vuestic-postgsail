@@ -92,8 +92,9 @@
       } else {
         throw { response }
       }
-    } catch ({ response }) {
-      loginError.value = response.message
+    } catch (error) {
+      //console.error(error)
+      loginError.value = error
     } finally {
       isBusy.value = false
     }

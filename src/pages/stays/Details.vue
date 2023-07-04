@@ -22,7 +22,7 @@
           <template v-if="item && item.moorage_id">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.name') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.name') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
                     v-model="formData.name"
@@ -31,16 +31,16 @@
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.moorage') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.moorage') }}</dt>
                 <!--<dd class="flex xs12 md6 pa-2">{{ item.moorage }}</dd>-->
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                  <router-link class="link" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.duration') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.stayed_at') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <div>
                     <va-select
@@ -52,23 +52,23 @@
                     />
                   </div>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrival') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.arrived) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.arrived') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                  <router-link class="link" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departure') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.departed) }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.departed') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
+                  <router-link class="link" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
                     {{ item.moorage }}
                   </router-link>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('stays.stay.note') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
@@ -76,7 +76,7 @@
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
-              <div class="row justify--end">
+              <div class="row justify-end">
                 <div class="flex">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
@@ -230,5 +230,12 @@
         background-color: var(--va-background);
       }
     }
+  }
+  .link {
+    color: blue;
+    cursor: pointer;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

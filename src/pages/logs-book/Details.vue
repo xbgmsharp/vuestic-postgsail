@@ -40,7 +40,7 @@
                 <dd class="xs12 md6 pa-2">
                   {{ distanceFormat(item.distance) }} (<router-link
                     v-if="typeof item.id !== 'undefined'"
-                    class="va-text-bold"
+                    class="va-text-bold link"
                     :to="{ name: 'timelapse', params: { id: item.id } }"
                   >
                     timelapse </router-link
@@ -281,5 +281,11 @@
         display: inline-block;
       }
     }
+  }
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

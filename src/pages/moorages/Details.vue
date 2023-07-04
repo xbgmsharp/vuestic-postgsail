@@ -22,7 +22,7 @@
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.moorage') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.moorage') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input
                     v-model="formData.name"
@@ -31,7 +31,7 @@
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                   />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.departed') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <div>
                     <va-select
@@ -43,15 +43,15 @@
                     />
                   </div>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.home') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.home') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-switch v-model="item.home" size="small" />
                 </dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.total_stay }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.arrivals') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.arrivals') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.arrivals_departures }}</dd>
-                <dt class="flex xs12 md6 pa-2 text--bold">{{ $t('moorages.moorage.note') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
                 </dd>
@@ -59,7 +59,7 @@
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
-              <div class="row justify--end">
+              <div class="row justify-end">
                 <div class="flex">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>

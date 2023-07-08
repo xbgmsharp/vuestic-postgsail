@@ -4,7 +4,14 @@ Based on [vuestic-admin](https://vuestic.dev)
 
 ### Cloud development
 
+### full-featured development environment
+The Visual Studio Code Remote - Containers extension lets you use a Docker container as a full-featured development environment.
+
+#### With codesandbox
 - https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live
+
+#### With DevPod
+- https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=postgsail&provider=docker&ide=openvscode
 
 ### Setup
 
@@ -122,6 +129,8 @@ Based on [vuestic-admin](https://vuestic.dev)
     - [ ] Fallback to localstorage is no internet
   - [ ] Implement global store username, token, cache: logs, moorages, stays
     - [ ] Implement offline mode
+  - [ ] Add env to include demo data
+    - [ ] load demo data in dev and env if error? or if no data?
 
 #### Pages:
 

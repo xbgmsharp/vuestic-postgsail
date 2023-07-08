@@ -1,0 +1,54 @@
+{
+	"name": "PostgSail Vuestic Frontend",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  
+	// Use this environment variable if you need to bind mount your local source code into a new container.
+	"remoteEnv": {
+	  "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+	  "VITE_PGSAIL_URL": "${localEnv:VITE_PGSAIL_URL}"
+	},
+	"containerEnv": {
+	  //"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+	  //"GITHUB_USER": "${localEnv:GITHUB_USER}"
+	},
+  
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+  
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+  
+	// Use 'portsAttributes' to set default properties for specific forwarded ports.
+	// More info: https://containers.dev/implementors/json_reference/#port-attributes
+	// "portsAttributes": {},
+  
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "docker --version",
+	"postCreateCommand": "npm install",
+  
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+  
+	// Configure tool-specific properties.
+	"customizations": {
+	  // Configure properties specific to VS Code.
+	  "vscode": {
+		"settings": {
+		  "terminal.integrated.profiles.linux": {
+			"zsh": {
+			  "path": "/bin/bash"
+			}
+		  },
+		  "terminal.integrated.defaultProfile.linux": "bash",
+		  "editor.formatOnSave": true
+		},
+		"extensions": [
+		  "streetsidesoftware.code-spell-checker",
+		  "esbenp.prettier-vscode",
+		  "ms-vscode-remote.vscode-remote-extensionpack",
+		  "vue.volar"
+		]
+	  }
+	}
+  }
+  

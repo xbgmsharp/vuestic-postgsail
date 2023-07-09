@@ -11,7 +11,7 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 - https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live
 
 #### With DevPod
-- https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=postgsail&provider=docker&ide=openvscode
+- https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=vuestic-postgsail&provider=docker&ide=openvscode
 
 ### Setup
 

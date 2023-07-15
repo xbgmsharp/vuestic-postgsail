@@ -152,12 +152,14 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 - [x] /moorages, Moorages
   - [x] Map layout from api
   - [x] Table layout from api view, filter and sort
+  - [ ] Filter on stay type, date range, name
 - [ ] /moorage/:id
   - [x] Map layout from api
   - [x] Table layout from api,
   - [ ] Edit notes and name and Stayed at (select)
 - [ ] /stays, stays
   - [x] Table layout from api view, filter and sort
+  - [ ] Filter on stay type, date range, name
 - [ ] /stay/:id
   - [x] Map layout from api
   - [x] Table layout from api

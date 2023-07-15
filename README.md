@@ -126,10 +126,10 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 
 #### Core
 
-- [ ] Use vuejs/pinia store to access API instead of by compoments
+- [ ] Use vuejs/pinia store to access API instead of by components
   - [ ] Offline mode store all API data in browser local storage
     - [ ] Refresh if data is older than 10min old
-    - [ ] Fallback to localstorage is no internet
+    - [ ] Fallback to local storage is no internet
   - [ ] Implement global store username, token, cache: logs, moorages, stays
     - [ ] Implement offline mode
   - [ ] Add env to include demo data
@@ -196,10 +196,10 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 ## Dependencies
 
 - [x] Remove axios dependency in favor of nodejs fetch
-- [ ] Update to the latest vestion vuestic-ui and tailwindcss (css issue on pofile page)
-- [x] Update to the latest vestion chart.js and vue-chart.js
-- [x] Update to the latest vestion vue-i18n
-- [x] Update to the latest vestion vitejs and plugins
+- [ ] Update to the latest version vuestic-ui and tailwindcss (css issue on profile page)
+- [x] Update to the latest version chart.js and vue-chart.js
+- [x] Update to the latest version vue-i18n
+- [x] Update to the latest version vitejs and plugins
 - [x] Remove medium-editor dependency
 - [x] Remove amcharts dependency
 - [ ] Remove date-fns dependency

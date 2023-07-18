@@ -45,4 +45,5 @@ export const chartTypesMap = {
   line: defineAsyncComponent(() => import('./chart-types/LineChart.vue')),
   bar: defineAsyncComponent(() => import('./chart-types/BarChart.vue')),
   'horizontal-bar': defineAsyncComponent(() => import('./chart-types/HorizontalBarChart.vue')),
+  polarArea: defineAsyncComponent(() => import('./chart-types/PolarChart.vue')),
 }

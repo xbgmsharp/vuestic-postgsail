@@ -5,7 +5,7 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
   import { defaultConfig, chartTypesMap } from './VaChartConfigs'
-  import { ChartData, ChartOptions, ChartType, ChartTypeRegistry } from 'chart.js'
+  import { ChartData, ChartOptions } from 'chart.js'
 
   const props = defineProps<{
     data: ChartData<'line', number[], unknown>

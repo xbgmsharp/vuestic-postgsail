@@ -1,3 +1,4 @@
+import IconFuel from '../../../components/icons/IconFuel.vue'
 import IconMonitoring from '../../../components/icons/IconMonitoring.vue'
 import IconLogs from '../../../components/icons/IconLogs.vue'
 import IconCSV from '../../../components/icons/IconCSV.vue'
@@ -8,6 +9,12 @@ import IconAnchor from '../../../components/icons/IconAnchor.vue'
 import IconGithub from '../../../components/icons/IconGithub.vue'
 import IconHarbor from '../../../components/icons/IconHarbor.vue'
 import IconGeoJSON from '../../../components/icons/IconGeoJSON.vue'
+import IconSolar from '../../../components/icons/IconSolar.vue'
+import IconSolar2 from '../../../components/icons/IconSolar2.vue'
+import IconBattery from '../../../components/icons/IconBattery.vue'
+import IconTank from '../../../components/icons/IconTank.vue'
+import IconBolt from '../../../components/icons/IconBolt.vue'
+
 export default [
   {
     name: 'angle_down',
@@ -196,5 +203,55 @@ export default [
   {
     name: 'menu-badges',
     to: 'military_tech',
+  },
+  {
+    name: 'icon-battery',
+    component: IconBattery,
+    color: 'primary',
+  },
+  {
+    name: 'icon-solar',
+    component: IconSolar,
+    color: 'primary',
+  },
+  {
+    name: 'icon-solar2',
+    component: IconSolar2,
+    color: 'primary',
+  },
+  {
+    name: 'icon-fuel',
+    component: IconFuel,
+    color: 'primary',
+  },
+  {
+    name: 'icon-tank',
+    component: IconTank,
+    color: 'primary',
+  },
+  {
+    name: 'icon-bolt',
+    component: IconBolt,
+    color: 'primary',
+  },
+  {
+    name: 'solar_power',
+    to: 'solar_power',
+  },
+  {
+    name: 'bolt',
+    to: 'bolt',
+  },
+  {
+    name: 'electric_bolt',
+    to: 'electric_bolt',
+  },
+  {
+    name: 'electric_meter',
+    to: 'electric_meter',
+  },
+  {
+    name: 'gas_meter',
+    to: 'gas_meter',
   },
 ]

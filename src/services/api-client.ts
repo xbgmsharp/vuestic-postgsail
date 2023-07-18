@@ -197,6 +197,15 @@ class ApiClient extends HttpClient {
     return this.get(`monitoring_view`)
   }
 
+  async monitoring2() {
+    //return this.get(`monitoring_view2?key=ilike.${key}`)
+    /*
+    return this.get(
+      `monitoring_view2?key=ilike(any).{tanks.%.capacity%,electrical.solar.%.panelPower,electrical.batteries%stateOfCharge}`,
+    )
+    */
+    return this.get(`monitoring_view2`)
+  }
   /*
    * Stays at
    */
@@ -232,6 +241,13 @@ class ApiClient extends HttpClient {
    */
   async badges() {
     return this.get(`badges_view`)
+  }
+
+  /*
+   * Event Logs API endpoint
+   */
+  async eventlogs() {
+    return this.get(`eventlogs_view`)
   }
 
   /*

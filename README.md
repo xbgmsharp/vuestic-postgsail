@@ -88,7 +88,9 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
     - [x] require backend update
 - [x] Implement notifications Pushover, Telegram
   - [x] require backend update
-- [ ] Add Activity page with a timeline of events, history of notifications
+- [ ] Add Activity page
+  - [ ] timeline (event log) - of events, history of notifications
+  - [ ] List of event from backend
   - [ ] require backend update
 - [ ] Vessels:
   - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
@@ -100,8 +102,8 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 - [ ] Add Terms of Use page
 - [ ] Update translation
 - [ ] Fix English
-- [ ] Add telegram bot in the main menu page with QR Code
-  - [ ] Account verification
+- [ ] Add telegram bot in the main menu page with QR Code, needed?
+  - [x] Account verification
     - [x] require backend update OTP
 - [x] Sample data in build
   - [x] include in dev
@@ -119,9 +121,8 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
   - [x] Log Geojson replay functionality
   - [x] Generic Geojson replay functionality base on date or multiple logbook
   - [x] require backend update
-- [ ] Loading screen
-  - [ ] Based on variable isLoading from store
-  - [ ] Display an animated gif while loading content, like in app.bromera.eu
+- [x] Loading screen
+  - [x] Display an animated gif while loading content, before vite mount.
   - [x] page loadingScreen
 
 #### Core
@@ -140,8 +141,9 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 - [ ] /, Home, Dashboard
   - [ ] Widget - Current Boats position map
   - [x] Widget Total of Logs, Stays, Moorage,
+  - [ ] Widget Weather Forecast
+  - [ ] Widget Energy
   - [ ] Widget ?!?
-  - [ ] Widget Meteo
 - [x] /logs/, Logs
   - [x] Table layout from api view, filter and sort
 - [x] /log/:id
@@ -177,6 +179,7 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
   - [ ] Cards layout
   - [ ] Editable date value range
   - [ ] Pie boat usage %
+  - [ ] Pie/Polar stay type %
 - [x] /monitoring, Monitoring
   - [x] Steering layout from api? todo
 - [x] /signup, Sign up
@@ -185,13 +188,19 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
   - [x] Form layout login from api
 - [x] /settings, User settings
   - [x] Table & Form layout from api
-- [ ] /badges, User badges
-  - [ ] Table from api
+- [x] /badges, User badges
+  - [x] Table from api
 - [ ] /faq, FAQ
   - [ ] Add translation
-- [x] /privacy, Privacy
+- [ ] /privacy, Privacy
   - [ ] Add translation
 - [x] /grafana, external link, open a new window/tab
+- [ ] /eventlogs, Event Logs
+  - [ ] Table from api
+  - [ ] Display as a timeline?
+- [ ] /alarmlogs, Alarm Logs
+  - [ ] Table from api
+  - [ ] Display as a timeline?
 
 ## Dependencies
 

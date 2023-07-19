@@ -30,10 +30,20 @@
       <va-card v-if="currentWeather" class="col-span-12 md:col-span-4">
         <va-card-content class="grid grid-cols-12">
           <div class="col-span-6 flex flex-col va-text-center">
-            <p style="font-size: 3rem; line-height: 96px">
+            <p style="font-size: 3rem; line-height: 54px">
               {{ currentWeather.temp }}
-              <span style="font-size: 1rem; line-height: 42px; vertical-align: super; opacity: 0.8; top: 15px">°C</span>
+              <span style="font-size: 1rem; line-height: 32px; vertical-align: super; opacity: 0.8; top: 15px">°C</span>
             </p>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <va-icon style="display: inline-block" name="icon-sunrise" outline :size="48"></va-icon>
+                <div>{{ currentWeather.sunriseTime }}</div>
+              </div>
+              <div>
+                <va-icon style="display: inline-block" name="icon-sunset" outline :size="48"></va-icon>
+                <div>{{ currentWeather.sunsetTime }}</div>
+              </div>
+            </div>
           </div>
           <div class="col-span-6 flex flex-col va-text-center align-center">
             <img class="" :src="currentWeather.img" :width="96" :height="96" />

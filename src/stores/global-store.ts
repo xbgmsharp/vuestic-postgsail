@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import PostgSail from '../services/api-client'
 import deepMerge from '../utils/deepMerge'
+import WeatherForecast from '../services/openweathermap'
+import moment from 'moment/min/moment-with-locales'
 
 const defaultState = {
   keepLoggedIn: false,
@@ -20,7 +22,8 @@ const defaultState = {
     moorages: [],
   },
   openweather: null,
-  monitor: null,
+  currentweather: {},
+  monitoring2: [],
   status: 'pending',
   versions: {
     web_version: '',
@@ -48,7 +51,7 @@ const defaultState = {
         low_indoor_temperature_threshold: 7.0,
         low_outdoor_temperature_threshold: 3.0,
       },
-      pushover: {} /* not used */,
+      badges: {},
       telegram: {},
       email_valid: false,
       public_logs: true,
@@ -148,6 +151,44 @@ export const useGlobalStore = defineStore('global', {
     set_web_version(web_version: string) {
       this.versions.web_version = web_version
     },
+    set_currentWeather() {
+      if (this.openweather && this.openweather['current']) {
+        //const openweatherTodayData = this.openweather['daily'][0]
+        this.currentweather = Object.assign(
+          { temp: this.openweather['current']['temp'] },
+          this.openweather['current']['weather'][0],
+          { img: `https://openweathermap.org/img/wn/${this.openweather['current']['weather'][0]['icon']}@2x.png` },
+          {
+            sunriseTime: moment.unix(this.openweather['current']['sunrise']).format('HH:mm'),
+            sunsetTime: moment.unix(this.openweather['current']['sunset']).format('HH:mm'),
+          },
+        )
+      }
+    },
+    async fetchWeatherForecast(coordinates: [number, number]) {
+      const weather = new WeatherForecast()
+      try {
+        await weather.updateForecast(coordinates as [number, number])
+        this.openweather = weather.data
+        console.log('fetchWeatherForecast', weather.data)
+        this.set_currentWeather()
+        console.log('fetchWeatherForecast', this.currentweather)
+        return this.openweather
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async fetchMonitoring2() {
+      const api = new PostgSail()
+      try {
+        const response = await api.monitoring2()
+        this.monitoring2 = response
+        console.log('fetchMonitoring response', response)
+        return this.monitoring2
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
   getters: {
     userName: (state) => state.settings?.username,
@@ -157,6 +198,10 @@ export const useGlobalStore = defineStore('global', {
       ['dashboard', 'logs', 'monitoring', 'stats'][state.settings?.preferences?.preferred_homepage || 0],
     imperialUnits: (state) => state.settings?.preferences?.use_imperial_units,
     doubleCount: (state) => state.count * 2,
+    Monitoring2: (state) => state.monitoring2,
+    openWeather: (state) => state.openweather,
+    currentWeather: (state) => state.currentweather,
+    Badges: (state) => state.settings?.preferences?.badges,
   },
 })
 export default useGlobalStore

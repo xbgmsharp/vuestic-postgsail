@@ -24,6 +24,14 @@
         type: Object,
         default: null,
       },
+      zoom: {
+        type: Number,
+        default: 17,
+      },
+      controlLayer: {
+        type: Boolean,
+        default: true,
+      },
     },
     data() {
       return {
@@ -48,11 +56,13 @@
         centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
         geojson = this.geoJsonFeatures
       }
-
+      console.log(`LeafletMap`)
       if (centerLat == 0 && centerLng == 0) return
 
-      console.log(`centerLatLng: ${centerLat} ${centerLng}`)
-      this.map = L.map('mapContainer').setView([centerLat, centerLng], 17)
+      console.log(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
+      this.map = L.map('mapContainer', {
+        zoomControl: this.controlLayer,
+      }).setView([centerLat, centerLng], this.zoom)
 
       // OSM
       const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -83,7 +93,9 @@
         NOAA: noaa,
       }
       const overlays = {}
-      L.control.layers(baseMaps, overlays).addTo(this.map)
+      if (this.controlLayer) {
+        L.control.layers(baseMaps, overlays).addTo(this.map)
+      }
       baseMaps['OpenStreetMap'].addTo(this.map)
 
       const sailBoatIcon = function (feature, latlng) {
@@ -141,8 +153,9 @@
         pointToLayer: sailBoatIcon,
         onEachFeature: popup,
       }).addTo(this.map)
-
+      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
       this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
+      this.map.setZoom(this.zoom)
     },
     onBeforeUnmount() {
       if (this.map) {

@@ -75,8 +75,9 @@
     "logout": "Cerrar Sesión"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "versions": "Versions",
+    "title": "Panel",
+    "versions": "Versiones",
+    "local_time": "Hora local",
     "charts": {
       "verticalBarChart": "Log entry per month",
       "mixedChart": "Log entry per month per year",
@@ -189,7 +190,11 @@
   "stats": {
     "stats": "Statistics",
     "logs": "logs stats",
-    "moorages": "moorages stats"
+    "moorages": "moorages stats",
+    "unclassified": "Desclasificado",
+    "anchor": "Anchor",
+    "buoy": "Buoy",
+    "dock": "Dock"
   },
   "boats": {
     "list": {

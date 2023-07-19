@@ -59,7 +59,9 @@
     "sent_message": "Sent message"
   },
   "modals": {
-    "close": "Close"
+    "close": "Close",
+    "reset": "Reset",
+    "save": "Save"
   },
   "404": {
     "title": "This page’s gone sailing.",
@@ -79,6 +81,7 @@
   "dashboard": {
     "title": "Dashboard",
     "versions": "Versions",
+    "local_time": "Local Time",
     "charts": {
       "verticalBarChart": "Log entry per month",
       "mixedChart": "Log entry per month per year",
@@ -192,7 +195,14 @@
   "stats": {
     "stats": "Statistics",
     "logs": "logs stats",
-    "moorages": "moorages stats"
+    "moorages": "moorages stats",
+    "name": "Boat",
+    "first": "First entry",
+    "last": "Last entry",
+    "unclassified": "Unclassified",
+    "anchor": "Anchor",
+    "buoy": "Buoy",
+    "dock": "Dock"
   },
   "boats": {
     "list": {

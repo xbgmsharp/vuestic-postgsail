@@ -14,6 +14,8 @@ import IconSolar2 from '../../../components/icons/IconSolar2.vue'
 import IconBattery from '../../../components/icons/IconBattery.vue'
 import IconTank from '../../../components/icons/IconTank.vue'
 import IconBolt from '../../../components/icons/IconBolt.vue'
+import IconSunrise from '../../../components/icons/IconSunrise.vue'
+import IconSunset from '../../../components/icons/IconSunset.vue'
 
 export default [
   {
@@ -253,5 +255,15 @@ export default [
   {
     name: 'gas_meter',
     to: 'gas_meter',
+  },
+  {
+    name: 'icon-sunrise',
+    component: IconSunrise,
+    color: 'primary',
+  },
+  {
+    name: 'icon-sunset',
+    component: IconSunset,
+    color: 'primary',
   },
 ]

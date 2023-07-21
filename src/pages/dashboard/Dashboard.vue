@@ -27,7 +27,7 @@
       </va-card-content>
     </va-card>
     <template v-if="monitoring.geojson">
-      <va-card v-if="currentWeather" class="col-span-12 md:col-span-4">
+      <va-card v-if="currentWeather.temp" class="col-span-12 md:col-span-4">
         <va-card-content class="grid grid-cols-12">
           <div class="col-span-6 flex flex-col va-text-center">
             <p style="font-size: 3rem; line-height: 54px">

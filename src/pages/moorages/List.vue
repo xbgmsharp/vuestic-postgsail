@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!items.length > 0">
+  <template v-if="!rowsData.length > 0">
     <nodatayet />
   </template>
   <template v-else>
@@ -27,6 +27,17 @@
                   :label="$t('moorages.list.default_stay')"
                   placeholder="Filter by stay..."
                 />
+                <!--
+                Filter by stay...:
+                <va-select
+                  v-model="filter.default_stay"
+                  :options="stayed_at_options"
+                  :placeholder="value"
+                  outline
+                  style="max-width: 150px"
+                  class="mb-6"
+                />
+                -->
               </div>
               <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
                 $t('moorages.list.filter.reset')

@@ -74,6 +74,18 @@
               Imperial Units" is false.
             </div>
           </va-collapse>
+          <va-collapse header="Energy">
+            <div class="pa-3">
+              <p>
+                The energy widget search for the follow pattern from your Signalk metrics:<br />
+                - electrical.batteries.*.stateOfCharge<br />
+                - electrical.solar.*.panelPower<br />
+                - electrical.batteries.*.current<br />
+                - electrical.batteries.*.voltage<br />
+                - tanks.*.currentLevel.*<br />
+              </p>
+            </div>
+          </va-collapse>
           <va-collapse header="Monitoring">
             <div class="pa-3">
               <p>

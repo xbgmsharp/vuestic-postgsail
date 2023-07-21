@@ -97,7 +97,7 @@
         user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
       }
     }
-    console.log(user_badges.value)
+    console.log('user_badges', user_badges.value)
   })
 </script>
 

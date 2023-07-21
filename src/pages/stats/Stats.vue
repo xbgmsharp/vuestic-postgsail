@@ -1,9 +1,31 @@
 <template>
-  <template v-if="Object.keys(stats_logs).length == 0 && Object.keys(stats_moorages).length == 0">
+  <template v-if="disabled">
     <nodatayet />
   </template>
   <template v-else>
-    <div class="grid grid-cols-12 items-start gap-6">
+    <!--
+    <va-card class="mb-3">
+      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
+      <va-card-content>
+        <div class="layout gutter--md">
+          <div class="py-2 grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
+              <va-date-input
+                v-model="filter.dateRange"
+                :label="$t('logs.list.filter.date_range')"
+                :readonly="false"
+                mode="range"
+              />
+            </div>
+            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="">{{
+              $t('logs.list.filter.reset')
+            }}</va-button>
+          </div>
+        </div>
+      </va-card-content>
+    </va-card>
+    -->
+    <div class="grid grid-cols-12 items-start gap-6 mb-3">
       <va-card class="col-span-12 lg:col-span-6 p-4">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content>
@@ -49,7 +71,7 @@
         </va-card-content>
       </va-card>
 
-      <va-card disabled class="col-span-12 lg:col-span-6 p-4">
+      <va-card class="col-span-12 lg:col-span-6 p-4">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
           <va-chart :data="polarChartDataComputed" type="pie" :options="polarChartOptions" />
@@ -60,7 +82,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, onMounted, computed, reactive } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
   import nodatayet from '../../components/noDataScreen.vue'
@@ -79,6 +101,12 @@
   const CacheStore = useCacheStore()
   const { logs, stays } = storeToRefs(CacheStore)
 
+  const getDefaultFilter = () => {
+    return {
+      dateRange: null,
+    }
+  }
+  const filter = reactive(getDefaultFilter())
   const isBusy = ref(false)
   const apiError = ref(null)
 
@@ -232,6 +260,11 @@
     obj.Dock.duration = Math.trunc(moment.duration(obj.Dock.duration).as('days'))
     console.log('pieChartStays obj', obj)
     return obj
+  })
+
+  const disabled = computed(() => {
+    //return Boolean(Object.keys(stats_logs.value).length) not empty?
+    return Boolean(Object.keys(stats_moorages).length)
   })
 
   onMounted(async () => {

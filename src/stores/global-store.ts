@@ -3,7 +3,7 @@ import { useStorage } from '@vueuse/core'
 import PostgSail from '../services/api-client'
 import deepMerge from '../utils/deepMerge'
 import WeatherForecast from '../services/openweathermap'
-import moment from 'moment/min/moment-with-locales'
+import * as moment from 'moment'
 
 const defaultState = {
   keepLoggedIn: false,

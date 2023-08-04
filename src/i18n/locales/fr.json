@@ -22,7 +22,7 @@
     "pushover_message": "Pushover validation",
     "reset": "Your password has been reset successfully.",
     "errors": {
-      "cedentials": "Wrong credentials",
+      "credentials": "Wrong credentials",
       "email": "Email is requis",
       "password": "Mot de passe requis",
       "mismatch_pass": "Mot de passe different",

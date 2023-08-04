@@ -2,7 +2,9 @@
   <va-inner-loading :loading="isBusy">
     <form @submit.prevent="onsubmit">
       <template v-if="loginError">
-        <va-alert color="danger" outline class="mb-4"> {{ $t('auth.errors.cedentials') }} ({{ loginError }}) </va-alert>
+        <va-alert color="danger" outline class="mb-4">
+          {{ $t('auth.errors.credentials') }} ({{ loginError }})
+        </va-alert>
       </template>
       <template v-if="tokenExpired">
         <va-alert color="warning" outline class="mb-4"> {{ $t('auth.errors.expired_session') }}</va-alert>
@@ -28,7 +30,7 @@
       <div class="auth-layout__options flex items-center justify-between">
         <va-checkbox v-model="keepLoggedIn" class="mb-0" :label="$t('auth.keep_logged_in')" />
         <router-link class="ml-1 va-link text-right" :to="{ name: 'recover-password' }">{{
-          t('auth.recover_password')
+          $t('auth.recover_password')
         }}</router-link>
       </div>
 

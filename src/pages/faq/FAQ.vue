@@ -77,7 +77,7 @@
           <va-collapse header="Energy">
             <div class="pa-3">
               <p>
-                The energy widget search for the follow pattern from your Signalk metrics:<br />
+                The energy widget search for the following pattern from your Signalk metrics:<br />
                 - electrical.batteries.*.stateOfCharge<br />
                 - electrical.solar.*.panelPower<br />
                 - electrical.batteries.*.current<br />

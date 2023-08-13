@@ -1,20 +1,24 @@
-[PostgSail](https://github.com/xbgmsharp/postgsail) frontend in VueJs with vuestic-ui.
+<h1 align="center"><em>PostgSail front end.</em></h1>
+
+[PostgSail](https://github.com/xbgmsharp/postgsail) front end JavaScript using framework Vue.js, Vitejs with vuestic-ui and more.
 
 Based on [vuestic-admin](https://vuestic.dev)
 
+## Getting Started
+
 ### Cloud development
 
-### full-featured development environment
+A full-featured development environment ready to test and code.
 
-The Visual Studio Code Remote - Containers extension lets you use a Docker container as a full-featured development environment.
+#### With CodeSandbox
 
-#### With codesandbox
-
-- https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live
+- Develop on [![CodeSandbox Ready-to-Code](https://img.shields.io/badge/CodeSandbox-Ready--to--Code-blue?logo=codesandbox)](https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live)
+  - or via [direct link](https://codesandbox.io/p/github/xbgmsharp/vuestic-postgsail/live)
 
 #### With DevPod
 
-- https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=vuestic-postgsail&provider=docker&ide=openvscode
+- [![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=vuestic-postgsail&provider=docker&ide=openvscode)
+  - or via [direct link](https://devpod.sh/open#https://github.com/xbgmsharp/vuestic-postgsail&workspace=vuestic-postgsail&provider=docker&ide=openvscode)
 
 ### Setup
 
@@ -41,7 +45,7 @@ The Visual Studio Code Remote - Containers extension lets you use a Docker conta
 ### Todo
 
 - [x] Layout
-  - [x] Update theme icon to night/day mode theme, like openplotter.cloud
+  - [x] Update theme icon to night/day mode theme
   - [x] Update theme icon to day and night vision
 - [x] Logs:
   - [x] Add Action '...' column with sub menu to export to CSV, GPX

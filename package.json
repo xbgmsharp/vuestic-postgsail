@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "tsc": "vue-tsc --noEmit",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "cypress run",
+    "cy:run": "cypress run"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,vue}": [
@@ -25,8 +26,7 @@
     "@vueuse/core": "^9.6.0",
     "chart.js": "^4.3.3",
     "date-fns": "^2.29.2",
-    "flag-icons": "^6.9.3",
-    "jsdom": "^22.1.0",
+    "flag-icons": "^6.9.5",
     "leaflet": "^1.9.4",
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-timedimension": "^1.1.1",
@@ -39,7 +39,7 @@
     "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
-    "vuestic-ui": "^1.7.3"
+    "vuestic-ui": "^1.7.4"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.12.2",

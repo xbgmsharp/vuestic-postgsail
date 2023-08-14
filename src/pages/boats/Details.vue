@@ -29,10 +29,15 @@
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.length') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.length }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.country') }}</dt>
-              <dd v-if="item.country" class="flex xs12 md6 pa-2">
-                {{ item.country }}
-                <va-icon :name="getFlagIcon(item.flag.toLocaleLowerCase(), 'small')" />
-              </dd>
+              <template v-if="item.country">
+                <dd class="flex xs12 md6 pa-2">
+                  {{ item.country }}
+                  <va-icon :name="getFlagIcon(item.flag.toLocaleLowerCase(), 'small')" />
+                </dd>
+              </template>
+              <template v-else>
+                <dd class="flex xs12 md6 pa-2"></dd>
+              </template>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.ship_type') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.ship_type }}</dd>
               <template v-if="item.mmsi">

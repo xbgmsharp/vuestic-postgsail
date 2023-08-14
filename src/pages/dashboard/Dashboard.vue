@@ -147,7 +147,7 @@
     <va-card class="col-span-12">
       <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
       <va-card-content>
-        FrontEnd version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
+        Frontend version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
         Backend version: {{ versions.api_version }}, {{ versions.sys_version }}, TimescaleDB:
         {{ versions.timescaledb }}, PostGIS: {{ versions.postgis }}<br />
       </va-card-content>

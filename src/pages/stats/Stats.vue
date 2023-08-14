@@ -263,11 +263,15 @@
   })
 
   const disabled = computed(() => {
-    //return Boolean(Object.keys(stats_logs.value).length) not empty?
-    return Boolean(Object.keys(stats_moorages).length)
+    //console.log('disabled logs', logs.value)
+    //console.log('disabled stays', stays.value)
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return true
+    if (!Array.isArray(stays.value) || stays.value.length == 0) return true
+    return false
   })
 
   onMounted(async () => {
+    console.log('Stats onMounted')
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -280,6 +284,16 @@
       if (Array.isArray(response) && response[0]) {
         stats_moorages.value = response[0]
       }
+      // Get logs
+      if (logs.value.length === 0) {
+        response = await useCacheStore().getAPI('logs')
+        console.log('Get logs', response)
+      }
+      // Get stays
+      if (stays.value.length === 0) {
+        response = await useCacheStore().getAPI('stays')
+        console.log('Get stays', response)
+      }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
@@ -291,6 +305,8 @@
     } finally {
       isBusy.value = false
     }
+    console.log('logs', logs.value)
+    console.log('stays', stays.value)
   })
 </script>
 

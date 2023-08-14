@@ -19,7 +19,7 @@
       <va-card-content class="col-span-1">
         <p>{{ item.description }}</p>
         <template v-if="item.log">
-          <router-link :to="'/log/' + item.log">logbook reference</router-link>
+          <router-link class="va-link link" :to="'/log/' + item.log">logbook reference</router-link>
         </template>
         <template v-if="item.date">
           <p>date: {{ item.date }}</p>
@@ -128,5 +128,11 @@
     top: -25px;
     left: 0;
     opacity: 1;
+  }
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

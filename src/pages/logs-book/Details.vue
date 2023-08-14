@@ -8,7 +8,7 @@
         </template>
         <div class="mb-3 my-3">
           <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
+            <lMap :geo-json-features="mapGeoJsonFeatures" :zoom="8" style="width: 100%; height: 350px" />
           </template>
         </div>
         <va-inner-loading :loading="isBusy">
@@ -40,7 +40,7 @@
                 <dd class="xs12 md6 pa-2">
                   {{ distanceFormat(item.distance) }} (<router-link
                     v-if="typeof item.id !== 'undefined'"
-                    class="va-text-bold link"
+                    class="va-text-bold va-link link"
                     :to="{ name: 'timelapse', params: { id: item.id } }"
                   >
                     timelapse </router-link

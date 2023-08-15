@@ -160,6 +160,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'badges',
         component: () => import('../pages/badges/Badges.vue'),
       },
+      {
+        name: 'eventlogs',
+        path: 'eventlogs',
+        component: () => import('../pages/eventlogs/Timelines.vue'),
+      },
     ],
   },
   {

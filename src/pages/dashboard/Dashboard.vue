@@ -168,7 +168,7 @@
   import moment from 'moment/min/moment-with-locales'
 
   const { t, locale } = useI18n()
-  const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br' }
+  const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
   const moment_locale = computed(() => {
     return locale_mapping[locale.value]
   })

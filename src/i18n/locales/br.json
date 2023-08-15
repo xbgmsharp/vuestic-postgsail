@@ -49,7 +49,8 @@
     "monitoring": "Monitoring",
     "privacy": "Privacy",
     "faq": "FAQ",
-    "badges": "Badges"
+    "badges": "Badges",
+    "eventlogs": "Event Logs"
   },
   "notifications": {
     "all": "All",
@@ -68,7 +69,8 @@
     "english": "Inglês",
     "spanish": "Espanhol",
     "french": "Francês",
-    "brazilian_portuguese": "Português (Br)"
+    "brazilian_portuguese": "Português (Br)",
+    "german": "Alemão"
   },
   "user": {
     "profile": "Meu Perfil",
@@ -115,15 +117,15 @@
       "title": "Log's details"
     },
     "log": {
-      "name": "Name | Names",
-      "boat": "Boat | Boats",
+      "name": "Nome | Nomes",
+      "boat": "Navio | Navios",
       "from": "Departed",
       "from_time": "Departed at",
       "to": "Arrived",
       "to_time": "Arrived at",
-      "duration": "Duration",
+      "duration": "Duração",
       "duration_unit": "hour | hours",
-      "distance": "Distance",
+      "distance": "Distância",
       "distance_miles": "0 mile | {n} mile | {n} miles",
       "avg": "Média",
       "max": "Max",

@@ -49,7 +49,8 @@
     "monitoring": "Monitoring",
     "privacy": "Privacy",
     "faq": "FAQ",
-    "badges": "Badges"
+    "badges": "Badges",
+    "eventlogs": "Event Logs"
   },
   "notifications": {
     "all": "All",
@@ -68,7 +69,8 @@
     "english": "Anglais",
     "spanish": "Espagnol",
     "french": "Français",
-    "brazilian_portuguese": "Portugais (Br)"
+    "brazilian_portuguese": "Portugais (Br)",
+    "german": "Allemand"
   },
   "user": {
     "profile": "Profile",
@@ -115,8 +117,8 @@
       "title": "Log's details"
     },
     "log": {
-      "name": "Name | Names",
-      "boat": "Boat | Boats",
+      "name": "Nom | Noms",
+      "boat": "Navire | Navires",
       "from": "Departed",
       "from_time": "Departed at",
       "to": "Arrived",

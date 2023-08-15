@@ -56,7 +56,7 @@
         map_setup()
       } else {
         console.warn('error moorages_map', response)
-        // If empty data, display a worldmap.
+        // If empty data, display a world map.
         if (!response.geojson?.features) {
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)

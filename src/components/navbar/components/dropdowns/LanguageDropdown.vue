@@ -49,6 +49,10 @@
           code: 'fr',
           name: 'french',
         },
+        {
+          code: 'de',
+          name: 'german',
+        },
       ],
     },
   )

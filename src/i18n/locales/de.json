@@ -1,0 +1,375 @@
+{
+  "auth": {
+    "agree": "Ich stimme zu",
+    "createAccount": "Konto erstellen",
+    "createNewAccount": "Neues Konto erstellen",
+    "account_created": "Neues Konto erfolgreich erstellt.",
+    "email": "E-Mail",
+    "first_name": "Vorname",
+    "last_name": "Nachname",
+    "login": "Anmelden",
+    "logout": "Abmelden...",
+    "password": "Passwort",
+    "recover_password": "Passwort wiederherstellen",
+    "sign_up": "Registrieren",
+    "keep_logged_in": "Angemeldet bleiben",
+    "termsOfUse": "Nutzungsbedingungen.",
+    "reset_password": "Passwort zurücksetzen",
+    "vessel_register": "Schiff hinzufügen",
+    "otp": "Geben Sie den Bestätigungscode ein",
+    "otp_message": "Bitte geben Sie den 6-stelligen Bestätigungscode ein, den wir per E-Mail gesendet haben",
+    "otp_description": "(Wir möchten sicherstellen, dass Sie es sind, bevor wir ein Schiff verbinden)",
+    "otp_validate": "Bestätigen",
+    "otp_validated": "Bestätigungscode erfolgreich validiert.",
+    "pushover_message": "Pushover-Validierung",
+    "reset": "Ihr Passwort wurde erfolgreich zurückgesetzt.",
+    "errors": {
+      "credentials": "Falsche Anmeldeinformationen",
+      "email": "E-Mail ist erforderlich",
+      "password": "Passwort ist erforderlich",
+      "mismatch_pass": "Passwort stimmt nicht überein",
+      "short_pass": "Passwort ist zu kurz",
+      "first_name": "Vorname ist erforderlich",
+      "last_name": "Nachname ist erforderlich",
+      "agreed_to_terms": "Sie müssen den Nutzungsbedingungen zustimmen, um fortzufahren",
+      "expired_session": "Ihre Sitzung ist abgelaufen.",
+      "otp": "Bestätigungscode ist erforderlich",
+      "otp_invalid": "Wir können Ihren Code nicht finden",
+      "reset": "Ungültige Eingabe"
+    }
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "logs": "Protokolle",
+    "stays": "Aufenthalte",
+    "moorages": "Anlegestellen",
+    "map": "Karte",
+    "boats": "Schiffe",
+    "stats": "Statistiken",
+    "timelapse": "Zeitraffer",
+    "grafana": "Grafana",
+    "monitoring": "Überwachung",
+    "privacy": "Datenschutz",
+    "faq": "FAQ",
+    "badges": "Abzeichen",
+    "eventlogs": "Event Logs"
+  },
+  "notifications": {
+    "all": "Alle",
+    "mark_as_read": "Als gelesen markieren",
+    "sent_message": "Gesendete Nachricht"
+  },
+  "modals": {
+    "close": "Schließen",
+    "reset": "Zurücksetzen",
+    "save": "Speichern"
+  },
+  "404": {
+    "title": "Diese Seite ist segeln gegangen.",
+    "text": "Wenn Sie denken, dass etwas nicht stimmt, senden Sie uns bitte eine Nachricht an ",
+    "back_button": "Zurück zum Dashboard"
+  },
+  "language": {
+    "english": "Englisch",
+    "spanish": "Spanisch",
+    "french": "Französisch",
+    "brazilian_portuguese": "Portugiesisch (Br)",
+    "german": "German"
+  },
+  "user": {
+    "profile": "Profil",
+    "logout": "Abmelden"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "versions": "Versionen",
+    "local_time": "Ortszeit",
+    "charts": {
+      "verticalBarChart": "Protokolleinträge pro Monat",
+      "mixedChart": "Protokolleinträge pro Monat pro Jahr",
+      "lineChart": "Protokolleinträge pro Jahr"
+    },
+    "months": {
+      "january": "Januar",
+      "february": "Februar",
+      "march": "März",
+      "april": "April",
+      "may": "Mai",
+      "june": "Juni",
+      "july": "Juli",
+      "august": "August",
+      "september": "September",
+      "october": "Oktober",
+      "november": "November",
+      "december": "Dezember"
+    }
+  },
+  "api": {
+    "error": "API-Fehler"
+  },
+  "logs": {
+    "list": {
+      "title": "Protokoll-Liste",
+      "filter": {
+        "title": "Protokoll suchen",
+        "name": "Name",
+        "date_range": "Datumsbereich",
+        "reset": "Zurücksetzen"
+      },
+      "action": "Aktion"
+    },
+    "details": {
+      "title": "Protokolldetails"
+    },
+    "log": {
+      "name": "Name | Namen",
+      "boat": "Schiff | Schiffe",
+      "from": "Abgereist",
+      "from_time": "Abgereist um",
+      "to": "Angekommen",
+      "to_time": "Angekommen um",
+      "duration": "Dauer",
+      "duration_unit": "{n} Stunde | {n} Stunden",
+      "distance": "Entfernung NM",
+      "distance_miles": "{n} Meile | {n} Meilen",
+      "avg": "Durchschnitt",
+      "max": "Maximal",
+      "speed": "Geschwindigkeit",
+      "speed_knots": "0 Knoten | {n} Knoten | {n} Knoten",
+      "wind_speed": "Windgeschwindigkeit",
+      "note": "Notiz | Notizen",
+      "export": "Export",
+      "avg_max_speed": "Average / Max Speed",
+      "max_wind_speed": "Max Wind Speed",
+      "sea_state": "Sea state",
+      "cloud_coverage": "Cloud coverage",
+      "visibility": "Visibility"
+    }
+  },
+  "stays": {
+    "list": {
+      "title": "Liste der Aufenthalte",
+      "filter": {
+        "title": "Nach Aufenthalt suchen",
+        "name": "Name",
+        "date_range": "Datumsbereich",
+        "reset": "Zurücksetzen"
+      }
+    },
+    "details": {
+      "title": "Details des Aufenthalts"
+    },
+    "stay": {
+      "name": "Name | Namen",
+      "moorage": "Anlegestelle",
+      "departure": "Abfahrtszeit",
+      "arrival": "Ankunftszeit",
+      "departed": "Abgereist nach",
+      "arrived": "Angekommen von",
+      "stayed_at": "Verbleib",
+      "duration": "Dauer",
+      "note": "Notiz | Notizen",
+      "duration_unit": "Tage"
+    }
+  },
+  "moorages": {
+    "list": {
+      "title": "Liste der Anlegestellen",
+      "filter": {
+        "title": "Nach Anlegestelle suchen",
+        "name": "Name",
+        "date_range": "Datumsbereich",
+        "reset": "Zurücksetzen"
+      },
+      "moorage": "Anlegestelle",
+      "default_stay": "Standardaufenthalt",
+      "total_stay": "Gesamtaufenthalt",
+      "arrivals": "Ankünfte & Abreisen",
+      "duration_unit": "Tage"
+    },
+    "details": {
+      "title": "Details der Anlegestelle"
+    },
+    "moorage": {
+      "moorage": "Bevorzugter Name",
+      "departed": "Standardaufenthaltstyp",
+      "home": "Zuhause",
+      "stayed_at": "Gesamtdauer des Aufenthalts",
+      "arrivals": "Anzahl der Ankünfte & Abreisen",
+      "note": "Notizen"
+    }
+  },
+  "stats": {
+    "stats": "Statistiken",
+    "logs": "Protokollstatistiken",
+    "moorages": "Anlegestellenstatistiken",
+    "name": "Boot",
+    "first": "Erster Eintrag",
+    "last": "Letzter Eintrag",
+    "unclassified": "Nicht klassifiziert",
+    "anchor": "Anker",
+    "buoy": "Boje",
+    "dock": "Steg"
+  },
+  "boats": {
+    "list": {
+      "title": "Liste der Boote"
+    },
+    "details": {
+      "title": "Details des Bootes"
+    },
+    "boat": {
+      "name": "Name | Namen",
+      "mmsi": "MMSI (optional)",
+      "last_contact": "Letzter Kontakt",
+      "created_at": "Erstellt am",
+      "register": "Neues Schiff erfolgreich registriert.",
+      "token_modal": {
+        "button": "Token erhalten",
+        "title": "Token des Bootes",
+        "token": "Token",
+        //"message": "WARNUNG, Dieser Zugriffstoken wird nur einmal angezeigt. Er wird nicht gespeichert und kann nicht wieder abgerufen werden. Bitte speichern Sie ihn jetzt.",
+        "message": "Kopieren Sie diesen Token in Ihre PostgSail-Plugin-Instanz von Signalk."
+      },
+      "beam": "Breite",
+      "height": "Höhe",
+      "length": "Länge",
+      "country": "Flaggenstaat",
+      "ship_type": "Schiffstyp"
+    },
+    "errors": {
+      "name": "Name ist erforderlich",
+      "param": "Bitte überprüfen Sie die Parameter",
+      "length": "Mindestens 4 Zeichen"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "tabs": {
+      "overview": {
+        "title": "Übersicht"
+      },
+      "notifications": {
+        "title": "Benachrichtigungen"
+      }
+    },
+    "name": "Name",
+    "website": "Webseite",
+    "public_profile": "Öffentliches Profil",
+    "public_logs": "Protokolldetails",
+    "public_stats": "Statistiken",
+    "public_logs_list": "Protokoll Liste",
+    "public_timelapse": "Zeitraffer",
+    "instagram_handle": "Instagram Benutzername",
+    "preferred_homepage": "Bevorzugte Startseite",
+    "use_imperial_units": "Imperiale Einheiten verwenden",
+    "email_notifications": "E-Mail-Benachrichtigungen",
+    "phone_notifications": "Telefonbenachrichtigungen",
+    "alerting": "Benachrichtigungen",
+    "min_notification_interval": "Minimales Benachrichtigungsintervall (h)",
+    "high_wind_speed_threshold": "Windgeschwindigkeit (kts)",
+    "low_outdoor_temperature_threshold": "Außentemperatur (°C)",
+    "low_indoor_temperature_threshold": "Innentemperatur (°C)",
+    "low_water_temperature_threshold": "Wassertemperatur",
+    "low_water_depth_threshold": "Wassertiefe (m)",
+    "low_pressure_threshold": "Druck (hPa)",
+    "high_pressure_drop_threshold": "Druckabfall in 12 Stunden (hPa)",
+    "low_battery_charge_threshold": "Batterieladung (%)",
+    "low_battery_voltage_threshold": "Batteriespannung (V)",
+    "pushover": {
+      "pushover": "Pushover",
+      "link": "Verknüpfen Sie Ihr Pushover-Konto, um es zu aktivieren",
+      "connected": "Ihr Benutzer ist mit Pushover verbunden."
+    },
+    "telegram_bot": {
+      "telegram_bot": "Telegramm-Bot",
+      "link": "Fügen Sie den PostgSail-Bot einer Gruppe oder einem Direktchat hinzu.",
+      "connected": "Ihr Benutzer ist mit {'@'}postgsail_bot verbunden."
+    },
+    "success": "Erfolgreich aktualisiert {key} mit {value}",
+    "failure": "Fehler beim Aktualisieren von {key} mit {value}"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "desc": "Häufig gestellte Fragen"
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "desc": "Datenschutzrichtlinie"
+  },
+  "monitoring": {
+    "title": "Überwachung",
+    "error": "Abrufen von Überwachungsdaten nicht möglich",
+    "wind": {
+      "headerString": "Wind",
+      "unitString": "Kt",
+      "detailString": "Richtung: "
+    },
+    "temperature": {
+      "headerString": "Temperatur",
+      "unitString": "°C",
+      "detailString": "Außen: "
+    },
+    "battery": {
+      "headerString": "Batterie",
+      "unitString": "%",
+      "detailString": "Spannung: "
+    },
+    "humidity": {
+      "headerString": "Luftfeuchtigkeit",
+      "unitString": "%",
+      "detailString": "Außen: "
+    },
+    "water": {
+      "headerString": "Wasser",
+      "unitString": "m",
+      "detailString": "Temperatur: "
+    },
+    "pressure": {
+      "headerString": "Druck",
+      "unitString": "hPa",
+      "detailString": "1-Tages-Durchschnitt:"
+    },
+    "offline": {
+      "offline": "Ihr Schiff ist offline. Echtzeitüberwachung erfordert eine Internetverbindung.",
+      "lastupdate": "Wir haben innerhalb der letzten 70 Minuten keine Daten von Ihrem Sammler erhalten."
+    }
+  },
+  "units": {
+    "distance": {
+      "NM": "Entfernung NM",
+      "KM": "Entfernung KM",
+      "miles": "{n} Meile | {n} Meilen",
+      "kilometres": "{n} Kilometer | {n} Kilometer"
+    },
+    "time": {
+      "days": "{n} Tage | {n} Tag | {n} Tage",
+      "hours": "Stunde | Stunden | Stunden"
+    }
+  },
+  "badges": {
+    "Helmsman": "Gute Arbeit, dass du deine erste Segelfahrt protokolliert hast! Du bist jetzt offiziell ein Steuermann!",
+    "Wake Maker": "Willkommen im Club der 15-Knoten-Plus, du Geschwindigkeitsdämon Skipper!",
+    "Explorer": "Es sieht so aus, als wäre das Zuhause, wo das Steuer ist. Prost auf 10 Tage fern der Heimat!",
+    "Mooring Pro": "Es erfordert viel Geschick, um \"durch dieses schwebende Nadelöhr zu stechen\", aber es sieht so aus, als hättest du das Anlegen mit 10 Nächten auf der Boje gemeistert!",
+    "Anchormaster": "Haken, Leine und Senker, du hast das Ankern im Griff! 25 Tage vor Anker für dich!",
+    "Traveler": "Wer muss fliegen, wenn man segeln kann! Du bist ein internationaler Segler. À votre santé!",
+    "Stormtrooper": "Genau wie die Eliteverteidiger des Imperiums, hier bist du, der seine eigene Hydro-Empire in Windgeschwindigkeiten über 30 Knoten bravourös meistert. Gut gemacht, Trooper!",
+    "Club Alaska": "Heimat der Bären, Gletscher, Mitternachtssonne und hohem Abenteuer. Willkommen im Club Alaska, Kapitän!",
+    "Tropical Traveler": "Schau dich an mit deinem Sonnenbrand, tropischen Getränk und südlichem Breitengrad!",
+    "Aloha Award": "Über 2300 Seemeilen über den großen blauen Pazifik zu ticken, macht dich zum seltenen Empfänger des Aloha Award. Gut gemacht und Aloha, Segler!",
+    "Navigator Award": "Juhu! Du hast es geschafft, über 100 Seemeilen auf einmal abzuhaken. Gut gemacht, Segler!",
+    "Captain Award": "Herzlichen Glückwunsch, du hast über 1000 Seemeilen erreicht. Gut gemacht, Segler!",
+    "default": "Schau dich segeln auf",
+    "locked": "Gesperrt"
+  },
+  "nodata": {
+    "nodata": "Hier ist noch nichts! Bitte konfiguriere deine Signalk-Instanz und starte mit dem Segeln!",
+    "start": "Hier werden bald Dinge angezeigt. Die Details deines Schiffstokens findest du auf der ",
+    "start_link": "Seite mit den Bootsdetails.",
+    "wait": "Wenn du gerade dein Token eingegeben hast, schau dir doch mal die ",
+    "wait_link": "Überwachungsseite an.",
+    "help": "Wenn dir nicht klar ist, was du für die Protokollierung tun musst, lies die Frage \"Was brauche ich, um PostgSail zu verwenden?\" in unseren ",
+    "help_link": "FAQ durch."
+  }
+}

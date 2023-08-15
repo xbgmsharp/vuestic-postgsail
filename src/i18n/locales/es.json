@@ -125,13 +125,18 @@
       "duration_unit": "hour | hours",
       "distance": "Distance",
       "distance_miles": "0 mile | {n} mile | {n} miles",
-      "avg": "Average",
+      "avg": "Promedio",
       "max": "Max",
-      "speed": "Speed",
+      "speed": "Velocidad",
       "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Velocidad del viento",
       "note": "Note | Notes",
-      "export": "Export"
+      "export": "Export",
+      "avg_max_speed": "Average / Max Speed",
+      "max_wind_speed": "Velocidad máxima del viento",
+      "sea_state": "Estado del mar",
+      "cloud_coverage": "Cobertura de nubes",
+      "visibility": "Visibilidad"
     }
   },
   "stays": {

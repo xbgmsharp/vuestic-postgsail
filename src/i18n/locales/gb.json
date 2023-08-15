@@ -51,7 +51,8 @@
     "monitoring": "Monitoring",
     "privacy": "Privacy",
     "faq": "FAQ",
-    "badges": "Badges"
+    "badges": "Badges",
+    "eventlogs": "Event Logs"
   },
   "notifications": {
     "all": "All",
@@ -136,7 +137,12 @@
       "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Wind Speed",
       "note": "Note | Notes",
-      "export": "Export"
+      "export": "Export",
+      "avg_max_speed": "Average / Max Speed",
+      "max_wind_speed": "Max Wind Speed",
+      "sea_state": "Sea state",
+      "cloud_coverage": "Cloud coverage",
+      "visibility": "Visibility"
     }
   },
   "stays": {

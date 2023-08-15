@@ -17,7 +17,7 @@ class ApiClient extends HttpClient {
 
     super({
       baseURL: import.meta.env.VITE_PGSAIL_URL + '/',
-      headers: { Test: 'qwerty', Accept: 'application/json', 'Content-Type': 'application/json' },
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     })
     // Passing Bearer Token if it exists in cache
     const globalToken = useGlobalStore().token
@@ -125,6 +125,7 @@ class ApiClient extends HttpClient {
   }
 
   async log_export_gpx(payload: JSObj) {
+    //this.setHeader('Accept', 'text/xml')
     return this.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 

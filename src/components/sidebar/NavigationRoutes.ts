@@ -89,6 +89,13 @@ export default {
       },
     },
     {
+      name: 'eventlogs',
+      displayName: 'menu.eventlogs',
+      meta: {
+        icon: 'menu-eventlogs',
+      },
+    },
+    {
       name: 'faq',
       displayName: 'menu.faq',
       meta: {

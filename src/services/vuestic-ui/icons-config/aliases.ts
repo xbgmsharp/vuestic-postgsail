@@ -207,6 +207,10 @@ export default [
     to: 'military_tech',
   },
   {
+    name: 'menu-eventlogs',
+    to: 'event',
+  },
+  {
     name: 'icon-battery',
     component: IconBattery,
     color: 'primary',

@@ -213,8 +213,8 @@
     "boat": {
       "name": "Name | Names",
       "mmsi": "MMSI (optional)",
-      "last_contact": "Last Contact",
-      "created_at": "Created at",
+      "last_contact": "Último contato",
+      "created_at": "Creado en",
       "token_modal": {
         "button": "Get token",
         "title": "Boat's token",
@@ -285,7 +285,7 @@
     "title": "Privacidade"
   },
   "monitoring": {
-    "title": "Monitoring",
+    "title": "Monitoramento",
     "error": "Unable to fetch monitoring data",
     "wind": {
       "headerString": "Vento",

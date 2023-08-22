@@ -133,12 +133,15 @@
       "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Velocidad del viento",
       "note": "Note | Notes",
+      "remarks": "Di lo que paso",
       "export": "Export",
       "avg_max_speed": "Average / Max Speed",
       "max_wind_speed": "Velocidad máxima del viento",
       "sea_state": "Estado del mar",
       "cloud_coverage": "Cobertura de nubes",
-      "visibility": "Visibilidad"
+      "visibility": "Visibilidad",
+      "metadata": "Metadatos",
+      "observations": "Observaciones"
     }
   },
   "stays": {

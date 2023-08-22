@@ -18,7 +18,7 @@
             </tr>
             <tr>
               <td>
-                <b>Monitoring:</b>
+                <b>{{ t('monitoring.title') }}:</b>
               </td>
               <td>{{ status.monitoring }}</td>
             </tr>
@@ -149,7 +149,7 @@
       <va-card-content>
         Frontend version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
         Backend version: {{ versions.api_version }}, {{ versions.sys_version }}, TimescaleDB:
-        {{ versions.timescaledb }}, PostGIS: {{ versions.postgis }}<br />
+        {{ versions.timescaledb }}, PostGIS: {{ versions.postgis }}, {{ versions.postgrest }}<br />
       </va-card-content>
     </va-card>
   </div>

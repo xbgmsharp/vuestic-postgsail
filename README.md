@@ -4,6 +4,8 @@
 
 Based on [vuestic-admin](https://vuestic.dev)
 
+[![release](https://img.shields.io/github/release/xbgmsharp/vuestic-postgsail.svg)](https://github.com/xbgmsharp/vuestic-postgsail/releases/latest)
+
 ## Getting Started
 
 ### Cloud development

@@ -29,6 +29,11 @@ class HttpClient {
       return true
     }
     if (!res.ok) throw new Error(res.statusText)
+    const contentType = res.headers.get('content-type')
+    if (res.status == 200 && contentType && contentType.indexOf('text/xml') === 0) {
+      console.log(res.clone().text())
+      return res.clone().text()
+    }
 
     if (options.parseResponse !== false && res.status !== 204) return res.json()
     return undefined

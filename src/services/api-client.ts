@@ -125,8 +125,11 @@ class ApiClient extends HttpClient {
   }
 
   async log_export_gpx(payload: JSObj) {
-    //this.setHeader('Accept', 'text/xml')
-    return this.post(`rpc/export_logbook_gpx_fn`, payload)
+    this.setHeader('Accept', 'text/xml')
+    const data = this.get(`logbook?id=eq.${payload._id}&select=track_gpx`)
+    this.setHeader('Accept', 'application/json')
+    return data
+    //return this.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 
   async log_export_geojson(payload: JSObj) {
@@ -149,7 +152,11 @@ class ApiClient extends HttpClient {
   }
 
   async moorages_export_gpx() {
-    return this.post('rpc/export_moorages_gpx_fn')
+    this.setHeader('Accept', 'text/xml')
+    const data = this.get(`rpc/export_moorages_gpx_fn`)
+    this.setHeader('Accept', 'application/json')
+    return data
+    //return this.post('rpc/export_moorages_gpx_fn')
   }
 
   async moorage_get(id: string) {
@@ -235,6 +242,9 @@ class ApiClient extends HttpClient {
   }
   async stats_moorages_view() {
     return this.get(`stats_moorages_view`)
+  }
+  async stats_logs() {
+    return this.get(`rpc/stats_logs_fn`)
   }
 
   /*

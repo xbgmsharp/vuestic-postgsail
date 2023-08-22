@@ -31,6 +31,7 @@ const defaultState = {
     sys_version: '',
     timescaledb: '',
     postgis: '',
+    postgrest: '',
   },
   settings: {
     email: '',

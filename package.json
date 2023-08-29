@@ -26,6 +26,7 @@
     "@rollup/plugin-node-resolve": "^15.2.0",
     "@vueuse/core": "^9.6.0",
     "chart.js": "^4.3.3",
+    "chartjs-chart-matrix": "^2.0.1",
     "date-fns": "^2.29.2",
     "flag-icons": "^6.10.0",
     "leaflet": "^1.9.4",

@@ -59,6 +59,18 @@
                 </td>
                 <td>{{ value[1].duration }} {{ value[1].percentage }}%</td>
               </tr>
+              <tr :key="1">
+                <td><b> Badges </b></td>
+                <td class="badges-stats">
+                  <div v-for="(item, key) in mybadges" :key="key">
+                    <div v-if="!item.disabled">
+                      <img v-if="item.image" class="max-h-8 w-[fit-content] mr-1" fit="contain" :src="item.image" />
+                      <IconAward v-else-if="item.svg" class="max-h-8 w-[fit-content] mr-1" fit="contain" />
+                      <IconNavigation v-else class="max-h-8 w-[fit-content] mr-1" fit="contain" />
+                    </div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </va-card-content>
@@ -91,6 +103,8 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import moment from 'moment/min/moment-with-locales'
+  import IconAward from '../../components/icons/IconAward.vue'
+  import IconNavigation from '../../components/icons/IconNavigation.vue'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
@@ -322,5 +336,8 @@
     padding-left: 2em;
     font-size: 0.9rem;
     font-weight: 600;
+  }
+  .badges-stats {
+    display: flex;
   }
 </style>

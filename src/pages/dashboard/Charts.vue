@@ -40,6 +40,12 @@
           <va-chart :data="doughnutChartDataGenerated" type="doughnut" :options="doughnutChartDataOptions" />
         </va-card-content>
       </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.HeatmapChart') }}</va-card-title>
+        <va-card-content>
+          <HeatmapChart />
+        </va-card-content>
+      </va-card>
       <!--
       <va-card v-if="pieChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
         <va-card-title>{{ t('charts.pieChart') }}</va-card-title>
@@ -72,6 +78,7 @@
   import VaChart from '../../components/va-charts/VaChart.vue'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
+  import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
 
   const { t } = useI18n()
 

@@ -31,6 +31,16 @@
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
+              <tr>
+                <td><b> Date Range </b></td>
+                <td>
+                  <div class="col-span-12 md:col-span-6 flex">
+                    <va-date-input :label="$t('start date')" :readonly="false" :value="start_date" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <va-date-input :label="$t('end date')" :readonly="false" :value="end_date" />
+                  </div>
+                </td>
+              </tr>
               <tr v-for="(value, index) in Object.entries(stats_logs)" :key="index">
                 <td>
                   <b>{{ value[0] }}</b>
@@ -126,6 +136,9 @@
 
   const mybadges = ref(settings.value.preferences.badges || {})
   //console.log(mybadges)
+  const start_date = logs.value[0] ? moment(logs.value[0].Started).format('DD MMM YYYY') : null
+  const end_date = moment(new Date()).format('DD MMM YYYY')
+
   const stats_logs = ref({})
   const stats_moorages = ref({})
 

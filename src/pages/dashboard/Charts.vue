@@ -34,6 +34,12 @@
           <va-chart :data="radarChartData" type="radar" :options="ChartDataOptions" />
         </va-card-content>
       </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.donutChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="doughnutChartDataGenerated" type="doughnut" :options="doughnutChartDataOptions" />
+        </va-card-content>
+      </va-card>
       <!--
       <va-card v-if="pieChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
         <va-card-title>{{ t('charts.pieChart') }}</va-card-title>
@@ -140,6 +146,31 @@
     legend: {
       display: false,
     },
+  }
+  // end
+  // This is doughnutChartData option
+  const doughnutChartDataGenerated = {
+    labels: ['Red', 'Orange', 'Green'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [33, 33, 33],
+        backgroundColor: ['rgba(231, 76, 60, 1)', 'rgba(255, 164, 46, 1)', 'rgba(46, 204, 113, 1)'],
+        borderColor: ['rgba(255, 255, 255 ,1)', 'rgba(255, 255, 255 ,1)', 'rgba(255, 255, 255 ,1)'],
+        borderWidth: 3,
+      },
+    ],
+  }
+  const doughnutChartDataOptions: any = {
+    rotation: -90,
+    circumference: 180,
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+    cutoutPercentage: 50,
   }
   // end
   const mixedChartData = {

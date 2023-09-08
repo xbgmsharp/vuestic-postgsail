@@ -28,6 +28,12 @@
           <va-chart v-if="mixedChartDataComputed" :data="mixedChartDataComputed" type="bar" />
         </va-card-content>
       </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.RadarChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="radarChartData" type="radar" :options="ChartDataOptions" />
+        </va-card-content>
+      </va-card>
       <!--
       <va-card v-if="pieChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
         <va-card-title>{{ t('charts.pieChart') }}</va-card-title>
@@ -101,6 +107,40 @@
     return mybarChartData
   })
 
+  // end
+  // This is radarChartdata option
+  const radarChartData = {
+    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 90, 81, 56, 55, 40],
+        fill: true,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgb(255, 99, 132)',
+        pointBackgroundColor: 'rgb(255, 99, 132)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(255, 99, 132)',
+      },
+      {
+        label: 'My Second Dataset',
+        data: [28, 48, 40, 19, 96, 27, 100],
+        fill: true,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgb(54, 162, 235)',
+        pointBackgroundColor: 'rgb(54, 162, 235)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(54, 162, 235)',
+      },
+    ],
+  }
+  const ChartDataOptions: any = {
+    legend: {
+      display: false,
+    },
+  }
   // end
   const mixedChartData = {
     labels: [

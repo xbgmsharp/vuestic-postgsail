@@ -74,7 +74,7 @@
       <va-card class="col-span-12 lg:col-span-6 p-4">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
-          <va-chart :data="polarChartDataComputed" type="pie" :options="polarChartOptions" />
+          <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />
         </va-card-content>
       </va-card>
     </div>
@@ -146,7 +146,6 @@
     labels: ['Unclassified', 'Anchor', 'Mooring Buoys', 'Dock'],
     datasets: [
       {
-        type: 'pie',
         label: 'Time Spent Away',
         data: [45, 5, 9, 20],
         backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)'],
@@ -170,12 +169,14 @@
   const polarChartDataComputed = computed(() => {
     if (!Array.isArray(stays.value) || stays.value.length == 0) return polarChartData_default
     const obj = structuredClone(polarChartData_default)
-    obj.datasets[0].data = [
-      polarChartStays.value.Unclassified.percentage,
-      polarChartStays.value.Anchor.percentage,
-      polarChartStays.value.Buoy.percentage,
-      polarChartStays.value.Dock.percentage,
-    ]
+    // obj.datasets[0].data = [
+    //   polarChartStays.value.Unclassified.percentage,
+    //   polarChartStays.value.Anchor.percentage,
+    //   polarChartStays.value.Buoy.percentage,
+    //   polarChartStays.value.Dock.percentage,
+    // ]
+    obj.datasets[0].data = [14, 29, 9, 20]
+
     return obj
   })
 

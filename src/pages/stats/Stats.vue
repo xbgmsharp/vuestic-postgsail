@@ -45,7 +45,9 @@
                 <td>
                   <b>{{ value[0] }}</b>
                 </td>
-                <td>{{ value[1] }}</td>
+                <td v-if="value[0] == 'first'">{{ start_date }}</td>
+                <td v-else-if="value[0] == 'last'">{{ end_date }}</td>
+                <td v-else>{{ value[1] }}</td>
               </tr>
             </tbody>
           </table>
@@ -307,6 +309,7 @@
       let response = await api.stats_logs_view()
       if (Array.isArray(response) && response[0]) {
         stats_logs.value = response[0]
+        console.log(stats_logs.value, 'stats_logs')
       }
       response = await api.stats_moorages_view()
       if (Array.isArray(response) && response[0]) {

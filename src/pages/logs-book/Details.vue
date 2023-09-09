@@ -78,15 +78,16 @@
                   <va-select
                     v-model="seaState[item.seaState]"
                     :options="seaState"
-                    :placeholder="text"
+                    placeholder="text"
                     outline
                     style="min-width: 100px; max-width: 40%"
+                    @change="handleSeaState()"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-slider
-                    v-mode="item.cloudCoverage"
+                    v-model="item.cloudCoverage"
                     track-label-visible
                     label="x/8"
                     invert-label
@@ -101,7 +102,7 @@
                   <va-select
                     v-model="visibility[item.visibility]"
                     :options="visibility"
-                    :placeholder="text"
+                    placeholder="text"
                     outline
                     style="min-width: 100px; max-width: 40%"
                   />
@@ -115,7 +116,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
-                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(mapGeoJsonFeatures)" />
+                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
                 </dd>
               </dl>
               <template v-if="updateError">

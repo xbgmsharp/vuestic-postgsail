@@ -78,16 +78,16 @@
                   <va-select
                     v-model="seaState[item.seaState]"
                     :options="seaState"
-                    placeholder="text"
+                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
-                    @change="handleSeaState()"
+                    :track-by="handleSeaState(seaState[item.seaState])"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-slider
-                    v-model="item.cloudCoverage"
+                    v-model="cloudCoverage"
                     track-label-visible
                     label="x/8"
                     invert-label
@@ -95,6 +95,7 @@
                     :max="8"
                     :step="1"
                     style="min-width: 100px; max-width: 40%"
+                    @change="handleCloudCoverage(cloudCoverage)"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
@@ -102,9 +103,10 @@
                   <va-select
                     v-model="visibility[item.visibility]"
                     :options="visibility"
-                    placeholder="text"
+                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
+                    :track-by="handleVisibility(visibility[item.visibility])"
                   />
                 </dd>
               </dl>
@@ -161,7 +163,20 @@
     name: null,
     notes: null,
   })
-
+  const handleSeaState = (sea_state) => {
+    if (sea_state) {
+      console.log('seaState-value:', sea_state.value + ', text:' + sea_state.text)
+    }
+  }
+  const handleVisibility = (visibility) => {
+    if (visibility) {
+      console.log('visibility-value:', visibility.value + ', text:' + visibility.text)
+    }
+  }
+  const cloudCoverage = ref(-1)
+  const handleCloudCoverage = (cloudCoverage) => {
+    console.log('cloudCoverage : ', cloudCoverage)
+  }
   const item = computed(() => {
     return apiData.row
       ? {
@@ -180,7 +195,7 @@
           max_wind_speed: apiData.row.max_wind_speed,
           extra: apiData.row?.extra?.metrics,
           seaState: apiData.row?.extra?.observations?.seaState || -1,
-          cloudCoverage: apiData?.row.extra?.observations?.cloudCoverage || -1,
+          cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
           visibility: apiData.row?.extra?.observations?.visibility || -1,
         }
       : {}

@@ -135,7 +135,6 @@
   const apiError = ref(null)
 
   const mybadges = ref(settings.value.preferences.badges || {})
-  //console.log(mybadges)
   const start_date = logs.value[logs.value.length - 1]
     ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY')
     : null

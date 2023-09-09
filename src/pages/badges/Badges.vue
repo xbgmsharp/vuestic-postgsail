@@ -57,46 +57,10 @@
 
   const { t } = useI18n()
   const isBusy = ref(false)
-
-  const badges = ref({
-    Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman') },
-    'Wake Maker': { image: '/wake_maker.png', description: t('badges.Wake Maker') },
-    Explorer: { image: '/explorer.png', description: t('badges.Explorer') },
-    'Mooring Pro': { image: '/mooring_pro.png', description: t('badges.Mooring Pro') },
-    Anchormaster: { image: '/anchormaster.png', description: t('badges.Anchormaster') },
-    Traveler: { image: '/traveler.png', description: t('badges.Traveler') },
-    Stormtrooper: { image: '/storm_trooper.png', description: t('badges.Stormtrooper') },
-    'Club Alaska': { image: '/club_alaska.png', description: t('badges.Club Alaska') },
-    'Tropical Traveler': { image: '/tropical_traveler.png', description: t('badges.Tropical Traveler') },
-    'Navigator Award': { svg: true, description: t('badges.Navigator Award') },
-    'Captain Award': { svg: true, description: t('badges.Captain Award') },
-  })
-  const default_badge = { default: { svg: false, description: t('badges.default') } }
   const user_badges = ref(settings.value.preferences.badges || {})
 
   onMounted(async () => {
     isBusy.value = true
-    for (let key in badges.value) {
-      //console.log(key, badges.value[key])
-      if (key in user_badges.value && 'date' in user_badges.value[key]) {
-        user_badges.value[key] = { ...user_badges.value[key], ...badges.value[key] }
-        user_badges.value[key]['disabled'] = false
-        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
-      } else {
-        if (key in badges.value) {
-          user_badges.value[key] = badges.value[key]
-          user_badges.value[key]['disabled'] = true
-        }
-      }
-    }
-    for (let key in user_badges.value) {
-      if (!(key in badges.value)) {
-        user_badges.value[key] = { ...user_badges.value[key], ...default_badge['default'] }
-        user_badges.value[key]['description'] = `${default_badge['default']['description']} ${key}!`
-        user_badges.value[key]['disabled'] = false
-        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
-      }
-    }
     console.log('user_badges', user_badges.value)
   })
 </script>

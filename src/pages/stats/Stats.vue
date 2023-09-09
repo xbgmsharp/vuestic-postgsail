@@ -35,9 +35,9 @@
                 <td><b> Date Range </b></td>
                 <td>
                   <div class="col-span-12 md:col-span-6 flex">
-                    <va-date-input :label="$t('start date')" :readonly="false" :value="start_date" />
+                    <va-date-input v-model="start_date" :label="$t('start date')" :readonly="false" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <va-date-input :label="$t('end date')" :readonly="false" :value="end_date" />
+                    <va-date-input v-model="end_date" :label="$t('end date')" :readonly="false" />
                   </div>
                 </td>
               </tr>
@@ -45,9 +45,7 @@
                 <td>
                   <b>{{ value[0] }}</b>
                 </td>
-                <td v-if="value[0] == 'first'">{{ start_date }}</td>
-                <td v-else-if="value[0] == 'last'">{{ end_date }}</td>
-                <td v-else>{{ value[1] }}</td>
+                <td>{{ value[1] }}</td>
               </tr>
             </tbody>
           </table>
@@ -138,9 +136,10 @@
 
   const mybadges = ref(settings.value.preferences.badges || {})
   //console.log(mybadges)
-  const start_date = logs.value[0] ? moment(logs.value[0].Started).format('DD MMM YYYY') : null
+  const start_date = logs.value[logs.value.length - 1]
+    ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY')
+    : null
   const end_date = moment(new Date()).format('DD MMM YYYY')
-
   const stats_logs = ref({})
   const stats_moorages = ref({})
 

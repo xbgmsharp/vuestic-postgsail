@@ -89,14 +89,29 @@
                   <va-slider
                     v-model="cloudCoverage"
                     track-label-visible
-                    label="x"
                     invert-label
+                    :label="sliderLabel"
                     :min="-1"
                     :max="8"
                     :step="1"
                     style="min-width: 100px; max-width: 40%"
                     @change="handleCloudCoverage(cloudCoverage)"
-                  />
+                  >
+                    <!-- <template #append>
+                      <va-input
+                        v-model.number="cloudCoverage"
+                        class="slider-template"
+                        type="text"
+                        :value="sliderLabel"
+                      />
+                      <va-input
+                        v-model.number="cloudCoverage"
+                        class="slider-template"
+                        type="text"
+                        :value="`x/${cloudCoverage}`"
+                      /> 
+                    </template> -->
+                  </va-slider>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
@@ -174,6 +189,7 @@
     }
   }
   const cloudCoverage = ref(-1)
+  const sliderLabel = computed(() => 'x/' + cloudCoverage.value)
   const handleCloudCoverage = (cloudCoverage) => {
     console.log('cloudCoverage : ', cloudCoverage)
   }
@@ -461,5 +477,8 @@
   .divider {
     margin-top: 2em;
     margin-bottom: 1em;
+  }
+  .slider-template {
+    width: 20px !important;
   }
 </style>

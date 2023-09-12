@@ -35,9 +35,9 @@
                 <td><b> Date Range </b></td>
                 <td>
                   <div class="col-span-12 md:col-span-6 flex">
-                    <va-date-input v-model="start_date" :label="$t('start date')" :readonly="false" />
+                    <va-date-input v-model="start_date" :label="$t('logs.list.filter.start_date')" :readonly="false" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <va-date-input v-model="end_date" :label="$t('end date')" :readonly="false" />
+                    <va-date-input v-model="end_date" :label="$t('logs.list.filter.end_date')" :readonly="false" />
                   </div>
                 </td>
               </tr>
@@ -104,7 +104,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed, reactive } from 'vue'
+  import { ref, onMounted, computed, reactive, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
   import nodatayet from '../../components/noDataScreen.vue'
@@ -135,13 +135,25 @@
   const apiError = ref(null)
 
   const mybadges = ref(settings.value.preferences.badges || {})
-  const start_date = logs.value[logs.value.length - 1]
-    ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY')
-    : null
-  const end_date = moment(new Date()).format('DD MMM YYYY')
+  const start_date = ref(
+    logs.value[logs.value.length - 1] ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY') : null,
+  )
+  const end_date = ref(moment(new Date()).format('DD MMM YYYY'))
   const stats_logs = ref({})
   const stats_moorages = ref({})
 
+  watch(
+    () => start_date.value,
+    (newStartDate, oldStartDate) => {
+      console.log('start_date has changed:', newStartDate)
+    },
+  )
+  watch(
+    () => end_date.value,
+    (newEndDate, oldEndDate) => {
+      console.log('end_date has changed:', newEndDate)
+    },
+  )
   /* TODO
    * Date formatting
    * Add i18n for all entries

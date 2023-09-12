@@ -31,6 +31,16 @@
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
+              <tr>
+                <td><b> Date Range </b></td>
+                <td>
+                  <div class="col-span-12 md:col-span-6 flex">
+                    <va-date-input v-model="start_date" :label="$t('logs.list.filter.start_date')" :readonly="false" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <va-date-input v-model="end_date" :label="$t('logs.list.filter.end_date')" :readonly="false" />
+                  </div>
+                </td>
+              </tr>
               <tr v-for="(value, index) in Object.entries(stats_logs)" :key="index">
                 <td>
                   <b>{{ value[0] }}</b>
@@ -59,6 +69,18 @@
                 </td>
                 <td>{{ value[1].duration }} {{ value[1].percentage }}%</td>
               </tr>
+              <tr :key="1">
+                <td><b> Badges </b></td>
+                <td class="badges-stats">
+                  <div v-for="(item, key) in mybadges" :key="key">
+                    <div v-if="!item.disabled">
+                      <img v-if="item.image" class="max-h-8 w-[fit-content] mr-1" fit="contain" :src="item.image" />
+                      <IconAward v-else-if="item.svg" class="max-h-8 w-[fit-content] mr-1" fit="contain" />
+                      <IconNavigation v-else class="max-h-8 w-[fit-content] mr-1" fit="contain" />
+                    </div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </va-card-content>
@@ -74,7 +96,7 @@
       <va-card class="col-span-12 lg:col-span-6 p-4">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
-          <va-chart :data="polarChartDataComputed" type="pie" :options="polarChartOptions" />
+          <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />
         </va-card-content>
       </va-card>
     </div>
@@ -82,7 +104,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed, reactive } from 'vue'
+  import { ref, onMounted, computed, reactive, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
   import nodatayet from '../../components/noDataScreen.vue'
@@ -91,6 +113,8 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import moment from 'moment/min/moment-with-locales'
+  import IconAward from '../../components/icons/IconAward.vue'
+  import IconNavigation from '../../components/icons/IconNavigation.vue'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
@@ -111,10 +135,25 @@
   const apiError = ref(null)
 
   const mybadges = ref(settings.value.preferences.badges || {})
-  //console.log(mybadges)
+  const start_date = ref(
+    logs.value[logs.value.length - 1] ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY') : null,
+  )
+  const end_date = ref(moment(new Date()).format('DD MMM YYYY'))
   const stats_logs = ref({})
   const stats_moorages = ref({})
 
+  watch(
+    () => start_date.value,
+    (newStartDate, oldStartDate) => {
+      console.log('start_date has changed:', newStartDate)
+    },
+  )
+  watch(
+    () => end_date.value,
+    (newEndDate, oldEndDate) => {
+      console.log('end_date has changed:', newEndDate)
+    },
+  )
   /* TODO
    * Date formatting
    * Add i18n for all entries
@@ -146,7 +185,6 @@
     labels: ['Unclassified', 'Anchor', 'Mooring Buoys', 'Dock'],
     datasets: [
       {
-        type: 'pie',
         label: 'Time Spent Away',
         data: [45, 5, 9, 20],
         backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)'],
@@ -170,12 +208,14 @@
   const polarChartDataComputed = computed(() => {
     if (!Array.isArray(stays.value) || stays.value.length == 0) return polarChartData_default
     const obj = structuredClone(polarChartData_default)
-    obj.datasets[0].data = [
-      polarChartStays.value.Unclassified.percentage,
-      polarChartStays.value.Anchor.percentage,
-      polarChartStays.value.Buoy.percentage,
-      polarChartStays.value.Dock.percentage,
-    ]
+    // obj.datasets[0].data = [
+    //   polarChartStays.value.Unclassified.percentage,
+    //   polarChartStays.value.Anchor.percentage,
+    //   polarChartStays.value.Buoy.percentage,
+    //   polarChartStays.value.Dock.percentage,
+    // ]
+    obj.datasets[0].data = [14, 29, 9, 20]
+
     return obj
   })
 
@@ -279,6 +319,7 @@
       let response = await api.stats_logs_view()
       if (Array.isArray(response) && response[0]) {
         stats_logs.value = response[0]
+        console.log(stats_logs.value, 'stats_logs')
       }
       response = await api.stats_moorages_view()
       if (Array.isArray(response) && response[0]) {
@@ -321,5 +362,8 @@
     padding-left: 2em;
     font-size: 0.9rem;
     font-weight: 600;
+  }
+  .badges-stats {
+    display: flex;
   }
 </style>

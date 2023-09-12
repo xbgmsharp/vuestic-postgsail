@@ -16,10 +16,34 @@
         </va-card-content>
       </va-card>
       -->
+      <va-card class="chart-widget col-span-12">
+        <va-card-title>{{ t('charts.horizontalBarChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="barChartDataComputed" type="horizontal-bar" />
+        </va-card-content>
+      </va-card>
       <va-card v-if="mixedChartDataComputed" class="chart-widget col-span-12">
         <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
         <va-card-content>
           <va-chart v-if="mixedChartDataComputed" :data="mixedChartDataComputed" type="bar" />
+        </va-card-content>
+      </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.RadarChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="radarChartData" type="radar" :options="ChartDataOptions" />
+        </va-card-content>
+      </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.donutChart') }}</va-card-title>
+        <va-card-content>
+          <va-chart :data="doughnutChartDataGenerated" type="doughnut" :options="doughnutChartDataOptions" />
+        </va-card-content>
+      </va-card>
+      <va-card class="chart-widget md:col-span-6 col-span-12">
+        <va-card-title>{{ t('charts.HeatmapChart') }}</va-card-title>
+        <va-card-content>
+          <HeatmapChart />
         </va-card-content>
       </va-card>
       <!--
@@ -54,13 +78,14 @@
   import VaChart from '../../components/va-charts/VaChart.vue'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
+  import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
 
   const { t } = useI18n()
 
   const CacheStore = useCacheStore()
   const { getAPI, logs_by_month, logs_by_year_by_month } = storeToRefs(CacheStore)
   const { barChart, lineChartbyYear } = CacheStore
-
+  // horizontal-bar chart Data
   const barChartData = {
     labels: [
       'January',
@@ -79,15 +104,82 @@
     datasets: [
       {
         label: 'logs',
-        data: logs_by_month.value,
+        data: [62, 10, 3, 1, 7, 5, 17, 6, 6, 4, 9, 25],
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         borderWidth: 1,
       },
     ],
   }
+  console.log(logs_by_month.value, 'logs_by_months')
+  const barChartDataComputed = computed(() => {
+    let mybarChartData = structuredClone(barChartData)
+    mybarChartData.datasets[0].data = logs_by_month.value
+    mybarChartData.datasets[0].label = 'logs'
 
-  //console.log(barChartData)
+    console.log(mybarChartData.datasets[0].data, 'chartdata')
+    return mybarChartData
+  })
 
+  // end
+  // This is radarChartdata option
+  const radarChartData = {
+    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+    datasets: [
+      {
+        label: 'My First Dataset',
+        data: [65, 59, 90, 81, 56, 55, 40],
+        fill: true,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgb(255, 99, 132)',
+        pointBackgroundColor: 'rgb(255, 99, 132)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(255, 99, 132)',
+      },
+      {
+        label: 'My Second Dataset',
+        data: [28, 48, 40, 19, 96, 27, 100],
+        fill: true,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgb(54, 162, 235)',
+        pointBackgroundColor: 'rgb(54, 162, 235)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(54, 162, 235)',
+      },
+    ],
+  }
+  const ChartDataOptions: any = {
+    legend: {
+      display: false,
+    },
+  }
+  // end
+  // This is doughnutChartData option
+  const doughnutChartDataGenerated = {
+    labels: ['Red', 'Orange', 'Green'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [33, 33, 33],
+        backgroundColor: ['rgba(231, 76, 60, 1)', 'rgba(255, 164, 46, 1)', 'rgba(46, 204, 113, 1)'],
+        borderColor: ['rgba(255, 255, 255 ,1)', 'rgba(255, 255, 255 ,1)', 'rgba(255, 255, 255 ,1)'],
+        borderWidth: 3,
+      },
+    ],
+  }
+  const doughnutChartDataOptions: any = {
+    rotation: -90,
+    circumference: 180,
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+    cutoutPercentage: 50,
+  }
+  // end
   const mixedChartData = {
     labels: [
       t('dashboard.months.january'),

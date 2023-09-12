@@ -78,32 +78,50 @@
                   <va-select
                     v-model="seaState[item.seaState]"
                     :options="seaState"
-                    :placeholder="text"
+                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
+                    :track-by="handleSeaState(seaState[item.seaState])"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-slider
-                    v-mode="item.cloudCoverage"
+                    v-model="cloudCoverage"
                     track-label-visible
-                    label="x/8"
                     invert-label
+                    :label="sliderLabel"
                     :min="-1"
                     :max="8"
                     :step="1"
                     style="min-width: 100px; max-width: 40%"
-                  />
+                    @change="handleCloudCoverage(cloudCoverage)"
+                  >
+                    <!-- <template #append>
+                      <va-input
+                        v-model.number="cloudCoverage"
+                        class="slider-template"
+                        type="text"
+                        :value="sliderLabel"
+                      />
+                      <va-input
+                        v-model.number="cloudCoverage"
+                        class="slider-template"
+                        type="text"
+                        :value="`x/${cloudCoverage}`"
+                      /> 
+                    </template> -->
+                  </va-slider>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-select
                     v-model="visibility[item.visibility]"
                     :options="visibility"
-                    :placeholder="text"
+                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
+                    :track-by="handleVisibility(visibility[item.visibility])"
                   />
                 </dd>
               </dl>
@@ -115,7 +133,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
-                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(mapGeoJsonFeatures)" />
+                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -160,7 +178,21 @@
     name: null,
     notes: null,
   })
-
+  const handleSeaState = (sea_state) => {
+    if (sea_state) {
+      console.log('seaState-value:', sea_state.value + ', text:' + sea_state.text)
+    }
+  }
+  const handleVisibility = (visibility) => {
+    if (visibility) {
+      console.log('visibility-value:', visibility.value + ', text:' + visibility.text)
+    }
+  }
+  const cloudCoverage = ref(-1)
+  const sliderLabel = computed(() => 'x/' + cloudCoverage.value)
+  const handleCloudCoverage = (cloudCoverage) => {
+    console.log('cloudCoverage : ', cloudCoverage)
+  }
   const item = computed(() => {
     return apiData.row
       ? {
@@ -179,7 +211,7 @@
           max_wind_speed: apiData.row.max_wind_speed,
           extra: apiData.row?.extra?.metrics,
           seaState: apiData.row?.extra?.observations?.seaState || -1,
-          cloudCoverage: apiData?.row.extra?.observations?.cloudCoverage || -1,
+          cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
           visibility: apiData.row?.extra?.observations?.visibility || -1,
         }
       : {}
@@ -445,5 +477,8 @@
   .divider {
     margin-top: 2em;
     margin-bottom: 1em;
+  }
+  .slider-template {
+    width: 20px !important;
   }
 </style>

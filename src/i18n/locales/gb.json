@@ -115,8 +115,8 @@
         "name": "Name",
         "date_range": "Date range",
         "reset": "Reset",
-        "start_date":"Start date",
-        "end_date":"End date"
+        "start_date": "Start date",
+        "end_date": "End date"
       },
       "action": "Action"
     },

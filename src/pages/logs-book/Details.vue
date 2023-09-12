@@ -89,7 +89,7 @@
                   <va-slider
                     v-model="cloudCoverage"
                     track-label-visible
-                    label="x/8"
+                    label="x"
                     invert-label
                     :min="-1"
                     :max="8"

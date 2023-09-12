@@ -65,7 +65,7 @@
           </template>
           <template #cell(stayed_at)="{ rowData, value }">
             <va-select
-              v-model="rowData.stayed_at"
+              :v-model="getTextForStayedAt(rowData.stayed_at_id)"
               :options="stayed_at_options"
               :placeholder="value"
               outline
@@ -116,7 +116,10 @@
       text: 'Dock',
     },
   ])
-
+  const getTextForStayedAt = (value) => {
+    const option = stayed_at_options.value.find((option) => option.value === value)
+    return option ? option.text : ''
+  }
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
@@ -188,7 +191,7 @@
       isBusy.value = false
     }
   })
-
+  console.log(rowsData, 'rowsData')
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
   }

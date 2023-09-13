@@ -140,6 +140,10 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/timelapse_fn`, payload)
   }
 
+  async update_observations(payload: JSObj) {
+    return this.post(`rpc/update_logbook_observations_fn`, payload)
+  }
+
   /*
    * Moorages API endpoint
    */

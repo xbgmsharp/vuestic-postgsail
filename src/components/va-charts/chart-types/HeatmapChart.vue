@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="heatmapChartCanvas" :style="{ width: '100%' }"></canvas>
+    <canvas ref="heatmapChartCanvas"></canvas>
   </div>
 </template>
 
@@ -8,10 +8,13 @@
   import { Chart, registerables } from 'chart.js'
   import 'chartjs-adapter-moment'
   import { MatrixController, MatrixElement } from 'chartjs-chart-matrix'
-  import moment from 'moment-timezone'
+  import moment from 'moment'
   import _ from 'lodash'
-  import { default as dayOfWeek_month } from './library/data_dayOfWeek_month'
   import { ref, onMounted } from 'vue'
+
+  const props = defineProps({
+    data: { type: Array, required: true },
+  })
 
   Chart.register(...registerables)
   Chart.register(MatrixController, MatrixElement)
@@ -24,10 +27,8 @@
   Chart.defaults.devicePixelRatio = 2
 
   const heatmapChartCanvas = ref(null)
-  const meter = 'd3097df1-5d92-4d9c-88de-eb8812cc8ef0'
   let xAxis = 'month'
   let yAxis = 'dayOfWeek'
-  let data = dayOfWeek_month
 
   const config = {
     hour: getHours(),
@@ -72,33 +73,6 @@
     return [...Array(getMaxByGroupyBy().week).keys()].map((i) => i + 1)
   }
 
-  function getValueFromDate(type, value) {
-    // Rest of the function remains the same
-    switch (type) {
-      case 'hour':
-        return moment(value).hour()
-      case 'dayOfWeek':
-        return moment(value).format('dddd')
-      case 'month':
-        return moment(value).format('MMMM')
-      case 'dayOfYear':
-        return moment(value).dayOfYear()
-      case 'week':
-        return moment(value).isoWeek()
-      default:
-        return ''
-    }
-  }
-
-  function generateData(xAxisType, yAxisType) {
-    // Rest of the function remains the same
-    return data.map((point) => ({
-      x: getValueFromDate(xAxisType, point.timestamp),
-      y: getValueFromDate(yAxisType, point.timestamp),
-      v: point[meter],
-    }))
-  }
-
   function getBackgroundColor(colors, value) {
     // Rest of the function remains the same
     if (value != null) {
@@ -115,17 +89,18 @@
   const colors = [
     { value: 2, color: '#abdbe3' },
     { value: 5, color: '#76b5c5' },
-    { value: 20, color: '#1e81b0' },
-    { value: 30, color: '#154c79' },
-    { value: 40, color: '#063970' },
+    { value: 10, color: '#1e81b0' },
+    { value: 20, color: '#154c79' },
+    { value: 30, color: '#063970' },
   ]
 
+  let chart
   const chartOptions = {
     type: 'matrix',
     data: {
       datasets: [
         {
-          data: generateData(xAxis, yAxis),
+          data: props.data,
           backgroundColor(ctx) {
             const value = ctx.dataset.data[ctx.dataIndex].v
             return getBackgroundColor(colors, value)
@@ -142,6 +117,7 @@
       ],
     },
     options: {
+      aspectRatio: 5,
       scales: {
         y: {
           // y axis options
@@ -193,11 +169,9 @@
     },
   }
 
-  let chart
-
   onMounted(() => {
     const ctx = heatmapChartCanvas.value.getContext('2d')
     chart = new Chart(ctx, chartOptions)
-    console.log(ctx, 'ctx-202')
+    console.log(ctx, 'heatmapChartCanvas onMounted heatmapChartCanvas.value')
   })
 </script>

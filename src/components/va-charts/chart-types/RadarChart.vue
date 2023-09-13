@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+  import { Radar } from 'vue-chartjs'
   import {
     Chart as ChartJS,
     Title,
@@ -13,7 +14,6 @@
     ChartData,
     ChartOptions,
   } from 'chart.js'
-  import { Radar } from 'vue-chartjs'
 
   ChartJS.register(Title, Tooltip, Legend, ArcElement, RadialLinearScale, ArcElement)
 

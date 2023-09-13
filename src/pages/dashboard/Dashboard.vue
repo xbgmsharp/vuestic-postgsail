@@ -180,7 +180,7 @@
 
   const CacheStore = useCacheStore()
   const { getInfoTiles } = storeToRefs(CacheStore)
-  const { getAPI, InfoTiles, barChart, lineChartbyYear } = CacheStore
+  const { getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
   const { settings } = storeToRefs(GlobalStore)
   const badges = ref({
     Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman') },
@@ -371,6 +371,7 @@
     InfoTiles()
     barChart()
     lineChartbyYear()
+    matrixChartbyMonthDay()
     console.log('Dashboard onMounted getInfoTiles.value', getInfoTiles.value)
     for (let tile in CacheStore.tiles) {
       //infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]

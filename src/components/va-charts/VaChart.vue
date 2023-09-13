@@ -9,7 +9,7 @@
 
   const props = defineProps<{
     data: ChartData<'line', number[], unknown>
-    options?: ChartOptions<'line' | 'bar' | 'bubble' | 'doughnut' | 'pie' | 'radar' | 'polarArea'>
+    options?: ChartOptions<'line' | 'bar' | 'bubble' | 'doughnut' | 'pie'>
     type: keyof typeof chartTypesMap
   }>()
 

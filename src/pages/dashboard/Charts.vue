@@ -8,26 +8,26 @@
           <va-chart :data="barChartDataGenerated" type="bar" />
         </va-card-content>
       </va-card>
-
       <va-card v-if="horizontalBarChartDataGenerated" class="chart-widget md:col-span-6 col-span-12">
         <va-card-title>{{ t('charts.horizontalBarChart') }}</va-card-title>
         <va-card-content>
           <va-chart :data="horizontalBarChartDataGenerated" type="horizontal-bar" />
         </va-card-content>
       </va-card>
-      -->
-      <va-card class="chart-widget col-span-12">
+      <va-card v-if="barChartDataComputed" class="chart-widget col-span-12">
         <va-card-title>{{ t('charts.horizontalBarChart') }}</va-card-title>
         <va-card-content>
-          <va-chart :data="barChartDataComputed" type="horizontal-bar" />
+          <va-chart v-if="barChartDataComputed" :data="barChartDataComputed" type="horizontal-bar" />
         </va-card-content>
       </va-card>
+       -->
       <va-card v-if="mixedChartDataComputed" class="chart-widget col-span-12">
         <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
         <va-card-content>
           <va-chart v-if="mixedChartDataComputed" :data="mixedChartDataComputed" type="bar" />
         </va-card-content>
       </va-card>
+      <!--
       <va-card class="chart-widget md:col-span-6 col-span-12">
         <va-card-title>{{ t('charts.RadarChart') }}</va-card-title>
         <va-card-content>
@@ -40,10 +40,11 @@
           <va-chart :data="doughnutChartDataGenerated" type="doughnut" :options="doughnutChartDataOptions" />
         </va-card-content>
       </va-card>
-      <va-card class="chart-widget md:col-span-6 col-span-12">
-        <va-card-title>{{ t('charts.HeatmapChart') }}</va-card-title>
-        <va-card-content>
-          <HeatmapChart />
+      -->
+      <va-card v-if="HeatmapChartComputed" class="chart-widget col-span-12">
+        <va-card-title>{{ t('dashboard.charts.HeatmapChart') }}</va-card-title>
+        <va-card-content style="width: 100%; height: 350px">
+          <HeatmapChart v-if="HeatmapChartComputed" :data="HeatmapChartComputed" />
         </va-card-content>
       </va-card>
       <!--
@@ -79,13 +80,16 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
+  import moment from 'moment'
 
   const { t } = useI18n()
 
   const CacheStore = useCacheStore()
-  const { getAPI, logs_by_month, logs_by_year_by_month } = storeToRefs(CacheStore)
-  const { barChart, lineChartbyYear } = CacheStore
+  const { getAPI, logs_by_month, logs_by_year_by_month, logs_by_month_by_weekday } = storeToRefs(CacheStore)
+  //const { barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+
   // horizontal-bar chart Data
+  /*
   const barChartData = {
     labels: [
       'January',
@@ -119,9 +123,10 @@
     console.log(mybarChartData.datasets[0].data, 'chartdata')
     return mybarChartData
   })
+  */
 
-  // end
-  // This is radarChartdata option
+  // radarChartData
+  /*
   const radarChartData = {
     labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
     datasets: [
@@ -154,8 +159,10 @@
       display: false,
     },
   }
-  // end
-  // This is doughnutChartData option
+  */
+
+  // doughnutChartData
+  /*
   const doughnutChartDataGenerated = {
     labels: ['Red', 'Orange', 'Green'],
     datasets: [
@@ -179,7 +186,9 @@
     },
     cutoutPercentage: 50,
   }
-  // end
+  */
+
+  // mixedChartData
   const mixedChartData = {
     labels: [
       t('dashboard.months.january'),
@@ -239,8 +248,13 @@
     fill: false,
   }
 
-  //const bar = barChart()
-  //const lines = lineChartbyYear()
+  const HeatmapChartComputed = computed(() => {
+    let matrix_data = null
+    if (logs_by_month_by_weekday.value.length != 0) {
+      matrix_data = logs_by_month_by_weekday.value
+    }
+    return matrix_data
+  })
 
   const mixedChartDataComputed = computed(() => {
     let mymixedChartData = structuredClone(mixedChartData)

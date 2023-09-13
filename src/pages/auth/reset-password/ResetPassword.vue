@@ -1,10 +1,10 @@
 <template>
   <form class="login" @submit.prevent="onsubmit">
     <template v-if="resetError">
-      <va-alert color="warning" outline class="mb-4"> {{ $t('auth.errors.reset') }}</va-alert>
+      <va-alert color="warning" outline class="mb-4"> {{ t('auth.errors.reset') }}</va-alert>
     </template>
     <template v-if="resetSuccess">
-      <va-alert color="success" outline class="mb-4"> {{ $t('auth.reset') }} </va-alert>
+      <va-alert color="success" outline class="mb-4"> {{ t('auth.reset') }} </va-alert>
     </template>
     <va-inner-loading :loading="isBusy">
       <va-input

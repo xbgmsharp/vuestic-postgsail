@@ -1,7 +1,7 @@
 <template>
   <form class="login" @submit.prevent="onsubmit">
     <template v-if="resetSuccess">
-      <va-alert color="success" outline class="mb-4"> {{ $t('auth.reset') }} </va-alert>
+      <va-alert color="success" outline class="mb-4"> {{ t('auth.reset') }} </va-alert>
     </template>
     <va-input
       v-model="email"

@@ -83,7 +83,8 @@
     "charts": {
       "verticalBarChart": "Log entry per month",
       "mixedChart": "Log entry per month per year",
-      "lineChart": "Log entry per year"
+      "lineChart": "Log entry per year",
+      "HeatmapChart": "Log entry per month per weekday"
     },
     "months": {
       "january": "January",

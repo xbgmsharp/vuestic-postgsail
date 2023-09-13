@@ -87,7 +87,8 @@
     "charts": {
       "verticalBarChart": "Protokolleinträge pro Monat",
       "mixedChart": "Protokolleinträge pro Monat pro Jahr",
-      "lineChart": "Protokolleinträge pro Jahr"
+      "lineChart": "Protokolleinträge pro Jahr",
+      "HeatmapChart": "Log entry per month per weekday"
     },
     "months": {
       "january": "Januar",

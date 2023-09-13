@@ -5,8 +5,10 @@
 </template>
 
 <script setup>
-  import { Chart, registerables } from 'chart.js'
-  import 'chartjs-adapter-moment'
+  // Using https://chartjs-chart-matrix.pages.dev/
+  // Based on https://codesandbox.io/s/heat-map-modele-tache-5kdk2
+  import { Chart as ChartJS, registerables } from 'chart.js'
+  //import 'chartjs-adapter-moment'
   import { MatrixController, MatrixElement } from 'chartjs-chart-matrix'
   import moment from 'moment'
   import _ from 'lodash'
@@ -16,15 +18,15 @@
     data: { type: Array, required: true },
   })
 
-  Chart.register(...registerables)
-  Chart.register(MatrixController, MatrixElement)
-  Chart.defaults.animation.duration = 0
-  Chart.defaults.transitions['active'].duration = 0
-  Chart.defaults.transitions['resize'].duration = 0
-  Chart.defaults.transitions['hide'].duration = 0
-  Chart.defaults.transitions['show'].duration = 0
-  Chart.defaults.elements.line.tension = 0
-  Chart.defaults.devicePixelRatio = 2
+  ChartJS.register(...registerables)
+  ChartJS.register(MatrixController, MatrixElement)
+  ChartJS.defaults.animation.duration = 0
+  ChartJS.defaults.transitions['active'].duration = 0
+  ChartJS.defaults.transitions['resize'].duration = 0
+  ChartJS.defaults.transitions['hide'].duration = 0
+  ChartJS.defaults.transitions['show'].duration = 0
+  ChartJS.defaults.elements.line.tension = 0
+  ChartJS.defaults.devicePixelRatio = 2
 
   const heatmapChartCanvas = ref(null)
   let xAxis = 'month'
@@ -171,7 +173,7 @@
 
   onMounted(() => {
     const ctx = heatmapChartCanvas.value.getContext('2d')
-    chart = new Chart(ctx, chartOptions)
-    console.log(ctx, 'heatmapChartCanvas onMounted heatmapChartCanvas.value')
+    chart = new ChartJS(ctx, chartOptions)
+    //console.log(ctx, 'heatmapChartCanvas onMounted heatmapChartCanvas.value')
   })
 </script>

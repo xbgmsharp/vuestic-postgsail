@@ -63,7 +63,16 @@
           <template #cell(departed)="{ value }">
             {{ dateFormatUTC(value) }}
           </template>
-          <template #cell(stayed_at)="{ rowData, value }">
+          <template #cell(stayed_at)="{ rowData }">
+            <div class="mb-6" style="max-width: 120px">
+              <StayAt
+                v-if="rowData.stayed_at_id"
+                :id="parseInt(rowData.id)"
+                :data="parseInt(rowData.stayed_at_id)"
+                @clickFromChildComponent="updateStayedAt"
+              />
+            </div>
+            <!--
             <va-select
               :v-model="getTextForStayedAt(rowData.stayed_at_id)"
               :options="stayed_at_options"
@@ -72,6 +81,7 @@
               style="max-width: 120px"
               @update:modelValue="runBusy(updateStayedAt, rowData.id, $event)"
             />
+            -->
           </template>
           <template #cell(duration)="{ value }">
             {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
@@ -95,31 +105,10 @@
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
+  import StayAt from '../../components/SelectStayAt.vue'
 
-  import staysDatas from '../../data/stays.json'
+  import staysData from '../../data/stays.json'
 
-  const stayed_at_options = ref([
-    {
-      value: 1,
-      text: 'Unknown',
-    },
-    {
-      value: 2,
-      text: 'Anchor',
-    },
-    {
-      value: 3,
-      text: 'Mooring Buoy',
-    },
-    {
-      value: 4,
-      text: 'Dock',
-    },
-  ])
-  const getTextForStayedAt = (value) => {
-    const option = stayed_at_options.value.find((option) => option.value === value)
-    return option ? option.text : ''
-  }
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
@@ -128,6 +117,7 @@
     }
   }
 
+  const CacheStore = useCacheStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
@@ -173,10 +163,11 @@
     isBusy.value = true
     apiError.value = null
     try {
-      const response = await useCacheStore().getAPI('stays')
+      const response = await CacheStore.getAPI('stays')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
+        console.log('Stays List rowsData:', rowsData.value)
       } else {
         throw { response }
       }
@@ -185,13 +176,13 @@
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample datas from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...staysDatas)
+        rowsData.value.push(...staysData)
       }
     } finally {
       isBusy.value = false
     }
   })
-  console.log(rowsData, 'rowsData')
+
   function resetFilter() {
     Object.assign(filter, { ...getDefaultFilter() })
   }
@@ -200,18 +191,25 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
-  function updateStayedAt(id, stayed_at) {
+  function updateStayedAt(update_stayed_at, id) {
     // runBusy handles isBusy & apiError
-    console.log(stayed_at)
-    new PostgSail()
-      .stay_update(id, { stay_code: stayed_at.value })
-      .then((response) => {
-        console.log('updateStayedAt success', response)
-      })
-      .catch((err) => {
-        console.log('updateStayedAt failed', err.message ?? err)
-        //throw err.message ?? err
-      })
+    console.log('updateStayedAt', update_stayed_at, id)
+    if (update_stayed_at && update_stayed_at > 0) {
+      new PostgSail()
+        .stay_update(id, { stay_code: update_stayed_at })
+        .then((response) => {
+          console.log('updateStayedAt success', response)
+          // Clean CacheStore and force refresh
+          CacheStore.stays = []
+          CacheStore.stays_get = []
+          CacheStore.store_ttl = null
+          CacheStore.getAPI('stays')
+        })
+        .catch((err) => {
+          console.log('updateStayedAt failed', err.message ?? err)
+          //throw err.message ?? err
+        })
+    }
   }
 
   function handleCSV(items) {

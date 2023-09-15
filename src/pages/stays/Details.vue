@@ -43,13 +43,21 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <div>
+                    <StayAt
+                      v-if="item.stayed_at_id"
+                      :id="parseInt(route.params.id)"
+                      :data="parseInt(item.stayed_at_id)"
+                      @clickFromChildComponent="updateStayedAt"
+                    />
+                    <!--
                     <va-select
-                      v-model="apiData.stayed_at"
+                      v-model="stayed_at_options[item.stayed_at_id]"
                       :options="stayed_at_options"
-                      :placeholder="value"
+                      :placeholder="item.stayed_at"
                       outline
                       @update:modelValue="runBusy(updateStayedAt, route.params.id, $event)"
                     />
+                    -->
                   </div>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
@@ -70,7 +78,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
+                  <va-input v-model="formData.notes" outline placeholder="Note" type="textarea" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -94,29 +102,12 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
+  import { asBusy } from '../../utils/handleExports'
+  import StayAt from '../../components/SelectStayAt.vue'
 
   import stays from '../../data/stays.json'
-
-  const stayed_at_options = ref([
-    {
-      value: 1,
-      text: 'Unknown',
-    },
-    {
-      value: 2,
-      text: 'Anchor',
-    },
-    {
-      value: 3,
-      text: 'Mooring Buoy',
-    },
-    {
-      value: 4,
-      text: 'Dock',
-    },
-  ])
 
   const route = useRoute()
   const CacheStore = useCacheStore()
@@ -142,6 +133,7 @@
           departed: apiData.row.departed,
           arrived: apiData.row.arrived,
           notes: apiData.row.notes,
+          stayed_at_id: apiData.row.stayed_at_id,
         }
       : {}
   })
@@ -157,7 +149,7 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    //const api = new PostgSail()
     const id = route.params.id
     try {
       //const response = await CacheStore.api.stay_get(id)
@@ -193,32 +185,43 @@
     }
     try {
       const response = await api.stay_update(id, payload)
-      if (response.ok) {
-        console.log('stay_update success', response.status)
+      //console.log(response)
+      if (response) {
+        console.log('stay_update success', response)
+        localStorage.removeItem('cache')
       } else {
         throw { response }
       }
     } catch (err) {
-      const { response } = err
-      console.log('stay_update failed', response)
-      updateError.value = response.data.message
+      console.log('stay_update failed', err.message ?? err)
+      updateError.value = err
     } finally {
       isBusy.value = false
     }
   }
 
-  function updateStayedAt(id, stayed_at) {
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  function updateStayedAt(update_stayed_at, id) {
     // runBusy handles isBusy & apiError
-    console.log(stayed_at)
-    new PostgSail()
-      .stay_update(id, { stay_code: stayed_at.value })
-      .then((response) => {
-        console.log('updateStayedAt success', response)
-      })
-      .catch((err) => {
-        console.log('updateStayedAt failed', err.message ?? err)
-        //throw err.message ?? err
-      })
+    console.log('updateStayedAt', update_stayed_at, id)
+    if (update_stayed_at && update_stayed_at > 0) {
+      new PostgSail()
+        .stay_update(id, { stay_code: update_stayed_at })
+        .then((response) => {
+          console.log('updateStayedAt success', response)
+          // Clean CacheStore and force refresh
+          CacheStore.stays = []
+          CacheStore.stays_get = []
+          CacheStore.store_ttl = null
+        })
+        .catch((err) => {
+          console.log('updateStayedAt failed', err.message ?? err)
+          //throw err.message ?? err
+        })
+    }
   }
 </script>
 

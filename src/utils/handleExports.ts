@@ -20,7 +20,7 @@ export async function handleExport(
     const response = await formatMap[format][0](endpoint, payload)
     if (!response) throw { response }
 
-    console.log(`${endpoint} success`, response)
+    //console.log(`${endpoint} success`, response)
     downloadFile(response, formatMap[format][1], `PostgSail_${capitalize(filePrefix)}.${format}`)
   } catch (err: any) {
     const { response } = err
@@ -31,7 +31,12 @@ export async function handleExport(
 
 export async function callAPI(endpoint: string, payload: JSObj) {
   console.debug('handleExports callAPI endpoint', endpoint)
-  return JSON.stringify(await new PostgSail()[endpoint](payload))
+  //return JSON.stringify(await new PostgSail()[endpoint](payload))
+  const data = await new PostgSail()[endpoint](payload)
+  if (data.geojson) {
+    return JSON.stringify(data.geojson)
+  }
+  return data
 }
 
 export function createCSV(endpoint: string, items: JSObj) {

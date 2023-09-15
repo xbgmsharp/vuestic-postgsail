@@ -1,5 +1,4 @@
 name: Build
-# Don't deploy to github as no rewrite is supported.
 
 on:
   push:
@@ -8,19 +7,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -28,22 +16,9 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
-
-      #- name: 'Create env file'
-      #  run: |
-      #    touch .env.production.local
-      #    echo VITE_PGSAIL_URL="http://localhost:3002" >> .env.production.local
-      #    echo VUE_APP_INCLUDE_DEMOS=false >> .env.production.local
-      #    echo VITE_APP_BUILD_VERSION=true >> .env.production.local
-      #    cat .env.production.local
+        uses: actions/checkout@v4
 
       - name: Install and Build 🔧
         run: |
           npm install --include=dev
           npm run build:ci
-
-      #- name: Deploy 🚀
-      #  uses: JamesIves/github-pages-deploy-action@v4
-      #  with:
-      #    folder: dist

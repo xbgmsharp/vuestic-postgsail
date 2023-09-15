@@ -34,18 +34,26 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <div>
+                    <StayAt
+                      v-if="item.default_stay_id"
+                      :id="parseInt(route.params.id)"
+                      :data="parseInt(item.default_stay_id)"
+                      @clickFromChildComponent="updateDefaultStay($event)"
+                    />
+                    <!--
                     <va-select
                       v-model="stayed_at_options[item.default_stay_id]"
-                      :placeholder="value"
                       :options="stayed_at_options"
                       outline
                       class="mb-6"
+                      @update:modelValue="runBusy(updateDefaultStay, route.params.id, $event)"
                     />
+                    -->
                   </div>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.home') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-switch v-model="item.home" size="small" />
+                  <va-switch v-model="item.home" size="small" @update:modelValue="runBusy(updateHome, $event)" />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ item.total_stay }}</dd>
@@ -77,31 +85,11 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
+  import { asBusy } from '../../utils/handleExports'
+  import StayAt from '../../components/SelectStayAt.vue'
 
   import moorages from '../../data/moorages.json'
-
-  const stayed_at_options = ref([
-    {
-      value: 1,
-      text: 'Unknown',
-    },
-    {
-      value: 2,
-      text: 'Anchor',
-    },
-    {
-      value: 3,
-      text: 'Mooring Buoy',
-    },
-    {
-      value: 4,
-      text: 'Dock',
-    },
-  ])
 
   const route = useRoute()
   const CacheStore = useCacheStore()
@@ -125,6 +113,7 @@
           total_stay: apiData.row.total_stay,
           arrivals_departures: apiData.row.arrivals_departures,
           notes: apiData.row.notes,
+          default_stay_id: apiData.row.default_stay_id,
         }
       : {}
   })
@@ -140,7 +129,7 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
+    //const api = new PostgSail()
     const id = route.params.id
     try {
       //const response = await api.moorage_get(id)
@@ -176,31 +165,65 @@
     }
     try {
       const response = await api.moorage_update(id, payload)
-      if (response.ok) {
-        console.log('moorage_update success', response.status)
+      //console.log(response)
+      if (response) {
+        console.log('moorage_update success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.moorages = []
+        CacheStore.moorages_get = []
+        CacheStore.store_ttl = null
       } else {
         throw { response }
       }
     } catch (err) {
-      const { response } = err
-      console.log('moorage_update failed', response)
-      updateError.value = response.data.message
+      console.log('moorage_update failed', err.message ?? err)
+      updateError.value = err
     } finally {
       isBusy.value = false
     }
   }
 
-  function updateDefaultStay(id, default_stay) {
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  function updateDefaultStay(update_default_stay) {
     // runBusy handles isBusy & apiError
-    console.log(default_stay)
+    console.log('updateDefaultStay', update_default_stay)
+    const id = route.params.id
+    if (update_default_stay && update_default_stay > 0) {
+      new PostgSail()
+        .moorage_update(id, { stay_code: update_default_stay })
+        .then((response) => {
+          console.log('updateDefaultStay success', response)
+          // Clean CacheStore and force refresh
+          CacheStore.moorages = []
+          CacheStore.moorages_get = []
+          CacheStore.store_ttl = null
+        })
+        .catch((err) => {
+          console.log('updateDefaultStay failed', err.message ?? err)
+          updateError.value = err
+        })
+    }
+  }
+
+  function updateHome(new_home) {
+    // runBusy handles isBusy & apiError
+    console.log('updateHome', new_home)
+    const id = route.params.id
     new PostgSail()
-      .moorage_update(id, { stay_code: default_stay.value })
+      .moorage_update(id, { home_flag: new_home })
       .then((response) => {
-        console.log('updateDefaultStay success', response)
+        console.log('updateHome success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.moorages = []
+        CacheStore.moorages_get = []
+        CacheStore.store_ttl = null
       })
       .catch((err) => {
-        console.log('updateDefaultStay failed', err.message ?? err)
-        //throw err.message ?? err
+        console.log('updateHome failed', err.message ?? err)
+        updateError.value = err
       })
   }
 </script>

@@ -93,16 +93,26 @@
                 {{ value }}
               </router-link>
             </template>
-            <template #cell(default_stay)="{ rowData, value }">
+            <template #cell(default_stay)="{ rowData }">
+              <div class="mb-6" style="max-width: 150px">
+                <StayAt
+                  v-if="rowData.default_stay_id"
+                  :id="parseInt(rowData.id)"
+                  :data="parseInt(rowData.default_stay_id)"
+                  @clickFromChildComponent="updateDefaultStay"
+                />
+              </div>
+              <!--
               <va-select
-                v-model="rowData.default_stay"
+                v-if="rowData.default_stay_id"
+                v-model="stayed_at_options[rowData.default_stay_id]"
                 :options="stayed_at_options"
-                :placeholder="value"
                 outline
                 style="max-width: 150px"
                 class="mb-6"
                 @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
               />
+              -->
             </template>
             <template #cell(total_stay)="{ value }"> {{ $t('units.time.days', parseInt(value)) }}</template>
             <template #cell(arrivals_departures)="{ value }">
@@ -128,27 +138,9 @@
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
+  import StayAt from '../../components/SelectStayAt.vue'
 
-  import mooragesDatas from '../../data/moorages.json'
-
-  const stayed_at_options = ref([
-    {
-      value: 1,
-      text: 'Unknown',
-    },
-    {
-      value: 2,
-      text: 'Anchor',
-    },
-    {
-      value: 3,
-      text: 'Mooring Buoy',
-    },
-    {
-      value: 4,
-      text: 'Dock',
-    },
-  ])
+  import mooragesData from '../../data/moorages.json'
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
@@ -158,6 +150,7 @@
     }
   }
 
+  const CacheStore = useCacheStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
@@ -201,19 +194,20 @@
     isBusy.value = true
     apiError.value = null
     try {
-      const response = await useCacheStore().getAPI('moorages')
+      const response = await CacheStore.getAPI('moorages')
       if (Array.isArray(response)) {
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
+        console.log('Moorages List rowsData:', rowsData.value)
       } else {
         throw { response }
       }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample datas from local json...', apiError.value)
+        console.warn('Fallback using sample data from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...mooragesDatas)
+        rowsData.value.push(...mooragesData)
       }
     } finally {
       isBusy.value = false
@@ -228,19 +222,24 @@
     asBusy(isBusy, apiError, fn, ...args)
   }
 
-  const updateDefaultStay = async (id, update_stayed_at) => {
-    console.log('updateDefaultStay', id, update_stayed_at)
-    if (update_stayed_at) {
+  const updateDefaultStay = async (update_default_stay, id) => {
+    console.log('updateDefaultStay', update_default_stay, id)
+    if (update_default_stay && update_default_stay > 0) {
       isBusy.value = true
       apiError.value = null
       const api = new PostgSail()
       const payload = {
-        stay_code: update_stayed_at.value,
+        stay_code: update_default_stay,
       }
       try {
         const response = api.moorage_update(id, payload)
         if (response) {
           console.log('updateDefaultStay success', response)
+          // Clean CacheStore and force refresh
+          CacheStore.moorages = []
+          CacheStore.moorages_get = []
+          CacheStore.store_ttl = null
+          CacheStore.getAPI('moorages')
         } else {
           throw { response }
         }

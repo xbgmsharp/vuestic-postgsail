@@ -58,17 +58,17 @@
                   <va-input v-model="formData.notes" outline type="textarea" :placeholder="$t('logs.log.remarks')" />
                 </dd>
               </dl>
-              <!-- metadata -->
-              <va-divider orientation="center" class="divider">
-                <span class="flex xs12">{{ $t('logs.log.metadata') }}</span>
-              </va-divider>
-              <template v-if="item.extra">
+              <!-- metadata section -->
+              <template v-if="item.extra && Object.keys(item.extra).length > 0">
+                <va-divider orientation="center" class="divider">
+                  <span class="flex xs12">{{ $t('logs.log.metadata') }}</span>
+                </va-divider>
                 <dl v-for="(value, index) in Object.entries(item.extra)" :key="index" class="dl-details row mb-3">
                   <dt class="flex xs12 md6 pa-2 va-text-bold">{{ value[0] }}</dt>
                   <dd class="flex xs12 md6 pa-2">{{ value[1] }}</dd>
                 </dl>
               </template>
-              <!-- observations -->
+              <!-- observations section -->
               <va-divider orientation="center" class="divider">
                 <span class="flex xs12">{{ $t('logs.log.observations') }}</span>
               </va-divider>
@@ -78,39 +78,26 @@
                   <va-select
                     v-model="seaState[item.seaState]"
                     :options="seaState"
-                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
-                    :track-by="handleSeaState(seaState[item.seaState])"
+                    @update:modelValue="runBusy(handleSeaState, seaState[item.seaState], $event)"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-slider
-                    v-model="cloudCoverage"
+                    v-if="item.cloudCoverage"
+                    v-model="item.cloudCoverage"
+                    stateful
                     track-label-visible
                     invert-label
-                    :label="sliderLabel"
                     :min="-1"
                     :max="8"
                     :step="1"
                     style="min-width: 100px; max-width: 40%"
-                    @change="handleCloudCoverage(cloudCoverage)"
+                    :label="sliderLabel"
+                    @update:modelValue="runBusy(handleCloudCoverage, $event)"
                   >
-                    <!-- <template #append>
-                      <va-input
-                        v-model.number="cloudCoverage"
-                        class="slider-template"
-                        type="text"
-                        :value="sliderLabel"
-                      />
-                      <va-input
-                        v-model.number="cloudCoverage"
-                        class="slider-template"
-                        type="text"
-                        :value="`x/${cloudCoverage}`"
-                      /> 
-                    </template> -->
                   </va-slider>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
@@ -118,14 +105,13 @@
                   <va-select
                     v-model="visibility[item.visibility]"
                     :options="visibility"
-                    placeholder=""
                     outline
                     style="min-width: 100px; max-width: 40%"
-                    :track-by="handleVisibility(visibility[item.visibility])"
+                    @update:modelValue="runBusy(handleVisibility, visibility[item.visibility], $event)"
                   />
                 </dd>
               </dl>
-              <!-- export -->
+              <!-- export section -->
               <va-divider orientation="center" class="divider">
                 <span class="px-2">{{ $t('logs.log.export') }}</span>
               </va-divider>
@@ -165,9 +151,11 @@
   import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
+  import { seaState, visibility } from '../../utils/PostgSail'
 
   import logsBooks from '../../data/logbook.json'
 
+  const CacheStore = useCacheStore()
   const route = useRoute()
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -178,21 +166,7 @@
     name: null,
     notes: null,
   })
-  const handleSeaState = (sea_state) => {
-    if (sea_state) {
-      console.log('seaState-value:', sea_state.value + ', text:' + sea_state.text)
-    }
-  }
-  const handleVisibility = (visibility) => {
-    if (visibility) {
-      console.log('visibility-value:', visibility.value + ', text:' + visibility.text)
-    }
-  }
-  const cloudCoverage = ref(-1)
-  const sliderLabel = computed(() => 'x/' + cloudCoverage.value)
-  const handleCloudCoverage = (cloudCoverage) => {
-    console.log('cloudCoverage : ', cloudCoverage)
-  }
+
   const item = computed(() => {
     return apiData.row
       ? {
@@ -259,6 +233,11 @@
       const response = await api.log_update(id, payload)
       if (response) {
         console.log('log_update success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.logs = []
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
+        CacheStore.getAPI('logs')
       } else {
         throw { response }
       }
@@ -355,103 +334,53 @@
     }
   }*/
 
+  // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),
     handleGPX = (id) => handleExport_common('gpx', id),
     handleGeoJSON = (id) => handleExport_common('geojson2', id),
     handleExport_common = (format, id) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
 
-  const seaState = ref([
-    {
-      value: -1,
-      text: '',
-    },
-    {
-      value: 0,
-      text: 'Glassy calm (0m)',
-    },
-    {
-      value: 1,
-      text: 'Rippled calm (0-0.1m)',
-    },
-    {
-      value: 2,
-      text: 'Smooth (0.1-0.5m)',
-    },
-    {
-      value: 3,
-      text: 'Slight (0.5-1.25m)',
-    },
-    {
-      value: 4,
-      text: 'Moderate (1.25-2.5m)',
-    },
-    {
-      value: 5,
-      text: 'Rough (2.5-4m)',
-    },
-    {
-      value: 6,
-      text: 'Very rough (4-6m)',
-    },
-    {
-      value: 7,
-      text: 'High (6-9m)',
-    },
-    {
-      value: 8,
-      text: 'Very high (9-14m)',
-    },
-    {
-      value: 9,
-      text: 'Phenomenal (14m+)',
-    },
-  ])
-  const visibility = ref([
-    {
-      value: -1,
-      text: '',
-    },
-    {
-      value: 0,
-      text: 'Dense fog (<45m)',
-    },
-    {
-      value: 1,
-      text: 'Thick fog (<180m)',
-    },
-    {
-      value: 2,
-      text: 'Fog (<360m)',
-    },
-    {
-      value: 3,
-      text: 'Moderate fog (<0.5NM)',
-    },
-    {
-      value: 4,
-      text: 'Thin fog (<1NM)',
-    },
-    {
-      value: 5,
-      text: 'Poor visibility (<2NM)',
-    },
-    {
-      value: 6,
-      text: 'Moderate visibility (<5NM)',
-    },
-    {
-      value: 7,
-      text: 'Good visibility (<10NM)',
-    },
-    {
-      value: 8,
-      text: 'Very good visibility (<30NM)',
-    },
-    {
-      value: 9,
-      text: 'Excellent visibility (>30NM)',
-    },
-  ])
+  // handle Observations
+  function handleSeaState(new_sea_state) {
+    if (new_sea_state) {
+      console.log('sea_state-value:', new_sea_state.value + ', text:' + new_sea_state.text)
+      updateObservations({ seaState: new_sea_state.value })
+    }
+  }
+  const handleVisibility = (new_visibility) => {
+    if (visibility) {
+      console.log('visibility-value:', new_visibility.value + ', text:' + new_visibility.text)
+      updateObservations({ visibility: new_visibility.value })
+    }
+  }
+
+  const cloudCoverage = computed(() => {
+    return item.value?.cloudCoverage || -1
+  })
+  const sliderLabel = computed(() => `${cloudCoverage.value}/8`)
+  const handleCloudCoverage = (new_cloudCoverage) => {
+    console.log('cloudCoverage : ', new_cloudCoverage)
+    updateObservations({ cloudCoverage: new_cloudCoverage })
+  }
+  function updateObservations(new_obs) {
+    // runBusy handles isBusy & apiError
+    console.log(new_obs)
+    const id = route.params.id
+    new PostgSail()
+      .update_observations({ _id: id, observations: { observations: new_obs } })
+      .then((response) => {
+        console.log('updateObservations success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.logs = []
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
+        CacheStore.getAPI('logs')
+      })
+      .catch((err) => {
+        console.log('updateObservations failed', err.message ?? err)
+        //throw err.message ?? err
+      })
+  }
 </script>
 
 <style lang="scss" scoped>

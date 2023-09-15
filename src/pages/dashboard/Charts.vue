@@ -80,7 +80,6 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
-  import moment from 'moment'
 
   const { t } = useI18n()
 

@@ -1,6 +1,6 @@
 import type { JSObj, Callback_1Param, JSONObject } from '../data/types'
 import defineAPIStore from './defineAPIStore'
-//import useGlobalStore from './useGlobalStore'
+import moment from 'moment'
 
 const assertions: JSObj = {
   notArray: [
@@ -26,6 +26,7 @@ export const useCacheStore = defineAPIStore('cache', {
     stats: new Array(12).fill(0),
     tiles: new Array(3).fill(0),
     lines: {},
+    matrix: [],
   }),
 
   actions: {
@@ -66,7 +67,38 @@ export const useCacheStore = defineAPIStore('cache', {
       this.lines = obj
       return obj
     },
-    /*
+    matrixChartbyMonthDay(): Array<string> {
+      const obj: { [key: string]: any } = []
+      // Create a 12 months array per 7 days array zero fill
+      const months = moment.months()
+      const weekdays = moment.weekdays()
+      for (const [key, value] of Object.entries(months)) {
+        //console.log(key, value)
+        obj[value] = {}
+        for (const [subkey, subvalue] of Object.entries(weekdays)) {
+          //console.log(key, value, subkey, subvalue)
+          obj[value][subvalue] = 0
+        }
+      }
+      // Sum the days.
+      this.logs.forEach(
+        ({ Started }: { Started: string }) =>
+          (obj[moment(Started).format('MMMM')][moment(Started).format('dddd')] += 1),
+      )
+      // Create the matrix array of json
+      // [ { x: 'January', y: 'Sunday', v: 0 }, ..., { x: 'December', y: 'Saturday', v: 0 } ]
+      const z: any[] = []
+      for (const [key, value] of Object.entries(months)) {
+        //console.log(key, value)
+        for (const [subkey, subvalue] of Object.entries(weekdays)) {
+          //console.log(key, value, subkey, subvalue, obj[value][subvalue])
+          z.push({ x: value, y: subvalue, v: obj[value][subvalue] })
+        }
+      }
+      console.log('CacheStore matrixChartbyMonthDay obj', obj)
+      this.matrix = z
+      return z
+    } /*
     pieChartLogs(): JSONObject {
       const obj = {
         total_duration: [] as number[],
@@ -101,18 +133,51 @@ export const useCacheStore = defineAPIStore('cache', {
       return obj
     },
     pieChartStays(): JSONObject {
-      const obj = {}
-      // Extract Sum Distances,Sum Duration of logs
-      //this.stays.forEach(({ id, Distance, Duration }) => {})
-      console.log('CacheStore pieChartStays obj', obj)
+      let total_duration = 0
+      const obj = {
+        Unclassified: { duration: 0, percentage: 0 },
+        Anchor: { duration: 0, percentage: 0 },
+        Buoy: { duration: 0, percentage: 0 },
+        Dock: { duration: 0, percentage: 0 },
+      }
+      // Extract Sum Duration of stays by type
+      this.stays.value.forEach(({ stayed_at_id, duration }: { stayed_at_id: number; duration: any }) => {
+        total_duration += moment.duration(duration)
+        switch (stayed_at_id) {
+          case 1:
+            obj.Unclassified.duration += moment.duration(duration)
+            break
+          case 2:
+            obj.Anchor.duration += moment.duration(duration)
+            break
+          case 3:
+            obj.Buoy.duration += moment.duration(duration)
+            break
+          case 4:
+            obj.Dock.duration += moment.duration(duration)
+            break
+          default:
+            break
+        }
+      })
+      obj.Unclassified.percentage = (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) * 100
+      obj.Anchor.percentage = (moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100
+      obj.Buoy.percentage = (moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100
+      obj.Dock.percentage = (moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100
+      obj.Unclassified.duration = Math.trunc(moment.duration(obj.Unclassified.duration).as('days'))
+      obj.Anchor.duration = Math.trunc(moment.duration(obj.Anchor.duration).as('days'))
+      obj.Buoy.duration = Math.trunc(moment.duration(obj.Buoy.duration).as('days'))
+      obj.Dock.duration = Math.trunc(moment.duration(obj.Dock.duration).as('days'))
+      console.log('pieChartStays obj', obj)
       return obj
-    },*/
+    },*/,
   } as JSObj,
 
   getters: {
     getInfoTiles: (state: JSObj) => state.tiles,
     logs_by_month: (state: JSObj) => state.stats,
     logs_by_year_by_month: (state: JSObj) => state.lines,
+    logs_by_month_by_weekday: (state: JSObj) => state.matrix,
   },
 })
 export default useCacheStore

@@ -86,8 +86,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <va-slider
-                    v-if="item.cloudCoverage"
-                    v-model="item.cloudCoverage"
+                    v-model="cloudCoverage"
                     stateful
                     track-label-visible
                     invert-label
@@ -209,6 +208,7 @@
       apiData.row = response[0]
       formData.name = apiData.row.Name || null
       formData.notes = apiData.row.Notes || null
+      cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
     } catch (e) {
       apiError.value = e
       console.warn('Get data from json...', apiError.value)
@@ -337,30 +337,29 @@
   // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),
     handleGPX = (id) => handleExport_common('gpx', id),
-    handleGeoJSON = (id) => handleExport_common('geojson2', id),
+    handleGeoJSON = (id) => handleExport_common('geojson', id),
     handleExport_common = (format, id) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
 
   // handle Observations
   function handleSeaState(new_sea_state) {
     if (new_sea_state) {
-      console.log('sea_state-value:', new_sea_state.value + ', text:' + new_sea_state.text)
+      console.log('handleSeaState:', new_sea_state.value + ', text:' + new_sea_state.text)
       updateObservations({ seaState: new_sea_state.value })
     }
   }
   const handleVisibility = (new_visibility) => {
     if (visibility) {
-      console.log('visibility-value:', new_visibility.value + ', text:' + new_visibility.text)
+      console.log('handleVisibility:', new_visibility.value + ', text:' + new_visibility.text)
       updateObservations({ visibility: new_visibility.value })
     }
   }
 
-  const cloudCoverage = computed(() => {
-    return item.value?.cloudCoverage || -1
-  })
+  const cloudCoverage = ref(-1)
   const sliderLabel = computed(() => `${cloudCoverage.value}/8`)
   const handleCloudCoverage = (new_cloudCoverage) => {
-    console.log('cloudCoverage : ', new_cloudCoverage)
+    console.log('handleCloudCoverage : ', new_cloudCoverage)
     updateObservations({ cloudCoverage: new_cloudCoverage })
+    cloudCoverage.value = new_cloudCoverage
   }
   function updateObservations(new_obs) {
     // runBusy handles isBusy & apiError

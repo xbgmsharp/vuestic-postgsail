@@ -5,11 +5,12 @@
 
 import i18n from '../i18n/index'
 const { t } = i18n.global
+import { dateFormatUTC } from './dateFormatter'
 
 /*
  * Badges definition
  */
-export const badges = {
+export const badges: { [key: string]: any } = {
   Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman') },
   'Wake Maker': { image: '/wake_maker.png', description: t('badges.Wake Maker') },
   Explorer: { image: '/explorer.png', description: t('badges.Explorer') },
@@ -23,6 +24,32 @@ export const badges = {
   'Captain Award': { svg: true, description: t('badges.Captain Award') },
 }
 
+export async function userBadges(payload: undefined | any) {
+  const default_badge = { default: { svg: false, description: t('badges.default') } }
+  const user_badges = payload || {}
+  for (const key in badges) {
+    //console.log(key, badges[key])
+    if (key in user_badges && 'date' in user_badges[key]) {
+      user_badges[key] = { ...user_badges[key], ...badges[key] }
+      user_badges[key]['disabled'] = false
+      user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+    } else {
+      if (key in badges) {
+        user_badges[key] = badges[key]
+        user_badges[key]['disabled'] = true
+      }
+    }
+  }
+  for (const key in user_badges) {
+    if (!(key in badges)) {
+      user_badges[key] = { ...user_badges[key], ...default_badge['default'] }
+      user_badges[key]['description'] = `${default_badge['default']['description']} ${key}!`
+      user_badges[key]['disabled'] = false
+      user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+    }
+  }
+  return user_badges
+}
 /*
  * Moment locale mapping definition
  */

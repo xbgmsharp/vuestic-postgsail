@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
     <va-card
-      v-for="(item, key) in user_badges"
+      v-for="(item, key) in userBadges"
       :key="key"
       :disabled="item.disabled"
       stripe
@@ -44,25 +44,16 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
-  import { dateFormatUTC } from '../../utils/dateFormatter'
   import IconAward from '../../components/icons/IconAward.vue'
   import IconNavigation from '../../components/icons/IconNavigation.vue'
 
   const GlobalStore = useGlobalStore()
-  const { settings } = storeToRefs(GlobalStore)
+  const { userBadges } = storeToRefs(GlobalStore)
 
   const { t } = useI18n()
-  const isBusy = ref(false)
-  const user_badges = ref(settings.value.preferences.badges || {})
-
-  onMounted(async () => {
-    isBusy.value = true
-    console.log('user_badges', user_badges.value)
-  })
 </script>
 
 <style lang="scss" scoped>

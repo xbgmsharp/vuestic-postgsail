@@ -166,7 +166,6 @@
   import lMap from '../../components/maps/leafletMap.vue'
   import PostgSail from '../../services/api-client'
   import moment from 'moment/min/moment-with-locales'
-  import { dateFormatUTC } from '../../utils/dateFormatter'
 
   const { t, locale } = useI18n()
   const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
@@ -175,28 +174,12 @@
   })
 
   const GlobalStore = useGlobalStore()
-  const { userName, versions, currentWeather, Monitoring2 } = storeToRefs(GlobalStore)
-  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2 } = GlobalStore
+  const { userName, versions, currentWeather, Monitoring2, userBadges } = storeToRefs(GlobalStore)
+  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2, set_userBadges } = GlobalStore
 
   const CacheStore = useCacheStore()
   const { getInfoTiles } = storeToRefs(CacheStore)
   const { getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
-  const { settings } = storeToRefs(GlobalStore)
-  const badges = ref({
-    Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman') },
-    'Wake Maker': { image: '/wake_maker.png', description: t('badges.Wake Maker') },
-    Explorer: { image: '/explorer.png', description: t('badges.Explorer') },
-    'Mooring Pro': { image: '/mooring_pro.png', description: t('badges.Mooring Pro') },
-    Anchormaster: { image: '/anchormaster.png', description: t('badges.Anchormaster') },
-    Traveler: { image: '/traveler.png', description: t('badges.Traveler') },
-    Stormtrooper: { image: '/storm_trooper.png', description: t('badges.Stormtrooper') },
-    'Club Alaska': { image: '/club_alaska.png', description: t('badges.Club Alaska') },
-    'Tropical Traveler': { image: '/tropical_traveler.png', description: t('badges.Tropical Traveler') },
-    'Navigator Award': { svg: true, description: t('badges.Navigator Award') },
-    'Captain Award': { svg: true, description: t('badges.Captain Award') },
-  })
-  const default_badge = { default: { svg: false, description: t('badges.default') } }
-  const user_badges = ref(settings.value.preferences.badges || {})
 
   console.log('Dashboard', __APP_VERSION__, __VITE_VERSION__, import.meta.env)
   const vite_version = ref(__VITE_VERSION__)
@@ -324,27 +307,6 @@
   })
 
   onMounted(async () => {
-    for (let key in badges.value) {
-      //console.log(key, badges.value[key])
-      if (key in user_badges.value && 'date' in user_badges.value[key]) {
-        user_badges.value[key] = { ...user_badges.value[key], ...badges.value[key] }
-        user_badges.value[key]['disabled'] = false
-        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
-      } else {
-        if (key in badges.value) {
-          user_badges.value[key] = badges.value[key]
-          user_badges.value[key]['disabled'] = true
-        }
-      }
-    }
-    for (let key in user_badges.value) {
-      if (!(key in badges.value)) {
-        user_badges.value[key] = { ...user_badges.value[key], ...default_badge['default'] }
-        user_badges.value[key]['description'] = `${default_badge['default']['description']} ${key}!`
-        user_badges.value[key]['disabled'] = false
-        user_badges.value[key]['date'] = dateFormatUTC(user_badges.value[key]['date'])
-      }
-    }
     // Load version
     await fetchVersions(app_version.value)
     // Load cache

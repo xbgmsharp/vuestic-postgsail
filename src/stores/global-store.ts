@@ -4,6 +4,7 @@ import PostgSail from '../services/api-client'
 import deepMerge from '../utils/deepMerge'
 import WeatherForecast from '../services/openweathermap'
 import moment from 'moment'
+import { userBadges } from '../utils/PostgSail'
 
 const defaultState = {
   keepLoggedIn: false,
@@ -74,6 +75,7 @@ const defaultState = {
     has_vessel: false,
   },
   vessel: {},
+  badges: {},
 }
 
 export const useGlobalStore = defineStore('global', {
@@ -135,6 +137,7 @@ export const useGlobalStore = defineStore('global', {
       } catch (error) {
         console.error(error)
       }
+      await this.set_userBadges()
       return this.settings
     },
     async updatePref(key: string, value: any): Promise<any> {
@@ -190,6 +193,12 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
+    async set_userBadges() {
+      const user_badges = this.settings?.preferences?.badges || {}
+      console.log('set_userBadges', user_badges)
+      this.badges = await userBadges(user_badges)
+      //return this.badges
+    },
   },
   getters: {
     userName: (state) => state.settings?.username,
@@ -202,7 +211,8 @@ export const useGlobalStore = defineStore('global', {
     Monitoring2: (state) => state.monitoring2,
     openWeather: (state) => state.openweather,
     currentWeather: (state) => state.currentweather,
-    Badges: (state) => state.settings?.preferences?.badges,
+    Badges: (state) => state.settings?.preferences?.badges || {},
+    userBadges: (state) => state?.badges || {},
   },
 })
 export default useGlobalStore

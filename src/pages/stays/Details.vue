@@ -29,6 +29,7 @@
                     placeholder="Name"
                     outline
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                    style="min-width: 100px; max-width: 50%"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.moorage') }}</dt>
@@ -39,9 +40,11 @@
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.duration') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.duration }}</dd>
-                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
+                  {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }}
+                </dd>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
+                <dd class="flex">
                   <div>
                     <StayAt
                       v-if="item.stayed_at_id"
@@ -102,7 +105,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours, durationI18nDays } from '../../utils/dateFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'

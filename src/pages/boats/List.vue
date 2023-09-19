@@ -16,6 +16,10 @@
             {{ value }}
           </template>
         </template>
+        <template #cell(status)="{ value }">
+          <template v-if="!value"> <va-avatar size="small" color="success" class="mr-6" /> Online </template>
+          <template v-else> <va-avatar size="small" color="warning" class="mr-6" /> Offline </template>
+        </template>
         <template #cell(lastContact)="{ value }">
           {{ value }}
         </template>
@@ -54,6 +58,7 @@
   const columns = ref([
     { key: 'name', label: t('boats.boat.name'), sortable: true },
     { key: 'mmsi', label: t('boats.boat.mmsi'), sortable: true },
+    { key: 'status', label: t('boats.boat.status'), sortable: true },
     { key: 'lastContact', label: t('boats.boat.last_contact'), sortable: true },
     { key: 'createdAt', label: t('boats.boat.created_at'), sortable: true },
     { key: 'actions', label: '' },
@@ -61,13 +66,14 @@
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.map((row) => {
-          const { name, mmsi, last_contact, created_at } = row
+          const { name, mmsi, last_contact, created_at, offline } = row
           if (last_contact) {
             vesselSuccess.value = true
           }
           return {
             name: name,
             mmsi: mmsi,
+            status: offline,
             lastContact: last_contact ? dateFormatUTC(last_contact, locale.value) : 'Pending',
             createdAt: dateFormatUTC(created_at, locale.value),
           }

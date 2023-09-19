@@ -3,31 +3,10 @@
     <nodatayet />
   </template>
   <template v-else>
-    <!--
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-date-input
-                v-model="filter.dateRange"
-                :label="$t('logs.list.filter.date_range')"
-                :readonly="false"
-                mode="range"
-              />
-            </div>
-            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="">{{
-              $t('logs.list.filter.reset')
-            }}</va-button>
-          </div>
-        </div>
-      </va-card-content>
-    </va-card>
-    -->
     <div class="grid grid-cols-12 items-start gap-6 mb-3">
       <va-card class="col-span-12 lg:col-span-6 p-4">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-title>{{ t('stats.logs') }}</va-card-title>
+        <!--
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
@@ -35,25 +14,137 @@
                 <td><b> Date Range </b></td>
                 <td>
                   <div class="col-span-12 md:col-span-6 flex">
-                    <va-date-input v-model="start_date" :label="$t('logs.list.filter.start_date')" :readonly="false" />
+                    <va-date-input
+                      v-model="start_date"
+                      :label="$t('logs.list.filter.start_date')"
+                      :readonly="false"
+                      @update:modelValue="updateStartDate"
+                    />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <va-date-input v-model="end_date" :label="$t('logs.list.filter.end_date')" :readonly="false" />
+                    <va-date-input
+                      v-model="end_date"
+                      :label="$t('logs.list.filter.end_date')"
+                      :readonly="false"
+                      @update:modelValue="updateEndDate"
+                    />
                   </div>
                 </td>
               </tr>
-              <tr v-for="(value, index) in Object.entries(stats_logs)" :key="index">
+              <tr v-for="(value, index) in Object.entries(items_logs)" :key="index">
                 <td>
-                  <b>{{ value[0] }}</b>
+                  <b>{{ $t(`stats.${value[0]}`) }}</b>
                 </td>
                 <td>{{ value[1] }}</td>
               </tr>
             </tbody>
           </table>
         </va-card-content>
+        -->
+        <va-card-content>
+          <template v-if="apiError">
+            <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+          </template>
+          <va-inner-loading :loading="isBusy">
+            <template v-if="stats_logs && stats_logs.count">
+              <table class="va-table va-table--hoverable va-table--striped">
+                <tbody>
+                  <tr>
+                    <td class="va-text-bold">Date Range</td>
+                    <td>
+                      <va-date-input
+                        v-model="stats_logs.first_date"
+                        :label="$t('stats.first_date')"
+                        :readonly="false"
+                        @update:modelValue="updateStartDate"
+                      />
+                      &nbsp;&nbsp;&nbsp;
+                      <va-date-input
+                        v-model="stats_logs.last_date"
+                        :label="$t('stats.last_date')"
+                        :readonly="false"
+                        @update:modelValue="updateEndDate"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.name') }}</td>
+                    <td>
+                      {{ stats_logs.name }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.count') }}</td>
+                    <td>
+                      {{ stats_logs.count }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.sum_distance') }}</td>
+                    <td>
+                      <router-link class="link" :to="{ name: 'logs' }">
+                        {{ distanceFormat(stats_logs.sum_distance) }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.sum_duration') }}</td>
+                    <td>
+                      <router-link class="link" :to="{ name: 'logs' }">
+                        {{ durationFormatHours(stats_logs.sum_duration) }}
+                        {{ durationI18nHours(stats_logs.sum_duration) }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.max_speed') }}</td>
+                    <td>
+                      <router-link class="link" :to="{ name: 'log-details', params: { id: stats_logs.max_speed_id } }">
+                        {{ stats_logs.max_speed }}
+                      </router-link>
+                      knots
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.max_wind_speed') }}</td>
+                    <td>
+                      <router-link
+                        class="link"
+                        :to="{ name: 'log-details', params: { id: stats_logs.max_wind_speed_id } }"
+                      >
+                        {{ stats_logs.max_wind_speed }}
+                      </router-link>
+                      knots
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.longest_nonstop') }}</td>
+                    <td>
+                      <router-link
+                        class="link"
+                        :to="{ name: 'log-details', params: { id: stats_logs.max_distance_id } }"
+                      >
+                        {{ distanceFormat(stats_logs.max_distance) }}
+                      </router-link>
+                      /
+                      <router-link
+                        class="link"
+                        :to="{ name: 'log-details', params: { id: stats_logs.max_duration_id } }"
+                      >
+                        {{ durationFormatHours(stats_logs.max_duration) }}
+                        {{ durationI18nHours(stats_logs.max_duration) }}
+                      </router-link>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </va-inner-loading>
+        </va-card-content>
       </va-card>
 
       <va-card class="col-span-12 lg:col-span-6 p-4">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-title>{{ t('stats.moorages') }}</va-card-title>
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
@@ -61,7 +152,13 @@
                 <td>
                   <b>{{ value[0] }}</b>
                 </td>
-                <td>{{ value[1] }}</td>
+                <td>
+                  <template v-if="value[0] === 'Time Spent Away'"> {{ durationFormatDays(value[1]) }} days </template>
+                  <template v-if="value[0] === 'Time Spent at Home Port(s)'">
+                    {{ durationFormatDays(value[1]) }} days
+                  </template>
+                  <template v-else> {{ value[1] }} </template>
+                </td>
               </tr>
               <tr v-for="(value, index) in Object.entries(polarChartStays)" :key="index">
                 <td class="sub-setting">
@@ -72,7 +169,7 @@
               <tr :key="1">
                 <td><b> Badges </b></td>
                 <td class="badges-stats">
-                  <div v-for="(item, key) in mybadges" :key="key">
+                  <div v-for="(item, key) in userBadges" :key="key">
                     <div v-if="!item.disabled">
                       <img v-if="item.image" class="max-h-8 w-[fit-content] mr-1" fit="contain" :src="item.image" />
                       <IconAward v-else-if="item.svg" class="max-h-8 w-[fit-content] mr-1" fit="contain" />
@@ -104,56 +201,40 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed, reactive, watch } from 'vue'
+  import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
-  import nodatayet from '../../components/noDataScreen.vue'
-  import VaChart from '../../components/va-charts/VaChart.vue'
+  //import nodatayet from '../../components/noDataScreen.vue'
+  //import VaChart from '../../components/va-charts/VaChart.vue'
+  const nodatayet = defineAsyncComponent(() => import('../../components/noDataScreen.vue'))
+  const VaChart = defineAsyncComponent(() => import('../../components/va-charts/VaChart.vue'))
   import { useGlobalStore } from '../../stores/global-store'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import moment from 'moment/min/moment-with-locales'
-  import IconAward from '../../components/icons/IconAward.vue'
-  import IconNavigation from '../../components/icons/IconNavigation.vue'
+  //import IconAward from '../../components/icons/IconAward.vue'
+  //import IconNavigation from '../../components/icons/IconNavigation.vue'
+  const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
+  const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
+  import { asBusy } from '../../utils/handleExports'
+  import { durationFormatDays, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
 
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
 
   const { t } = useI18n()
   const GlobalStore = useGlobalStore()
-  const { settings } = storeToRefs(GlobalStore)
+  const { userBadges } = storeToRefs(GlobalStore)
   const CacheStore = useCacheStore()
   const { logs, stays } = storeToRefs(CacheStore)
 
-  const getDefaultFilter = () => {
-    return {
-      dateRange: null,
-    }
-  }
-  const filter = reactive(getDefaultFilter())
   const isBusy = ref(false)
   const apiError = ref(null)
 
-  const mybadges = ref(settings.value.preferences.badges || {})
-  const start_date = ref(
-    logs.value[logs.value.length - 1] ? moment(logs.value[logs.value.length - 1].Started).format('DD MMM YYYY') : null,
-  )
-  const end_date = ref(moment(new Date()).format('DD MMM YYYY'))
   const stats_logs = ref({})
   const stats_moorages = ref({})
 
-  watch(
-    () => start_date.value,
-    (newStartDate, oldStartDate) => {
-      console.log('start_date has changed:', newStartDate)
-    },
-  )
-  watch(
-    () => end_date.value,
-    (newEndDate, oldEndDate) => {
-      console.log('end_date has changed:', newEndDate)
-    },
-  )
   /* TODO
    * Date formatting
    * Add i18n for all entries
@@ -162,7 +243,6 @@
    */
   const polarChartOptions = {
     responsive: true,
-    /*
     scales: {
       r: {
         pointLabels: {
@@ -173,7 +253,7 @@
           },
         },
       },
-    },*/
+    },
     plugins: {
       legend: {
         position: 'bottom',
@@ -185,7 +265,6 @@
     labels: ['Unclassified', 'Anchor', 'Mooring Buoys', 'Dock'],
     datasets: [
       {
-        label: 'Time Spent Away',
         data: [45, 5, 9, 20],
         backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)'],
         borderWidth: 1,
@@ -197,7 +276,6 @@
     labels: ['Not Underway', 'Underway'],
     datasets: [
       {
-        label: 'Time Spent Underway',
         data: [51.5, 48.5],
         backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)'],
         borderWidth: 1,
@@ -208,14 +286,12 @@
   const polarChartDataComputed = computed(() => {
     if (!Array.isArray(stays.value) || stays.value.length == 0) return polarChartData_default
     const obj = structuredClone(polarChartData_default)
-    // obj.datasets[0].data = [
-    //   polarChartStays.value.Unclassified.percentage,
-    //   polarChartStays.value.Anchor.percentage,
-    //   polarChartStays.value.Buoy.percentage,
-    //   polarChartStays.value.Dock.percentage,
-    // ]
-    obj.datasets[0].data = [14, 29, 9, 20]
-
+    obj.datasets[0].data = [
+      polarChartStays.value.Unclassified.percentage,
+      polarChartStays.value.Anchor.percentage,
+      polarChartStays.value.Buoy.percentage,
+      polarChartStays.value.Dock.percentage,
+    ]
     return obj
   })
 
@@ -327,12 +403,12 @@
       }
       // Get logs
       if (logs.value.length === 0) {
-        response = await useCacheStore().getAPI('logs')
+        response = await CacheStore.getAPI('logs')
         console.log('Get logs', response)
       }
       // Get stays
       if (stays.value.length === 0) {
-        response = await useCacheStore().getAPI('stays')
+        response = await CacheStore.getAPI('stays')
         console.log('Get stays', response)
       }
     } catch (e) {
@@ -348,7 +424,62 @@
     }
     console.log('logs', logs.value)
     console.log('stays', stays.value)
+
+    try {
+      let response = await api.stats_logs()
+      if (response.stats) {
+        console.log('stats_logs success', response)
+        stats_logs.value = response.stats
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      // If exit as we need coordinates
+      console.log('stats_logs failed', err)
+      return
+      //updateError.value = response.message
+    } finally {
+      //isBusy.value = false
+    }
+    // userBadges
+    console.log('stats userBadges', userBadges.value)
   })
+
+  function updateStartDate(new_start_date) {
+    // runBusy handles isBusy & apiError
+    console.log('updateStartDate', moment.utc(new_start_date).format('YYYY-MM-DD'))
+    updateStatsLogs(new_start_date, stats_logs.value.last_date)
+  }
+  function updateEndDate(new_end_date) {
+    // runBusy handles isBusy & apiError
+    console.log('updateEndDate', moment.utc(new_end_date).format('YYYY-MM-DD'))
+    updateStatsLogs(stats_logs.value.first_date, new_end_date)
+  }
+
+  async function updateStatsLogs() {
+    //moment(new_end_date.value).format('YYYY-MM-DD')
+    const payload = {
+      start_date: moment(stats_logs.value.first_date).format('YYYY-MM-DD'),
+      end_date: moment(stats_logs.value.last_date).format('YYYY-MM-DD'),
+    }
+    try {
+      const api = new PostgSail()
+      let response = await api.stats_logs(payload)
+      if (response.stats) {
+        console.log('updateStatsLogs success', response)
+        stats_logs.value = response.stats
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      // If exit as we need coordinates
+      console.log('updateStatsLogs failed', err)
+      return
+      //updateError.value = response.message
+    } finally {
+      //isBusy.value = false
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -365,5 +496,8 @@
   }
   .badges-stats {
     display: flex;
+  }
+  .link {
+    color: blue;
   }
 </style>

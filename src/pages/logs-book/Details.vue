@@ -22,7 +22,7 @@
                     placeholder="Name"
                     outline
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                    style="min-width: 100px; max-width: 40%"
+                    style="min-width: 100px; max-width: 50%"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.from') }}</dt>
@@ -36,6 +36,8 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }}
+                  /
+                  {{ durationI18nDays(item.duration) }}
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.distance') }}</dt>
                 <dd class="xs12 md6 pa-2">
@@ -145,7 +147,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { dateFormat, durationFormatHours, durationI18nHours, durationI18nDays } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'

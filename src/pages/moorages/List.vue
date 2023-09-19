@@ -94,10 +94,10 @@
               </router-link>
             </template>
             <template #cell(default_stay)="{ rowData }">
-              <div class="mb-6" style="max-width: 150px">
+              <div v-if="rowData.default_stay_id" style="max-width: 150px">
                 <StayAt
-                  v-if="rowData.default_stay_id"
                   :id="parseInt(rowData.id)"
+                  :key="rowData.id"
                   :data="parseInt(rowData.default_stay_id)"
                   @clickFromChildComponent="updateDefaultStay"
                 />

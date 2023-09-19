@@ -64,10 +64,11 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ rowData }">
-            <div class="mb-6" style="max-width: 120px">
+            <div v-if="rowData.stayed_at_id" style="max-width: 120px">
+              <!-- :key to enforce refresh on filter -->
               <StayAt
-                v-if="rowData.stayed_at_id"
                 :id="parseInt(rowData.id)"
+                :key="rowData.id"
                 :data="parseInt(rowData.stayed_at_id)"
                 @clickFromChildComponent="updateStayedAt"
               />
@@ -174,7 +175,7 @@
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample datas from local json...', apiError.value)
+        console.warn('Fallback using sample data from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...staysData)
       }

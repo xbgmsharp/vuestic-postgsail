@@ -29,10 +29,11 @@
                     placeholder="Name"
                     outline
                     :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                    style="min-width: 100px; max-width: 50%"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.departed') }}</dt>
-                <dd class="flex xs12 md6 pa-2">
+                <dd class="flex">
                   <div>
                     <StayAt
                       v-if="item.default_stay_id"

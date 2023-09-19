@@ -207,15 +207,23 @@
   },
   "stats": {
     "stats": "Statistics",
-    "logs": "logs stats",
-    "moorages": "moorages stats",
+    "logs": "Logs Statistics",
+    "moorages": "Moorages Statistics",
     "name": "Boat",
     "first": "First entry",
     "last": "Last entry",
     "unclassified": "Unclassified",
     "anchor": "Anchor",
     "buoy": "Buoy",
-    "dock": "Dock"
+    "dock": "Dock",
+    "count": "Number of Log Entries",
+    "first_date": "First entry",
+    "last_date": "Last entry",
+    "longest_nonstop": "Longest Nonstop Sail",
+    "max_speed": "Max Speed",
+    "max_wind_speed": "Max Wind Speed",
+    "sum_distance": "Total Distance",
+    "sum_duration": "Total Time Underway"
   },
   "boats": {
     "list": {
@@ -241,7 +249,8 @@
       "height": "Height",
       "length": "Length",
       "country": "Flag state",
-      "ship_type": "Ship type"
+      "ship_type": "Ship type",
+      "status": "Status"
     },
     "errors": {
       "name": "Name is required",

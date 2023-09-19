@@ -213,7 +213,15 @@
     "unclassified": "Nicht klassifiziert",
     "anchor": "Anker",
     "buoy": "Boje",
-    "dock": "Steg"
+    "dock": "Steg",
+    "count": "Number of Log Entries",
+    "first_date": "First entry",
+    "last_date": "Last entry",
+    "longest_nonstop": "Longest Nonstop Sail",
+    "max_speed": "Max Speed",
+    "max_wind_speed": "Max Wind Speed",
+    "sum_distance": "Total Distance",
+    "sum_duration": "Total Time Underway"
   },
   "boats": {
     "list": {
@@ -224,7 +232,7 @@
     },
     "boat": {
       "name": "Name | Namen",
-      "mmsi": "MMSI (optional)",
+      "mmsi": "MMSI (fakultativ)",
       "last_contact": "Letzter Kontakt",
       "created_at": "Erstellt am",
       "register": "Neues Schiff erfolgreich registriert.",

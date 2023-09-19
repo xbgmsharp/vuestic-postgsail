@@ -200,12 +200,23 @@
   },
   "stats": {
     "stats": "Statistics",
-    "logs": "logs stats",
-    "moorages": "moorages stats",
-    "unclassified": "Non classé",
-    "anchor": "Anchor",
-    "buoy": "Buoy",
-    "dock": "Dock"
+    "logs": "Logs Statistics",
+    "moorages": "Moorages Statistics",
+    "name": "Boat",
+    "first": "First entry",
+    "last": "Last entry",
+    "unclassified": "Unclassified",
+    "anchor": "Ancre",
+    "buoy": "Bouée",
+    "dock": "Dock",
+    "count": "Nombre d'entrées",
+    "first_date": "First entry",
+    "last_date": "Last entry",
+    "longest_nonstop": "La plus longue navigation sans escale",
+    "max_speed": "Max Speed",
+    "max_wind_speed": "Max Wind Speed",
+    "sum_distance": "Distance totale",
+    "sum_duration": "Temps total en navigation"
   },
   "boats": {
     "list": {
@@ -216,7 +227,7 @@
     },
     "boat": {
       "name": "Nom | Noms",
-      "mmsi": "MMSI (optional)",
+      "mmsi": "MMSI (facultatif)",
       "last_contact": "Dernier contact",
       "created_at": "Créé à",
       "token_modal": {

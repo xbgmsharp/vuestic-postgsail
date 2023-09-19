@@ -247,8 +247,8 @@ class ApiClient extends HttpClient {
   async stats_moorages_view() {
     return this.get(`stats_moorages_view`)
   }
-  async stats_logs() {
-    return this.get(`rpc/stats_logs_fn`)
+  async stats_logs(payload: JSObj) {
+    return this.post(`rpc/stats_logs_fn`, payload)
   }
 
   /*

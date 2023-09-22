@@ -121,7 +121,27 @@
     let multiplier = Math.max(map.value.getZoom(), 1)
     multiplier = Math.min(map.value.getZoom(), 9)
     console.log('multiplier', multiplier)
-    const anchorIcon = function (feature, latlng) {
+    const markerIcon = function (feature, latlng) {
+      if (feature.properties.stay_code == 3) {
+        return L.marker(latlng, {
+          icon: new L.Icon({
+            iconSize: [multiplier * 4, multiplier * 4],
+            iconAnchor: [multiplier * 2, multiplier * 2],
+            iconUrl: '/mooring_icon.png',
+            popupAnchor: [0, 0],
+          }),
+        })
+      }
+      if (feature.properties.stay_code == 4) {
+        return L.marker(latlng, {
+          icon: new L.Icon({
+            iconSize: [multiplier * 4, multiplier * 4],
+            iconAnchor: [multiplier * 2, multiplier * 2],
+            iconUrl: '/dock_icon.png',
+            popupAnchor: [0, 0],
+          }),
+        })
+      }
       return L.marker(latlng, {
         icon: new L.Icon({
           iconSize: [multiplier * 4, multiplier * 4],
@@ -150,7 +170,7 @@
     }
 
     const layer = L.geoJSON(geojson, {
-      pointToLayer: anchorIcon,
+      pointToLayer: markerIcon,
       onEachFeature: onEachMoorageFeaturePopup,
     }).addTo(map.value)
 

@@ -10,6 +10,7 @@ export const dateFormat = (dateString) => {
   return format(date, 'Pp')
 }
 export const durationFormat = (durationString) => {
+  // Duration need to be ISO format to be compatible with momentjs
   /*
   const [ hours, minutes, seconds ] = durationString.split(':')
   const duration = { hours, minutes, seconds }
@@ -41,4 +42,13 @@ export const durationI18nHours = (durationString, tr = 'units.time.hours') => {
 
 export const durationFormatDays = (durationString) => {
   return moment.duration(durationString).as('days').toFixed(2)
+}
+export const durationI18nDays = (durationString, tr = 'units.time.days') => {
+  // display "day" only if exactly 1; "hours" otherwise (e.g.: 0.8, 1.2):
+  //return t(tr, durationHours(durationString) === '1' ? 1 : 0)
+  // displaying "hour" vs "hours" delegated to Vue:
+  //return t(tr, parseInt(durationHours(durationString)))
+  // display "hour" up to and including 1 with gb.json "hour hours hours"
+  const durationD = durationFormatDays(durationString)
+  return t(tr, durationD === '1' ? 0 : parseInt(durationD))
 }

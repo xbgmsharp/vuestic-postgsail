@@ -23,6 +23,9 @@
   import PostgSail from '../../services/api-client'
   import mooragesGeoJSON from '../../data/moorages_map.json'
 
+  import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
+
   const isBusy = ref(false),
     apiError = ref(null),
     mapContainer = ref(),
@@ -187,8 +190,11 @@
     var popupContent = '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
     if (feature.properties && feature.properties.id) {
       console.log('popup onEachLineStringFeaturePopup')
-      let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h6><br/>
-        ${feature.properties._from_time}, ${feature.properties.distance} miles, ${feature.properties.duration} hours<br/></div>`
+      let date = dateFormatUTC(feature.properties._from_time)
+      let duration = durationFormatHours(feature.properties.duration)
+      let distance = distanceFormat(feature.properties.distance)
+      let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">From ${feature.properties.name}</a></h6><br/>
+        ${date}, ${distance} miles, ${duration} hours<br/></div>`
       // TODO should be done using i18n
       popupContent = text
     }
@@ -260,6 +266,9 @@
       if (response && response.geojson?.features) {
         return response.geojson
       } else {
+        if (!response.geojson?.features) {
+          return // no error if no data
+        }
         console.error('error find_log_to_moorage_fn', response)
         apiError.value = 'error find_log_to_moorage_fn'
         throw { response }

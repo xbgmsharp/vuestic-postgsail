@@ -241,7 +241,8 @@
       "height": "Altura",
       "length": "Comprimento",
       "country": "Estado de bandeira",
-      "ship_type": "Tipo de navio"
+      "ship_type": "Tipo de navio",
+      "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name is required",

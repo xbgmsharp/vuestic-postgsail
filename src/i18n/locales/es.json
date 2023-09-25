@@ -241,7 +241,8 @@
       "height": "Altura",
       "length": "Longeur",
       "country": "Estado del pabellón",
-      "ship_type": "Tipo de barco"
+      "ship_type": "Tipo de barco",
+      "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name is required",

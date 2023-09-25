@@ -247,7 +247,8 @@
       "height": "Höhe",
       "length": "Länge",
       "country": "Flaggenstaat",
-      "ship_type": "Schiffstyp"
+      "ship_type": "Schiffstyp",
+      "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name ist erforderlich",

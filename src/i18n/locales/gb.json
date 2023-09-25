@@ -250,7 +250,8 @@
       "length": "Length",
       "country": "Flag state",
       "ship_type": "Ship type",
-      "status": "Status"
+      "status": "Status",
+      "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name is required",

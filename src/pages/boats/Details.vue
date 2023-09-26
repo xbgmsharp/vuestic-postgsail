@@ -40,10 +40,24 @@
               </template>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.ship_type') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.ship_type }}</dd>
+              <template v-if="item.plugin_version">
+                <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.plugin_version') }}</dt>
+                <dd class="flex">
+                  <template v-if="item.plugin_version === '0.1.0'">
+                    <va-chip color="success" class="mr-6 mb-2">
+                      {{ item.plugin_version }}
+                    </va-chip> </template
+                  ><template v-else>
+                    <va-chip color="warning" class="mr-6 mb-2">
+                      {{ item.plugin_version }}
+                    </va-chip>
+                  </template>
+                </dd>
+              </template>
               <template v-if="item.mmsi">
                 <dt class="flex xs12 md6 pa-2 font-bold">VesselFinder</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <a :href="`https://www.vesselfinder.com/vessels/details/${item.mmsi}`" target="_blank"
+                  <a :href="`https://www.vesselfinder.com/vessels?name=${item.mmsi}`" target="_blank"
                     >VesselFinder <va-icon name="fa-external-link" size="small"
                   /></a>
                 </dd>
@@ -92,6 +106,7 @@
           country: apiData.row.country,
           flag: apiData.row.alpha_2,
           ship_type: apiData.row.ship_type,
+          plugin_version: apiData.row.plugin_version,
         }
       : {}
   })

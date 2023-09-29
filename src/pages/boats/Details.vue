@@ -19,9 +19,9 @@
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.mmsi') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.mmsi }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.last_contact') }}</dt>
-              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.lastContact) }}</dd>
+              <dd class="flex xs12 md6 pa-2">{{ item.lastContact }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
-              <dd class="flex xs12 md6 pa-2">{{ dateFormat(item.createdAt) }}</dd>
+              <dd class="flex xs12 md6 pa-2">{{ item.createdAt }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.beam') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.beam }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.height') }}</dt>
@@ -48,9 +48,11 @@
                       {{ item.plugin_version }}
                     </va-chip> </template
                   ><template v-else>
-                    <va-chip color="warning" class="mr-6 mb-2">
-                      {{ item.plugin_version }}
-                    </va-chip>
+                    <va-popover icon="warning" :message="$t('boats.messages.plugin_version')">
+                      <va-chip color="warning" class="mr-6 mb-2">
+                        {{ item.plugin_version }}
+                      </va-chip>
+                    </va-popover>
                   </template>
                 </dd>
               </template>
@@ -82,7 +84,7 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
-  import { dateFormat } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
   import vesselsDatas from '../../data/boats.json'
@@ -97,8 +99,8 @@
       ? {
           mmsi: apiData.row.mmsi,
           name: apiData.row.name,
-          lastContact: apiData.row.last_contact,
-          createdAt: apiData.row.created_at,
+          lastContact: dateFormatUTC(apiData.row.last_contact),
+          createdAt: dateFormatUTC(apiData.row.created_at),
           geoJson: apiData.row.geojson,
           beam: apiData.row.beam,
           height: apiData.row.height,
@@ -134,7 +136,7 @@
       const { response } = err
       apiError.value = response.message
       if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample datas from local json...', apiError.value)
+        console.warn('Fallback using sample data from local json...', apiError.value)
         console.warn('Get data from json...', apiError.value)
         const row = vesselsDatas.find((row) => row.id == route.params.id)
         apiData.row = row

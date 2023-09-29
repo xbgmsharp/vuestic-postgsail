@@ -7,6 +7,9 @@
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
 
+  import { dateFormatUTC } from '../../utils/dateFormatter.js'
+  //import { speedFormat } from '../../utils/speedFormatter.js'
+
   /*
    * TODO
    * Add boat name
@@ -138,12 +141,15 @@
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
         if (feature.properties && feature.properties.time) {
-          console.log(`popup`)
+          console.log(`popup`, feature.properties)
+          let time = dateFormatUTC(feature.properties.time)
+          //let speed = speedFormat(feature.properties.speedoverground) || 0
+          let latitude = parseFloat(feature.properties.latitude).toFixed(5)
+          let longitude = parseFloat(feature.properties.longitude).toFixed(5)
           let text = `<div class='center'><h4>${feature.geometry.type}</h4></div><br/>
-              Time: ${feature.properties.time}<br/>
-              Boat Speed: ${feature.properties.speedoverground}<br/>
-              Latitude: ${feature.properties.latitude}<br/>
-              Longitude: ${feature.properties.longitude}<br/>`
+              Time: ${time}<br/>
+              Latitude: ${latitude}<br/>
+              Longitude: ${longitude}<br/>`
           popupContent = text
         }
         layer.bindPopup(popupContent)

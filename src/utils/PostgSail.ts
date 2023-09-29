@@ -50,10 +50,6 @@ export async function userBadges(payload: undefined | any) {
   }
   return user_badges
 }
-/*
- * Moment locale mapping definition
- */
-export const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
 
 /*
  * stayed_at options definition

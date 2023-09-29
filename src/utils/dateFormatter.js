@@ -2,7 +2,19 @@ import { format } from 'date-fns'
 import moment from 'moment/min/moment-with-locales'
 import i18n from '../i18n/index.ts'
 
-const { t } = i18n.global
+const { t, locale } = i18n.global
+
+/*
+ * Moment locale mapping definition
+ */
+export const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
+function moment_locale() {
+  return locale_mapping[locale.value] || 'en'
+}
+
+export const fromNow = (dateString) => {
+  return moment.utc(dateString).locale(moment_locale()).fromNow()
+}
 
 export const dateFormat = (dateString) => {
   if (!dateString) return null
@@ -18,10 +30,19 @@ export const durationFormat = (durationString) => {
   */
   return durationString
 }
-export const dateFormatUTC = (dateString, local = 'en') => {
+export const dateFormatUTC = (dateString, format = 'll LT') => {
   if (!dateString) return null
-  const date = moment.utc(dateString).locale(local).format('L LT')
+  //const date = moment.utc(dateString).locale(moment_locale()).format('L LT')
+  const date = moment.utc(dateString).locale(moment_locale()).format(format)
   return date
+}
+
+export function localTime() {
+  return moment().locale(moment_locale()).format('LT')
+}
+
+export function nowUTC() {
+  return moment.utc()
 }
 
 export const durationHours = (durationString) => {

@@ -248,12 +248,19 @@
       "length": "Länge",
       "country": "Flaggenstaat",
       "ship_type": "Schiffstyp",
+      "status": "Status",
       "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name ist erforderlich",
       "param": "Bitte überprüfen Sie die Parameter",
       "length": "Mindestens 4 Zeichen"
+    },
+    "messages": {
+      "pending": "Your boat has sent data to PostgSail yet, things should be fine when she comes back online",
+      "offline": "Your boat has been offline since {0} but it is configured for PostgSail, things should be fine when she comes back online",
+      "online": "Your boat is online, last data received {0}",
+      "plugin_version": "You are running an older version of PostgSail plugin. Please upgrade to version 2.0.1"
     }
   },
   "profile": {

@@ -243,7 +243,7 @@
         "title": "Boat's token",
         "token": "Token",
         //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now.",
-        "message": "Copy paste this token into your postgsail plugin instance of signalk."
+        "message": "Copy paste this token into your PostgSail plugin instance of Signalk."
       },
       "beam": "Beam",
       "height": "Height",
@@ -256,7 +256,13 @@
     "errors": {
       "name": "Name is required",
       "param": "Please check parameters",
-      "length": "Minimum 4 caracters"
+      "length": "Minimum 4 characters"
+    },
+    "messages": {
+      "pending": "Your boat has not sent any data to PostgSail yet, things should be fine when she connects",
+      "offline": "Your boat has been offline since {0} but it is configured for PostgSail, things should be fine when she comes back online",
+      "online": "Your boat is online, last data received {0}",
+      "plugin_version": "You are running an older version of PostgSail plugin. Please upgrade to version 2.0.1"
     }
   },
   "profile": {
@@ -348,7 +354,7 @@
     },
     "offline": {
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
-      "lastupdate": "We have not received any data from your collector within the last 70 minutes."
+      "lastupdate": "We have not received any data from your boat within the last 70 minutes."
     }
   },
   "units": {

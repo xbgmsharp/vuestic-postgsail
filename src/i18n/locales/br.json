@@ -242,11 +242,19 @@
       "length": "Comprimento",
       "country": "Estado de bandeira",
       "ship_type": "Tipo de navio",
+      "status": "Status",
       "plugin_version": "Plugin version"
     },
     "errors": {
       "name": "Name is required",
-      "param": "Please check your parameters"
+      "param": "Please check your parameters",
+      "length": "Minimum 4 characters"
+    },
+    "messages": {
+      "pending": "Seu barco ainda não enviou nenhum dado para o PostgSail, tudo deve ficar bem quando ele se conectar",
+      "offline": "Seu barco está off-line desde {0}, mas está configurado para PostgSail. Tudo deverá ficar bem quando ele voltar a ficar on-line",
+      "online": "Seu barco está on-line, últimos dados recebidos {0}",
+      "plugin_version": "Você está executando uma versão mais antiga do plugin PostgSail. Atualize para a versão 2.0.1"
     }
   },
   "profile": {
@@ -335,7 +343,7 @@
     },
     "offline": {
       "offline": "Sua embarcação está offline. O monitoramento em tempo real requer uma conexão com a Internet.",
-      "lastupdate": "Não recebemos nenhum dado do seu coletor nos últimos 70 minutos."
+      "lastupdate": "Não recebemos nenhum dado do seu barco nos últimos 70 minutos."
     }
   },
   "units": {

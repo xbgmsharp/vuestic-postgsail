@@ -91,7 +91,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormat, dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
 
@@ -196,7 +196,7 @@
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample datas from local json...', apiError.value)
+        console.warn('Fallback using sample data from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...logsDatas)
       }

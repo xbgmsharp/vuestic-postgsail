@@ -9,7 +9,7 @@
     <va-card class="mb-3">
       <va-card-title>{{ $t('monitoring.title') }}</va-card-title>
       <va-card-content>
-        <h1 class="box layout gutter--md">{{ items.vessel_name }} {{ fromNow }}</h1>
+        <h1 class="box layout gutter--md">{{ items.vessel_name }} {{ msg_fromNow }}</h1>
 
         <div class="box layout gutter--md" style="width: 100%; text-align: center">
           <template v-if="items.geojson">
@@ -53,22 +53,18 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import PostgSail from '../../services/api-client'
-  import moment from 'moment/min/moment-with-locales'
   import { computed, ref, reactive, onMounted } from 'vue'
+  import PostgSail from '../../services/api-client'
+  import lMap from '../../components/maps/leafletMap.vue'
+  import { useI18n } from 'vue-i18n'
   import { kelvinToCelsius } from '../../utils/temperatureFormatter.js'
   import { pascalToHectoPascal } from '../../utils/presureFormatter.js'
   import { floatToPercentage } from '../../utils/percentageFormatter.js'
-  import lMap from '../../components/maps/leafletMap.vue'
-  import { useI18n } from 'vue-i18n'
+  import { fromNow, nowUTC } from '../../utils/dateFormatter.js'
 
   import monitoringDatas from '../../data/monitoring.json'
 
-  const { t, locale } = useI18n()
-  const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
-  const moment_locale = computed(() => {
-    return locale_mapping[locale.value]
-  })
+  const { t } = useI18n()
 
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -133,8 +129,8 @@
       : {}
   })
 
-  const fromNow = computed(() => {
-    return moment.utc(apiData.row.time).locale(moment_locale.value).fromNow()
+  const msg_fromNow = computed(() => {
+    return fromNow(apiData.row.time)
   })
 
   const mapGeoJsonFeatures = computed(() => {
@@ -153,10 +149,9 @@
         //offline.value = true
         offline.value = response[0].offline
         apiData.row = response[0]
-        console.log(apiData)
-        console.log(moment_locale.value)
-        console.log(response[0].time)
-        console.log(moment.utc(response[0].time).locale('es').fromNow())
+        //console.log(apiData)
+        //console.log(response[0].time)
+        //console.log(moment.utc(response[0].time).locale('es').fromNow())
         setTimeout(() => monitor(), 60 * 1000) // 1 min
       } else {
         console.warn('monitoring', response)
@@ -169,7 +164,7 @@
         console.warn('Fallback using sample data from local json...', apiError.value)
         //console.log(monitoringDatas[0].time)
         // Update time to now
-        monitoringDatas[0].time = moment.utc()
+        monitoringDatas[0].time = nowUTC()
         apiData.row = monitoringDatas[0]
       }
     } finally {

@@ -16,9 +16,11 @@
             {{ value }}
           </template>
         </template>
-        <template #cell(status)="{ value }">
-          <template v-if="!value"> <va-avatar size="small" color="success" class="mr-6" /> Online </template>
-          <template v-else> <va-avatar size="small" color="warning" class="mr-6" /> Offline </template>
+        <template #cell(status)="{ value, rowData }">
+          <va-popover class="mr-2 mb-2" icon="error" :message="rowData.message">
+            <template v-if="value == 0"> <va-avatar size="small" color="warning" class="mr-6" /> Offline </template>
+            <template v-else-if="value == 1"> <va-avatar size="small" color="success" class="mr-6" /> Online </template>
+          </va-popover>
         </template>
         <template #cell(lastContact)="{ value }">
           {{ value }}
@@ -44,7 +46,7 @@
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
   import GetBoatToken from './GetBoatToken.vue'
-  import { dateFormatUTC } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, fromNow } from '../../utils/dateFormatter.js'
 
   import vesselsDatas from '../../data/boats.json'
 
@@ -70,12 +72,25 @@
           if (last_contact) {
             vesselSuccess.value = true
           }
+          let status = 0
+          let msg = ''
+          if (offline === null) {
+            status = 0
+          } else if (offline) {
+            status = 0
+            msg = t('boats.messages.offline', [fromNow(last_contact)])
+          } else {
+            status = 1
+            msg = t('boats.messages.online', [fromNow(last_contact)])
+          }
+          console.log(msg)
           return {
             name: name,
             mmsi: mmsi,
-            status: offline,
-            lastContact: last_contact ? dateFormatUTC(last_contact, locale.value) : 'Pending',
-            createdAt: dateFormatUTC(created_at, locale.value),
+            status: status,
+            lastContact: last_contact ? dateFormatUTC(last_contact) : 'Pending',
+            createdAt: dateFormatUTC(created_at),
+            message: last_contact ? msg : t('boats.messages.pending'),
           }
         })
       : []

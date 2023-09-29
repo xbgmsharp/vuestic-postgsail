@@ -8,7 +8,7 @@
               <td>
                 <b>{{ t('dashboard.local_time') }}:</b>
               </td>
-              <td>{{ status.fromNow }}</td>
+              <td>{{ status.local_time }}</td>
             </tr>
             <tr>
               <td>
@@ -157,25 +157,23 @@
 
 <script setup>
   // TODO  lang="ts"
-  import { ref, onMounted, version, computed } from 'vue'
+  import { ref, onMounted, version, computed, defineAsyncComponent } from 'vue'
   import { useGlobalStore } from '../../stores/global-store'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { useI18n } from 'vue-i18n'
-  import Charts from './Charts.vue'
-  import lMap from '../../components/maps/leafletMap.vue'
+  const Charts = defineAsyncComponent(() => import('./Charts.vue'))
+  //import Charts from './Charts.vue'
+  //import lMap from '../../components/maps/leafletMap.vue'
+  const lMap = defineAsyncComponent(() => import('../../components/maps/leafletMap.vue'))
   import PostgSail from '../../services/api-client'
-  import moment from 'moment/min/moment-with-locales'
+  import { fromNow, localTime } from '../../utils/dateFormatter.js'
 
-  const { t, locale } = useI18n()
-  const locale_mapping = { gb: 'en-gb', es: 'es', fr: 'fr', br: 'pt-br', de: 'de-de' }
-  const moment_locale = computed(() => {
-    return locale_mapping[locale.value]
-  })
+  const { t } = useI18n()
 
   const GlobalStore = useGlobalStore()
-  const { userName, versions, currentWeather, Monitoring2, userBadges } = storeToRefs(GlobalStore)
-  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2, set_userBadges } = GlobalStore
+  const { userName, versions, currentWeather, Monitoring2 } = storeToRefs(GlobalStore)
+  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2 } = GlobalStore
 
   const CacheStore = useCacheStore()
   const { getInfoTiles } = storeToRefs(CacheStore)
@@ -224,10 +222,8 @@
   const status = computed(() => {
     let obj = { fromNow: null, last_updated: null, monitoring: null }
     console.log('fromNow', monitoring.value)
-    obj.fromNow = moment().locale(moment_locale.value).format('LT')
-    obj.last_updated = monitoring.value.time
-      ? moment.utc(monitoring.value.time).locale(moment_locale.value).fromNow()
-      : 'Pending'
+    obj.local_time = localTime()
+    obj.last_updated = monitoring.value.time ? fromNow(monitoring.value.time) : 'Pending'
     obj.monitoring = monitoring.value.time & !monitoring.value.offline ? 'Online' : 'Offline'
     return obj
   })

@@ -141,7 +141,7 @@
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
         if (feature.properties && feature.properties.time) {
-          console.log(`popup`, feature.properties)
+          //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties.time)
           //let speed = speedFormat(feature.properties.speedoverground) || 0
           let latitude = parseFloat(feature.properties.latitude).toFixed(5)

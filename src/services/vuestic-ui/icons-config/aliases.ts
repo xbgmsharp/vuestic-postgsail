@@ -16,6 +16,7 @@ import IconTank from '../../../components/icons/IconTank.vue'
 import IconBolt from '../../../components/icons/IconBolt.vue'
 import IconSunrise from '../../../components/icons/IconSunrise.vue'
 import IconSunset from '../../../components/icons/IconSunset.vue'
+import IconKML from '../../../components/icons/IconKML.vue'
 
 export default [
   {
@@ -268,6 +269,11 @@ export default [
   {
     name: 'icon-sunset',
     component: IconSunset,
+    color: 'primary',
+  },
+  {
+    name: 'kml',
+    component: IconKML,
     color: 'primary',
   },
 ]

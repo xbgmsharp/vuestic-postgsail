@@ -64,7 +64,7 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(stayed_at)="{ rowData }">
-            <div v-if="rowData.stayed_at_id" style="max-width: 120px">
+            <div v-if="rowData.stayed_at_id" style="max-width: 150px">
               <!-- :key to enforce refresh on filter -->
               <StayAt
                 :id="parseInt(rowData.id)"

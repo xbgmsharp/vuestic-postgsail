@@ -224,7 +224,7 @@
     console.log('fromNow', monitoring.value)
     obj.local_time = localTime()
     obj.last_updated = monitoring.value.time ? fromNow(monitoring.value.time) : 'Pending'
-    obj.monitoring = monitoring.value.time & !monitoring.value.offline ? 'Online' : 'Offline'
+    obj.monitoring = monitoring.value.time && !monitoring.value.offline ? 'Online' : 'Offline'
     return obj
   })
 

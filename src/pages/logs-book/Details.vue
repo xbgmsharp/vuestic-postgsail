@@ -121,8 +121,24 @@
                 <dd class="export-buttons xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
                   <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
+                  <va-icon disabled name="kml" :size="44" @click="handleKML(item.id)" />
                 </dd>
               </dl>
+              <!-- sharing section -->
+              <!--
+                  TODO Add sharing social and email if public_logs is enable
+              <va-divider orientation="center" class="divider">
+                <span class="px-2">{{ $t('logs.log.export') }}</span>
+              </va-divider>
+              <dl class="dl-details row mb-3">
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
+                <dd class="export-buttons xs12 md6 pa-1">
+                  <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
+                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
+                  <va-icon disabled name="kml" :size="44" @click="handleKML(item.id)" />
+                </dd>
+              </dl>
+              -->
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
@@ -339,6 +355,7 @@
   // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),
     handleGPX = (id) => handleExport_common('gpx', id),
+    handleKML = (id) => handleExport_common('kml', id),
     handleGeoJSON = (id) => handleExport_common('geojson', id),
     handleExport_common = (format, id) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
 
@@ -365,7 +382,7 @@
   }
   function updateObservations(new_obs) {
     // runBusy handles isBusy & apiError
-    console.log(new_obs)
+    console.log('updateObservations', new_obs)
     const id = route.params.id
     new PostgSail()
       .update_observations({ _id: id, observations: { observations: new_obs } })

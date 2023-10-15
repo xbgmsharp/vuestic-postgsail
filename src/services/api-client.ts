@@ -132,6 +132,13 @@ class ApiClient extends HttpClient {
     //return this.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 
+  async log_export_kml(payload: JSObj) {
+    this.setHeader('Accept', 'text/xml')
+    const data = this.post(`rpc/export_logbook_kml_fn`, payload)
+    this.setHeader('Accept', 'application/json')
+    return data
+  }
+
   async log_export_geojson(payload: JSObj) {
     return this.post(`rpc/export_logbook_geojson_fn`, payload)
   }

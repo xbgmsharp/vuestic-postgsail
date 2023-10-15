@@ -7,6 +7,7 @@ const formatMap: JSObj = {
   gpx: [callAPI, 'text/xml'],
   geojson: [callAPI, 'application/json'],
   csv: [createCSV, 'text/csv'],
+  kml: [callAPI, 'text/xml'],
 }
 
 export async function handleExport(
@@ -30,7 +31,7 @@ export async function handleExport(
 }
 
 export async function callAPI(endpoint: string, payload: JSObj) {
-  console.debug('handleExports callAPI endpoint', endpoint)
+  //console.debug('handleExports callAPI endpoint', endpoint)
   //return JSON.stringify(await new PostgSail()[endpoint](payload))
   const data = await new PostgSail()[endpoint](payload)
   if (data.geojson) {

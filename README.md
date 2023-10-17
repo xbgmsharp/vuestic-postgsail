@@ -56,6 +56,8 @@ A full-featured development environment ready to test and code.
   - [ ] Add trash and save icon to log details page next to text
   - [x] Add button with icon to export to CVS to log details page
   - [x] Add button with icon to export to GPX to log details page
+  - [x] Add button with icon to export to KML to log details page
+  - [x] Add button with icon to export to GeoJSON to log details page
 - [x] Add Profile/Settings page
   - [x] require backend update
 - [x] Add new vessel page
@@ -94,10 +96,9 @@ A full-featured development environment ready to test and code.
     - [x] require backend update
 - [x] Implement notifications Pushover, Telegram
   - [x] require backend update
-- [ ] Add Activity page
-  - [ ] timeline (event log) - of events, history of notifications
-  - [ ] List of event from backend
-  - [ ] require backend update
+- [x] Add Activity page
+  - [x] timeline (event log) - of events, history of notifications
+  - [x] require backend update
 - [ ] Vessels:
   - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
   - [x] Disable boat details page when missing lat_contact null
@@ -115,7 +116,7 @@ A full-featured development environment ready to test and code.
   - [x] include in dev
   - [x] exclude in prod
 - [ ] Settings
-  - [ ] Update parameters
+  - [x] Update parameters
   - [x] PushOver Web-Based Subscription Process
     - [x] Subscription URL format
     - [x] require backend update OTP
@@ -133,12 +134,12 @@ A full-featured development environment ready to test and code.
 
 #### Core
 
-- [ ] Use vuejs/pinia store to access API instead of by components
-  - [ ] Offline mode store all API data in browser local storage
-    - [ ] Refresh if data is older than 10min old
+- [x] Use vuejs/pinia store to access API instead of by components
+  - [x] Offline mode store all API data in browser local storage
+    - [x] Refresh if data is older than 10min old
     - [ ] Fallback to local storage is no internet
-  - [ ] Implement global store username, token, cache: logs, moorages, stays
-    - [ ] Implement offline mode
+  - [x] Implement global store username, token, cache: logs, moorages, stays
+    - [x] Implement offline mode
   - [ ] Add env to include demo data
     - [ ] load demo data in dev and env if error? or if no data?
 
@@ -147,8 +148,8 @@ A full-featured development environment ready to test and code.
 - [ ] /, Home, Dashboard
   - [ ] Widget - Current Boats position map
   - [x] Widget Total of Logs, Stays, Moorage,
-  - [ ] Widget Weather Forecast
-  - [ ] Widget Energy
+  - [x] Widget Weather Forecast
+  - [x] Widget Energy
   - [ ] Widget ?!?
 - [x] /logs/, Logs
   - [x] Table layout from api view, filter and sort
@@ -164,14 +165,14 @@ A full-featured development environment ready to test and code.
 - [ ] /moorage/:id
   - [x] Map layout from api
   - [x] Table layout from api,
-  - [ ] Edit notes and name and Stayed at (select)
+  - [x] Edit notes and name and Stayed at (select)
 - [ ] /stays, stays
   - [x] Table layout from api view, filter and sort
   - [ ] Filter on stay type, date range, name
 - [ ] /stay/:id
   - [x] Map layout from api
   - [x] Table layout from api
-  - [ ] Edit notes and name and Stayed at (select)
+  - [x] Edit notes and name and Stayed at (select)
 - [x] /map, Map
   - [x] Same as Moorage Map layout from api
     - [x] Link to /moorages/map/
@@ -181,11 +182,11 @@ A full-featured development environment ready to test and code.
   - [x] Satellite view
 - [x] /timelapse, Timelapse
   - [x] Map layout from api
-- [ ] /stats, Stats/Dashboard
-  - [ ] Cards layout
-  - [ ] Editable date value range
-  - [ ] Pie boat usage %
-  - [ ] Pie/Polar stay type %
+- [x] /stats, Stats/Dashboard
+  - [x] Cards layout
+  - [x] Editable date value range
+  - [x] Add Pie boat usage %
+  - [x] Add Polar stay type %
 - [x] /monitoring, Monitoring
   - [x] Steering layout from api? todo
 - [x] /signup, Sign up
@@ -201,7 +202,7 @@ A full-featured development environment ready to test and code.
 - [ ] /privacy, Privacy
   - [ ] Add translation
 - [x] /grafana, external link, open a new window/tab
-- [ ] /eventlogs, Event Logs
+- [x] /eventlogs, Event Logs
   - [ ] Table from api
   - [ ] Display as a timeline?
 - [ ] /alarmlogs, Alarm Logs

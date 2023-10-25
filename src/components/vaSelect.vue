@@ -9,11 +9,12 @@
       @update:modelValue="handleSelect(value, options)"
     />
   </div>
-
+  <!--
   <va-alert color="info">
     <template #title> Value </template>
     {{ value }}
   </va-alert>
+  -->
 </template>
 
 <script>

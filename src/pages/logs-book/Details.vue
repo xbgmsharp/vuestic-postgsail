@@ -229,8 +229,8 @@
     try {
       const response = await CacheStore.getAPI('log_get', id)
       apiData.row = response[0]
-      formData.name = apiData.row.Name || null
-      formData.notes = apiData.row.Notes || null
+      formData.name = apiData.row.name || null
+      formData.notes = apiData.row.notes || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
     } catch (e) {
       apiError.value = e

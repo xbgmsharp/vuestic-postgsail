@@ -7,8 +7,8 @@
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
 
-  import { dateFormatUTC } from '../../utils/dateFormatter.js'
-  //import { speedFormat } from '../../utils/speedFormatter.js'
+  import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { speedFormat } from '../../utils/speedFormatter.js'
 
   /*
    * TODO
@@ -140,16 +140,32 @@
           */
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
+        // If geo point click
         if (feature.properties && feature.properties.time) {
           //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties.time)
-          //let speed = speedFormat(feature.properties.speedoverground) || 0
+          let speed = speedFormat(feature.properties.speedoverground) || 0
           let latitude = parseFloat(feature.properties.latitude).toFixed(5)
           let longitude = parseFloat(feature.properties.longitude).toFixed(5)
           let text = `<div class='center'><h4>${feature.geometry.type}</h4></div><br/>
               Time: ${time}<br/>
+              Speed: ${speed}<br/>
               Latitude: ${latitude}<br/>
               Longitude: ${longitude}<br/>`
+          popupContent = text
+        }
+        // If geo linestring click
+        if (feature.properties && feature.properties._from_time) {
+          //console.log(`popup`, feature.properties)
+          let time = dateFormatUTC(feature.properties._from_time)
+          let avg_speed = speedFormat(feature.properties.avg_speed)
+          let duration = durationFormatHours(feature.properties.duration)
+          let distance = parseFloat(feature.properties.distance).toFixed(5)
+          let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
+              Time: ${time}<br/>
+              avg_speed: ${avg_speed}<br/>
+              Duration: ${duration}<br/>
+              Distance: ${distance}<br/>`
           popupContent = text
         }
         layer.bindPopup(popupContent)

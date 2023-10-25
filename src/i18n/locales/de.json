@@ -221,7 +221,11 @@
     "max_speed": "Max Speed",
     "max_wind_speed": "Max Wind Speed",
     "sum_distance": "Total Distance",
-    "sum_duration": "Total Time Underway"
+    "sum_duration": "Total Time Underway",
+    "home_ports": "Home Ports",
+    "unique_moorages": "Unique Moorages",
+    "time_spent_at_home_port(s)": "Time spent at home port(s)",
+    "time_spent_away": "Time spent away"
   },
   "boats": {
     "list": {
@@ -233,6 +237,7 @@
     "boat": {
       "name": "Name | Namen",
       "mmsi": "MMSI (fakultativ)",
+      "first_contact": "First Kontakt",
       "last_contact": "Letzter Kontakt",
       "created_at": "Erstellt am",
       "register": "Neues Schiff erfolgreich registriert.",
@@ -249,7 +254,9 @@
       "country": "Flaggenstaat",
       "ship_type": "Schiffstyp",
       "status": "Status",
-      "plugin_version": "Plugin version"
+      "plugin_version": "Plugin version",
+      "signalk_version": "Signalk version",
+      "signalk": "This data is pulled from the Vessel Base Data with SignalK."
     },
     "errors": {
       "name": "Name ist erforderlich",
@@ -307,7 +314,16 @@
       "connected": "Ihr Benutzer ist mit {'@'}postgsail_bot verbunden."
     },
     "success": "Erfolgreich aktualisiert {key} mit {value}",
-    "failure": "Fehler beim Aktualisieren von {key} mit {value}"
+    "failure": "Fehler beim Aktualisieren von {key} mit {value}",
+    "msg": {
+      "website": "Website displayed alongside your stats, please enter the full URL starting with http:// or https://",
+      "instagram_handle": "Instagram link displayed alongside your stats, please enter without a leading &#x40; sign",
+      "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login.",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/log/{id}",
+      "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/stats/{0}",
+      "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/logs/{0}",
+      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/timelapse/{0}"
+    }
   },
   "faq": {
     "title": "Häufig gestellte Fragen",

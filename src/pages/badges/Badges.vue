@@ -44,11 +44,14 @@
 
 <script setup>
   // TODO update setup with lang="ts"
+  import { defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
-  import IconAward from '../../components/icons/IconAward.vue'
-  import IconNavigation from '../../components/icons/IconNavigation.vue'
+  //import IconAward from '../../components/icons/IconAward.vue'
+  //import IconNavigation from '../../components/icons/IconNavigation.vue'
+  const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
+  const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
 
   const GlobalStore = useGlobalStore()
   const { userBadges } = storeToRefs(GlobalStore)

@@ -11,9 +11,8 @@
             <td>{{ t('profile.preferred_homepage') }}</td>
             <td class="centerContainer">
               <va-select
-                v-model="settings.preferences.preferred_homepage"
+                v-model="homepage_options[settings.preferences.preferred_homepage]"
                 :options="homepage_options"
-                placeholder="Dashboard"
                 outline
                 @update:modelValue="UpdatePref('preferred_homepage', $event.value)"
               />
@@ -31,27 +30,45 @@
             </td>
           </tr>
           <tr>
-            <td>{{ t('profile.website') }}</td>
+            <td>
+              <va-popover class="mr-2 mb-2" icon="info" :message="$t('profile.msg.website')">
+                {{ t('profile.website') }}
+              </va-popover>
+            </td>
             <td class="centerContainer">
               <va-input
                 v-model="settings.preferences.website"
                 outline
+                placeholder="(e.g. https://openplotter.cloud)"
                 @change="UpdatePref('website', settings.preferences.website)"
               />
             </td>
           </tr>
           <tr>
-            <td>{{ t('profile.instagram_handle') }}</td>
+            <td>
+              <va-popover class="mr-2 mb-2" icon="info" :message="$t('profile.msg.instagram_handle')">
+                {{ t('profile.instagram_handle') }}
+              </va-popover>
+            </td>
             <td class="centerContainer">
               <va-input
                 v-model="settings.preferences.instagram_handle"
                 outline
+                placeholder="(e.g. @postgsail)"
                 @change="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
               />
             </td>
           </tr>
           <tr>
-            <td>{{ t('profile.public_profile') }}</td>
+            <td>
+              <va-popover
+                class="mr-2 mb-2"
+                icon="info"
+                :message="$t('profile.msg.public_profile', [settings.public_id])"
+              >
+                {{ t('profile.public_profile') }}
+              </va-popover>
+            </td>
             <td class="centerContainer">
               <va-switch
                 v-model="settings.preferences.public_profile"
@@ -63,7 +80,15 @@
           </tr>
           <template v-if="settings.preferences.public_profile">
             <tr class="sub-setting">
-              <td>{{ t('profile.public_stats') }}</td>
+              <td>
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="info"
+                  :message="$t('profile.msg.public_stats', [settings.public_id])"
+                >
+                  {{ t('profile.public_stats') }}
+                </va-popover>
+              </td>
               <td class="centerContainer">
                 <va-switch
                   v-model="settings.preferences.public_stats"
@@ -74,7 +99,15 @@
               </td>
             </tr>
             <tr class="sub-setting">
-              <td>{{ t('profile.public_timelapse') }}</td>
+              <td>
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="error"
+                  :message="$t('profile.msg.public_timelapse', [settings.public_id])"
+                >
+                  {{ t('profile.public_timelapse') }}
+                </va-popover>
+              </td>
               <td class="centerContainer">
                 <va-switch
                   v-model="settings.preferences.public_timelapse"
@@ -85,7 +118,15 @@
               </td>
             </tr>
             <tr class="sub-setting">
-              <td>{{ t('profile.public_logs_list') }}</td>
+              <td>
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="info"
+                  :message="$t('profile.msg.public_logs_list', [settings.public_id])"
+                >
+                  {{ t('profile.public_logs_list') }}
+                </va-popover>
+              </td>
               <td class="centerContainer">
                 <va-switch
                   v-model="settings.preferences.public_logs_list"
@@ -96,13 +137,17 @@
               </td>
             </tr>
             <tr class="sub-setting">
-              <td>{{ t('profile.public_logs') }}</td>
+              <td>
+                <va-popover class="mr-2 mb-2" icon="info" :message="$t('profile.msg.public_logs')">
+                  {{ t('profile.public_logs') }}
+                </va-popover>
+              </td>
               <td class="centerContainer">
                 <va-switch
                   v-model="settings.preferences.public_logs"
                   size="small"
                   outline
-                  @update:modelValue="log('public_logs', $event)"
+                  @update:modelValue="UpdatePref('public_logs', $event)"
                 />
               </td>
             </tr>
@@ -128,24 +173,6 @@
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
 
-  /*const homepage_options = ref([
-    {
-      id: 0,
-      description: 'Dashboard',
-    },
-    {
-      id: 1,
-      description: 'Ship Logs',
-    },
-    {
-      id: 2,
-      description: 'Monitoring',
-    },
-    {
-      id: 3,
-      description: 'Statistics',
-    },
-  ])*/
   const homepage_options = ref([
     {
       value: 0,

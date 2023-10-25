@@ -57,7 +57,7 @@
                         :readonly="false"
                         @update:modelValue="updateStartDate"
                       />
-                      &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;
                       <va-date-input
                         v-model="stats_logs.last_date"
                         :label="$t('stats.last_date')"
@@ -150,11 +150,11 @@
             <tbody>
               <tr v-for="(value, index) in Object.entries(stats_moorages)" :key="index">
                 <td>
-                  <b>{{ value[0] }}</b>
+                  <b>{{ $t('stats.' + value[0]) }}</b>
                 </td>
                 <td>
-                  <template v-if="value[0] === 'Time Spent Away'"> {{ durationFormatDays(value[1]) }} days </template>
-                  <template v-if="value[0] === 'Time Spent at Home Port(s)'">
+                  <template v-if="value[0] === 'time_spent_away'"> {{ durationFormatDays(value[1]) }} days </template>
+                  <template v-if="value[0] === 'time_spent_at_home_port'">
                     {{ durationFormatDays(value[1]) }} days
                   </template>
                   <template v-else> {{ value[1] }} </template>
@@ -315,21 +315,21 @@
       percentage: 0,
     }
     // Extract Sum Distances,Sum Duration of logs
-    logs.value.forEach(({ id, Distance, Duration }) => {
-      obj.total_distance += Distance
+    logs.value.forEach(({ id, distance, duration }) => {
+      obj.total_distance += distance
       //obj.total_duration += moment.duration(Duration)
-      obj.total_duration = moment.duration(Duration) + moment.duration(obj.total_duration)
-      if (Math.max(Distance, obj.max_distance)) {
+      obj.total_duration = moment.duration(duration) + moment.duration(obj.total_duration)
+      if (Math.max(distance, obj.max_distance)) {
         obj.max_distance_id = id
-        obj.max_distance = Math.max(Distance, obj.max_distance)
+        obj.max_distance = Math.max(distance, obj.max_distance)
       }
-      if (moment.duration(Duration) > moment.duration(obj.max_duration)) {
+      if (moment.duration(duration) > moment.duration(obj.max_duration)) {
         obj.max_duration_id = id
-        obj.max_duration = moment.duration(Duration)
+        obj.max_duration = moment.duration(duration)
       }
     })
     //obj.total_duration = moment.duration(obj.total_duration).humanize()
-    const start = logs.value[0].Started
+    const start = logs.value[0].started
     const end = logs.value[logs.value.length - 1].Ended
     obj.percentage = (moment.duration(obj.total_duration) / moment.duration(moment(start) - moment(end))) * 100
     obj.total_count = logs.value.length

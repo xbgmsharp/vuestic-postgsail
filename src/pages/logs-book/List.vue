@@ -149,13 +149,13 @@
       ? rowsData.value
           .map((row) => ({
             id: row.id,
-            name: row.Name,
-            from: row.From,
-            to: row.To,
-            fromTime: row.Started,
-            toTime: row.Ended,
-            distance: row.Distance,
-            duration: row.Duration,
+            name: row.name,
+            from: row.from,
+            to: row.to,
+            fromTime: row.started,
+            toTime: row.ended,
+            distance: row.distance,
+            duration: row.duration,
           }))
           .filter((row) => {
             const f = filter

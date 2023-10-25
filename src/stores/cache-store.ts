@@ -49,7 +49,7 @@ export const useCacheStore = defineAPIStore('cache', {
     barChart(): Array<number> {
       this.stats.fill(0)
       this.logs
-        ? this.logs.forEach(({ Started }: { Started: string }) => (this.stats[new Date(Started).getMonth()] += 1))
+        ? this.logs.forEach(({ started }: { started: string }) => (this.stats[new Date(started).getMonth()] += 1))
         : this.stats
       return this.stats
     },
@@ -57,11 +57,11 @@ export const useCacheStore = defineAPIStore('cache', {
       const obj = {} as JSONObject
       // Extract the year and create a 12 months array
       this.logs.forEach(
-        ({ Started }: { Started: string }) => (obj[new Date(Started).getFullYear()] = new Array(12).fill(0)),
+        ({ started }: { started: string }) => (obj[new Date(started).getFullYear()] = new Array(12).fill(0)),
       )
       // Extract the month and sum the months.
       this.logs.forEach(
-        ({ Started }: { Started: string }) => (obj[new Date(Started).getFullYear()][new Date(Started).getMonth()] += 1),
+        ({ started }: { started: string }) => (obj[new Date(started).getFullYear()][new Date(started).getMonth()] += 1),
       )
       console.log('CacheStore lineChartbyYear obj', obj)
       this.lines = obj
@@ -82,8 +82,8 @@ export const useCacheStore = defineAPIStore('cache', {
       }
       // Sum the days.
       this.logs.forEach(
-        ({ Started }: { Started: string }) =>
-          (obj[moment(Started).format('MMMM')][moment(Started).format('dddd')] += 1),
+        ({ started }: { started: string }) =>
+          (obj[moment(started).format('MMMM')][moment(started).format('dddd')] += 1),
       )
       // Create the matrix array of json
       // [ { x: 'January', y: 'Sunday', v: 0 }, ..., { x: 'December', y: 'Saturday', v: 0 } ]
@@ -125,7 +125,7 @@ export const useCacheStore = defineAPIStore('cache', {
         }
       })
       //obj.total_duration = moment.duration(obj.total_duration).humanize()
-      const start = this.logs[0].Started
+      const start = this.logs[0].started
       const end = this.logs[this.logs.length - 1].Ended
       obj.percentage = (moment.duration(obj.total_duration) / moment.duration(moment(start) - moment(end))) * 100
       obj.total_count = this.logs.length

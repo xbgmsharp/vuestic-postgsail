@@ -10,7 +10,14 @@
       <va-card-title>{{ $t('monitoring.title') }}</va-card-title>
       <va-card-content>
         <h1 class="box layout gutter--md">{{ items.vessel_name }} {{ msg_fromNow }}</h1>
-
+        <div style="font-size: 10pt; text-align: center">
+          <template v-if="sub_msg == 'Offline'">
+            <va-avatar size="small" color="warning" class="mr-6" /> Offline
+          </template>
+          <template v-else-if="sub_msg == 'Online'">
+            <va-avatar size="small" color="success" class="mr-6" /> Online
+          </template>
+        </div>
         <div class="box layout gutter--md" style="width: 100%; text-align: center">
           <template v-if="items.geojson">
             <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 250px" />
@@ -61,6 +68,7 @@
   import { pascalToHectoPascal } from '../../utils/presureFormatter.js'
   import { floatToPercentage } from '../../utils/percentageFormatter.js'
   import { fromNow, nowUTC } from '../../utils/dateFormatter.js'
+  import { default as utils } from '../../utils/utils.js'
 
   import monitoringDatas from '../../data/monitoring.json'
 
@@ -81,7 +89,7 @@
             detailString: t('monitoring.wind.detailString'),
             lcdDecimals: 0,
             value: apiData.row.windspeedoverground || 0,
-            altValue: apiData.row.winddirectionground || 0,
+            altValue: utils.radiantToDegrees(apiData.row.winddirectionground) || 0,
           },
           temperature: {
             headerString: t('monitoring.temperature.headerString'),
@@ -133,6 +141,10 @@
     return fromNow(apiData.row.time)
   })
 
+  const sub_msg = computed(() => {
+    return apiData.row.time && !apiData.row.offline ? 'Online' : 'Offline'
+  })
+
   const mapGeoJsonFeatures = computed(() => {
     return apiData.row.geojson
   })
@@ -180,8 +192,8 @@
     /*background: white;*/
     /*border-radius: 10px;*/
     /*border: 1px solid #ccc;*/
-    padding: 20px 10px;
+    padding: 10px 10px;
     text-align: center;
-    width: 40%;
+    width: 50%;
   }
 </style>

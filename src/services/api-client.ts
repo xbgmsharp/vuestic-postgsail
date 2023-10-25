@@ -61,6 +61,11 @@ class ApiClient extends HttpClient {
   async reset(payload: JSObj) {
     return this.post(`rpc/reset`, payload)
   }
+
+  async is_public(payload: JSObj) {
+    return this.post(`rpc/ispublic_fn`, payload)
+  }
+
   /*
    * User settings
    */
@@ -126,10 +131,9 @@ class ApiClient extends HttpClient {
 
   async log_export_gpx(payload: JSObj) {
     this.setHeader('Accept', 'text/xml')
-    const data = this.get(`logbook?id=eq.${payload._id}&select=track_gpx`)
+    const data = this.post(`rpc/export_logbook_gpx_fn`, payload)
     this.setHeader('Accept', 'application/json')
     return data
-    //return this.post(`rpc/export_logbook_gpx_fn`, payload)
   }
 
   async log_export_kml(payload: JSObj) {
@@ -144,6 +148,24 @@ class ApiClient extends HttpClient {
   }
 
   async timelapse(payload: JSObj) {
+    return this.post(`rpc/timelapse_fn`, payload)
+  }
+
+  async logs_export_gpx(payload: JSObj) {
+    this.setHeader('Accept', 'text/xml')
+    const data = this.post(`rpc/export_logbooks_gpx_fn`, payload)
+    this.setHeader('Accept', 'application/json')
+    return data
+  }
+
+  async logs_export_kml(payload: JSObj) {
+    this.setHeader('Accept', 'text/xml')
+    const data = this.post(`rpc/export_logbooks_kml_fn`, payload)
+    this.setHeader('Accept', 'application/json')
+    return data
+  }
+
+  async logs_export_geojson(payload: JSObj) {
     return this.post(`rpc/timelapse_fn`, payload)
   }
 

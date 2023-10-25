@@ -73,6 +73,7 @@ const defaultState = {
     created_at: '',
     username: '',
     has_vessel: false,
+    public_id: 0,
   },
   vessel: {},
   badges: {},
@@ -99,7 +100,7 @@ export const useGlobalStore = defineStore('global', {
       this.isLoggedIn = false
       this.token = ''
       // to update existing refs pointing to preferences:
-      deepMerge(this.settings, defaultState.settings)
+      //deepMerge(this.settings, defaultState.settings)
       localStorage.removeItem('global')
       localStorage.removeItem('cache')
     },
@@ -206,13 +207,14 @@ export const useGlobalStore = defineStore('global', {
     hasVessel: (state) => state.settings?.has_vessel,
     preferredHomepage: (state) =>
       ['dashboard', 'logs', 'monitoring', 'stats'][state.settings?.preferences?.preferred_homepage || 0],
-    imperialUnits: (state) => state.settings?.preferences?.use_imperial_units,
+    imperialUnits: (state) => state.settings?.preferences?.use_imperial_units || false,
     doubleCount: (state) => state.count * 2,
     Monitoring2: (state) => state.monitoring2,
     openWeather: (state) => state.openweather,
     currentWeather: (state) => state.currentweather,
     Badges: (state) => state.settings?.preferences?.badges || {},
     userBadges: (state) => state?.badges || {},
+    publicId: (state) => state.settings?.public_id || 0,
   },
 })
 export default useGlobalStore

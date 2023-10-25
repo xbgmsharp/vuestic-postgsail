@@ -44,7 +44,7 @@
                   {{ distanceFormat(item.distance) }} (<router-link
                     v-if="typeof item.id !== 'undefined'"
                     class="va-text-bold va-link link"
-                    :to="{ name: 'timelapse', params: { id: item.id } }"
+                    :to="{ name: 'timelapse-replay', params: { id: item.id } }"
                   >
                     timelapse </router-link
                   >)
@@ -77,12 +77,14 @@
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.sea_state') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-select
-                    v-model="seaState[item.seaState]"
-                    :options="seaState"
-                    outline
+                  <MySelect
+                    v-if="item.seaState"
+                    :id="parseInt(item.seaState)"
+                    :key="item.seaState"
+                    :data="parseInt(item.seaState)"
+                    :object="seaState"
                     style="min-width: 100px; max-width: 40%"
-                    @update:modelValue="runBusy(handleSeaState, seaState[item.seaState], $event)"
+                    @clickFromChildComponent="handleSeaState"
                   />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
@@ -103,12 +105,14 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-select
-                    v-model="visibility[item.visibility]"
-                    :options="visibility"
-                    outline
+                  <MySelect
+                    v-if="item.visibility"
+                    :id="parseInt(item.visibility)"
+                    :key="item.visibility"
+                    :data="parseInt(item.visibility)"
+                    :object="visibility"
                     style="min-width: 100px; max-width: 40%"
-                    @update:modelValue="runBusy(handleVisibility, visibility[item.visibility], $event)"
+                    @clickFromChildComponent="handleVisibility"
                   />
                 </dd>
               </dl>
@@ -121,21 +125,21 @@
                 <dd class="export-buttons xs12 md6 pa-1">
                   <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
                   <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
-                  <va-icon disabled name="kml" :size="44" @click="handleKML(item.id)" />
+                  <va-icon name="kml" :size="44" @click="handleKML(item.id)" />
                 </dd>
               </dl>
               <!-- sharing section -->
-              <!--
-                  TODO Add sharing social and email if public_logs is enable
+              <!-- EMail, Facebook, more?
               <va-divider orientation="center" class="divider">
-                <span class="px-2">{{ $t('logs.log.export') }}</span>
+                <span class="px-2">{{ $t('logs.log.share') }}</span>
               </va-divider>
               <dl class="dl-details row mb-3">
-                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.export') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.share') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
-                  <va-icon name="gpx" :size="44" @click="handleGPX(item.id)" />
-                  <va-icon name="geojson" :size="44" @click="handleGeoJSON(item.id)" />
-                  <va-icon disabled name="kml" :size="44" @click="handleKML(item.id)" />
+                  <va-icon name="material-icons-email" :size="44" @click="handleGPX(item.id)" />
+                  <svg class="va-icon" @click="handleGPX(item.id)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" style="cursor: pointer; font-size: 44px; height: 44px; line-height: 44px;">
+                  <path d="M182.594 0C81.445 0 0 81.445 0 182.594v634.813c0 101.149 81.445 182.594 182.594 182.594h344.063V609.063H423.282v-140.75h103.375v-120.25c0-94.475 61.079-181.219 201.781-181.219c56.968 0 99.094 5.469 99.094 5.469l-3.313 131.438s-42.963-.406-89.844-.406c-50.739 0-58.875 23.378-58.875 62.188v102.781h152.75l-6.656 140.75H675.5v390.938h141.906c101.149 0 182.594-81.445 182.594-182.594V182.595C1000 81.446 918.555.001 817.406.001H182.593z"/>
+                  </svg>
                 </dd>
               </dl>
               -->
@@ -169,6 +173,7 @@
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { seaState, visibility } from '../../utils/PostgSail'
+  import MySelect from '../../components/vaSelect.vue'
 
   import logsBooks from '../../data/logbook.json'
 
@@ -188,14 +193,14 @@
     return apiData.row
       ? {
           id: apiData.row.id,
-          name: apiData.row.Name,
-          from: apiData.row.From,
-          fromTime: apiData.row.Started,
-          to: apiData.row.To,
-          toTime: apiData.row.Ended,
-          distance: apiData.row.Distance,
-          duration: apiData.row.Duration,
-          notes: apiData.row.Notes,
+          name: apiData.row.name,
+          from: apiData.row.from,
+          fromTime: apiData.row.started,
+          to: apiData.row.to,
+          toTime: apiData.row.ended,
+          distance: apiData.row.distance,
+          duration: apiData.row.duration,
+          notes: apiData.row.notes,
           geoJson: apiData.row.geojson,
           avg_speed: apiData.row.avg_speed,
           max_speed: apiData.row.max_speed,
@@ -360,16 +365,18 @@
     handleExport_common = (format, id) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
 
   // handle Observations
-  function handleSeaState(new_sea_state) {
-    if (new_sea_state) {
-      console.log('handleSeaState:', new_sea_state.value + ', text:' + new_sea_state.text)
-      updateObservations({ seaState: new_sea_state.value })
+  const handleSeaState = async (new_sea_state, obj) => {
+    console.log('handleSeaState new_sea_state', new_sea_state, obj)
+    if (new_sea_state >= 0) {
+      console.log('handleSeaState obj:', obj.value + ', text:' + obj.text)
+      updateObservations({ seaState: new_sea_state })
     }
   }
-  const handleVisibility = (new_visibility) => {
-    if (visibility) {
-      console.log('handleVisibility:', new_visibility.value + ', text:' + new_visibility.text)
-      updateObservations({ visibility: new_visibility.value })
+  const handleVisibility = async (new_visibility, obj) => {
+    console.log('handleVisibility', new_visibility, obj)
+    if (new_visibility >= 0) {
+      console.log('handleVisibility:', obj.value + ', text:' + obj.text)
+      updateObservations({ visibility: new_visibility })
     }
   }
 

@@ -145,7 +145,7 @@ export const visibility = [
   },
   {
     value: 3,
-    text: 'Moderate fog (<;0.5NM)',
+    text: 'Moderate fog (<0.5NM)',
   },
   {
     value: 4,

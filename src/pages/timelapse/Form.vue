@@ -6,7 +6,7 @@
         <div>
           <div>
             <va-form ref="formData">
-              <table style="min-width: 90%">
+              <table striped hoverable style="min-width: 90%">
                 <!--
                 <tr>
                   <td class="width-30 font-weight-bold">Choose Trips</td>
@@ -58,19 +58,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>Animation Speed</td>
-                  <td>
-                    <MySelect
-                      v-if="speeds"
-                      :id="formData.speed"
-                      key="speeds"
-                      :data="formData.speed"
-                      :object="speeds"
-                      @clickFromChildComponent="handleSpeed"
-                    />
-                  </td>
-                </tr>
-                <tr>
                   <td>Track Color</td>
                   <td>
                     <MySelect
@@ -80,6 +67,44 @@
                       :data="formData.color"
                       :object="colors"
                       @clickFromChildComponent="handleColor"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Zoom Level</td>
+                  <td>
+                    <MySelect
+                      v-if="formData"
+                      :id="formData.zoom"
+                      key="zoom"
+                      :data="formData.zoom"
+                      :object="zooms"
+                      @clickFromChildComponent="handleZoom"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Animation Speed</td>
+                  <td>
+                    <MySelect
+                      v-if="formData"
+                      :id="formData.speed"
+                      key="speeds"
+                      :data="formData.speed"
+                      :object="speeds"
+                      @clickFromChildComponent="handleSpeed"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Initial Delay</td>
+                  <td>
+                    <MySelect
+                      :id="formData.delay"
+                      key="delay"
+                      :data="formData.delay"
+                      :object="delays"
+                      @clickFromChildComponent="handleDelay"
                     />
                   </td>
                 </tr>
@@ -146,6 +171,8 @@
     end_log: '',
     map_type: 1,
     speed: 250,
+    delay: 0,
+    zoom: 13,
     color: 'dodgerblue',
   })
   const timelapse_link = computed(() => {
@@ -191,6 +218,58 @@
     {
       value: 10,
       text: 'Light Speed',
+    },
+  ]
+  const zooms = [
+    {
+      value: 5,
+      text: '5',
+    },
+    {
+      value: 6,
+      text: '6',
+    },
+    {
+      value: 7,
+      text: '7',
+    },
+    {
+      value: 8,
+      text: '8',
+    },
+    {
+      value: 9,
+      text: '9',
+    },
+    {
+      value: 10,
+      text: '10',
+    },
+    {
+      value: 11,
+      text: '11',
+    },
+    {
+      value: 12,
+      text: '12',
+    },
+    {
+      value: 13,
+      text: '13',
+    },
+  ]
+  const delays = [
+    {
+      value: 0,
+      text: 'None',
+    },
+    {
+      value: 5,
+      text: '5 seconds',
+    },
+    {
+      value: 10,
+      text: '10 seconds',
     },
   ]
   const colors = [
@@ -275,7 +354,20 @@
       formData.color = obj.value
     }
   }
-
+  const handleZoom = async (new_value, obj) => {
+    console.log('handleZoom', new_value, obj)
+    if (new_value >= 0) {
+      console.log('handleZoom obj:', obj.value + ', text:' + obj.text)
+      formData.speed = obj.value
+    }
+  }
+  const handleDelay = async (new_value, obj) => {
+    console.log('handleDelay', new_value, obj)
+    if (new_value >= 0) {
+      console.log('handleDelay obj:', obj.value + ', text:' + obj.text)
+      formData.color = obj.value
+    }
+  }
   // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),
     handleGPX = (id) => handleExport_common('gpx', id),

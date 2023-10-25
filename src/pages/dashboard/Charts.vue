@@ -43,7 +43,7 @@
       -->
       <va-card v-if="HeatmapChartComputed" class="chart-widget col-span-12">
         <va-card-title>{{ t('dashboard.charts.HeatmapChart') }}</va-card-title>
-        <va-card-content style="width: 100%; height: 350px">
+        <va-card-content style="min-width: 100%; min-height: 350px">
           <HeatmapChart v-if="HeatmapChartComputed" :data="HeatmapChartComputed" />
         </va-card-content>
       </va-card>
@@ -74,12 +74,13 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, onMounted, watch } from 'vue'
+  import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import VaChart from '../../components/va-charts/VaChart.vue'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
-  import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
+  //import HeatmapChart from '../../components/va-charts/chart-types/HeatmapChart.vue'
+  const HeatmapChart = defineAsyncComponent(() => import('../../components/va-charts/chart-types/HeatmapChart.vue'))
 
   const { t } = useI18n()
 

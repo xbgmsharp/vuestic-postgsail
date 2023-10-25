@@ -12,6 +12,9 @@
               <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
             </template>
           </div>
+          <div class="mb-3 my-3" style="text-align: center">
+            {{ $t('boats.boat.signalk') }}
+          </div>
           <template v-if="item">
             <dl class="dl-details row">
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.name') }}</dt>
@@ -20,6 +23,8 @@
               <dd class="flex xs12 md6 pa-2">{{ item.mmsi }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.last_contact') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.lastContact }}</dd>
+              <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.first_contact') }}</dt>
+              <dd class="flex xs12 md6 pa-2">{{ item.firstContact }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.created_at') }}</dt>
               <dd class="flex xs12 md6 pa-2">{{ item.createdAt }}</dd>
               <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.beam') }}</dt>
@@ -43,7 +48,7 @@
               <template v-if="item.plugin_version">
                 <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.plugin_version') }}</dt>
                 <dd class="flex">
-                  <template v-if="item.plugin_version === '0.1.0'">
+                  <template v-if="item.plugin_version === '0.2.0'">
                     <va-chip color="success" class="mr-6 mb-2">
                       {{ item.plugin_version }}
                     </va-chip> </template
@@ -99,6 +104,7 @@
       ? {
           mmsi: apiData.row.mmsi,
           name: apiData.row.name,
+          firstContact: dateFormatUTC(apiData.row.first_contact),
           lastContact: dateFormatUTC(apiData.row.last_contact),
           createdAt: dateFormatUTC(apiData.row.created_at),
           geoJson: apiData.row.geojson,

@@ -73,6 +73,23 @@ export default {
       meta: {
         icon: 'menu-timelapse',
       },
+      disabled: true,
+      children: [
+        {
+          name: 'timelapse-replay',
+          displayName: 'menu.timelapse_replay',
+          meta: {
+            icon: 'material-icons-replay',
+          },
+        },
+        {
+          name: 'timelapse-form',
+          displayName: 'menu.timelapse_form',
+          meta: {
+            icon: 'material-icons-tune',
+          },
+        },
+      ],
     },
     {
       name: 'grafana',

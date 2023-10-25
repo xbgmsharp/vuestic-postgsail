@@ -5,6 +5,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
+import RouteViewComponent from '../layouts/RouterBypass.vue'
 import { useGlobalStore } from '../stores/global-store'
 //import { storeToRefs } from 'pinia'
 
@@ -61,16 +62,19 @@ const routes: Array<RouteRecordRaw> = [
         name: 'logs',
         path: 'logs',
         component: () => import('../pages/logs-book/List.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
         name: 'log-details',
         path: 'log/:id',
         component: () => import('../pages/logs-book/Details.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
         name: 'stays',
         path: 'stays',
         component: () => import('../pages/stays/List.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
         name: 'stay-details',
@@ -116,11 +120,13 @@ const routes: Array<RouteRecordRaw> = [
         path: 'privacy',
         name: 'privacy',
         component: () => import('../pages/privacy/Privacy.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
         path: 'faq',
         name: 'faq',
         component: () => import('../pages/faq/FAQ.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
         path: 'grafana',
@@ -144,11 +150,27 @@ const routes: Array<RouteRecordRaw> = [
         name: 'stats',
         path: 'stats',
         component: () => import('../pages/stats/Stats.vue'),
+        meta: { requiresAuth: true, isPublic: true },
       },
       {
-        name: 'timelapse',
-        path: 'timelapse/:id?',
-        component: () => import('../pages/timelapse/Timelapse.vue'),
+        name: 'timelapse-menu',
+        path: '/',
+        component: RouteViewComponent,
+        meta: { requiresAuth: true, isPublic: true },
+        children: [
+          {
+            name: 'timelapse-replay',
+            path: 'timelapse/:id?',
+            component: () => import('../pages/timelapse/Timelapse2.vue'),
+            meta: { requiresAuth: false, isPublic: true },
+          },
+          {
+            name: 'timelapse-form',
+            path: 'timelapse/form',
+            component: () => import('../pages/timelapse/Form.vue'),
+            meta: { requiresAuth: false, isPublic: true },
+          },
+        ],
       },
       {
         name: 'pushover',
@@ -188,7 +210,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const { isLoggedIn, validEmail, hasVessel, preferredHomepage } = useGlobalStore()
+  const { isLoggedIn, validEmail, hasVessel, preferredHomepage, publicId } = useGlobalStore()
   console.log(
     'isLoggedIn',
     isLoggedIn,
@@ -198,11 +220,25 @@ router.beforeEach((to, from, next) => {
     hasVessel,
     'preferredHomepage',
     preferredHomepage,
+    'publicId',
+    publicId,
   )
+  /*
+  // If next query-string
+  if (to.query.next) {
+    console.warn('vue-router beforeEach to.query.next', to)
+  }
+  // Is publicly accessible?
+  if (to.matched.some((record) => record.meta.isPublic) && !isLoggedIn) {
+    next()
+    return
+  }
+  */
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
-    // If not logged in, yet required, redirect to login page:
+    // If not logged in, yet required, redirect to login page
     next({ name: 'login' })
   } else {
+    console.warn('vue-router beforeEach activate -> /', isLoggedIn, validEmail, to)
     // Enforce email otp validation
     if (to.name != 'activate' && isLoggedIn && !validEmail) {
       next({ name: 'activate' })

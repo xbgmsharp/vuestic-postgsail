@@ -126,7 +126,8 @@ class ApiClient extends HttpClient {
   }
 
   async log_delete(id: string) {
-    return this.delete(`logbook?id=eq.${id}`)
+    //return this.delete(`logbook?id=eq.${id}`)
+    return this.post(`rpc/delete_logbook_fn`, { _id: id })
   }
 
   async log_export_gpx(payload: JSObj) {
@@ -246,6 +247,10 @@ class ApiClient extends HttpClient {
     )
     */
     return this.get(`monitoring_view2`)
+  }
+
+  async explore() {
+    return this.get(`explore_view`)
   }
   /*
    * Stays at

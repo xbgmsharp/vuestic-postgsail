@@ -54,6 +54,7 @@
                 Timelapse takes several parameters that allow customization:<br />
                 <br />
                 - color: Specifies the path color. Default: dodgerblue<br />
+                - start_log and end_log: Specified in the log entry. Default: None<br />
                 - start_date and end_date: Specified in whatever format (YYYY-MM-DD, DD-MM-YYYY). Default: None<br />
                 - map_type: 0 for OpenStreetMap, 1 for Satellite, 2 for NOAA (for US only). Default: OpenStreetMap<br />
                 - speed: Measured in milliseconds, controls the speed of animation. Lower values mean faster movement.
@@ -63,7 +64,7 @@
                 - zoom: Specifies default zoom. Default: 10<br />
                 <br />
                 Example:
-                https://iot.openplotter.cloud/timelapse?color=yellow&start_date=2020-06-01&end_date=2020-07-31&map_type=1&speed=90&delay=1&zoom=11
+                https://iot.openplotter.cloud/timelapse?color=yellow&start_date=2021-05-01&end_date=2021-06-01&map_type=1&speed=90&delay=1&zoom=11
               </p>
             </div>
           </va-collapse>
@@ -127,6 +128,12 @@
           <va-collapse header="Source Code">
             <div class="pa-3">
               <p>
+                The project is free and open-source and I welcome any contribution and happy to work together. There is
+                definitely some bugs. The signalk plugin definitely need improvement. The movement detection in the
+                plugin is done via the auto-state plugin. I try to keep the technology stack simple, SQL and Javascript
+                with a bit of python. No middle ware to reduce code maintenance.
+              </p>
+              <p>
                 Source:<br />
                 - PostgSail Signalk plugin:
                 <a href="https://github.com/xbgmsharp/signalk-postgsail" target="_blank"
@@ -156,8 +163,10 @@
 </template>
 
 <script setup>
+  import { ref, computed } from 'vue'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
+  const searchValue = ref('')
 </script>
 
 <style lang="scss"></style>

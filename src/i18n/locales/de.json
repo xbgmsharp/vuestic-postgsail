@@ -369,7 +369,9 @@
     "offline": {
       "offline": "Ihr Schiff ist offline. Echtzeitüberwachung erfordert eine Internetverbindung.",
       "lastupdate": "Wir haben innerhalb der letzten 70 Minuten keine Daten von Ihrem Sammler erhalten."
-    }
+    },
+    "explore": "Explore",
+    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
   },
   "units": {
     "distance": {

@@ -373,7 +373,9 @@
     "offline": {
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
       "lastupdate": "We have not received any data from your boat within the last 70 minutes."
-    }
+    },
+    "explore": "Explore",
+    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
   },
   "units": {
     "distance": {

@@ -322,12 +322,13 @@
     "failure": "Error updating {key} with {value}",
     "msg": {
       "website": "Website displayed alongside your stats, please enter the full URL starting with http:// or https://",
-      "instagram_handle": "Instagram link displayed alongside your stats, please enter without a leading &#x40; sign",
+      "instagram_handle": "Instagram link displayed alongside your stats, please enter without a leading {'@'} sign",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/log/{id}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/log/{'id'}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/stats/{0}",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/logs/{0}",
-      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/timelapse/{0}"
+      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/timelapse/{0}",
+      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/monitoring/{0}"
     }
   },
   "faq": {

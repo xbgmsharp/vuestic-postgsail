@@ -60,21 +60,20 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'logs',
-        path: 'logs',
+        path: 'logs/:id?',
         component: () => import('../pages/logs-book/List.vue'),
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true, type: 'public_logs_list' },
       },
       {
         name: 'log-details',
         path: 'log/:id',
         component: () => import('../pages/logs-book/Details.vue'),
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true, type: 'public_logs' },
       },
       {
         name: 'stays',
         path: 'stays',
         component: () => import('../pages/stays/List.vue'),
-        meta: { requiresAuth: true, isPublic: true },
       },
       {
         name: 'stay-details',
@@ -120,13 +119,13 @@ const routes: Array<RouteRecordRaw> = [
         path: 'privacy',
         name: 'privacy',
         component: () => import('../pages/privacy/Privacy.vue'),
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true },
       },
       {
         path: 'faq',
         name: 'faq',
         component: () => import('../pages/faq/FAQ.vue'),
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true },
       },
       {
         path: 'grafana',
@@ -142,33 +141,44 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/activate/Activate.vue'),
       },
       {
-        path: 'monitoring',
-        name: 'monitoring',
-        component: () => import('../pages/monitoring/Monitoring.vue'),
+        name: 'monitoring-menu',
+        path: '/',
+        component: RouteViewComponent,
+        children: [
+          {
+            name: 'monitoring',
+            path: 'monitoring',
+            component: () => import('../pages/monitoring/Monitoring.vue'),
+          },
+          {
+            name: 'explore',
+            path: 'explore',
+            component: () => import('../pages/monitoring/Explore.vue'),
+          },
+        ],
       },
       {
         name: 'stats',
         path: 'stats',
         component: () => import('../pages/stats/Stats.vue'),
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true, type: 'public_stats' },
       },
       {
         name: 'timelapse-menu',
         path: '/',
         component: RouteViewComponent,
-        meta: { requiresAuth: true, isPublic: true },
+        meta: { isPublic: true },
         children: [
           {
             name: 'timelapse-replay',
             path: 'timelapse/:id?',
             component: () => import('../pages/timelapse/Timelapse2.vue'),
-            meta: { requiresAuth: false, isPublic: true },
+            meta: { isPublic: true, type: 'public_timelapse' },
           },
           {
             name: 'timelapse-form',
             path: 'timelapse/form',
             component: () => import('../pages/timelapse/Form.vue'),
-            meta: { requiresAuth: false, isPublic: true },
           },
         ],
       },
@@ -195,12 +205,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
     meta: { title: 'Error 404' },
   },
-  {
-    path: '/403',
-    name: 'unauthorized',
-    component: Page404Layout,
-    meta: { title: 'Error 403' },
-  },
 ]
 
 const router = createRouter({
@@ -210,7 +214,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const { isLoggedIn, validEmail, hasVessel, preferredHomepage, publicId } = useGlobalStore()
+  const { isLoggedIn, validEmail, hasVessel, preferredHomepage, isPublic } = useGlobalStore()
   console.log(
     'isLoggedIn',
     isLoggedIn,
@@ -220,14 +224,29 @@ router.beforeEach((to, from, next) => {
     hasVessel,
     'preferredHomepage',
     preferredHomepage,
-    'publicId',
-    publicId,
+    'isPublic',
+    isPublic,
   )
-  /*
-  // If next query-string
-  if (to.query.next) {
+  const GlobalStore = useGlobalStore()
+  const { is_public } = GlobalStore
+
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    to.matched.some((record) => record.meta.isPublic) &&
+    !isLoggedIn
+  ) {
     console.warn('vue-router beforeEach to.query.next', to)
+    console.log('Is anonymous page format, check ispublic', to.params.id, to.meta.type)
+    /*
+    const anonymous = is_public(to.params.id, to.meta.type as string)
+    if (anonymous) {
+      next()
+      return
+    }
+    */
   }
+
+  /*
   // Is publicly accessible?
   if (to.matched.some((record) => record.meta.isPublic) && !isLoggedIn) {
     next()
@@ -247,6 +266,11 @@ router.beforeEach((to, from, next) => {
     // Enforce vessel creation
     if (to.name != 'boat-new' && isLoggedIn && validEmail && !hasVessel) {
       next({ name: 'boat-new' })
+      return
+    }
+    // Follow next query-string if all good
+    if (to.query.next && isLoggedIn && validEmail && hasVessel) {
+      next({ path: to.query.next as string })
       return
     }
     // All good go to dashboard or preferredHomepage

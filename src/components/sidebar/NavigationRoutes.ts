@@ -47,11 +47,28 @@ export default {
       },
     },
     {
-      name: 'monitoring',
+      name: 'monitoring-menu',
       displayName: 'menu.monitoring',
       meta: {
         icon: 'menu-monitoring',
       },
+      disabled: false,
+      children: [
+        {
+          name: 'monitoring',
+          displayName: 'menu.monitoring',
+          meta: {
+            icon: 'material-icons-replay',
+          },
+        },
+        {
+          name: 'explore',
+          displayName: 'menu.explore',
+          meta: {
+            icon: 'material-icons-tune',
+          },
+        },
+      ],
     },
     {
       name: 'boats',

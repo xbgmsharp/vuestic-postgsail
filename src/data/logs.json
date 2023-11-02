@@ -1,22 +1,22 @@
 [
   {
     "id": 2,
-    "Name": "Knipan to Ekenäs",
-    "From": "Knipan",
-    "Started": "2022-08-28T19:30:12",
-    "To": "Ekenäs",
-    "Ended": "2022-08-28T19:48:12",
-    "Distance": 8686,
-    "Duration": "00:18:00"
+    "name": "Knipan to Ekenäs",
+    "from": "Knipan",
+    "started": "2021-10-31T11:40:45",
+    "to": "Ekenäs",
+    "ended": "2021-10-31T11:58:45",
+    "distance": 8.6862,
+    "duration": "PT18M"
   },
   {
     "id": 1,
-    "Name": "Bollsta to Hamnterassen Baywatch",
-    "From": "Bollsta",
-    "Started": "2022-08-28T19:02:12",
-    "To": "Hamnterassen Baywatch",
-    "Ended": "2022-08-28T19:27:12",
-    "Distance": 7170,
-    "Duration": "00:25:00"
+    "name": "patch log name 3",
+    "from": "Bollsta",
+    "started": "2021-10-31T11:12:45",
+    "to": "Slottsbacken",
+    "ended": "2021-10-31T11:37:45",
+    "distance": 7.17,
+    "duration": "PT25M"
   }
 ]

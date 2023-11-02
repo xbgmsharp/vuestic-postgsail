@@ -1,35 +1,33 @@
 {
-  "email": "firstname@gmail.com",
-  "first": "firstname",
-  "last": "Lastname",
-  "preferences": {
-    "website": "",
-    "alerting": {
-      "low_pressure_threshold": 1,
-      "high_wind_speed_threshold": 1,
-      "low_water_depth_threshold": 1,
-      "high_pressure_drop_threshold": 1,
-      "low_battery_charge_threshold": 1,
-      "low_battery_voltage_threshold": 1,
-      "low_water_temperature_threshold": 1,
-      "low_indoor_temperature_threshold": 1,
-      "low_outdoor_temperature_threshold": 1
+  "settings": {
+    "email": "demo+kapla@openplotter.cloud",
+    "first": "First_kapla",
+    "last": "Last_kapla",
+    "preferences": {
+      "badges": {
+        "Helmsman": { "log": 1, "date": "2021-10-31 13:10:47.52266" },
+        "Wake Maker": { "log": 1, "date": "2021-10-31 13:10:47.52266" },
+        "Club Alaska": { "log": 6, "date": "2021-10-31 13:10:58.671334" },
+        "Stormtrooper": { "log": 2, "date": "2021-10-31 13:10:47.52266" },
+        "Captain Award": { "log": 5, "date": "2021-10-31 13:10:58.647694" },
+        "Caribbean Sea": { "log": 5, "date": "2021-10-31 13:10:58.663604" },
+        "Gulf of Alaska": { "log": 6, "date": "2021-10-31 13:10:58.671334" },
+        "Gulf of Finland": { "log": 2, "date": "2021-10-31 13:10:47.52266" },
+        "Navigator Award": { "log": 5, "date": "2021-10-31 13:10:58.647694" },
+        "Tropical Traveler": { "log": 5, "date": "2021-10-31 13:10:58.663604" }
+      },
+      "email_valid": true,
+      "public_logs": true,
+      "public_stats": true,
+      "public_profile": true,
+      "public_logs_list": true,
+      "public_timelapse": true,
+      "public_monitoring": true,
+      "email_notifications": true
     },
-    "pushover": {},
-    "telegram": {},
-    "email_valid": true,
-    "public_logs": true,
-    "public_stats": true,
-    "pushover_user_key": "",
-    "public_profile": true,
-    "instagram_handle": "",
-    "public_logs_list": true,
-    "public_timelapse": true,
-    "preferred_homepage": "home",
-    "use_imperial_units": true,
-    "email_notifications": true,
-    "phone_notifications": true
-  },
-  "created_at": "2022-10-25T13:32:30.038658",
-  "username": "F Lastname"
+    "created_at": "2021-10-31T13:10:45.147948",
+    "username": "F Last_Kapla",
+    "has_vessel": true,
+    "public_id": 1
+  }
 }

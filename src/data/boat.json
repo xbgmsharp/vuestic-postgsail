@@ -1,0 +1,32 @@
+{
+  "vessel": {
+    "beam": 10,
+    "mmsi": 123456789,
+    "name": "kapla",
+    "height": 24,
+    "length": 36,
+    "alpha_2": null,
+    "country": null,
+    "geojson": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.365766667, 59.86]
+      },
+      "properties": {
+        "name": "kapla",
+        "time": "2021-10-31T11:59:45",
+        "latitude": 59.86,
+        "longitude": 23.365766666666666,
+        "speedoverground": 0,
+        "anglespeedapparent": 10,
+        "courseovergroundtrue": 122
+      }
+    },
+    "ship_type": "Sailing",
+    "created_at": "2021-10-31T13:10:45",
+    "last_contact": "2021-10-31T12:01:45",
+    "first_contact": "2021-10-31T13:10:45",
+    "plugin_version": "0.0.1"
+  }
+}

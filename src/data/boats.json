@@ -1,8 +1,10 @@
 [
   {
     "name": "kapla",
-    "mmsi": "123456789",
-    "created_at": "2022-09-01T16:47:47.833839",
-    "last_contact": "2022-09-01T15:38:47"
+    "mmsi": null,
+    "created_at": "2021-10-31T13:10:45",
+    "last_contact": "2021-10-31 12:01:45",
+    "offline": true,
+    "duration": "PT21H18M5.031092S"
   }
 ]

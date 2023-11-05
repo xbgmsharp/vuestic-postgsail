@@ -276,4 +276,32 @@ export default [
     component: IconKML,
     color: 'primary',
   },
+  {
+    name: 'play',
+    to: 'fa4-play',
+  },
+  {
+    name: 'pause',
+    to: 'fa4-pause',
+  },
+  {
+    name: 'github2',
+    to: 'fa-brands fa-github',
+  },
+  {
+    name: 'facebook',
+    to: 'fa-brands fa-facebook',
+  },
+  {
+    name: 'instagram',
+    to: 'fa-brands fa-instagram',
+  },
+  {
+    name: 'x-twitter',
+    to: 'fa-brands fa-x-twitter',
+  },
+  {
+    name: 'slack',
+    to: 'fa-brands fa-slack',
+  },
 ]

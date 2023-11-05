@@ -86,6 +86,8 @@ A full-featured development environment ready to test and code.
     - [ ] require backend update
   - [ ] Add external authentication
     - [ ] require backend update
+  - [x] Add public anonymous access for sharing
+    - [x] require backend update
 - [ ] Login
   - [x] Create `/activate` page for OTP validation
   - [x] Force email validation via One Time code on login
@@ -102,8 +104,8 @@ A full-featured development environment ready to test and code.
 - [ ] Vessels:
   - [x] Update last_contact text to a human readable string, "Waiting/Pending for vessel connection"
   - [x] Disable boat details page when missing lat_contact null
-  - [x] Add link to https://www.vesselfinder.com/vessels/details/{{MMSI}}
-  - [x] Add link to https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi={{MMSI}}
+  - [x] Add link to https://www.vesselfinder.com/
+  - [x] Add link to https://www.marinevesseltraffic.com/
   - [x] Add vessel type or even all vessel metadata
     - [x] require backend update
 - [ ] Add Terms of Use page
@@ -124,7 +126,7 @@ A full-featured development environment ready to test and code.
 - [ ] Boats icons base on vessel type
   - [ ] powerboaticon.png vs sailboaticon.png
   - [ ] require backend update
-- [ ] Timelapse
+- [x] Timelapse
   - [x] Log Geojson replay functionality
   - [x] Generic Geojson replay functionality base on date or multiple logbook
   - [x] require backend update
@@ -224,10 +226,14 @@ A full-featured development environment ready to test and code.
 
 - https://fonts.google.com/icons?icon.set=Material+Icons
 - https://www.svgrepo.com/
+- https://fontawesome.com/
 
 ## Debugger
 
 - JSON Web Tokens, https://jwt.io/
 - GeoJSON, https://geojson.io/
+- GeoJSONLint, https://geojsonlint.com/
 - Nominatim, https://nominatim.openstreetmap.org/ui/reverse.html
+- A web-based data filtering tool for OpenStreetMap, https://overpass-turbo.eu
 - GPX validation, https://opencpn.org/OpenCPN/info/gpxvalidation.html
+- KML, https://developers.google.com/kml/documentation/kml_tut

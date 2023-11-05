@@ -145,7 +145,8 @@
       "cloud_coverage": "Cobertura de nubes",
       "visibility": "Visibilidad",
       "metadata": "Metadatos",
-      "observations": "Observaciones"
+      "observations": "Observaciones",
+      "share": "Compartir"
     }
   },
   "stays": {

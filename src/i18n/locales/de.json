@@ -150,7 +150,8 @@
       "cloud_coverage": "Cloud coverage",
       "visibility": "Visibility",
       "metadata": "Metadata",
-      "observations": "Observations"
+      "observations": "Observations",
+      "share": "Share"
     }
   },
   "stays": {

@@ -48,7 +48,17 @@
           hoverable
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold" :to="{ name: 'log-details', params: { id: rowData.id } }">
+            <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.id } }">
+              {{ value }}
+            </router-link>
+          </template>
+          <template #cell(from)="{ value, rowData }">
+            <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId } }">
+              {{ value }}
+            </router-link>
+          </template>
+          <template #cell(to)="{ value, rowData }">
+            <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId } }">
               {{ value }}
             </router-link>
           </template>
@@ -156,6 +166,8 @@
             toTime: row.ended,
             distance: row.distance,
             duration: row.duration,
+            fromMoorageId: row._from_moorage_id,
+            toMoorageId: row._to_moorage_id,
           }))
           .filter((row) => {
             const f = filter
@@ -230,5 +242,11 @@
 <style lang="scss" scoped>
   .va-table {
     width: 100%;
+  }
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

@@ -64,24 +64,38 @@
                   </div>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.arrived) }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.arrived_log_id } }">
+                    {{ dateFormatUTC(item.arrived) }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
-                    {{ item.moorage }}
+                  <router-link
+                    class="link"
+                    :to="{ name: 'moorage-details', params: { id: item.departed_to_moorage_id } }"
+                  >
+                    {{ item.departed_to_moorage_name }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.departed) }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.departed_log_id } }">
+                    {{ dateFormatUTC(item.departed) }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'moorage-details', params: { id: item.moorage_id } }">
-                    {{ item.moorage }}
+                  <router-link
+                    class="link"
+                    :to="{ name: 'moorage-details', params: { id: item.arrived_from_moorage_id } }"
+                  >
+                    {{ item.arrived_from_moorage_name }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input v-model="formData.notes" outline placeholder="Note" type="textarea" />
+                  <VaTextarea v-model="formData.notes" outline placeholder="Note" type="textarea" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -135,6 +149,12 @@
           stayed_at: apiData.row.stayed_at,
           departed: apiData.row.departed,
           arrived: apiData.row.arrived,
+          arrived_from_moorage_id: apiData.row.arrived_from_moorage_id,
+          departed_to_moorage_id: apiData.row.departed_to_moorage_id,
+          departed_log_id: apiData.row.departed_log_id,
+          arrived_log_id: apiData.row.arrived_log_id,
+          departed_to_moorage_name: apiData.row.departed_to_moorage_name,
+          arrived_from_moorage_name: apiData.row.arrived_from_moorage_name,
           notes: apiData.row.notes,
           stayed_at_id: apiData.row.stayed_at_id,
         }

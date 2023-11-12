@@ -304,4 +304,8 @@ export default [
     name: 'slack',
     to: 'fa-brands fa-slack',
   },
+  {
+    name: 'help2',
+    to: 'live_help',
+  },
 ]

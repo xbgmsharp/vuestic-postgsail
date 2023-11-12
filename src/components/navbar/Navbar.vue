@@ -16,9 +16,12 @@
       </template>
       <template #center> </template>
       <template #right>
-        <div class="app-navbar__actions">
+        <div class="app-navbar__actions flex">
           <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
-            <va-icon name="github-svg" style="width: 100%; height: 32px" />
+            <va-icon name="github2" class="app-navbar-actions__item" :size="32" />
+          </a>
+          <a href="https://signalk-dev.slack.com" target="_blank">
+            <va-icon name="slack" class="app-navbar-actions__item" :size="32" />
           </a>
         </div>
         <app-navbar-actions class="app-navbar__actions" :user-name="userName" />
@@ -73,7 +76,7 @@
         width: 100%;
       }
       .app-navbar__actions {
-        width: 100%;
+        //width: 100%;
         display: flex;
         justify-content: space-between;
       }

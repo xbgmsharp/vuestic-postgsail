@@ -213,6 +213,13 @@ class ApiClient extends HttpClient {
     return this.post('rpc/find_log_to_moorage_fn', payload)
   }
 
+  async moorages_stays(id: string) {
+    return this.get(`moorages_stays_view?id=eq.${id}`)
+  }
+
+  async moorages_arrivals_departures(id: string) {
+    return this.get(`logs_view?or=(_from_moorage_id.eq.${id},_to_moorage_id.eq.${id})`)
+  }
   /*
    * Stays API endpoint
    */

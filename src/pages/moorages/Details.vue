@@ -24,13 +24,26 @@
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.moorage') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input
-                    v-model="formData.name"
-                    placeholder="Name"
-                    outline
-                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                    style="min-width: 100px; max-width: 50%"
-                  />
+                  <VaValue v-slot="v">
+                    <input
+                      v-if="v.value"
+                      v-model="formData.name"
+                      outline
+                      :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                      style="min-width: 100px; max-width: 50%"
+                      class="box"
+                    />
+                    <span v-else>
+                      {{ formData.name }}
+                    </span>
+
+                    <VaButton
+                      :icon="v.value ? 'save' : 'edit'"
+                      preset="plain"
+                      size="small"
+                      @click="v.value = !v.value"
+                    />
+                  </VaValue>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.departed') }}</dt>
                 <dd class="flex">
@@ -57,12 +70,26 @@
                   <va-switch v-model="item.home" size="small" @update:modelValue="runBusy(updateHome, $event)" />
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.total_stay }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link
+                    class="va-text-bold va-link link"
+                    :to="{ name: 'moorage-stays', params: { id: item.id } }"
+                  >
+                    {{ durationFormatDays(item.total_duration) }} {{ durationI18nDays(item.total_duration) }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.arrivals') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.arrivals_departures }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link
+                    class="va-text-bold va-link link"
+                    :to="{ name: 'moorage-arrivals-departures', params: { id: item.id } }"
+                  >
+                    {{ item.arrivals_departures }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input v-model="formData.notes" outline type="textarea" placeholder="Note" />
+                  <VaTextarea v-model="formData.notes" outline placeholder="Note" />
                 </dd>
               </dl>
               <template v-if="updateError">
@@ -89,6 +116,7 @@
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { durationFormatDays, durationI18nDays } from '../../utils/dateFormatter.js'
 
   import moorages from '../../data/moorages.json'
 
@@ -112,6 +140,7 @@
           default_stay: apiData.row.default_stay,
           home: apiData.row.home,
           total_stay: apiData.row.total_stay,
+          total_duration: apiData.row.total_duration,
           arrivals_departures: apiData.row.arrivals_departures,
           notes: apiData.row.notes,
           default_stay_id: apiData.row.default_stay_id,
@@ -237,5 +266,9 @@
         background-color: var(--va-background);
       }
     }
+  }
+  .box {
+    background: white;
+    border: 1px solid #ccc;
   }
 </style>

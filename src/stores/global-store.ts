@@ -53,16 +53,29 @@ const defaultState = {
         low_indoor_temperature_threshold: 7.0,
         low_outdoor_temperature_threshold: 3.0,
       },
+      monitoring: {
+        depthKey: 'environment.depth.belowTransducer',
+        waterTemperatureKey: 'environment.water.temperature',
+        windSpeedKey: 'environment.wind.speedApparent',
+        windDirectionKey: 'environment.wind.angleApparent',
+        pressureKey: 'environment.outside.pressure',
+        insideTemperatureKey: 'environment.inside.temperature',
+        outsideTemperatureKey: 'environment.outside.temperature',
+        insideHumidityKey: 'environment.inside.humidity',
+        outsideHumidityKey: 'environment.outside.humidity',
+        battery: 'electric.',
+      },
       badges: {},
       telegram: {},
       email_valid: false,
-      public_logs: true,
-      public_stats: false,
       pushover_user_key: '',
-      public_profile: true,
       instagram_handle: '',
+      public_profile: false,
+      public_logs: false,
+      public_stats: false,
       public_logs_list: false,
-      public_timelapse: true,
+      public_timelapse: false,
+      public_monitoring: false,
       preferred_homepage: 0,
       use_imperial_units: false,
       email_notifications: true,
@@ -77,6 +90,7 @@ const defaultState = {
   },
   vessel: {},
   badges: {},
+  ispublic: false,
 }
 
 export const useGlobalStore = defineStore('global', {
@@ -124,6 +138,7 @@ export const useGlobalStore = defineStore('global', {
     },
     async fetchSettings(_refresh = false): Promise<Record<string, any>> {
       console.log('fetchSettings', _refresh, this.userName, this.settings)
+      //if (this.ispublic) return this.settings /* Ignore on anonymous access */
       if (!_refresh && this.userName) return this.settings /* Force refresh */
       const api = new PostgSail()
       try {
@@ -200,6 +215,18 @@ export const useGlobalStore = defineStore('global', {
       this.badges = await userBadges(user_badges)
       //return this.badges
     },
+    async is_public(id: any, type: string) {
+      const api = new PostgSail()
+      try {
+        const response = await api.is_public({ id: id, _type: type })
+        this.ispublic = response
+        console.log('is_public response', response)
+        api.setHeader('x-is-public', btoa(`${id},${type}`))
+        return this.ispublic
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
   getters: {
     userName: (state) => state.settings?.username,
@@ -215,6 +242,10 @@ export const useGlobalStore = defineStore('global', {
     Badges: (state) => state.settings?.preferences?.badges || {},
     userBadges: (state) => state?.badges || {},
     publicId: (state) => state.settings?.public_id || 0,
+    isPublic: (state) => state.ispublic || false,
+    firstName: (state) => state.settings?.first,
+    instagram: (state) => state.settings?.preferences?.instagram_handle,
+    website: (state) => state.settings?.preferences?.website,
   },
 })
 export default useGlobalStore

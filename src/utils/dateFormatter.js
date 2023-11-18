@@ -33,7 +33,8 @@ export const durationFormat = (durationString) => {
 export const dateFormatUTC = (dateString, format = 'll LT') => {
   if (!dateString) return null
   //const date = moment.utc(dateString).locale(moment_locale()).format('L LT')
-  const date = moment.utc(dateString).locale(moment_locale()).format(format)
+  //const date = moment.utc(dateString).locale(moment_locale()).format(format)
+  const date = new Date(dateString + 'Z').toLocaleString()
   return date
 }
 

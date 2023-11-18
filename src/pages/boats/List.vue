@@ -48,7 +48,7 @@
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormatUTC, fromNow } from '../../utils/dateFormatter.js'
 
-  import vesselsDatas from '../../data/boats.json'
+  import vesselsData from '../../data/boats.json'
 
   const { t, locale } = useI18n()
   const isBusy = ref(false)
@@ -126,9 +126,9 @@
     } catch ({ response }) {
       apiError.value = response.message
       if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample datas from local json...', apiError.value)
-        rowsData.value.splice(0, vesselsDatas.length)
-        rowsData.value.push(...vesselsDatas)
+        console.warn('Fallback using sample data from local json...', apiError.value)
+        rowsData.value.splice(0, vesselsData.length)
+        rowsData.value.push(...vesselsData)
       }
     } finally {
       isBusy.value = false

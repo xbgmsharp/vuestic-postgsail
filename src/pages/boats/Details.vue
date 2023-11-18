@@ -92,7 +92,7 @@
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
-  import vesselsDatas from '../../data/boats.json'
+  import vesselData from '../../data/boat.json'
 
   const route = useRoute()
   const isBusy = ref(false)
@@ -143,8 +143,7 @@
       apiError.value = response.message
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample data from local json...', apiError.value)
-        console.warn('Get data from json...', apiError.value)
-        const row = vesselsDatas.find((row) => row.id == route.params.id)
+        const row = vesselData.find((row) => row.id == route.params.id)
         apiData.row = row
       }
     } finally {

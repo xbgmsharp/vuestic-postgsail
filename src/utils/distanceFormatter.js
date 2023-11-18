@@ -3,6 +3,13 @@ import useGlobalStore from '../stores/global-store'
 const { t } = i18n.global,
   GlobalStore = useGlobalStore()
 
+export const distanceLatLng = (val, trad = 'units.distance.miles') => {
+  if (!val) return null
+  const n = kmToMiles(parseFloat(val / 1000)) // meters -> km -> NM
+  console.log('distanceLatLng', n.toFixed(3))
+  return t(trad, n)
+}
+
 export const distanceFormat = (val, trad = 'units.distance.miles') => {
   if (!val) return null
   //const n = GlobalStore.imperialUnits ? parseFloat(val) : ((trad = 'units.distance.kilometres'), milesToKm(val))
@@ -13,7 +20,8 @@ export const distanceFormat = (val, trad = 'units.distance.miles') => {
 
 export function distanceKm(val, trad = 'units.distance.kilometres') {
   if (!val) return null
-  const n = GlobalStore.imperialUnits ? ((trad = 'units.distance.miles'), kmToMiles(val)) : parseFloat(val)
+  //const n = GlobalStore.imperialUnits ? ((trad = 'units.distance.miles'), kmToMiles(val)) : parseFloat(val)
+  const n = parseFloat(val)
   const count = { n: Number.isInteger(n) ? n : parseFloat(n.toFixed(2)) }
   return t(trad, count)
 }

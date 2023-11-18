@@ -56,7 +56,7 @@
 
   const isMobile = ref(false)
   const isTablet = ref(false)
-  const { isSidebarMinimized } = storeToRefs(GlobalStore)
+  const { isSidebarMinimized, isPublic } = storeToRefs(GlobalStore)
   const { fetchSettings } = GlobalStore
 
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
@@ -80,6 +80,10 @@
 
   onBeforeMount(async () => {
     console.log('AppLayout onBeforeMount')
+    if (!GlobalStore.isLoggedIn && GlobalStore.isPublic) {
+      console.log('AppLayout anonymous access isPublic', GlobalStore.isPublic)
+      return
+    }
     await fetchSettings(true)
     if (!GlobalStore.isLoggedIn) {
       console.log('AppLayout router push logout')

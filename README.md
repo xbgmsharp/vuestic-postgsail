@@ -220,7 +220,8 @@ A full-featured development environment ready to test and code.
 - [x] Update to the latest version vitejs and plugins
 - [x] Remove medium-editor dependency
 - [x] Remove amcharts dependency
-- [ ] Remove date-fns dependency
+- [ ] Update date formating as moment is deprecated, use date-fns?
+- [ ] Update graph using echarts.
 
 ## Icons/SVG
 

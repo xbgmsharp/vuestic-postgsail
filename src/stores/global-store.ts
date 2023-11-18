@@ -75,6 +75,7 @@ const defaultState = {
       public_stats: false,
       public_logs_list: false,
       public_timelapse: false,
+      public_vessel: '',
       public_monitoring: false,
       preferred_homepage: 0,
       use_imperial_units: false,
@@ -86,7 +87,7 @@ const defaultState = {
     created_at: '',
     username: '',
     has_vessel: false,
-    public_id: 0,
+    public_vessel: '',
   },
   vessel: {},
   badges: {},
@@ -154,6 +155,7 @@ export const useGlobalStore = defineStore('global', {
         console.error(error)
       }
       await this.set_userBadges()
+      this.settings.public_vessel = this.settings?.preferences?.public_vessel
       return this.settings
     },
     async updatePref(key: string, value: any): Promise<any> {
@@ -215,13 +217,16 @@ export const useGlobalStore = defineStore('global', {
       this.badges = await userBadges(user_badges)
       //return this.badges
     },
-    async is_public(id: any, type: string) {
+    async is_public(boat: string, type: string, id = 0 as unknown) {
       const api = new PostgSail()
       try {
-        const response = await api.is_public({ id: id, _type: type })
+        const response = await api.is_public({ boat: boat, _type: type, _id: id })
         this.ispublic = response
         console.log('is_public response', response)
-        api.setHeader('x-is-public', btoa(`${id},${type}`))
+        if (this.ispublic == true) {
+          api.setHeader('x-is-public', btoa(`${boat},${type},${id}`))
+          this.settings.public_vessel = boat
+        }
         return this.ispublic
       } catch (error) {
         console.log(error)
@@ -241,7 +246,7 @@ export const useGlobalStore = defineStore('global', {
     currentWeather: (state) => state.currentweather,
     Badges: (state) => state.settings?.preferences?.badges || {},
     userBadges: (state) => state?.badges || {},
-    publicId: (state) => state.settings?.public_id || 0,
+    publicVessel: (state) => state.settings?.public_vessel || null,
     isPublic: (state) => state.ispublic || false,
     firstName: (state) => state.settings?.first,
     instagram: (state) => state.settings?.preferences?.instagram_handle,

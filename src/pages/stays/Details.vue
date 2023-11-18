@@ -24,13 +24,26 @@
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.name') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input
-                    v-model="formData.name"
-                    placeholder="Name"
-                    outline
-                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                    style="min-width: 100px; max-width: 50%"
-                  />
+                  <VaValue v-slot="v">
+                    <input
+                      v-if="v.value"
+                      v-model="formData.name"
+                      outline
+                      :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                      style="min-width: 100px; max-width: 50%"
+                      class="inputbox"
+                    />
+                    <span v-else>
+                      {{ formData.name }}
+                    </span>
+
+                    <VaButton
+                      :icon="v.value ? 'save' : 'edit'"
+                      preset="plain"
+                      size="small"
+                      @click="v.value = !v.value"
+                    />
+                  </VaValue>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.moorage') }}</dt>
                 <!--<dd class="flex xs12 md6 pa-2">{{ item.moorage }}</dd>-->
@@ -41,7 +54,8 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }}
+                  {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }} /
+                  {{ durationI18nDays(item.duration) }}
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex">
@@ -63,12 +77,6 @@
                     -->
                   </div>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
-                <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.arrived_log_id } }">
-                    {{ dateFormatUTC(item.arrived) }}
-                  </router-link>
-                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrived') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <router-link
@@ -78,10 +86,10 @@
                     {{ item.departed_to_moorage_name }}
                   </router-link>
                 </dd>
-                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.departed_log_id } }">
-                    {{ dateFormatUTC(item.departed) }}
+                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.arrived_log_id } }">
+                    {{ dateFormatUTC(item.arrived) }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departed') }}</dt>
@@ -91,6 +99,12 @@
                     :to="{ name: 'moorage-details', params: { id: item.arrived_from_moorage_id } }"
                   >
                     {{ item.arrived_from_moorage_name }}
+                  </router-link>
+                </dd>
+                <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.departed_log_id } }">
+                    {{ dateFormatUTC(item.departed) }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.note') }}</dt>
@@ -263,5 +277,9 @@
   }
   .link:hover {
     text-decoration: underline blue;
+  }
+  .inputbox {
+    background: white;
+    border: 1px solid #ccc;
   }
 </style>

@@ -17,20 +17,54 @@
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.name') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-input
-                    v-model="formData.name"
-                    placeholder="Name"
-                    outline
-                    :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                    style="min-width: 100px; max-width: 50%"
-                  />
+                  <template v-if="isLoggedIn">
+                    <VaValue v-slot="v">
+                      <input
+                        v-if="v.value"
+                        v-model="formData.name"
+                        outline
+                        :rules="[(value) => (value && value.length > 0) || 'Field is required']"
+                        style="min-width: 100px; max-width: 50%"
+                        class="inputbox"
+                        @change="handleSubmit"
+                      />
+                      <span v-else>
+                        {{ formData.name }}
+                      </span>
+
+                      <VaButton
+                        :icon="v.value ? 'save' : 'edit'"
+                        preset="plain"
+                        size="small"
+                        @click="v.value = !v.value"
+                      />
+                    </VaValue> </template
+                  ><template v-else>
+                    {{ item.name }}
+                  </template>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.from') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.from }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link
+                    v-if="typeof item.id !== 'undefined'"
+                    class="va-text-bold va-link link"
+                    :to="{ name: 'moorage-details', params: { id: item.from_moorage_id } }"
+                  >
+                    {{ item.from }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.from_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.fromTime) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.to') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ item.to }}</dd>
+                <dd class="flex xs12 md6 pa-2">
+                  <router-link
+                    v-if="typeof item.id !== 'undefined'"
+                    class="va-text-bold va-link link"
+                    :to="{ name: 'moorage-details', params: { id: item.to_moorage_id } }"
+                  >
+                    {{ item.to }}
+                  </router-link>
+                </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.to_time') }}</dt>
                 <dd class="flex xs12 md6 pa-2">{{ dateFormatUTC(item.toTime) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.duration') }}</dt>
@@ -41,13 +75,25 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.distance') }}</dt>
                 <dd class="xs12 md6 pa-2">
-                  {{ distanceFormat(item.distance) }} (<router-link
-                    v-if="typeof item.id !== 'undefined'"
-                    class="va-text-bold va-link link"
-                    :to="{ name: 'timelapse-replay', params: { id: item.id } }"
-                  >
-                    timelapse </router-link
-                  >)
+                  {{ distanceFormat(item.distance) }} (
+                  <template v-if="isLoggedIn">
+                    <router-link
+                      v-if="typeof item.id !== 'undefined'"
+                      class="va-text-bold va-link link"
+                      :to="{ name: 'timelapse-replay', params: { id: item.id } }"
+                    >
+                      timelapse
+                    </router-link> </template
+                  ><template v-else>
+                    <router-link
+                      v-if="typeof item.id !== 'undefined'"
+                      class="va-text-bold va-link link"
+                      :to="{ name: 'timelapse-replay', params: { boat: publicVessel, id: item.id } }"
+                    >
+                      timelapse
+                    </router-link>
+                  </template>
+                  )
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.avg_max_speed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
@@ -57,7 +103,16 @@
                 <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <va-input v-model="formData.notes" outline type="textarea" :placeholder="$t('logs.log.remarks')" />
+                  <template v-if="isLoggedIn">
+                    <VaTextarea
+                      v-model="formData.notes"
+                      outline
+                      :placeholder="$t('logs.log.remarks')"
+                      @change="handleSubmit"
+                    /> </template
+                  ><template v-else>
+                    {{ item.notes }}
+                  </template>
                 </dd>
               </dl>
               <!-- metadata section -->
@@ -77,43 +132,56 @@
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.sea_state') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <MySelect
-                    v-if="item.seaState"
-                    :id="parseInt(item.seaState)"
-                    :key="item.seaState"
-                    :data="parseInt(item.seaState)"
-                    :object="seaState"
-                    style="min-width: 100px; max-width: 40%"
-                    @clickFromChildComponent="handleSeaState"
-                  />
+                  <template v-if="isLoggedIn">
+                    <MySelect
+                      v-if="item.seaState"
+                      :id="parseInt(item.seaState)"
+                      :key="item.seaState"
+                      :data="parseInt(item.seaState)"
+                      :object="seaState"
+                      @clickFromChildComponent="handleSeaState"
+                    />
+                  </template>
+                  <template v-else>
+                    {{ item.seaState }}
+                  </template>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.cloud_coverage') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <va-slider
-                    v-model="cloudCoverage"
-                    stateful
-                    track-label-visible
-                    invert-label
-                    :min="-1"
-                    :max="8"
-                    :step="1"
-                    style="min-width: 100px; max-width: 40%"
-                    :label="sliderLabel"
-                    @update:modelValue="runBusy(handleCloudCoverage, $event)"
-                  >
-                  </va-slider>
+                  <template v-if="isLoggedIn">
+                    <va-slider
+                      v-model="cloudCoverage"
+                      stateful
+                      track-label-visible
+                      invert-label
+                      :min="-1"
+                      :max="8"
+                      :step="1"
+                      style="min-width: 100px; max-width: 40%"
+                      :label="sliderLabel"
+                      @update:modelValue="runBusy(handleCloudCoverage, $event)"
+                    >
+                    </va-slider>
+                  </template>
+                  <template v-else>
+                    {{ cloudCoverage }}
+                  </template>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.visibility') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <MySelect
-                    v-if="item.visibility"
-                    :id="parseInt(item.visibility)"
-                    :key="item.visibility"
-                    :data="parseInt(item.visibility)"
-                    :object="visibility"
-                    style="min-width: 100px; max-width: 40%"
-                    @clickFromChildComponent="handleVisibility"
-                  />
+                  <template v-if="isLoggedIn">
+                    <MySelect
+                      v-if="item.visibility"
+                      :id="parseInt(item.visibility)"
+                      :key="item.visibility"
+                      :data="parseInt(item.visibility)"
+                      :object="visibility"
+                      @clickFromChildComponent="handleVisibility"
+                    />
+                  </template>
+                  <template v-else>
+                    {{ item.visibility }}
+                  </template>
                 </dd>
               </dl>
               <!-- export section -->
@@ -129,31 +197,57 @@
                 </dd>
               </dl>
               <!-- sharing section -->
-              <!-- EMail, Facebook, more?
+              <!-- EMail, Facebook, more? -->
               <va-divider orientation="center" class="divider">
                 <span class="px-2">{{ $t('logs.log.share') }}</span>
               </va-divider>
               <dl class="dl-details row mb-3">
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.share') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
-                  <va-icon name="material-icons-email" :size="44" @click="handleGPX(item.id)" />
-                  <svg class="va-icon" @click="handleGPX(item.id)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" style="cursor: pointer; font-size: 44px; height: 44px; line-height: 44px;">
-                  <path d="M182.594 0C81.445 0 0 81.445 0 182.594v634.813c0 101.149 81.445 182.594 182.594 182.594h344.063V609.063H423.282v-140.75h103.375v-120.25c0-94.475 61.079-181.219 201.781-181.219c56.968 0 99.094 5.469 99.094 5.469l-3.313 131.438s-42.963-.406-89.844-.406c-50.739 0-58.875 23.378-58.875 62.188v102.781h152.75l-6.656 140.75H675.5v390.938h141.906c101.149 0 182.594-81.445 182.594-182.594V182.595C1000 81.446 918.555.001 817.406.001H182.593z"/>
-                  </svg>
+                  <a
+                    :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2Flog%2F${item.id}`"
+                    target="_blank"
+                    ><va-icon name="facebook" :size="44"
+                  /></a>
+                  <template v-if="instagram">
+                    <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
+                      <va-icon name="instagram" :size="44"
+                    /></a>
+                  </template>
+                  <a
+                    :href="`https://twitter.com/intent/tweet?text=From ${formData.name}&url=https%3A%2F%2Fiot.openplotter.cloud/log/${item.id}`"
+                    target="_blank"
+                  >
+                    <va-icon name="x-twitter" :size="44"
+                  /></a>
+                  <a
+                    :href="
+                      `mailto:?subject=${publicVessel}'s Trip From ${formData.name}&body=Marine logbook entry for the ` +
+                      String(distanceFormat(item.distance)) +
+                      ` mile trip from ${item.from} to ${item.to}, lasting ` +
+                      String(durationFormatHours(item.duration)) +
+                      `hours.%0D%0A%0D%0Ahttps://iot.openplotter.cloud/log/${item.id}`
+                    "
+                    target="_blank"
+                    ><va-icon name="envelope" :size="44"
+                  /></a>
+                  <template v-if="website">
+                    <a :href="website" target="_blank"><va-icon name="envelope" :size="44" /></a>
+                  </template>
                 </dd>
               </dl>
-              -->
+              <br />
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
-              <div class="row justify-end">
-                <div class="flex">
-                  <!--
-                  <va-button color="danger" @click="handleDelete">Delete</va-button>
-                  -->
+              <template v-if="isLoggedIn">
+                <div class="flex flex-row pa-2">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
-              </div>
+                <div class="flex flex-row pa-2">
+                  <va-button color="danger" @click="handleDelete">Delete</va-button>
+                </div>
+              </template>
             </va-form>
           </template>
         </va-inner-loading>
@@ -174,8 +268,12 @@
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { seaState, visibility } from '../../utils/PostgSail'
   import MySelect from '../../components/vaSelect.vue'
-
-  import logsBooks from '../../data/logbook.json'
+  import { useModal, useToast } from 'vuestic-ui'
+  const { confirm } = useModal()
+  const { init: initToast } = useToast()
+  import logBook from '../../data/logbook.json'
+  import { useGlobalStore } from '../../stores/global-store'
+  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
 
   const CacheStore = useCacheStore()
   const route = useRoute()
@@ -209,6 +307,8 @@
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
           visibility: apiData.row?.extra?.observations?.visibility || -1,
+          from_moorage_id: apiData.row.from_moorage_id,
+          to_moorage_id: apiData.row.to_moorage_id,
         }
       : {}
   })
@@ -232,14 +332,21 @@
       formData.name = apiData.row.name || null
       formData.notes = apiData.row.notes || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
+      document.title = `${publicVessel}'s Trip From ${apiData.row.name}`
     } catch (e) {
       apiError.value = e
-      console.warn('Get data from json...', apiError.value)
-      const row = logsBooks.find((row) => row.id == route.params.id)
-      apiData.row = row
+      if (!import.meta.env.PROD && import.meta.env.VITE_APP_INCLUDE_DEMOS) {
+        console.warn('Fallback using sample data from local json...', apiError.value)
+        const row = logBook.find((row) => row.id == route.params.id)
+        apiData.row = row
+      }
     } finally {
       isBusy.value = false
     }
+  })
+
+  const duration_email_link = computed(() => {
+    return durationFormatHours(item.value.duration)
   })
 
   const handleSubmit = async () => {
@@ -260,7 +367,6 @@
         CacheStore.logs = []
         CacheStore.logs_get = []
         CacheStore.store_ttl = null
-        CacheStore.getAPI('logs')
       } else {
         throw { response }
       }
@@ -269,6 +375,11 @@
       console.log('log_update failed', response)
       updateError.value = response.message
     } finally {
+      initToast({
+        message: updateError.value ? `Error updating log entry` : `Successfully updated log entry`,
+        position: 'top-right',
+        color: updateError.value ? 'warning' : 'success',
+      })
       isBusy.value = false
     }
   }
@@ -276,6 +387,22 @@
   const handleDelete = async () => {
     isBusy.value = true
     updateError.value = null
+    let canDelete = false
+
+    const modal_result = await confirm({
+      message: 'This will permanently delete the Log Entry and any associated Stays. Do you really want to continue?',
+      title: 'Are you sure?',
+      okText: 'Yes, I agree',
+      cancelText: 'No, keep my data',
+    })
+    if (modal_result) {
+      canDelete = true
+    } else {
+      isBusy.value = false
+      initToast('Operation cancel')
+    }
+
+    if (!canDelete) return
 
     const api = new PostgSail()
     const id = route.params.id
@@ -434,5 +561,9 @@
   }
   .slider-template {
     width: 20px !important;
+  }
+  .inputbox {
+    background: white;
+    border: 1px solid #ccc;
   }
 </style>

@@ -6,7 +6,6 @@ import IconGPX from '../../../components/icons/IconGPX.vue'
 import IconGrafana from '../../../components/icons/IconGrafana.vue'
 import IconSailboat from '../../../components/icons/IconSailboat.vue'
 import IconAnchor from '../../../components/icons/IconAnchor.vue'
-import IconGithub from '../../../components/icons/IconGithub.vue'
 import IconHarbor from '../../../components/icons/IconHarbor.vue'
 import IconGeoJSON from '../../../components/icons/IconGeoJSON.vue'
 import IconSolar from '../../../components/icons/IconSolar.vue'
@@ -91,10 +90,12 @@ export default [
     name: 'volume_up',
     to: 'fa4-volume-up',
   },
+  /*
   {
     name: 'github',
     to: 'ion-logo-github',
   },
+*/
   {
     name: 'md_close',
     to: 'ion-md-close',
@@ -166,22 +167,17 @@ export default [
   {
     name: 'csv',
     component: IconCSV,
-    color: 'primary',
+    //color: 'primary',
   },
   {
     name: 'gpx',
     component: IconGPX,
-    color: 'primary',
+    //color: 'primary',
   },
   {
     name: 'geojson',
     component: IconGeoJSON,
-    color: 'primary',
-  },
-  {
-    name: 'github-svg',
-    component: IconGithub,
-    color: 'primary',
+    //color: 'primary',
   },
   {
     name: 'wifi_off',

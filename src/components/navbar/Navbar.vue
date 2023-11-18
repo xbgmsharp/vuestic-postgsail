@@ -20,7 +20,10 @@
           <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
             <va-icon name="github2" class="app-navbar-actions__item" :size="32" />
           </a>
-          <a href="https://signalk-dev.slack.com" target="_blank">
+          <a
+            href="https://join.slack.com/t/signalk-dev/shared_invite/zt-1leccop43-KrU7G6yBq9g91KXjZtNg1g"
+            target="_blank"
+          >
             <va-icon name="slack" class="app-navbar-actions__item" :size="32" />
           </a>
         </div>

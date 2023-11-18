@@ -89,7 +89,7 @@
             hoverable
           >
             <template #cell(moorage)="{ value, rowData }">
-              <router-link class="text--bold" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
+              <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
                 {{ value }}
               </router-link>
             </template>
@@ -114,9 +114,18 @@
               />
               -->
             </template>
-            <template #cell(total_stay)="{ value }"> {{ $t('units.time.days', parseInt(value)) }}</template>
-            <template #cell(arrivals_departures)="{ value }">
-              {{ value }}
+            <template #cell(total_stay)="{ value, rowData }">
+              <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: rowData.id } }">
+                {{ $t('units.time.days', parseInt(value)) }}
+              </router-link>
+            </template>
+            <template #cell(arrivals_departures)="{ value, rowData }">
+              <router-link
+                class="va-link link"
+                :to="{ name: 'moorage-arrivals-departures', params: { id: rowData.id } }"
+              >
+                {{ value }}
+              </router-link>
             </template>
           </va-data-table>
           <template v-if="items.length > perPage">
@@ -326,8 +335,14 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .va-table {
     width: 100%;
+  }
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
   }
 </style>

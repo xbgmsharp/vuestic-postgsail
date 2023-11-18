@@ -64,7 +64,7 @@
               <va-popover
                 class="mr-2 mb-2"
                 icon="info"
-                :message="$t('profile.msg.public_profile', [settings.public_id])"
+                :message="$t('profile.msg.public_profile', [settings.public_vessel])"
               >
                 {{ t('profile.public_profile') }}
               </va-popover>
@@ -84,7 +84,25 @@
                 <va-popover
                   class="mr-2 mb-2"
                   icon="info"
-                  :message="$t('profile.msg.public_stats', [settings.public_id])"
+                  :message="$t('profile.msg.public_name', [settings.public_vessel])"
+                >
+                  {{ t('profile.public_name') }}
+                </va-popover>
+              </td>
+              <td class="centerContainer">
+                <va-input
+                  v-model="settings.preferences.public_vessel"
+                  outline
+                  @change="UpdatePref('public_vessel', settings.preferences.public_vessel)"
+                />
+              </td>
+            </tr>
+            <tr class="sub-setting">
+              <td>
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="info"
+                  :message="$t('profile.msg.public_stats', [settings.public_vessel])"
                 >
                   {{ t('profile.public_stats') }}
                 </va-popover>
@@ -96,6 +114,13 @@
                   outline
                   @update:modelValue="UpdatePref('public_stats', $event)"
                 />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a
+                  :href="$t('profile.url.public_stats', [settings.public_vessel])"
+                  target="_blank"
+                  class="va-link link"
+                  >{{ $t('profile.url.public_stats', [settings.public_vessel]) }}</a
+                >
               </td>
             </tr>
             <tr class="sub-setting">
@@ -103,7 +128,7 @@
                 <va-popover
                   class="mr-2 mb-2"
                   icon="error"
-                  :message="$t('profile.msg.public_timelapse', [settings.public_id])"
+                  :message="$t('profile.msg.public_timelapse', [settings.public_vessel])"
                 >
                   {{ t('profile.public_timelapse') }}
                 </va-popover>
@@ -115,6 +140,14 @@
                   outline
                   @update:modelValue="UpdatePref('public_timelapse', $event)"
                 />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a
+                  :href="$t('profile.url.public_timelapse', [settings.public_vessel])"
+                  target="_blank"
+                  class="va-link link"
+                >
+                  {{ $t('profile.url.public_timelapse', [settings.public_vessel]) }}</a
+                >
               </td>
             </tr>
             <tr class="sub-setting">
@@ -122,7 +155,7 @@
                 <va-popover
                   class="mr-2 mb-2"
                   icon="info"
-                  :message="$t('profile.msg.public_logs_list', [settings.public_id])"
+                  :message="$t('profile.msg.public_logs_list', [settings.public_vessel])"
                 >
                   {{ t('profile.public_logs_list') }}
                 </va-popover>
@@ -134,6 +167,14 @@
                   outline
                   @update:modelValue="UpdatePref('public_logs_list', $event)"
                 />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a
+                  :href="$t('profile.url.public_logs_list', [settings.public_vessel])"
+                  target="_blank"
+                  class="va-link link"
+                >
+                  {{ $t('profile.url.public_logs_list', [settings.public_vessel]) }}</a
+                >
               </td>
             </tr>
             <tr class="sub-setting">
@@ -149,6 +190,37 @@
                   outline
                   @update:modelValue="UpdatePref('public_logs', $event)"
                 />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a :href="$t('profile.url.public_logs', [settings.public_vessel])" target="_blank" class="va-link link">
+                  {{ $t('profile.url.public_logs', [settings.public_vessel]) }}</a
+                >
+              </td>
+            </tr>
+            <tr class="sub-setting">
+              <td>
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="info"
+                  :message="$t('profile.msg.public_monitoring', [settings.public_vessel])"
+                >
+                  {{ t('menu.monitoring') }}
+                </va-popover>
+              </td>
+              <td class="centerContainer">
+                <va-switch
+                  v-model="settings.preferences.public_monitoring"
+                  size="small"
+                  outline
+                  @update:modelValue="UpdatePref('public_monitoring', $event)"
+                />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a
+                  :href="$t('profile.url.public_monitoring', [settings.public_vessel])"
+                  target="_blank"
+                  class="va-link link"
+                >
+                  {{ $t('profile.url.public_monitoring', [settings.public_vessel]) }}</a
+                >
               </td>
             </tr>
           </template>
@@ -217,3 +289,12 @@
     })
   }
 </script>
+
+<style lang="scss" scoped>
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
+  }
+</style>

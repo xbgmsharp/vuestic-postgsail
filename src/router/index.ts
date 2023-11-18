@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/',
+    path: '/:boat?',
     meta: { requiresAuth: true },
     component: AppLayout,
     children: [
@@ -60,7 +60,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'logs',
-        path: 'logs/:id?',
+        path: 'logs',
         component: () => import('../pages/logs-book/List.vue'),
         meta: { isPublic: true, type: 'public_logs_list' },
       },
@@ -96,6 +96,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/moorages/Details.vue'),
       },
       {
+        name: 'moorage-stays',
+        path: 'stays/moorage/:id',
+        component: () => import('../pages/stays/Moorage.vue'),
+      },
+      {
+        name: 'moorage-arrivals-departures',
+        path: 'moorage/arrivals-departures/:id',
+        component: () => import('../pages/logs-book/List.vue'),
+      },
+      {
         name: 'boats',
         path: 'boats',
         component: () => import('../pages/boats/List.vue'),
@@ -116,17 +126,25 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/profile/Profile.vue'),
       },
       {
-        path: 'privacy',
-        name: 'privacy',
-        component: () => import('../pages/privacy/Privacy.vue'),
-        meta: { isPublic: true },
+        name: 'help-menu',
+        path: '/:boat?',
+        component: RouteViewComponent,
+        children: [
+          {
+            path: 'privacy',
+            name: 'privacy',
+            component: () => import('../pages/privacy/Privacy.vue'),
+            meta: { isPublic: true },
+          },
+          {
+            path: 'faq',
+            name: 'faq',
+            component: () => import('../pages/faq/FAQ.vue'),
+            meta: { isPublic: true },
+          },
+        ],
       },
-      {
-        path: 'faq',
-        name: 'faq',
-        component: () => import('../pages/faq/FAQ.vue'),
-        meta: { isPublic: true },
-      },
+
       {
         path: 'grafana',
         name: 'grafana',
@@ -142,30 +160,36 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'monitoring-menu',
-        path: '/',
+        path: '/:boat?',
         component: RouteViewComponent,
         children: [
           {
             name: 'monitoring',
             path: 'monitoring',
             component: () => import('../pages/monitoring/Monitoring.vue'),
+            meta: { isPublic: true, type: 'public_monitoring' },
           },
           {
             name: 'explore',
-            path: 'explore',
+            path: 'monitoring/explore',
             component: () => import('../pages/monitoring/Explore.vue'),
+          },
+          {
+            name: 'history',
+            path: 'monitoring/history',
+            component: () => import('../pages/monitoring/History.vue'),
           },
         ],
       },
       {
         name: 'stats',
-        path: 'stats',
+        path: '/:boat?/stats',
         component: () => import('../pages/stats/Stats.vue'),
         meta: { isPublic: true, type: 'public_stats' },
       },
       {
         name: 'timelapse-menu',
-        path: '/',
+        path: '/:boat?',
         component: RouteViewComponent,
         meta: { isPublic: true },
         children: [
@@ -213,7 +237,7 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const { isLoggedIn, validEmail, hasVessel, preferredHomepage, isPublic } = useGlobalStore()
   console.log(
     'isLoggedIn',
@@ -231,31 +255,29 @@ router.beforeEach((to, from, next) => {
   const { is_public } = GlobalStore
 
   if (
+    !isLoggedIn &&
     to.matched.some((record) => record.meta.requiresAuth) &&
-    to.matched.some((record) => record.meta.isPublic) &&
-    !isLoggedIn
+    to.matched.some((record) => record.meta.isPublic)
   ) {
-    console.warn('vue-router beforeEach to.query.next', to)
-    console.log('Is anonymous page format, check ispublic', to.params.id, to.meta.type)
-    /*
-    const anonymous = is_public(to.params.id, to.meta.type as string)
-    if (anonymous) {
+    console.log(
+      `req is in anonymous format, checking if accessible boat:${to.params.boat} type:${to.meta.type} id:${to.params?.id}`,
+    )
+    console.log(to)
+    if (to.params?.boat && /\w+/.test(to.params.boat as string)) {
+      const anonymous = await is_public(to.params.boat as string, to.meta.type as string, to.params?.id as unknown)
+      if (anonymous) {
+        next()
+        return
+      }
+    } else if (to.name == 'faq' || to.name == 'privacy') {
       next()
       return
     }
-    */
   }
 
-  /*
-  // Is publicly accessible?
-  if (to.matched.some((record) => record.meta.isPublic) && !isLoggedIn) {
-    next()
-    return
-  }
-  */
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
     // If not logged in, yet required, redirect to login page
-    next({ name: 'login' })
+    next({ name: 'login', query: { next: to.path } })
   } else {
     console.warn('vue-router beforeEach activate -> /', isLoggedIn, validEmail, to)
     // Enforce email otp validation

@@ -31,7 +31,7 @@
                       outline
                       :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                       style="min-width: 100px; max-width: 50%"
-                      class="box"
+                      class="inputbox"
                     />
                     <span v-else>
                       {{ formData.name }}
@@ -267,7 +267,7 @@
       }
     }
   }
-  .box {
+  .inputbox {
     background: white;
     border: 1px solid #ccc;
   }

@@ -67,6 +67,7 @@
   const route = useRoute()
 
   const tokenExpired = route.query.is401
+  const next_route = ref(route.query.next || route.params.next || null)
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 
@@ -90,6 +91,11 @@
         api.setBearerAuth(GlobalStore.login(response.token, keepLoggedIn.value))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings(true)
+        if (next_route.value) {
+          // Follow next query-string if isLoggedIn
+          router.push({ path: next_route.value })
+          return
+        }
         router.push({ name: GlobalStore.preferredHomepage })
       } else {
         throw { response }

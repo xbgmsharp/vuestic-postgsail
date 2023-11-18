@@ -91,8 +91,8 @@
                 />
               </div>
             </template>
-            <template #cell(duration)="{ value }">
-              {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
+            <template #cell(duration)="{ rowData }">
+              {{ durationFormatDays(rowData.stay_duration) }} {{ $t('stays.stay.duration_unit') }}
             </template>
           </va-data-table>
           <template v-if="items.length > perPage">

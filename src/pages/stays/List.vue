@@ -50,18 +50,39 @@
           class="datatable"
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link class="text--bold stay-name" :to="{ name: 'stay-details', params: { id: rowData.id } }">
+            <router-link
+              v-if="value"
+              class="va-link link"
+              :to="{ name: 'stay-details', params: { id: rowData.id || 0 } }"
+            >
               {{ value }}
             </router-link>
           </template>
-          <template #cell(moorage)="{ value }">
-            {{ value }}
+          <template #cell(moorage)="{ value, rowData }">
+            <router-link
+              class="va-link link"
+              :to="{ name: 'moorage-details', params: { id: rowData.moorage_id || 0 } }"
+            >
+              {{ value }}
+            </router-link>
           </template>
-          <template #cell(arrived)="{ value }">
-            {{ dateFormatUTC(value) }}
+          <template #cell(arrived)="{ value, rowData }">
+            <router-link
+              v-if="typeof rowData.departed_log_id !== 'undefined'"
+              class="va-link link"
+              :to="{ name: 'log-details', params: { id: rowData.departed_log_id || 0 } }"
+            >
+              {{ dateFormatUTC(value) }}
+            </router-link>
           </template>
-          <template #cell(departed)="{ value }">
-            {{ dateFormatUTC(value) }}
+          <template #cell(departed)="{ value, rowData }">
+            <router-link
+              v-if="typeof rowData.arrived_log_id !== 'undefined'"
+              class="va-link link"
+              :to="{ name: 'log-details', params: { id: rowData.arrived_log_id || 0 } }"
+            >
+              {{ dateFormatUTC(value) }}
+            </router-link>
           </template>
           <template #cell(stayed_at)="{ rowData }">
             <div v-if="rowData.stayed_at_id" style="max-width: 150px">
@@ -217,3 +238,15 @@
     runBusy(handleExport, 'csv', 'stays', items)
   }
 </script>
+
+<style lang="scss" scoped>
+  .va-table {
+    width: 100%;
+  }
+  .link {
+    color: blue;
+  }
+  .link:hover {
+    text-decoration: underline blue;
+  }
+</style>

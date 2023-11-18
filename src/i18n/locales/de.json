@@ -55,7 +55,9 @@
     "privacy": "Datenschutz",
     "faq": "FAQ",
     "badges": "Abzeichen",
-    "eventlogs": "Event Logs"
+    "eventlogs": "Event Logs",
+    "help": "Help",
+    "history": "History"
   },
   "notifications": {
     "all": "Alle",
@@ -120,7 +122,11 @@
         "date_range": "Datumsbereich",
         "reset": "Zurücksetzen"
       },
-      "action": "Aktion"
+      "action": "Aktion",
+      "from": "From",
+      "from_time": "Started",
+      "to": "To",
+      "to_time": "Ended"
     },
     "details": {
       "title": "Protokolldetails"
@@ -178,6 +184,12 @@
       "duration": "Dauer",
       "note": "Notiz | Notizen",
       "duration_unit": "Tage"
+    },
+    "moorage": {
+      "arrived": "Arrived",
+      "departed": "Departed",
+      "stayed_at": "Stayed at",
+      "duration": "Duration"
     }
   },
   "moorages": {
@@ -287,6 +299,7 @@
     "name": "Name",
     "website": "Webseite",
     "public_profile": "Öffentliches Profil",
+    "public_name": "Name",
     "public_logs": "Protokolldetails",
     "public_stats": "Statistiken",
     "public_logs_list": "Protokoll Liste",
@@ -323,11 +336,18 @@
       "website": "Website displayed alongside your stats, please enter the full URL starting with http:// or https://",
       "instagram_handle": "Instagram link displayed alongside your stats, please enter without a leading {'@'} sign",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/log/{'id'}",
-      "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/stats/{0}",
-      "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/logs/{0}",
-      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/timelapse/{0}",
-      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/monitoring/{0}"
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
+      "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
+      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
+      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring"
+    },
+    "url": {
+      "public_logs": "https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_stats": "https://iot.openplotter.cloud/{0}/stats",
+      "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
+      "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
+      "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring"
     }
   },
   "faq": {

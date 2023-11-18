@@ -26,26 +26,36 @@ export default {
       },
     },
     {
-      name: 'stays',
-      displayName: 'menu.stays',
-      meta: {
-        icon: 'menu-stays',
-      },
-    },
-    {
       name: 'moorages',
       displayName: 'menu.moorages',
       meta: {
         icon: 'menu-moorages',
       },
+      children: [
+        {
+          name: 'stays',
+          displayName: 'menu.stays',
+          meta: {
+            icon: 'menu-stays',
+          },
+        },
+        {
+          name: 'moorages',
+          displayName: 'menu.moorages',
+          meta: {
+            icon: 'menu-moorages',
+          },
+        },
+        {
+          name: 'map',
+          displayName: 'menu.map',
+          meta: {
+            icon: 'menu-moorages-map',
+          },
+        },
+      ],
     },
-    {
-      name: 'map',
-      displayName: 'menu.map',
-      meta: {
-        icon: 'menu-moorages-map',
-      },
-    },
+
     {
       name: 'monitoring-menu',
       displayName: 'menu.monitoring',
@@ -59,6 +69,13 @@ export default {
           displayName: 'menu.monitoring',
           meta: {
             icon: 'material-icons-replay',
+          },
+        },
+        {
+          name: 'history',
+          displayName: 'menu.history',
+          meta: {
+            icon: 'material-icons-tune',
           },
         },
         {
@@ -130,18 +147,28 @@ export default {
       },
     },
     {
-      name: 'faq',
-      displayName: 'menu.faq',
+      name: 'help',
+      displayName: 'menu.help',
       meta: {
-        icon: 'menu-faq',
+        icon: 'help2',
       },
-    },
-    {
-      name: 'privacy',
-      displayName: 'menu.privacy',
-      meta: {
-        icon: 'menu-privacy',
-      },
+      disabled: true,
+      children: [
+        {
+          name: 'faq',
+          displayName: 'menu.faq',
+          meta: {
+            icon: 'menu-faq',
+          },
+        },
+        {
+          name: 'privacy',
+          displayName: 'menu.privacy',
+          meta: {
+            icon: 'menu-privacy',
+          },
+        },
+      ],
     },
   ] as INavigationRoute[],
 }

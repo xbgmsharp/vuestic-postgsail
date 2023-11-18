@@ -53,12 +53,18 @@
             </router-link>
           </template>
           <template #cell(from)="{ value, rowData }">
-            <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId } }">
+            <router-link
+              class="va-link link"
+              :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
+            >
               {{ value }}
             </router-link>
           </template>
           <template #cell(to)="{ value, rowData }">
-            <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId } }">
+            <router-link
+              class="va-link link"
+              :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }"
+            >
               {{ value }}
             </router-link>
           </template>
@@ -104,8 +110,9 @@
   import { dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
+  import { useRoute } from 'vue-router'
 
-  import logsDatas from '../../data/logs.json'
+  import logsData from '../../data/logs.json'
 
   const CacheStore = useCacheStore()
 
@@ -137,6 +144,7 @@
     }
   }
 
+  const route = useRoute()
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
@@ -144,16 +152,16 @@
   const currentPage = ref(1)
   const columns = ref([
     { key: 'name', label: t('logs.log.name'), sortable: true },
-    { key: 'from', label: t('logs.log.from'), sortable: true },
-    { key: 'to', label: t('logs.log.to'), sortable: true },
-    { key: 'fromTime', label: t('logs.log.from_time'), sortable: true },
-    { key: 'toTime', label: t('logs.log.to_time'), sortable: true },
+    { key: 'from', label: t('logs.list.from'), sortable: true },
+    { key: 'to', label: t('logs.list.to'), sortable: true },
+    { key: 'fromTime', label: t('logs.list.from_time'), sortable: true },
+    { key: 'toTime', label: t('logs.list.to_time'), sortable: true },
     { key: 'distance', label: t('logs.log.distance'), sortable: true },
     { key: 'duration', label: t('logs.log.duration'), sortable: true },
     //{ key: 'action', label: t('logs.log.action') },
   ])
   const filter = reactive(getDefaultFilter())
-
+  const filter_moorage_id = route.params.id || null
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value
@@ -170,21 +178,32 @@
             toMoorageId: row._to_moorage_id,
           }))
           .filter((row) => {
-            const f = filter
-            if (Object.keys(f).every((fkey) => !f[fkey])) {
-              return true
-            }
-            return Object.keys(f).every((fkey) => {
-              if (!f[fkey]) {
+            if (filter_moorage_id) {
+              console.log('filter on moorage id')
+              if (row.fromMoorageId == filter_moorage_id || row.toMoorageId == filter_moorage_id) {
                 return true
               }
-              switch (fkey) {
-                case 'name':
-                  return row.name.toLowerCase().includes(f[fkey].toLowerCase())
-                case 'dateRange':
-                  return areIntervalsOverlapping({ start: new Date(row.fromTime), end: new Date(row.toTime) }, f[fkey])
+              return false
+            } else {
+              const f = filter
+              if (Object.keys(f).every((fkey) => !f[fkey])) {
+                return true
               }
-            })
+              return Object.keys(f).every((fkey) => {
+                if (!f[fkey]) {
+                  return true
+                }
+                switch (fkey) {
+                  case 'name':
+                    return row.name.toLowerCase().includes(f[fkey].toLowerCase())
+                  case 'dateRange':
+                    return areIntervalsOverlapping(
+                      { start: new Date(row.fromTime), end: new Date(row.toTime) },
+                      f[fkey],
+                    )
+                }
+              })
+            }
           })
       : []
   })
@@ -210,7 +229,7 @@
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample data from local json...', apiError.value)
         rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...logsDatas)
+        rowsData.value.push(...logsData)
       }
     } finally {
       isBusy.value = false

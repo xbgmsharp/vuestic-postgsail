@@ -38,13 +38,12 @@
             <br />
             <p>
               PostgSail also creates an automatic timelapse for all of your trips, animating the movements of your boat
-              on a map. See a timelapse example here for a multi-week sail along the California coast between San
-              Francisco and Ensenada.
+              on a map. See a timelapse example here for a multi-week sail along the Canada coast.
             </p>
             <br />
             <p>
               Your information stays private unless you explicitly decide to make it available publicly. If you choose
-              to do so, your friends and others can access your statistics and timelapse.
+              to do so, your friends and others can access your logs, monitoring, statistics and timelapse.
             </p>
             <br />
           </va-collapse>
@@ -64,15 +63,21 @@
                 - zoom: Specifies default zoom. Default: 10<br />
                 <br />
                 Example:
-                https://iot.openplotter.cloud/timelapse?color=yellow&start_date=2021-05-01&end_date=2021-06-01&map_type=1&speed=90&delay=1&zoom=11
+                <a
+                  href="https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&start_date=2021-05-01&end_date=2021-11-01&map_type=1&speed=90&delay=1&zoom=11"
+                  target="_blank"
+                  >https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&start_date=2021-05-01&end_date=2021-11-01&map_type=1&speed=90&delay=1&zoom=11
+                  <va-icon name="fa-external-link" size="small"
+                /></a>
               </p>
             </div>
           </va-collapse>
-          <va-collapse header="Time and Distance Units">
+          <va-collapse header="Time, Distance, Temperatures Units">
             <div class="pa-3">
               All times from the backend are UTC. The frontend is doing the local conversion.<br />
-              All distances from the backend are in Nautical Miles. The frontend is doing the local conversion if "Use
-              Imperial Units" is false.
+              All distances from the backend are in Nautical Miles.<br />
+              All temperatures from the backend are in Kelvin. The frontend will by default convert it to Celsius. To
+              use Fahrenheit enable "Use Imperial Units".
             </div>
           </va-collapse>
           <va-collapse header="Energy">
@@ -84,6 +89,7 @@
                 - electrical.batteries.*.current<br />
                 - electrical.batteries.*.voltage<br />
                 - tanks.*.currentLevel.*<br />
+                Check the explore page to see your signalk path.
               </p>
             </div>
           </va-collapse>
@@ -102,6 +108,7 @@
                 - 'environment.inside.pressure' AS insidePressure<br />
                 - 'electrical.batteries.House.capacity.stateOfCharge' AS batteryCharge<br />
                 - 'electrical.batteries.House.voltage' AS batteryVoltage<br />
+                Check the explore page to see your signalk path.
               </p>
             </div>
           </va-collapse>
@@ -154,6 +161,21 @@
                     size="small" /></a
                 ><br />
               </p>
+            </div>
+          </va-collapse>
+          <va-collapse header="Contact">
+            <div class="pa-3">
+              You can send me an email or create a GitHub issue or join us on Slack.<br />
+              -
+              <a href="https://github.com/xbgmsharp/postgsail/issues" target="_blank"
+                >github issue<va-icon name="fa-external-link" size="small" /></a
+              ><br />
+              -
+              <a
+                href="https://join.slack.com/t/signalk-dev/shared_invite/zt-1leccop43-KrU7G6yBq9g91KXjZtNg1g"
+                target="_blank"
+                >Slack<va-icon name="fa-external-link" size="small" /></a
+              ><br />
             </div>
           </va-collapse>
         </va-accordion>

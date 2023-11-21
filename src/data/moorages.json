@@ -1,9 +1,20 @@
 [
   {
-    "id": 1,
-    "moorage": "Hamnterassen Baywatch",
-    "default_stay": "Unknow",
+    "id": 2,
+    "moorage": "Norra hamnen",
+    "default_stay": "Dock",
+    "default_stay_id": 4,
     "total_stay": 0,
+    "total_duration": "PT2M",
+    "arrivals_departures": 2
+  },
+  {
+    "id": 1,
+    "moorage": "patch moorage name 3",
+    "default_stay": "Anchor",
+    "default_stay_id": 2,
+    "total_stay": 0,
+    "total_duration": "PT1M",
     "arrivals_departures": 1
   }
 ]

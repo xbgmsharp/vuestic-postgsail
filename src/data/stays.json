@@ -1,20 +1,38 @@
 [
   {
     "id": 2,
-    "name": "0 days stay at Hamnterassen Baywatch in February 2023",
-    "moorage": "Hamnterassen Baywatch",
-    "arrived": "2023-02-07T14:15:09",
-    "departed": "2023-02-07T14:18:09",
-    "Stayed_at": "Unknow",
-    "duration": "00:03:00"
+    "name": "0 days stay at Norra hamnen in November 2023",
+    "moorage": "Norra hamnen",
+    "moorage_id": 2,
+    "duration": "PT2M",
+    "stayed_at": "Dock",
+    "stayed_at_id": 4,
+    "arrived": "2023-11-19T20:09:35+00:00",
+    "arrived_log_id": 2,
+    "arrived_from_moorage_id": 3,
+    "arrived_from_moorage_name": "Ekenäs",
+    "departed": "2023-11-19T20:11:35+00:00",
+    "departed_log_id": 1,
+    "departed_to_moorage_id": 1,
+    "departed_to_moorage_name": "patch moorage name 3",
+    "notes": null
   },
   {
     "id": 1,
-    "name": "0 days stay at patch stay name 3 in February 2023",
-    "moorage": "patch stay name 3",
-    "arrived": "2023-02-07T13:48:09",
-    "departed": "2023-02-07T13:50:09",
-    "Stayed_at": "Anchor",
-    "duration": "00:02:00"
+    "name": "patch stay name 3",
+    "moorage": "patch moorage name 3",
+    "moorage_id": 1,
+    "duration": "PT1M",
+    "stayed_at": "Anchor",
+    "stayed_at_id": 2,
+    "arrived": "2023-11-19T19:41:35+00:00",
+    "arrived_log_id": 1,
+    "arrived_from_moorage_id": 2,
+    "arrived_from_moorage_name": "Norra hamnen",
+    "departed": "2023-11-19T19:42:35+00:00",
+    "departed_log_id": null,
+    "departed_to_moorage_id": null,
+    "departed_to_moorage_name": null,
+    "notes": "new stay note 3"
   }
 ]

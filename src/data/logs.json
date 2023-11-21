@@ -1,22 +1,26 @@
 [
   {
     "id": 2,
-    "name": "Knipan to Ekenäs",
-    "from": "Knipan",
-    "started": "2021-10-31T11:40:45",
+    "name": "Norra hamnen to Ekenäs",
+    "from": "Norra hamnen",
+    "started": "2023-11-19T20:11:35+00:00",
     "to": "Ekenäs",
-    "ended": "2021-10-31T11:58:45",
-    "distance": 8.6862,
-    "duration": "PT18M"
+    "ended": "2023-11-19T20:31:35+00:00",
+    "distance": 8.8968,
+    "duration": "PT20M",
+    "_from_moorage_id": 2,
+    "_to_moorage_id": 3
   },
   {
     "id": 1,
     "name": "patch log name 3",
-    "from": "Bollsta",
-    "started": "2021-10-31T11:12:45",
-    "to": "Slottsbacken",
-    "ended": "2021-10-31T11:37:45",
-    "distance": 7.17,
-    "duration": "PT25M"
+    "from": "patch moorage name 3",
+    "started": "2023-11-19T19:42:35+00:00",
+    "to": "Norra hamnen",
+    "ended": "2023-11-19T20:09:35+00:00",
+    "distance": 7.6447,
+    "duration": "PT27M",
+    "_from_moorage_id": 1,
+    "_to_moorage_id": 2
   }
 ]

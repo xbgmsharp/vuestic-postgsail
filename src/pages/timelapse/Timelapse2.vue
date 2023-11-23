@@ -212,10 +212,12 @@
     let playerView = map.value._container.querySelector('.legend > .player')
     if (play_pause.value === true) {
       play_pause.value = false
-      playerView.innerText = '⏸︎'
+      //playerView.innerText = '⏸︎'
+      playerView.innerHTML = '<i class="va-icon material-icons">pause</i>'
     } else {
       play_pause.value = true
-      playerView.innerText = '▶'
+      //playerView.innerText = '▶'
+      playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     }
   }
 

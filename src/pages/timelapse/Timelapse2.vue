@@ -18,7 +18,7 @@
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
-  import { useGlobalStore } from '../../stores/global-store'
+  //import { useGlobalStore } from '../../stores/global-store'
   //import timelapseGeoJSON from '../../data/timelapse2.json'
   //import { useI18n } from 'vue-i18n'
   //import { distanceLatLng } from '../../utils/distanceFormatter.js'
@@ -26,7 +26,7 @@
 
   const route = useRoute(),
     //{ t } = useI18n(),
-    GlobalStore = useGlobalStore(),
+    //GlobalStore = useGlobalStore(),
     isBusy = ref(false),
     apiError = ref(null),
     mapContainer = ref(),

@@ -28,7 +28,7 @@
         >
           <va-sidebar-item-content>
             <div class="va-sidebar-item__icon" />
-
+            <va-icon :name="child.meta.icon" class="va-sidebar-item__icon" />
             <va-sidebar-item-title>
               {{ t(child.displayName) }}
             </va-sidebar-item-title>

@@ -11,8 +11,8 @@
         <va-card-content>
           <va-tabs v-model="tabIndex" center>
             <template #tabs>
-              <va-tab name="login">{{ t('auth.login') }}</va-tab>
-              <va-tab name="signup">{{ t('auth.createNewAccount') }}</va-tab>
+              <va-tab id="login" name="login" aria-label="Login">{{ t('auth.login') }}</va-tab>
+              <va-tab id="signup" name="signup" aria-label="Signup">{{ t('auth.createNewAccount') }}</va-tab>
             </template>
           </va-tabs>
 

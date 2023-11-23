@@ -10,21 +10,25 @@
         <va-alert color="warning" outline class="mb-4"> {{ $t('auth.errors.expired_session') }}</va-alert>
       </template>
       <va-input
+        id="Email"
         v-model="email"
         class="mb-4"
         type="email"
         :label="$t('auth.email')"
         :error="!!emailErrors.length"
         :error-messages="emailErrors"
+        aria-label="Email"
       />
 
       <va-input
+        id="Password"
         v-model="password"
         class="mb-4"
         type="password"
         :label="$t('auth.password')"
         :error="!!passwordErrors.length"
         :error-messages="passwordErrors"
+        aria-label="Password"
       />
 
       <div class="auth-layout__options flex items-center justify-between">

@@ -4,12 +4,14 @@
       <va-alert color="success" outline class="mb-4"> {{ t('auth.reset') }} </va-alert>
     </template>
     <va-input
+      id="Email"
       v-model="email"
       class="mb-4"
       type="email"
       :label="t('auth.email')"
       :error="!!emailErrors.length"
       :error-messages="emailErrors"
+      aria-label="Email"
     />
 
     <div class="flex justify-center mt-4">

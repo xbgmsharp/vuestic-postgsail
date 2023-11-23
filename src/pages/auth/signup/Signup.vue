@@ -8,47 +8,57 @@
     </template>
 
     <va-input
+      id="Email"
       v-model="email"
       class="mb-4"
       type="email"
       :label="t('auth.email')"
       :error="!!emailErrors.length"
       :error-messages="emailErrors"
+      aria-label="Email"
     />
 
     <va-input
+      id="Password"
       v-model="password"
       class="mb-4"
       type="password"
       :label="t('auth.password')"
       :error="!!passwordErrors.length"
       :error-messages="passwordErrors"
+      aria-label="Password"
     />
 
     <va-input
+      id="firstName"
       v-model="firstName"
       class="mb-4"
       type="firstName"
       :label="t('auth.first_name')"
       :error="!!firstNameErrors.length"
       :error-messages="firstNameErrors"
+      aria-label="firstName"
     />
 
     <va-input
+      id="lastName"
       v-model="lastName"
       class="mb-4"
       type="lastName"
       :label="t('auth.last_name')"
       :error="!!lastNameErrors.length"
       :error-messages="lastNameErrors"
+      aria-label="lastName"
     />
 
     <div class="auth-layout__options flex items-center justify-between">
       <va-checkbox
+        id="agreedToTerms"
         v-model="agreedToTerms"
         class="mb-0"
         :error="!!agreedToTermsErrors.length"
         :error-messages="agreedToTermsErrors"
+        aria-label="agreedToTerms"
       >
         <template #label>
           <span class="ml-2">

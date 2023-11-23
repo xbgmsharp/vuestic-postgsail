@@ -2,7 +2,12 @@
   <va-accordion v-model="accordionValue" class="sidebar-accordion va-sidebar__menu__inner" multiple>
     <va-collapse v-for="(route, idx) in items" :key="idx">
       <template #header>
-        <va-sidebar-item :active="isRouteActive(route)" :to="route.children ? undefined : { name: route.name }">
+        <va-sidebar-item
+          :id="route.children ? undefined : route.name"
+          :active="isRouteActive(route)"
+          :to="route.children ? undefined : { name: route.name }"
+          :aria-label="route.children ? undefined : route.name"
+        >
           <va-sidebar-item-content>
             <va-icon :name="route.meta.icon" class="va-sidebar-item__icon" />
 
@@ -15,7 +20,12 @@
         </va-sidebar-item>
       </template>
       <template v-for="(child, index) in route.children" :key="index">
-        <va-sidebar-item :active="isRouteActive(child)" :to="{ name: child.name }">
+        <va-sidebar-item
+          :id="child.name"
+          :active="isRouteActive(child)"
+          :to="{ name: child.name }"
+          :aria-label="child.name"
+        >
           <va-sidebar-item-content>
             <div class="va-sidebar-item__icon" />
 

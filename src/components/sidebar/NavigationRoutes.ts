@@ -68,14 +68,14 @@ export default {
           name: 'monitoring',
           displayName: 'menu.monitoring',
           meta: {
-            icon: 'material-icons-replay',
+            icon: 'menu-monitoring',
           },
         },
         {
           name: 'history',
           displayName: 'menu.history',
           meta: {
-            icon: 'material-icons-tune',
+            icon: 'material-icons-manage_history',
           },
         },
         {

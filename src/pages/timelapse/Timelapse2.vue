@@ -78,14 +78,14 @@
       }
     try {
       const response = await api.timelapse(payload)
-      if (response && response.geojson?.features) {
+      if (response && response.geojson?.features && response.geojson?.features[0]?.geometry?.coordinates) {
         timelapse.value = response.geojson
         patchLMapPositions()
         map_setup()
       } else {
-        console.warn('error timelapse', response)
+        console.warn('error timelapse2', response)
         // If empty data, display a world map.
-        if (!response.geojson?.features) {
+        if (response.geojson?.features && response.geojson.features[0].geometry.type == null) {
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)
           const cartodbAttribution =

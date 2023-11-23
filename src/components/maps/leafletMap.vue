@@ -35,6 +35,10 @@
         type: Boolean,
         default: true,
       },
+      mapType: {
+        type: String,
+        default: 'OpenStreetMap',
+      },
     },
     data() {
       return {
@@ -99,7 +103,8 @@
       if (this.controlLayer) {
         L.control.layers(baseMaps, overlays).addTo(this.map)
       }
-      baseMaps['OpenStreetMap'].addTo(this.map)
+      //baseMaps['OpenStreetMap'].addTo(this.map)
+      baseMaps[this.mapType].addTo(this.map)
 
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {

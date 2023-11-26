@@ -174,11 +174,13 @@ const routes: Array<RouteRecordRaw> = [
             path: 'monitoring/explore',
             component: () => import('../pages/monitoring/Explore.vue'),
           },
+          /*
           {
             name: 'history',
             path: 'monitoring/history',
             component: () => import('../pages/monitoring/History.vue'),
           },
+          */
         ],
       },
       {
@@ -276,8 +278,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
-    // If not logged in, yet required, redirect to login page
-    next({ name: 'login', query: { next: to.path } })
+    // If not logged in, yet required, redirect to login page and add the next query-string if not login
+    if (to.path != '/login') {
+      next({ name: 'login', query: { next: to.path } })
+    } else {
+      next({ name: 'login' })
+    }
   } else {
     console.warn('vue-router beforeEach activate -> /', isLoggedIn, validEmail, to)
     // Enforce email otp validation

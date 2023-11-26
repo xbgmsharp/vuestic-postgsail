@@ -20,7 +20,12 @@
         </div>
         <div class="box layout gutter--md" style="width: 100%; text-align: center">
           <template v-if="items.geojson">
-            <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 250px" />
+            <lMap
+              :geo-json-feature="mapGeoJsonFeatures"
+              :zoom="13"
+              map-type="Satellite"
+              style="width: 100%; height: 250px"
+            />
           </template>
         </div>
 
@@ -64,14 +69,16 @@
   import PostgSail from '../../services/api-client'
   import lMap from '../../components/maps/leafletMap.vue'
   import { useI18n } from 'vue-i18n'
-  import { kelvinToCelsius } from '../../utils/temperatureFormatter.js'
+  import { kelvinToHuman } from '../../utils/temperatureFormatter.js'
   import { pascalToHectoPascal } from '../../utils/presureFormatter.js'
   import { floatToPercentage } from '../../utils/percentageFormatter.js'
   import { fromNow, nowUTC } from '../../utils/dateFormatter.js'
   import { default as utils } from '../../utils/utils.js'
 
   import monitoringDatas from '../../data/monitoring.json'
+  import useGlobalStore from '../../stores/global-store'
 
+  const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
   const isBusy = ref(false)
@@ -93,11 +100,12 @@
           },
           temperature: {
             headerString: t('monitoring.temperature.headerString'),
-            unitString: t('monitoring.temperature.unitString'),
+            unitString: tempUnit.value,
             detailString: t('monitoring.temperature.detailString'),
+            detailUnitString: tempUnit.value,
             lcdDecimals: 1,
-            value: kelvinToCelsius(apiData.row.insidetemperature) || 0.0,
-            altValue: kelvinToCelsius(apiData.row.outsidetemperature) || 0.0,
+            value: kelvinToHuman(apiData.row.insidetemperature) || 0.0,
+            altValue: kelvinToHuman(apiData.row.outsidetemperature) || 0.0,
           },
           water: {
             headerString: t('monitoring.water.headerString'),
@@ -105,7 +113,7 @@
             detailString: t('monitoring.water.detailString'),
             lcdDecimals: 1,
             value: apiData.row.depth || 0,
-            altValue: kelvinToCelsius(apiData.row.watertemperature) || 0.0,
+            altValue: kelvinToHuman(apiData.row.watertemperature) || 0.0,
           },
           battery: {
             headerString: t('monitoring.battery.headerString'),
@@ -119,6 +127,7 @@
             headerString: t('monitoring.humidity.headerString'),
             unitString: t('monitoring.humidity.unitString'),
             detailString: t('monitoring.humidity.detailString'),
+            detailUnitString: t('monitoring.humidity.unitString'),
             lcdDecimals: 0,
             value: floatToPercentage(apiData.row.insidehumidity) || 0,
             altValue: floatToPercentage(apiData.row.outsidehumidity) || 0,
@@ -127,6 +136,7 @@
             headerString: t('monitoring.pressure.headerString'),
             unitString: t('monitoring.pressure.unitString'),
             detailString: t('monitoring.pressure.detailString'),
+            detailUnitString: t('monitoring.pressure.unitString'),
             lcdDecimals: 1,
             value: pascalToHectoPascal(apiData.row.insidepressure) || 0.0,
             altValue: pascalToHectoPascal(apiData.row.outsidepressure) || 0.0,
@@ -149,6 +159,12 @@
     return apiData.row.geojson
   })
 
+  const tempUnit = computed(() => {
+    return GlobalStore.imperialUnits
+      ? t('monitoring.imperial_units.temperature')
+      : t('monitoring.temperature.unitString')
+  })
+
   const monitor = onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -158,8 +174,8 @@
       if (Array.isArray(response) && response[0]) {
         //console.log(response[0])
         apiSuccess.value = true
-        //offline.value = true
-        offline.value = response[0].offline
+        offline.value = false
+        //offline.value = response[0].offline
         apiData.row = response[0]
         //console.log(apiData)
         //console.log(response[0].time)

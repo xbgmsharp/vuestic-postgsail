@@ -10,6 +10,11 @@
             <va-tab name="OverviewTab">
               {{ t('profile.tabs.overview.title') }}
             </va-tab>
+            <!--
+            <va-tab name="MonitoringTab">
+              {{ t('profile.tabs.monitoring.title') }}
+            </va-tab>
+            -->
             <va-tab name="NotificationsTab">
               {{ t('profile.tabs.notifications.title') }}
             </va-tab>
@@ -30,6 +35,7 @@
 
   const tabs = {
     OverviewTab: defineAsyncComponent(() => import('./OverviewTab.vue')),
+    //MonitoringTab: defineAsyncComponent(() => import('./MonitoringTab.vue')),
     NotificationsTab: defineAsyncComponent(() => import('./NotificationsTab.vue')),
   }
 
@@ -64,7 +70,8 @@
     font-weight: 600;
   }
   .overview-tab,
-  .notifications-tab {
+  .notifications-tab,
+  .monitoring-tab {
     &__item {
       height: 55px;
       &-icon {

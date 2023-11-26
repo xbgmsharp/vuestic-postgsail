@@ -81,7 +81,7 @@
                   <tr>
                     <td class="va-text-bold">{{ $t('stats.sum_distance') }}</td>
                     <td>
-                      <router-link class="link" :to="{ name: 'logs' }">
+                      <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ distanceFormat(stats_logs.sum_distance) }}
                       </router-link>
                     </td>
@@ -89,7 +89,7 @@
                   <tr>
                     <td class="va-text-bold">{{ $t('stats.sum_duration') }}</td>
                     <td>
-                      <router-link class="link" :to="{ name: 'logs' }">
+                      <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ durationFormatHours(stats_logs.sum_duration) }}
                         {{ durationI18nHours(stats_logs.sum_duration) }}
                       </router-link>
@@ -98,7 +98,10 @@
                   <tr>
                     <td class="va-text-bold">{{ $t('stats.max_speed') }}</td>
                     <td>
-                      <router-link class="link" :to="{ name: 'log-details', params: { id: stats_logs.max_speed_id } }">
+                      <router-link
+                        class="va-link link"
+                        :to="{ name: 'log-details', params: { id: stats_logs.max_speed_id } }"
+                      >
                         {{ stats_logs.max_speed }}
                       </router-link>
                       knots
@@ -109,7 +112,7 @@
                     <td class="va-text-bold">{{ $t('stats.max_wind_speed') }}</td>
                     <td>
                       <router-link
-                        class="link"
+                        class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_wind_speed_id } }"
                       >
                         {{ stats_logs.max_wind_speed }}
@@ -121,14 +124,14 @@
                     <td class="va-text-bold">{{ $t('stats.longest_nonstop') }}</td>
                     <td>
                       <router-link
-                        class="link"
+                        class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_distance_id } }"
                       >
                         {{ distanceFormat(stats_logs.max_distance) }}
                       </router-link>
                       /
                       <router-link
-                        class="link"
+                        class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_duration_id } }"
                       >
                         {{ durationFormatHours(stats_logs.max_duration) }}
@@ -197,6 +200,32 @@
         </va-card-content>
       </va-card>
     </div>
+    <div class="box layout gutter--md" style="text-align: center">
+      <a
+        :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Fstats%2F`"
+        target="_blank"
+        ><va-icon name="facebook" :size="44"
+      /></a>
+      <template v-if="instagram">
+        <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
+          <va-icon name="instagram" :size="44"
+        /></a>
+      </template>
+      <a
+        :href="`https://twitter.com/intent/tweet?text=${publicVessel}'s Stats&url=https%3A%2F%2Fiot.openplotter.cloud/${publicVessel}/stats`"
+        target="_blank"
+      >
+        <va-icon name="x-twitter" :size="44"
+      /></a>
+      <a
+        :href="`mailto:?subject=${publicVessel}'s Stats&body=Awesome stats%0D%0A%0D%0Ahttps://iot.openplotter.cloud/${publicVessel}/stats`"
+        target="_blank"
+        ><va-icon name="envelope" :size="44"
+      /></a>
+      <template v-if="website">
+        <a :href="website" target="_blank"><va-icon name="share" :size="44" /></a>
+      </template>
+    </div>
   </template>
 </template>
 
@@ -216,10 +245,10 @@
   //import IconNavigation from '../../components/icons/IconNavigation.vue'
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
-  import { asBusy } from '../../utils/handleExports'
+  //import { asBusy } from '../../utils/handleExports'
   import { durationFormatDays, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
-
+  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
 
@@ -366,10 +395,13 @@
           break
       }
     })
-    obj.Unclassified.percentage = (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) * 100
-    obj.Anchor.percentage = (moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100
-    obj.Buoy.percentage = (moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100
-    obj.Dock.percentage = (moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100
+    obj.Unclassified.percentage = (
+      (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) *
+      100
+    ).toFixed(2)
+    obj.Anchor.percentage = ((moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100).toFixed(2)
+    obj.Buoy.percentage = ((moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100).toFixed(2)
+    obj.Dock.percentage = ((moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100).toFixed(2)
     obj.Unclassified.duration = Math.trunc(moment.duration(obj.Unclassified.duration).as('days'))
     obj.Anchor.duration = Math.trunc(moment.duration(obj.Anchor.duration).as('days'))
     obj.Buoy.duration = Math.trunc(moment.duration(obj.Buoy.duration).as('days'))
@@ -496,8 +528,5 @@
   }
   .badges-stats {
     display: flex;
-  }
-  .link {
-    color: blue;
   }
 </style>

@@ -96,7 +96,7 @@
             detailString: t('monitoring.wind.detailString'),
             lcdDecimals: 0,
             value: apiData.row.windspeedoverground || 0,
-            altValue: utils.radiantToDegrees(apiData.row.winddirectionground) || 0,
+            altValue: utils.radiantToDegrees(apiData.row.winddirectiontrue) || 0,
           },
           temperature: {
             headerString: t('monitoring.temperature.headerString'),
@@ -109,16 +109,18 @@
           },
           water: {
             headerString: t('monitoring.water.headerString'),
-            unitString: t('monitoring.water.unitString'),
+            unitString: depthUnit.value,
             detailString: t('monitoring.water.detailString'),
+            detailUnitString: tempUnit.value,
             lcdDecimals: 1,
-            value: apiData.row.depth || 0,
+            value: meterToFeet.value || 0,
             altValue: kelvinToHuman(apiData.row.watertemperature) || 0.0,
           },
           battery: {
             headerString: t('monitoring.battery.headerString'),
             unitString: t('monitoring.battery.unitString'),
             detailString: t('monitoring.battery.detailString'),
+            detailUnitString: 'V',
             lcdDecimals: 1,
             value: floatToPercentage(apiData.row.batterycharge) || 0,
             altValue: apiData.row.batteryvoltage || 0,
@@ -163,6 +165,14 @@
     return GlobalStore.imperialUnits
       ? t('monitoring.imperial_units.temperature')
       : t('monitoring.temperature.unitString')
+  })
+
+  const depthUnit = computed(() => {
+    return GlobalStore.imperialUnits ? t('monitoring.imperial_units.depth') : t('monitoring.water.unitString')
+  })
+
+  const meterToFeet = computed(() => {
+    return GlobalStore.imperialUnits ? (apiData.row.depth || 0) * 3.2808399 : apiData.row.depth || 0
   })
 
   const monitor = onMounted(async () => {

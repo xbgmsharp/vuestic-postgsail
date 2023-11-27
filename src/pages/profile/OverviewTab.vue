@@ -89,12 +89,14 @@
                   {{ t('profile.public_name') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-input
-                  v-model="settings.preferences.public_vessel"
+                  v-model.trim="settings.preferences.public_vessel"
                   outline
+                  :rules="[(v) => v.length > 3 || 'Field is required']"
                   @change="UpdatePref('public_vessel', settings.preferences.public_vessel)"
                 />
+                <p v-if="error_vessel">{{ error_vessel }}</p>
               </td>
             </tr>
             <tr class="sub-setting">
@@ -107,7 +109,7 @@
                   {{ t('profile.public_stats') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-switch
                   v-model="settings.preferences.public_stats"
                   size="small"
@@ -119,6 +121,7 @@
                   :href="$t('profile.url.public_stats', [settings.public_vessel])"
                   target="_blank"
                   class="va-link link"
+                  style="padding-left: 2em"
                   >{{ $t('profile.url.public_stats', [settings.public_vessel]) }}</a
                 >
               </td>
@@ -133,7 +136,7 @@
                   {{ t('profile.public_timelapse') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-switch
                   v-model="settings.preferences.public_timelapse"
                   size="small"
@@ -145,6 +148,7 @@
                   :href="$t('profile.url.public_timelapse', [settings.public_vessel])"
                   target="_blank"
                   class="va-link link"
+                  style="padding-left: 2em"
                 >
                   {{ $t('profile.url.public_timelapse', [settings.public_vessel]) }}</a
                 >
@@ -160,7 +164,7 @@
                   {{ t('profile.public_logs_list') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-switch
                   v-model="settings.preferences.public_logs_list"
                   size="small"
@@ -172,6 +176,7 @@
                   :href="$t('profile.url.public_logs_list', [settings.public_vessel])"
                   target="_blank"
                   class="va-link link"
+                  style="padding-left: 2em"
                 >
                   {{ $t('profile.url.public_logs_list', [settings.public_vessel]) }}</a
                 >
@@ -183,7 +188,7 @@
                   {{ t('profile.public_logs') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-switch
                   v-model="settings.preferences.public_logs"
                   size="small"
@@ -191,7 +196,12 @@
                   @update:modelValue="UpdatePref('public_logs', $event)"
                 />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <a :href="$t('profile.url.public_logs', [settings.public_vessel])" target="_blank" class="va-link link">
+                <a
+                  :href="$t('profile.url.public_logs', [settings.public_vessel])"
+                  target="_blank"
+                  class="va-link link"
+                  style="padding-left: 2em"
+                >
                   {{ $t('profile.url.public_logs', [settings.public_vessel]) }}</a
                 >
               </td>
@@ -206,18 +216,19 @@
                   {{ t('menu.monitoring') }}
                 </va-popover>
               </td>
-              <td class="centerContainer">
+              <td class="">
                 <va-switch
                   v-model="settings.preferences.public_monitoring"
                   size="small"
                   outline
                   @update:modelValue="UpdatePref('public_monitoring', $event)"
                 />
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a
                   :href="$t('profile.url.public_monitoring', [settings.public_vessel])"
                   target="_blank"
-                  class="va-link link"
+                  class="va-link"
+                  style="padding-left: 2em"
                 >
                   {{ $t('profile.url.public_monitoring', [settings.public_vessel]) }}</a
                 >
@@ -244,6 +255,7 @@
   const GlobalStore = useGlobalStore()
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
+  const error_vessel = ref('')
 
   const homepage_options = ref([
     {
@@ -277,6 +289,13 @@
   const UpdatePref = async (key, value) => {
     if (!key || typeof value == 'undefined') return
     console.debug('OverviewTab UpdatePref', `Updating ${key}: ${value}`)
+    // Ensure public vessel name math requirements
+    const regex = /^\w{3,15}$/
+    if (key == 'public_vessel' && !regex.test(value)) {
+      error_vessel.value = 'Only alphanumeric (letters, numbers, regardless of case) plus underscore (_)'
+      return
+    }
+    error_vessel.value = ''
     // Update GlobalStore should be automatic maybe need to use reactive()
     // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     const response = await updatePref(key, value)
@@ -289,12 +308,3 @@
     })
   }
 </script>
-
-<style lang="scss" scoped>
-  .link {
-    color: blue;
-  }
-  .link:hover {
-    text-decoration: underline blue;
-  }
-</style>

@@ -54,7 +54,7 @@
             <td>
               <div class="centerContainer">
                 <va-switch
-                  v-model="settings.preferences.alerting.enabled"
+                  v-model="settings.preferences.alerting['enabled']"
                   size="small"
                   @update:modelValue="UpdatePref('alerting', $event)"
                 />
@@ -247,6 +247,9 @@
     }
     if (key === 'alerting' && typeof value === 'object') {
       console.debug(`Updating ${key}:`, JSON.stringify(value))
+    } else if (key === 'alerting' && typeof value === 'boolean') {
+      console.debug(`Updating ${key}:`, `{"enabled": ${value}}`)
+      value = `{"enabled": ${value}}`
     } else {
       console.debug(`Updating ${key}:${value}`)
     }

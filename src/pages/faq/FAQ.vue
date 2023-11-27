@@ -72,12 +72,15 @@
               </p>
             </div>
           </va-collapse>
-          <va-collapse header="Time, Distance, Temperatures Units">
+          <va-collapse header="Time, Distance, Temperatures, Depth Units">
             <div class="pa-3">
               All times from the backend are UTC. The frontend is doing the local conversion.<br />
               All distances from the backend are in Nautical Miles.<br />
               All temperatures from the backend are in Kelvin. The frontend will by default convert it to Celsius. To
-              use Fahrenheit enable "Use Imperial Units".
+              use Fahrenheit enable "Use Imperial Units".<br />
+              All Depth from the backend are in meters. The frontend will by default display it as meters. To use Foot
+              enable "Use Imperial Units".<br />
+              Check the explore page to see your signalk path.
             </div>
           </va-collapse>
           <va-collapse header="Energy">
@@ -101,14 +104,21 @@
                 - 'environment.inside.temperature' AS insideTemperature<br />
                 - 'environment.outside.temperature' AS outsideTemperature<br />
                 - 'environment.wind.speedOverGround' AS windSpeedOverGround<br />
-                - 'environment.wind.directionGround' AS windDirectionGround<br />
-                - 'environment.inside.humidity' AS insideHumidity<br />
-                - 'environment.outside.humidity' AS outsideHumidity<br />
+                - 'environment.wind.directionTrue' AS windDirectionTrue<br />
+                - 'environment.inside.relativeHumidity' AS insideHumidity<br />
+                - 'environment.outside.relativeHumidity' AS outsideHumidity<br />
                 - 'environment.outside.pressure' AS outsidePressure<br />
                 - 'environment.inside.pressure' AS insidePressure<br />
                 - 'electrical.batteries.House.capacity.stateOfCharge' AS batteryCharge<br />
                 - 'electrical.batteries.House.voltage' AS batteryVoltage<br />
-                Check the explore page to see your signalk path.
+                - 'environment.depth.belowTransducer' AS depth<br />
+                Check the explore page to see your signalk path.<br />
+                For reference,
+                <a href="https://signalk.org/specification/1.7.0/doc/vesselsBranch.html" target="_blank"
+                  >https://signalk.org/specification/1.7.0/doc/vesselsBranch.html<va-icon
+                    name="fa-external-link"
+                    size="small"
+                /></a>
               </p>
             </div>
           </va-collapse>

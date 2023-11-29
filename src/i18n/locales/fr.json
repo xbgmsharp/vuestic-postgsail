@@ -381,9 +381,9 @@
       "detailString": "Temperature: "
     },
     "pressure": {
-      "headerString": "Pression",
+      "headerString": "Barometre",
       "unitString": "hPa",
-      "detailString": "1-jour Average:"
+      "detailString": "24h Moyenne:"
     },
     "offline": {
       "offline": "Votre navire est hors ligne. La surveillance en temps réel nécessite une connexion Internet.",

@@ -10,11 +10,11 @@
     "login": "Entrar",
     "logout": "Sair...",
     "password": "Senha",
-    "recover_password": "Recover password",
+    "recover_password": "Recuperar senha",
     "sign_up": "Cadastrar-se",
     "keep_logged_in": "Mantenha-me conectado",
     "termsOfUse": "Termos de uso.",
-    "reset_password": "Reset password",
+    "reset_password": "Redefinir senha",
     "vessel_register": "Add vessel",
     "otp": "Enter the verification code",
     "otp_validate": "Validate",
@@ -67,8 +67,8 @@
   },
   "404": {
     "title": "Esta página está a navegar.",
-    "text": "If you feel that it’s not right, please send us a message at ",
-    "back_button": "Back to dashboard"
+    "text": "Se você acha que isso não está certo, envie-nos uma mensagem em ",
+    "back_button": "Voltar para o painel"
   },
   "language": {
     "english": "Inglês",
@@ -381,9 +381,9 @@
       "detailString": "Temperatura: "
     },
     "pressure": {
-      "headerString": "Pressão",
+      "headerString": "Barometro",
       "unitString": "hPa",
-      "detailString": "1-dia Média:"
+      "detailString": "24h Média:"
     },
     "offline": {
       "offline": "Sua embarcação está offline. O monitoramento em tempo real requer uma conexão com a Internet.",

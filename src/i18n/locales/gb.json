@@ -363,6 +363,10 @@
   "monitoring": {
     "title": "Monitoring",
     "error": "Unable to fetch monitoring data",
+    "imperial_units": {
+      "temperature": "°F",
+      "depth": "Ft"
+    },
     "wind": {
       "headerString": "Wind",
       "unitString": "Kt",
@@ -389,9 +393,9 @@
       "detailString": "Temperature: "
     },
     "pressure": {
-      "headerString": "Pressure",
+      "headerString": "Barometer",
       "unitString": "hPa",
-      "detailString": "1-day Average:"
+      "detailString": "24h Average:"
     },
     "offline": {
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",

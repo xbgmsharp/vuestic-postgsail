@@ -89,11 +89,14 @@
   }
 
   const colors = [
-    { value: 2, color: '#abdbe3' },
-    { value: 5, color: '#76b5c5' },
-    { value: 10, color: '#1e81b0' },
-    { value: 20, color: '#154c79' },
-    { value: 30, color: '#063970' },
+    { value: 0, color: '#87d9f7' },
+    { value: 1, color: '#54b4d4' },
+    { value: 2, color: '#4799b5' },
+    { value: 3, color: '#3a7f97' },
+    { value: 5, color: '#2d677a' },
+    { value: 10, color: '#214f5e' },
+    { value: 20, color: '#163844' },
+    { value: 30, color: '#0b232b' },
   ]
 
   let chart

@@ -33,7 +33,28 @@
           <table>
             <tr>
               <td>
-                <display-lcd id="wind" :display="items.wind"></display-lcd><br />
+                <div style="width: 180px; position: relative; margin: auto">
+                  <div
+                    id="windDirection"
+                    style="
+                      display: true;
+                      position: absolute;
+                      left: 10px;
+                      top: 18px;
+                      height: 36px;
+                      width: 36px;
+                      z-index: 99;
+                    "
+                  >
+                    <img
+                      id="windArrow"
+                      src="/wind_direction.png"
+                      style="height: 32px; width: 32px; opacity: 0.7"
+                      :style="windDirection"
+                    />
+                  </div>
+                  <display-lcd id="wind" :display="items.wind"></display-lcd>
+                </div>
                 <display-lcd id="temperature" :display="items.temperature"></display-lcd><br />
                 <display-lcd id="battery" :display="items.battery"></display-lcd><br />
               </td>
@@ -94,6 +115,7 @@
             headerString: t('monitoring.wind.headerString'),
             unitString: t('monitoring.wind.unitString'),
             detailString: t('monitoring.wind.detailString'),
+            detailUnitString: 'deg',
             lcdDecimals: 0,
             value: apiData.row.windspeedoverground || 0,
             altValue: utils.radiantToDegrees(apiData.row.winddirectiontrue) || 0,
@@ -175,6 +197,10 @@
     return GlobalStore.imperialUnits ? (apiData.row.depth || 0) * 3.2808399 : apiData.row.depth || 0
   })
 
+  const windDirection = computed(() => ({
+    rotate: `${utils.radiantToDegrees(apiData.row.winddirectiontrue) - 180}deg`,
+  }))
+
   const monitor = onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -211,7 +237,7 @@
   })
 </script>
 
-<style>
+<style scoped>
   .box {
     align-items: center;
     justify-content: center;

@@ -8,6 +8,7 @@
     :headerString="object.headerString"
     :detailString="object.detailString"
     :unitString="object.unitString"
+    :detailUnitString="object.detailUnitString"
     valuesNumeric
     headerStringVisible
     detailStringVisible

@@ -117,7 +117,7 @@
             detailString: t('monitoring.wind.detailString'),
             detailUnitString: 'deg',
             lcdDecimals: 0,
-            value: apiData.row.windspeedoverground || 0,
+            value: utils.metersToKnots(apiData.row.windspeedoverground) || 0,
             altValue: utils.radiantToDegrees(apiData.row.winddirectiontrue) || 0,
           },
           temperature: {

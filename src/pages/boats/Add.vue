@@ -31,7 +31,7 @@
         <va-input
           v-model="vessel_name"
           class="mb-3"
-          type="test"
+          type="text"
           :label="t('boats.boat.name')"
           :error="!!nameErrors.length"
           :error-messages="nameErrors"

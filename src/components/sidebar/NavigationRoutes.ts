@@ -71,13 +71,13 @@ export default {
             icon: 'menu-monitoring',
           },
         },
-        /*        {
+        {
           name: 'history',
           displayName: 'menu.history',
           meta: {
             icon: 'material-icons-manage_history',
           },
-        },*/
+        },
         {
           name: 'explore',
           displayName: 'menu.explore',

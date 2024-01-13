@@ -17,8 +17,8 @@
           <va-collapse header="What is PostgSail">
             <p class="pa-3"></p>
             <p>
-              PostgSail is a cloud based solution that is built by boaters for boaters. It automatically logs the
-              details of your boat's trips. These include track, speed, distance, wind speed, etc. Each trip is
+              PostgSail is a self-hosted or cloud based solution that is built by boaters for boaters. It automatically
+              logs the details of your boat's trips. These include track, speed, distance, wind speed, etc. Each trip is
               automatically detected and logged without requiring you take any action like starting or stopping a trip.
             </p>
             <br />
@@ -33,12 +33,12 @@
             <p>
               PostgSail aggregates information about your trips and provides you statistics including the number of
               trips, moorages you have been to, countries you have visited, longest passages, time you spent at anchor,
-              mooring buoys etc. The easiest may be to look at the statistics of one of our founders as an example.
+              mooring buoys etc. The easiest may be to look at the statistics of demo account as an example.
             </p>
             <br />
             <p>
               PostgSail also creates an automatic timelapse for all of your trips, animating the movements of your boat
-              on a map. See a timelapse example here for a multi-week sail along the Canada coast.
+              on a map. See a timelapse example here for a multi-week sail along the Canada coast from the demo account.
             </p>
             <br />
             <p>
@@ -78,9 +78,10 @@
               All distances from the backend are in Nautical Miles.<br />
               All temperatures from the backend are in Kelvin. The frontend will by default convert it to Celsius. To
               use Fahrenheit enable "Use Imperial Units".<br />
-              All Depth from the backend are in meters. The frontend will by default display it as meters. To use Foot
+              All depth from the backend are in Meters. The frontend will by default display it as Meters. To use Foot
               enable "Use Imperial Units".<br />
-              Check the explore page to see your signalk path.
+              Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
+              your signalk path.
             </div>
           </va-collapse>
           <va-collapse header="Energy">
@@ -92,14 +93,15 @@
                 - electrical.batteries.*.current<br />
                 - electrical.batteries.*.voltage<br />
                 - tanks.*.currentLevel.*<br />
-                Check the explore page to see your signalk path.
+                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
+                your signalk path.
               </p>
             </div>
           </va-collapse>
           <va-collapse header="Monitoring">
             <div class="pa-3">
               <p>
-                Monitoring metrics from Signalk:<br />
+                Monitoring and History pages use the following path from Signalk:<br />
                 - 'environment.water.temperature' AS waterTemperature<br />
                 - 'environment.inside.temperature' AS insideTemperature<br />
                 - 'environment.outside.temperature' AS outsideTemperature<br />
@@ -112,9 +114,13 @@
                 - 'electrical.batteries.House.capacity.stateOfCharge' AS batteryCharge<br />
                 - 'electrical.batteries.House.voltage' AS batteryVoltage<br />
                 - 'environment.depth.belowTransducer' AS depth<br />
-                Check the explore page to see your signalk path.<br />
+                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
+                your signalk path.<br />
                 For reference,
-                <a href="https://signalk.org/specification/1.7.0/doc/vesselsBranch.html" target="_blank"
+                <a
+                  href="https://signalk.org/specification/1.7.0/doc/vesselsBranch.html"
+                  target="_blank"
+                  class="va-text-bold va-link link"
                   >https://signalk.org/specification/1.7.0/doc/vesselsBranch.html<va-icon
                     name="fa-external-link"
                     size="small"
@@ -125,19 +131,19 @@
           <va-collapse header="URLs">
             <div class="pa-3">
               - Web Application:
-              <a href="https://iot.openplotter.cloud/" target="_blank"
+              <a href="https://iot.openplotter.cloud/" target="_blank" class="va-text-bold va-link link"
                 >https://iot.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
               ><br />
               - API:
-              <a href="https://api.openplotter.cloud/" target="_blank"
+              <a href="https://api.openplotter.cloud/" target="_blank" class="va-text-bold va-link link"
                 >https://api.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
               ><br />
               - Grafana:
-              <a href="https://app.openplotter.cloud/" target="_blank"
+              <a href="https://app.openplotter.cloud/" target="_blank" class="va-text-bold va-link link"
                 >https://app.openplotter.cloud/ <va-icon name="fa-external-link" size="small" /></a
               ><br />
               - Telegram Bot:
-              <a href="https://t.me/pgsail_bot" target="_blank"
+              <a href="https://t.me/pgsail_bot" target="_blank" class="va-text-bold va-link link"
                 >https://t.me/pgsail_bot <va-icon name="fa-external-link" size="small" /></a
               ><br />
             </div>
@@ -146,26 +152,35 @@
             <div class="pa-3">
               <p>
                 The project is free and open-source and I welcome any contribution and happy to work together. There is
-                definitely some bugs. The signalk plugin definitely need improvement. The movement detection in the
-                plugin is done via the auto-state plugin. I try to keep the technology stack simple, SQL and Javascript
-                with a bit of python. No middle ware to reduce code maintenance.
+                definitely some bugs and room for improvements. The movement detection from the signalk-plugin is done
+                via the auto-state plugin. as much as possible, I try to keep the technology stack simple, SQL and
+                Javascript with a bit of python. No middle ware to reduce code maintenance.
               </p>
               <p>
                 Source:<br />
                 - PostgSail Signalk plugin:
-                <a href="https://github.com/xbgmsharp/signalk-postgsail" target="_blank"
+                <a
+                  href="https://github.com/xbgmsharp/signalk-postgsail"
+                  target="_blank"
+                  class="va-text-bold va-link link"
                   >https://github.com/xbgmsharp/signalk-postgsail<va-icon name="fa-external-link" size="small" /></a
                 ><br />
                 - PostgSail backend:
-                <a href="https://github.com/xbgmsharp/postgsail" target="_blank"
+                <a href="https://github.com/xbgmsharp/postgsail" target="_blank" class="va-text-bold va-link link"
                   >https://github.com/xbgmsharp/postgsail<va-icon name="fa-external-link" size="small" /></a
                 ><br />
                 - PostgSail frontend:
-                <a href="https://github.com/xbgmsharp/vuestic-postgsail" target="_blank"
+                <a
+                  href="https://github.com/xbgmsharp/vuestic-postgsail"
+                  target="_blank"
+                  class="va-text-bold va-link link"
                   >https://github.com/xbgmsharp/vuestic-postgsail<va-icon name="fa-external-link" size="small" /></a
                 ><br />
                 - PostgSail Telegram:
-                <a href="https://github.com/xbgmsharp/postgsail-telegram-bot" target="_blank"
+                <a
+                  href="https://github.com/xbgmsharp/postgsail-telegram-bot"
+                  target="_blank"
+                  class="va-text-bold va-link link"
                   >https://github.com/xbgmsharp/postgsail-telegram-bot<va-icon
                     name="fa-external-link"
                     size="small" /></a
@@ -177,13 +192,14 @@
             <div class="pa-3">
               You can send me an email or create a GitHub issue or join us on Slack.<br />
               -
-              <a href="https://github.com/xbgmsharp/postgsail/issues" target="_blank"
-                >github issue<va-icon name="fa-external-link" size="small" /></a
+              <a href="https://github.com/xbgmsharp/postgsail/issues" target="_blank" class="va-text-bold va-link link"
+                >GitHub issue<va-icon name="fa-external-link" size="small" /></a
               ><br />
               -
               <a
                 href="https://join.slack.com/t/signalk-dev/shared_invite/zt-1leccop43-KrU7G6yBq9g91KXjZtNg1g"
                 target="_blank"
+                class="va-text-bold va-link link"
                 >Slack<va-icon name="fa-external-link" size="small" /></a
               ><br />
             </div>

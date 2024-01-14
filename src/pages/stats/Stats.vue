@@ -202,7 +202,7 @@
     </div>
     <div class="box layout gutter--md" style="text-align: center">
       <a
-        :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Fstats%2F`"
+        :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Fstats`"
         target="_blank"
         ><va-icon name="facebook" :size="44"
       /></a>

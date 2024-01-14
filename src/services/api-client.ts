@@ -259,6 +259,10 @@ class ApiClient extends HttpClient {
   async explore() {
     return this.get(`explore_view`)
   }
+
+  async history(payload: JSObj) {
+    return this.post(`rpc/monitoring_history_fn`, payload)
+  }
   /*
    * Stays at
    */

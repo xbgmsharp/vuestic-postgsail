@@ -215,7 +215,7 @@
                     /></a>
                   </template>
                   <a
-                    :href="`https://twitter.com/intent/tweet?text=From ${formData.name}&url=https%3A%2F%2Fiot.openplotter.cloud/log/${item.id}`"
+                    :href="`https://twitter.com/intent/tweet?text=From ${formData.name}&url=https%3A%2F%2Fiot.openplotter.cloud/${publicVessel}/log/${item.id}`"
                     target="_blank"
                   >
                     <va-icon name="x-twitter" :size="44"
@@ -226,7 +226,7 @@
                       String(distanceFormat(item.distance)) +
                       ` trip from ${item.from} to ${item.to}, lasting ` +
                       String(durationFormatHours(item.duration)) +
-                      `hours.%0D%0A%0D%0Ahttps://iot.openplotter.cloud/log/${item.id}`
+                      `hours.%0D%0A%0D%0Ahttps://iot.openplotter.cloud/${publicVessel}/log/${item.id}`
                     "
                     target="_blank"
                     ><va-icon name="envelope" :size="44"
@@ -245,11 +245,10 @@
                 <div class="flex flex-row pa-2">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
-
+              -->
                 <div class="flex flex-row pa-2">
                   <va-button color="danger" @click="handleDelete">Delete</va-button>
                 </div>
-              -->
               </template>
             </va-form>
           </template>

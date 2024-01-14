@@ -42,3 +42,7 @@ pre {
 .flexStatic {
   flex: 0 0 auto;
 }
+
+.link:hover {
+  text-decoration: underline;
+}

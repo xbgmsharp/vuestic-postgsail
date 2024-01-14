@@ -48,9 +48,18 @@
           hoverable
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.id } }">
-              {{ value }}
-            </router-link>
+            <template v-if="isLoggedIn">
+              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.id } }">
+                {{ value }}
+              </router-link> </template
+            ><template v-else>
+              <router-link
+                class="va-link link"
+                :to="{ name: 'log-details', params: { boat: publicVessel, id: rowData.id } }"
+              >
+                {{ value }}
+              </router-link>
+            </template>
           </template>
           <template #cell(from)="{ value, rowData }">
             <router-link
@@ -111,7 +120,8 @@
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'
-
+  import { useGlobalStore } from '../../stores/global-store'
+  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   import logsData from '../../data/logs.json'
 
   const CacheStore = useCacheStore()

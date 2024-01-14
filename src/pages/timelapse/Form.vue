@@ -358,14 +358,14 @@
     console.log('handleZoom', new_value, obj)
     if (new_value >= 0) {
       console.log('handleZoom obj:', obj.value + ', text:' + obj.text)
-      formData.speed = obj.value
+      formData.zoom = obj.value
     }
   }
   const handleDelay = async (new_value, obj) => {
     console.log('handleDelay', new_value, obj)
     if (new_value >= 0) {
       console.log('handleDelay obj:', obj.value + ', text:' + obj.text)
-      formData.color = obj.value
+      formData.delay = obj.value
     }
   }
   // handle Exports

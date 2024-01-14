@@ -32,6 +32,7 @@
                       :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                       style="min-width: 100px; max-width: 50%"
                       class="inputbox"
+                      @change="handleSubmit"
                     />
                     <span v-else>
                       {{ formData.name }}
@@ -71,17 +72,14 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link
-                    class="va-text-bold va-link link"
-                    :to="{ name: 'moorage-stays', params: { id: item.id } }"
-                  >
+                  <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: item.id } }">
                     {{ durationFormatDays(item.total_duration) }} {{ durationI18nDays(item.total_duration) }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.arrivals') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <router-link
-                    class="va-text-bold va-link link"
+                    class="va-link link"
                     :to="{ name: 'moorage-arrivals-departures', params: { id: item.id } }"
                   >
                     {{ item.arrivals_departures }}
@@ -89,17 +87,22 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <VaTextarea v-model="formData.notes" outline placeholder="Note" />
+                  <VaTextarea v-model="formData.notes" outline placeholder="Note" @change="handleSubmit" />
                 </dd>
               </dl>
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
               <div class="row justify-end">
+                <!--
                 <div class="flex">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
-              </div>
+
+                <div class="flex flex-row pa-2">
+                  <va-button color="danger" @click="handleDelete">Delete</va-button>
+                </div>
+              --></div>
             </va-form>
           </template>
         </va-inner-loading>
@@ -117,6 +120,9 @@
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
   import { durationFormatDays, durationI18nDays } from '../../utils/dateFormatter.js'
+  import { useModal, useToast } from 'vuestic-ui'
+  const { confirm } = useModal()
+  const { init: initToast } = useToast()
 
   import moorages from '../../data/moorages.json'
 
@@ -202,6 +208,7 @@
         CacheStore.moorages = []
         CacheStore.moorages_get = []
         CacheStore.store_ttl = null
+        return true
       } else {
         throw { response }
       }
@@ -209,6 +216,11 @@
       console.log('moorage_update failed', err.message ?? err)
       updateError.value = err
     } finally {
+      initToast({
+        message: updateError.value ? `Error updating moorage entry` : `Successfully updated moorage entry`,
+        position: 'top-right',
+        color: updateError.value ? 'warning' : 'success',
+      })
       isBusy.value = false
     }
   }
@@ -230,10 +242,19 @@
           CacheStore.moorages = []
           CacheStore.moorages_get = []
           CacheStore.store_ttl = null
+          return true
         })
         .catch((err) => {
           console.log('updateDefaultStay failed', err.message ?? err)
           updateError.value = err
+        })
+        .finally(() => {
+          initToast({
+            message: updateError.value ? `Error updating moorage entry` : `Successfully updated moorage entry`,
+            position: 'top-right',
+            color: updateError.value ? 'warning' : 'success',
+          })
+          isBusy.value = false
         })
     }
   }
@@ -250,11 +271,51 @@
         CacheStore.moorages = []
         CacheStore.moorages_get = []
         CacheStore.store_ttl = null
+        return true
       })
       .catch((err) => {
         console.log('updateHome failed', err.message ?? err)
         updateError.value = err
       })
+  }
+
+  const handleDelete = async () => {
+    isBusy.value = true
+    updateError.value = null
+    let canDelete = false
+
+    const modal_result = await confirm({
+      message:
+        'This will permanently delete the Moorage Entry and any associated Logs and Stays. Do you really want to continue?',
+      title: 'Are you sure?',
+      okText: 'Yes, I agree',
+      cancelText: 'No, keep my data',
+    })
+    if (modal_result) {
+      canDelete = true
+    } else {
+      isBusy.value = false
+      initToast('Operation cancel')
+    }
+
+    if (!canDelete) return
+
+    const api = new PostgSail()
+    const id = route.params.id
+    try {
+      const response = await api.moorage_delete(id)
+      if (response) {
+        console.log('moorage_delete success', response)
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('moorage_delete failed', response)
+      updateError.value = response.message
+    } finally {
+      isBusy.value = false
+    }
   }
 </script>
 

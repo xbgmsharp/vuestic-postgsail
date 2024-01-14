@@ -25,7 +25,7 @@
       <va-card-title>{{ $t('monitoring.explore') }}</va-card-title>
       <va-card-content>
         <h1 class="box layout gutter--md">{{ $t('monitoring.explore_msg') }}</h1>
-        <table class="va-table va-table--hoverable va-table--striped">
+        <table class="va-table va-table--hoverable va-table--striped" style="width: 100%">
           <thead>
             <tr>
               <th>Date</th>

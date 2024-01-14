@@ -262,10 +262,4 @@
   .va-table {
     width: 100%;
   }
-  .link {
-    color: blue;
-  }
-  .link:hover {
-    text-decoration: underline blue;
-  }
 </style>

@@ -8,7 +8,7 @@
         </template>
         <div class="mb-3 my-3">
           <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" :zoom="8" style="width: 100%; height: 350px" />
+            <lMap :geo-json-features="mapGeoJsonFeatures" :zoom="10" style="width: 100%; height: 350px" />
           </template>
         </div>
         <va-inner-loading :loading="isBusy">
@@ -33,7 +33,7 @@
                       </span>
 
                       <VaButton
-                        :icon="v.value ? 'save' : 'edit'"
+                        :icon="v.value ? 'cancel' : 'edit'"
                         preset="plain"
                         size="small"
                         @click="v.value = !v.value"
@@ -205,7 +205,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.share') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
                   <a
-                    :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2Flog%2F${item.id}`"
+                    :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Flog%2F${item.id}`"
                     target="_blank"
                     ><va-icon name="facebook" :size="44"
                   /></a>
@@ -224,7 +224,7 @@
                     :href="
                       `mailto:?subject=${publicVessel}'s Trip From ${formData.name}&body=Marine logbook entry for the ` +
                       String(distanceFormat(item.distance)) +
-                      ` mile trip from ${item.from} to ${item.to}, lasting ` +
+                      ` trip from ${item.from} to ${item.to}, lasting ` +
                       String(durationFormatHours(item.duration)) +
                       `hours.%0D%0A%0D%0Ahttps://iot.openplotter.cloud/log/${item.id}`
                     "
@@ -241,12 +241,15 @@
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
               <template v-if="isLoggedIn">
+                <!--
                 <div class="flex flex-row pa-2">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
+
                 <div class="flex flex-row pa-2">
                   <va-button color="danger" @click="handleDelete">Delete</va-button>
                 </div>
+              -->
               </template>
             </va-form>
           </template>
@@ -345,10 +348,6 @@
     }
   })
 
-  const duration_email_link = computed(() => {
-    return durationFormatHours(item.value.duration)
-  })
-
   const handleSubmit = async () => {
     isBusy.value = true
     updateError.value = null
@@ -367,6 +366,7 @@
         CacheStore.logs = []
         CacheStore.logs_get = []
         CacheStore.store_ttl = null
+        return true
       } else {
         throw { response }
       }
@@ -548,12 +548,6 @@
         display: inline-block;
       }
     }
-  }
-  .link {
-    color: blue;
-  }
-  .link:hover {
-    text-decoration: underline blue;
   }
   .divider {
     margin-top: 2em;

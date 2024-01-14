@@ -72,12 +72,12 @@
             class="datatable"
           >
             <template #cell(arrived)="{ rowData }">
-              <router-link class="va-link" :to="{ name: 'log-details', params: { id: rowData._to_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData._to_id } }">
                 {{ dateFormatUTC(rowData._to_time) }}
               </router-link>
             </template>
             <template #cell(departed)="{ rowData }">
-              <router-link class="va-link" :to="{ name: 'log-details', params: { id: rowData._from_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData._from_id } }">
                 {{ dateFormatUTC(rowData._from_time) }}
               </router-link>
             </template>
@@ -92,7 +92,7 @@
               </div>
             </template>
             <template #cell(duration)="{ rowData }">
-              {{ durationFormatDays(rowData.stay_duration) }} {{ $t('stays.stay.duration_unit') }}
+              {{ durationFormatDays(rowData.duration) }} {{ $t('stays.stay.duration_unit') }}
             </template>
           </va-data-table>
           <template v-if="items.length > perPage">

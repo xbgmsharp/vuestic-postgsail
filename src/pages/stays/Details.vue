@@ -32,6 +32,7 @@
                       :rules="[(value) => (value && value.length > 0) || 'Field is required']"
                       style="min-width: 100px; max-width: 50%"
                       class="inputbox"
+                      @change="handleSubmit"
                     />
                     <span v-else>
                       {{ formData.name }}
@@ -109,16 +110,24 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
-                  <VaTextarea v-model="formData.notes" outline placeholder="Note" type="textarea" />
+                  <VaTextarea
+                    v-model="formData.notes"
+                    outline
+                    placeholder="Note"
+                    type="textarea"
+                    @change="handleSubmit"
+                  />
                 </dd>
               </dl>
               <template v-if="updateError">
                 <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
               </template>
               <div class="row justify-end">
+                <!--
                 <div class="flex">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
+                -->
               </div>
             </va-form>
           </template>
@@ -137,6 +146,8 @@
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { useToast } from 'vuestic-ui'
+  const { init: initToast } = useToast()
 
   import stays from '../../data/stays.json'
 
@@ -233,6 +244,11 @@
       console.log('stay_update failed', err.message ?? err)
       updateError.value = err
     } finally {
+      initToast({
+        message: updateError.value ? `Error updating stay entry` : `Successfully updated stay entry`,
+        position: 'top-right',
+        color: updateError.value ? 'warning' : 'success',
+      })
       isBusy.value = false
     }
   }
@@ -270,13 +286,6 @@
         background-color: var(--va-background);
       }
     }
-  }
-  .link {
-    color: blue;
-    cursor: pointer;
-  }
-  .link:hover {
-    text-decoration: underline blue;
   }
   .inputbox {
     background: white;

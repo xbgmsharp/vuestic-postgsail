@@ -14,6 +14,7 @@
 <script setup>
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
+  import 'leaflet.fullscreen'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -138,6 +139,14 @@
     const overlays = {}
     L.control.layers(baseMaps, overlays).addTo(map.value)
     baseMaps[Object.keys(baseMaps)[map_type.value]].addTo(map.value)
+
+    // create a fullscreen button and add it to the map
+    L.control
+      .fullscreen({
+        position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
+        content: '<i class="va-icon material-icons">fullscreen</i>', // change the content of the button, can be HTML, default null
+      })
+      .addTo(map.value)
 
     const legend = L.control({ position: 'bottomcenter' })
     legend.onAdd = function (/*map*/) {

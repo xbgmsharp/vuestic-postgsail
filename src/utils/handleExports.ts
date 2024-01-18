@@ -4,10 +4,10 @@ import type { JSObj } from '../data/types'
 
 const formatMap: JSObj = {
   //= { <format>: [<function>, <mimetype>],.. }
-  gpx: [callAPI, 'text/xml'],
-  geojson: [callAPI, 'application/json'],
+  gpx: [callAPI, 'application/gpx+xml'],
+  geojson: [callAPI, 'application/geo+json'],
   csv: [createCSV, 'text/csv'],
-  kml: [callAPI, 'text/xml'],
+  kml: [callAPI, 'application/vnd.google-earth.kml+xml'],
 }
 
 export async function handleExport(

@@ -1,51 +1,50 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-title>Export Tracks</va-card-title>
+      <va-card-title>{{ publicVessel }}'s Replay</va-card-title>
       <va-card-content>
         <div>
           <div>
-            <va-form ref="formData">
+            <va-form ref="formData" @submit.prevent="onsubmit">
               <table striped hoverable style="min-width: 90%">
-                <!--
                 <tr>
-                  <td class="width-30 font-weight-bold">Choose Trips</td>
+                  <td class="width-30 font-weight-bold">{{ $t('timelapse.choosetrips') }}</td>
                   <td>
                     <div>
-                      <va-switch v-model="trips" size="small" />
+                      <va-switch v-model="choose_trips" size="small" />
                     </div>
                   </td>
                 </tr>
-                -->
+                <template v-if="choose_trips">
+                  <tr>
+                    <td>{{ $t('timelapse.start') }}</td>
+                    <td>
+                      <MySelect
+                        v-if="mylogs"
+                        :id="parseInt(start_trip)"
+                        key="start_trip"
+                        :data="formData.start_log"
+                        :object="mylogs"
+                        @clickFromChildComponent="handleStart"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.end') }}</td>
+                    <td>
+                      <MySelect
+                        v-if="mylogs"
+                        :id="parseInt(end_trip)"
+                        key="end_trip"
+                        :data="formData.end_log"
+                        :object="mylogs"
+                        @clickFromChildComponent="handleEnd"
+                      />
+                    </td>
+                  </tr>
+                </template>
                 <tr>
-                  <td>Start Trip</td>
-                  <td>
-                    <MySelect
-                      v-if="start_trip"
-                      :id="parseInt(start_trip)"
-                      key="start_trip"
-                      :data="formData.start_log"
-                      :object="mylogs"
-                      @clickFromChildComponent="handleStart"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>End Trip</td>
-                  <td>
-                    <MySelect
-                      v-if="end_trip"
-                      :id="parseInt(end_trip)"
-                      key="end_trip"
-                      :data="formData.end_log"
-                      :object="mylogs"
-                      @clickFromChildComponent="handleEnd"
-                    />
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>Base Map</td>
+                  <td>{{ $t('timelapse.basemap') }}</td>
                   <td>
                     <MySelect
                       v-if="map_type"
@@ -58,20 +57,27 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>Track Color</td>
+                  <td>{{ $t('timelapse.trackcolor') }}</td>
                   <td>
                     <MySelect
                       v-if="colors"
-                      :id="formData.color"
                       key="colors"
-                      :data="formData.color"
+                      :data="color"
                       :object="colors"
                       @clickFromChildComponent="handleColor"
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Zoom Level</td>
+                  <td>{{ $t('timelapse.overlay') }}</td>
+                  <td>
+                    <div v-if="colors">
+                      <va-switch v-model="overlay" size="small" @click="handleOverlay" />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ $t('timelapse.zoom') }}</td>
                   <td>
                     <MySelect
                       v-if="formData"
@@ -84,7 +90,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>Animation Speed</td>
+                  <td>{{ $t('timelapse.anim') }}</td>
                   <td>
                     <MySelect
                       v-if="formData"
@@ -97,7 +103,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>Initial Delay</td>
+                  <td>{{ $t('timelapse.delay') }}</td>
                   <td>
                     <MySelect
                       :id="formData.delay"
@@ -134,6 +140,36 @@
                 </dd>
               </dl>
               <dl class="row mb-3">
+                <dt class="flex xs12 md6">{{ $t('logs.log.share') }}</dt>
+                <dd class="export-buttons">
+                  <va-popover class="mr-2 mb-2" icon="info" message="shareable timelapse link">
+                    <va-icon name="link" :size="44" style="display: inline-block" @click="handleLink(formData)" />
+                  </va-popover>
+                  <a
+                    :href="`https://www.facebook.com/sharer/sharer.php?u=${timelapse_public_link}&t=${publicVessel}'s Replay`"
+                    target="_blank"
+                    ><va-icon name="facebook" :size="44"
+                  /></a>
+                  <template v-if="instagram">
+                    <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
+                      <va-icon name="instagram" :size="44"
+                    /></a>
+                  </template>
+                  <a
+                    :href="`https://twitter.com/intent/tweet?text=${publicVessel}'s Replay&url=${timelapse_public_link}`"
+                    target="_blank"
+                  >
+                    <va-icon name="x-twitter" :size="44"
+                  /></a>
+                  <a :href="`mailto:?subject=${publicVessel}'s Replay&body=${timelapse_public_link}`" target="_blank"
+                    ><va-icon name="envelope" :size="44"
+                  /></a>
+                  <template v-if="website">
+                    <a :href="website" target="_blank"><va-icon name="envelope" :size="44" /></a>
+                  </template>
+                </dd>
+              </dl>
+              <dl class="row mb-3">
                 <dt></dt>
                 <dl style="min-width: 100%">
                   <div style="min-width: 100%">
@@ -157,12 +193,18 @@
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
+  import { useGlobalStore } from '../../stores/global-store'
+  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  import { useToast } from 'vuestic-ui'
+  const { init: initToast } = useToast()
 
   const isBusy = ref(false)
   const apiError = ref(null)
   const CacheStore = useCacheStore()
   const { logs } = storeToRefs(CacheStore)
-  const trips = ref(false)
+  const choose_trips = ref(false)
+  const overlay = ref(false)
+  const color = ref(0)
   const start_trip = ref(-1)
   const end_trip = ref(-1)
   const mylogs = ref([])
@@ -174,11 +216,17 @@
     delay: 0,
     zoom: 13,
     color: 'dodgerblue',
+    ignore_moorage_overlay: overlay.value,
   })
   const timelapse_link = computed(() => {
     console.log('formData', formData)
     const searchParams = new URLSearchParams(formData)
     return `/timelapse?${searchParams.toString()}`
+  })
+  const timelapse_public_link = computed(() => {
+    console.log('public formData', formData)
+    const searchParams = new URLSearchParams(formData)
+    return `${window.location.protocol}//${window.location.host}/${publicVessel}/timelapse?${searchParams.toString()}`
   })
   const map_type = [
     {
@@ -274,35 +322,35 @@
   ]
   const colors = [
     {
-      value: 'dodgerblue',
+      value: 0,
       text: 'Dodger Blue',
     },
     {
-      value: 'green',
+      value: 1,
       text: 'Green',
     },
     {
-      value: 'yellow',
+      value: 2,
       text: 'Yellow',
     },
     {
-      value: 'red',
+      value: 3,
       text: 'Red',
     },
     {
-      value: 'orange',
+      value: 4,
       text: 'Orange',
     },
     {
-      value: 'black',
+      value: 5,
       text: 'Black',
     },
     {
-      value: 'gray',
+      value: 6,
       text: 'Gray',
     },
     {
-      value: 'white',
+      value: 7,
       text: 'White',
     },
   ]
@@ -349,9 +397,9 @@
   }
   const handleColor = async (new_value, obj) => {
     console.log('handleColor', new_value, obj)
-    if (new_value) {
+    if (new_value >= 0) {
       console.log('handleColor obj:', obj.value + ', text:' + obj.text)
-      formData.color = obj.value
+      formData.color = obj.text.toLowerCase().trim().replace(/\s+/gm, '')
     }
   }
   const handleZoom = async (new_value, obj) => {
@@ -367,6 +415,23 @@
       console.log('handleDelay obj:', obj.value + ', text:' + obj.text)
       formData.delay = obj.value
     }
+  }
+  const handleOverlay = async () => {
+    console.log('handleOverlay', overlay.value)
+    formData.ignore_moorage_overlay = !overlay.value
+  }
+  const onsubmit = () => {
+    console.log('onsubmit', formData)
+  }
+  const handleLink = () => {
+    initToast({
+      message: `public shareable url copied to clipboard`,
+      position: 'top-right',
+      color: 'primary',
+      //color: response.ok ? 'success' : 'warning',
+    })
+    navigator.clipboard.writeText(timelapse_public_link)
+    //window.open(timelapse_public_link)
   }
   // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),

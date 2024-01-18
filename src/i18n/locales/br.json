@@ -335,7 +335,8 @@
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring"
+      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
+      "public_name": "Ao ativar seu perfil público, você terá a opção de escolher o nome do seu barco"
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{'id'}",
@@ -428,5 +429,17 @@
     "wait_link": "sua página de monitoramento.",
     "help": "Se você não estiver claro o que precisa fazer para registrar, please see \"What do I need to use PostgSail?\" question on ",
     "help_link": "nosso FAQ."
+  },
+  "timelapse": {
+    "choosetrips": "Escolher viagens",
+    "start": "Iniciar viagem",
+    "end": "Terminar viagem",
+    "mapa base": "Mapa Base",
+    "trackcolor": "Cor da trilha",
+    "overlay": "Remover sobreposições de Moorage",
+    "zoom": "Nível de Zoom",
+    "anim": "Velocidade de Animação",
+    "atraso": "Atraso inicial",
+    "exportar": "Exportar"
   }
 }

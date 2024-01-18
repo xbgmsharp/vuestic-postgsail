@@ -253,7 +253,7 @@
       "title": "Boat's details"
     },
     "boat": {
-      "name": "Name | Names",
+      "name": "Boat Name | Names",
       "mmsi": "MMSI (optional)",
       "first_contact": "First Contact",
       "last_contact": "Last Contact",
@@ -342,7 +342,8 @@
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring"
+      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
+      "public_name": "When you enable your public profile, you will have the option to choose your boat name"
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{'id'}",
@@ -440,5 +441,17 @@
     "wait_link": "your Monitoring page.",
     "help": "If you are not clear what you need to do for logging, please see \"What do I need to use PostgSail?\" question on ",
     "help_link": "our FAQ."
+  },
+  "timelapse": {
+    "choosetrips": "Choose Trips",
+    "start": "Start Trip",
+    "end": "End Trip",
+    "basemap": "Base Map",
+    "trackcolor": "Track Color",
+    "overlay": "Remove Moorage Overlays",
+    "zoom": "Zoom Level",
+    "anim": "Animation Speed",
+    "delay": "Initial Delay",
+    "export": "Export"
   }
 }

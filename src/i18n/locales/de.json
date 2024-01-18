@@ -434,5 +434,17 @@
     "wait_link": "Überwachungsseite an.",
     "help": "Wenn dir nicht klar ist, was du für die Protokollierung tun musst, lies die Frage \"Was brauche ich, um PostgSail zu verwenden?\" in unseren ",
     "help_link": "FAQ durch."
+  },
+  "timelapse": {
+    "choosetrips": "Choose Trips",
+    "start": "Start Trip",
+    "end": "End Trip",
+    "basemap": "Base Map",
+    "trackcolor": "Track Color",
+    "overlay": "Remove Moorage Overlays",
+    "zoom": "Zoom Level",
+    "anim": "Animation Speed",
+    "delay": "Initial Delay",
+    "export": "Export"
   }
 }

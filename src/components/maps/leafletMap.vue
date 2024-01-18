@@ -10,6 +10,8 @@
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
 
+  import { useGlobalStore } from '../../stores/global-store'
+  const { publicVessel } = useGlobalStore()
   /*
    * TODO
    * Add boat name
@@ -150,11 +152,13 @@
           //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties.time)
           let speed = speedFormat(feature.properties.speedoverground) || 0
+          let wind = speedFormat(feature.properties.windspeedapparent) || 0
           let latitude = parseFloat(feature.properties.latitude).toFixed(5)
           let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-          let text = `<div class='center'><h4>${feature.geometry.type}</h4></div><br/>
+          let text = `<div class='center'><h4>${publicVessel}</h4></div><br/>
               Time: ${time}<br/>
-              Speed: ${speed}<br/>
+              Boat Speed: ${speed}<br/>
+              Wind Speed ${wind}<br/>
               Latitude: ${latitude}<br/>
               Longitude: ${longitude}<br/>`
           popupContent = text
@@ -182,7 +186,7 @@
       }).addTo(this.map)
       console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
       this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
-      this.map.setZoom(this.zoom)
+      //this.map.setZoom(this.zoom)
     },
     onBeforeUnmount() {
       if (this.map) {

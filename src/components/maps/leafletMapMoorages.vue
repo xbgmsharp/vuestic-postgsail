@@ -19,7 +19,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
 
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import PostgSail from '../../services/api-client'
   import mooragesGeoJSON from '../../data/moorages_map.json'
 
@@ -280,6 +280,12 @@
       isBusy.value = false
     }
   }
+
+  onBeforeUnmount(async () => {
+    if (map.value) {
+      map.value.remove()
+    }
+  })
 </script>
 
 <style lang="scss" scoped></style>

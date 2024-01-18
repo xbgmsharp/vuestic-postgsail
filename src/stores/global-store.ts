@@ -155,7 +155,7 @@ export const useGlobalStore = defineStore('global', {
         console.error(error)
       }
       await this.set_userBadges()
-      this.settings.public_vessel = this.settings?.preferences?.public_vessel
+      this.settings.public_vessel = this.settings?.preferences?.public_vessel || 'no_public_vessel'
       return this.settings
     },
     async updatePref(key: string, value: any): Promise<any> {
@@ -217,7 +217,7 @@ export const useGlobalStore = defineStore('global', {
       this.badges = await userBadges(user_badges)
       //return this.badges
     },
-    async is_public(boat: string, type: string, id = 0 as unknown) {
+    async is_public(boat: string, type: string, id = 0 as number) {
       const api = new PostgSail()
       try {
         const response = await api.is_public({ boat: boat, _type: type, _id: id })

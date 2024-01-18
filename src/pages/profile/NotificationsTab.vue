@@ -19,7 +19,12 @@
             <td>{{ t('profile.phone_notifications') }}</td>
             <td>
               <div class="centerContainer">
-                <va-switch v-model="settings.preferences.phone_notifications" size="small" @click="handleLink()" />
+                <va-switch
+                  v-model="settings.preferences.phone_notifications"
+                  size="small"
+                  @click="handleLink()"
+                  @update:modelValue="UpdatePref('phone_notifications', $event)"
+                />
               </div>
             </td>
           </tr>
@@ -216,12 +221,13 @@
   const pushover_link = ref('')
   const telegram_link = ref('https://t.me/pgsail_bot')
 
-  async function handleLink() {
+  async function handleLink(event) {
     if (
       settings.preferences &&
       settings.preferences['pushover_user_key'] &&
       settings.preferences.pushover_user_key.length > 10
     ) {
+      console.log(event)
       return
     }
     isBusy.value = true

@@ -205,7 +205,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.share') }}</dt>
                 <dd class="export-buttons xs12 md6 pa-1">
                   <a
-                    :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Flog%2F${item.id}`"
+                    :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Flog%2F${item.id}&t=${publicVessel}'s Trip From ${formData.name}`"
                     target="_blank"
                     ><va-icon name="facebook" :size="44"
                   /></a>
@@ -245,7 +245,7 @@
                 <div class="flex flex-row pa-2">
                   <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
                 </div>
-              -->
+                -->
                 <div class="flex flex-row pa-2">
                   <va-button color="danger" @click="handleDelete">Delete</va-button>
                 </div>

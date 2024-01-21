@@ -7,6 +7,7 @@ import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import { useGlobalStore } from '../stores/global-store'
+import { isArrayTypeNode } from 'typescript'
 //import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'login',
         path: 'login',
         component: () => import('../pages/auth/login/Login.vue'),
+      },
+      {
+        name: 'demo',
+        path: 'demo',
+        component: () => import('../pages/auth/login/Demo.vue'),
       },
       {
         name: 'signup',
@@ -49,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/:boat?',
+    path: '/:boat(\\w+)?',
     meta: { requiresAuth: true },
     component: AppLayout,
     children: [
@@ -66,7 +72,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'log-details',
-        path: 'log/:id',
+        path: 'log/:id(\\d+)',
         component: () => import('../pages/logs-book/Details.vue'),
         meta: { isPublic: true, type: 'public_logs' },
       },
@@ -77,7 +83,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'stay-details',
-        path: 'stay/:id',
+        path: 'stay/:id(\\d+)',
         component: () => import('../pages/stays/Details.vue'),
       },
       {
@@ -92,12 +98,12 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'moorage-details',
-        path: 'moorage/:id',
+        path: 'moorage/:id(\\d+)',
         component: () => import('../pages/moorages/Details.vue'),
       },
       {
         name: 'moorage-stays',
-        path: 'stays/moorage/:id',
+        path: 'stays/moorage/:id(\\d+)',
         component: () => import('../pages/stays/Moorage.vue'),
       },
       {
@@ -127,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'help-menu',
-        path: '/:boat?',
+        path: '/:boat(\\w+)?',
         component: RouteViewComponent,
         children: [
           {
@@ -160,7 +166,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'monitoring-menu',
-        path: '/:boat?',
+        path: '/:boat(\\w+)?',
         component: RouteViewComponent,
         children: [
           {
@@ -174,30 +180,28 @@ const routes: Array<RouteRecordRaw> = [
             path: 'monitoring/explore',
             component: () => import('../pages/monitoring/Explore.vue'),
           },
-          /*
           {
             name: 'history',
             path: 'monitoring/history',
             component: () => import('../pages/monitoring/History.vue'),
           },
-          */
         ],
       },
       {
         name: 'stats',
-        path: '/:boat?/stats',
+        path: '/:boat(\\w+)?/stats',
         component: () => import('../pages/stats/Stats.vue'),
         meta: { isPublic: true, type: 'public_stats' },
       },
       {
         name: 'timelapse-menu',
-        path: '/:boat?',
+        path: '/:boat(\\w+)?',
         component: RouteViewComponent,
         meta: { isPublic: true },
         children: [
           {
             name: 'timelapse-replay',
-            path: 'timelapse/:id?',
+            path: 'timelapse/:id(\\d+)?',
             component: () => import('../pages/timelapse/Timelapse2.vue'),
             meta: { isPublic: true, type: 'public_timelapse' },
           },
@@ -266,7 +270,11 @@ router.beforeEach(async (to, from, next) => {
     )
     console.log(to)
     if (to.params?.boat && /\w+/.test(to.params.boat as string)) {
-      const anonymous = await is_public(to.params.boat as string, to.meta.type as string, to.params?.id as unknown)
+      const anonymous = await is_public(
+        to.params.boat as string,
+        to.meta.type as string,
+        (parseFloat(to.params?.id as string) as number) || 0,
+      )
       if (anonymous) {
         next()
         return
@@ -278,12 +286,8 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
-    // If not logged in, yet required, redirect to login page and add the next query-string if not login
-    if (to.path != '/login') {
-      next({ name: 'login', query: { next: to.path } })
-    } else {
-      next({ name: 'login' })
-    }
+    // If not logged in, yet required, redirect to login page
+    next({ name: 'login', query: { next: to.path } })
   } else {
     console.warn('vue-router beforeEach activate -> /', isLoggedIn, validEmail, to)
     // Enforce email otp validation

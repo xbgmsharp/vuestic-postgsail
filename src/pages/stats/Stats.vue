@@ -157,7 +157,7 @@
                 </td>
                 <td>
                   <template v-if="value[0] === 'time_spent_away'"> {{ durationFormatDays(value[1]) }} days </template>
-                  <template v-if="value[0] === 'time_spent_at_home_port'">
+                  <template v-if="value[0] === 'time_spent_at_home_port(s)'">
                     {{ durationFormatDays(value[1]) }} days
                   </template>
                   <template v-else> {{ value[1] }} </template>

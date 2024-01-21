@@ -430,8 +430,8 @@
       color: 'primary',
       //color: response.ok ? 'success' : 'warning',
     })
-    navigator.clipboard.writeText(timelapse_public_link)
-    //window.open(timelapse_public_link)
+    navigator.clipboard.writeText(timelapse_public_link.value)
+    //window.open(timelapse_public_link.value)
   }
   // handle Exports
   const runBusy = (fn, ...args) => asBusy(isBusy, apiError, fn, ...args),

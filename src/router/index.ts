@@ -155,9 +155,9 @@ const routes: Array<RouteRecordRaw> = [
         path: 'grafana',
         name: 'grafana',
         component: () => import('../pages/grafana/Grafana.vue'),
-        beforeEnter(to, from, next) {
-          window.open('https://app.openplotter.cloud', '_blank')
-        },
+        //beforeEnter(to, from, next) {
+        //  window.open('https://app.openplotter.cloud', '_blank')
+        //},
       },
       {
         path: 'activate',

@@ -1,5 +1,5 @@
 <template>
-  <form class="login" @submit.prevent="onsubmit">
+  <VaForm ref="form" class="login" @submit.prevent="onsubmit">
     <template v-if="resetError">
       <va-alert color="warning" outline class="mb-4"> {{ t('auth.errors.reset') }}</va-alert>
     </template>
@@ -8,62 +8,73 @@
     </template>
     <va-inner-loading :loading="isBusy">
       <va-input
-        v-model="password"
-        placeholder="Password"
+        id="Password"
+        v-model="formData.password"
+        placeholder="New password"
         class="mb-4"
         type="password"
         autocomplete="off"
         :label="t('auth.password')"
-        :error="!!passwordErrors.length"
-        :error-messages="passwordErrors"
+        :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
+        aria-label="Password"
       />
       <va-input
-        v-model="password_confirm"
-        placeholder="Confirm Password"
+        id="password_repeat"
+        v-model="formData.password_confirm"
+        placeholder="Repeat new password"
         class="mb-4"
         type="password"
         autocomplete="off"
         :label="t('auth.password')"
-        :error="!!passwordErrors.length"
-        :error-messages="passwordErrors"
+        :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
+        aria-label="password_repeat"
       />
       <div class="flex justify-center mt-4">
-        <va-button type="submit" class="my-0">{{ t('auth.reset_password') }}</va-button>
+        <va-button class="my-0" @click="onsubmit">{{ t('auth.reset_password') }}</va-button>
       </div>
     </va-inner-loading>
-  </form>
+  </VaForm>
 </template>
 
 <script setup lang="ts">
   import PostgSail from '../../../services/api-client'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useForm } from 'vuestic-ui'
+  const { validate } = useForm('form')
   const { t } = useI18n()
   const router = useRouter()
   const route = useRoute()
 
   const resetError = ref(false)
   const resetSuccess = ref(false)
-  const password = ref('')
-  const password_confirm = ref('')
+  //const password = ref('')
+  //const password_confirm = ref('')
   const passwordErrors = ref<string[]>([])
   const uuid = ref(route.query.uuid || '')
   const token = ref(route.query.token || '')
 
   const isBusy = ref(false)
 
+  const formData = reactive({
+    password: '',
+    password_confirm: '',
+  })
+
   async function onsubmit() {
-    if (!password.value || !password_confirm.value) {
+    console.log('reset', validate())
+    if (!validate()) return
+    if (!formData.password || !formData.password_confirm) {
       passwordErrors.value = [t('auth.errors.password')]
     } else {
-      if (password.value != password_confirm.value) {
+      if (formData.password != formData.password_confirm) {
         passwordErrors.value = [t('auth.errors.mismatch_pass')]
         console.warn('mismatch pass')
         resetError.value = true
         return
       }
-      if (password.value.length <= 4) {
+      if (formData.password.length <= 4) {
         console.warn('short pass')
         passwordErrors.value = [t('auth.errors.short_pass')]
         resetError.value = true
@@ -82,7 +93,7 @@
 
       isBusy.value = true
       const payload = {
-        pass: password.value,
+        pass: formData.password,
         uuid: uuid.value,
         token: token.value,
       }

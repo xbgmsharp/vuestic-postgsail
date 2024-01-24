@@ -1,31 +1,32 @@
 <template>
-  <form class="login" @submit.prevent="onsubmit">
+  <VaForm ref="form" class="login" @submit.prevent="onsubmit">
     <template v-if="resetSuccess">
       <va-alert color="success" outline class="mb-4"> {{ t('auth.reset') }} </va-alert>
     </template>
     <va-input
       id="Email"
-      v-model="email"
+      v-model="formData.email"
       class="mb-4"
       type="email"
       :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
+      :rules="[(v) => !!v || t('auth.errors.email'), (v) => /.+@.+\..+/.test(v) || 'Email should be valid']"
       aria-label="Email"
     />
 
     <div class="flex justify-center mt-4">
-      <va-button type="submit" class="my-0">{{ t('auth.reset_password') }}</va-button>
+      <va-button class="my-0" @click="onsubmit">{{ t('auth.reset_password') }}</va-button>
     </div>
-  </form>
+  </VaForm>
 </template>
 
 <script setup lang="ts">
   import { useGlobalStore } from '../../../stores/global-store'
   import PostgSail from '../../../services/api-client'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useForm } from 'vuestic-ui'
+  const { validate } = useForm('form')
   const { t } = useI18n()
   const router = useRouter()
 
@@ -34,17 +35,22 @@
 
   const resetSuccess = ref('')
   const email = ref('')
+  const formData = reactive({
+    email: '',
+  })
   const emailErrors = ref<string[]>([])
 
   const isBusy = ref(false)
 
   async function onsubmit() {
-    if (!email.value) {
+    console.log('recover', validate())
+    if (!validate()) return
+    if (!formData.email) {
       emailErrors.value = email.value ? [] : [t('auth.errors.email')]
     } else {
       isBusy.value = true
       const payload = {
-        email: email.value,
+        email: formData.email,
       }
 
       try {

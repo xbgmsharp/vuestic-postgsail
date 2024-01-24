@@ -1,6 +1,6 @@
 <template>
   <va-inner-loading :loading="isBusy">
-    <form @submit.prevent="onsubmit">
+    <VaForm ref="form" @submit.prevent="onsubmit">
       <template v-if="loginError">
         <va-alert color="danger" outline class="mb-4">
           {{ $t('auth.errors.credentials') }} ({{ loginError }})
@@ -15,8 +15,7 @@
         class="mb-4"
         type="email"
         :label="$t('auth.email')"
-        :error="!!emailErrors.length"
-        :error-messages="emailErrors"
+        :rules="[(v) => !!v || t('auth.errors.email'), (v) => /.+@.+\..+/.test(v) || 'Email should be valid']"
         aria-label="Email"
       />
 
@@ -26,8 +25,7 @@
         class="mb-4"
         type="password"
         :label="$t('auth.password')"
-        :error="!!passwordErrors.length"
-        :error-messages="passwordErrors"
+        :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
         aria-label="Password"
       />
 
@@ -41,22 +39,32 @@
       <div class="flex justify-center mt-4">
         <va-button class="my-0 flexStatic" @click="onsubmit">{{ $t('auth.login') }}</va-button>
       </div>
-    </form>
+    </VaForm>
   </va-inner-loading>
 </template>
 
 <script setup>
   import PostgSail from '../../../services/api-client'
-  import { computed, ref } from 'vue'
+  import { computed, ref, reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useGlobalStore } from '../../../stores/global-store'
+  import { useForm, useToast } from 'vuestic-ui'
 
   // Clean up previous localStorage
   localStorage.removeItem('settings')
 
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
+  const { validate } = useForm('form')
+  const { push } = useRouter()
+  const { init } = useToast()
+
+  const formData = reactive({
+    email: '',
+    password: '',
+    keepLoggedIn: false,
+  })
 
   const isBusy = ref(false)
   const email = ref(GlobalStore.settings?.email || '')
@@ -79,6 +87,7 @@
     emailErrors.value = email.value ? [] : [t('auth.errors.email')]
     passwordErrors.value = password.value ? [] : [t('auth.errors.password')]
 
+    if (!validate()) return
     if (!formReady.value) return
 
     loginError.value = null

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onsubmit()">
+  <VaForm ref="form" @submit.prevent="onsubmit()">
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
     </template>
@@ -9,55 +9,50 @@
 
     <va-input
       id="Email"
-      v-model="email"
+      v-model="formData.email"
       class="mb-4"
       type="email"
       :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
       aria-label="Email"
+      :rules="[(v) => !!v || t('auth.errors.email'), (v) => /.+@.+\..+/.test(v) || 'Email should be valid']"
     />
 
     <va-input
       id="Password"
-      v-model="password"
+      v-model="formData.password"
       class="mb-4"
       type="password"
       :label="t('auth.password')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
+      :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
       aria-label="Password"
     />
 
     <va-input
       id="firstName"
-      v-model="firstName"
+      v-model="formData.firstName"
       class="mb-4"
       type="firstName"
       :label="t('auth.first_name')"
-      :error="!!firstNameErrors.length"
-      :error-messages="firstNameErrors"
+      :rules="[(value) => (value && value.length > 2) || t('auth.errors.first_name')]"
       aria-label="firstName"
     />
 
     <va-input
       id="lastName"
-      v-model="lastName"
+      v-model="formData.lastName"
       class="mb-4"
       type="lastName"
       :label="t('auth.last_name')"
-      :error="!!lastNameErrors.length"
-      :error-messages="lastNameErrors"
+      :rules="[(value) => (value && value.length > 2) || t('auth.errors.last_name')]"
       aria-label="lastName"
     />
 
     <div class="auth-layout__options flex items-center justify-between">
       <va-checkbox
         id="agreedToTerms"
-        v-model="agreedToTerms"
+        v-model="formData.agreedToTerms"
         class="mb-0"
-        :error="!!agreedToTermsErrors.length"
-        :error-messages="agreedToTermsErrors"
+        :rules="[(v) => v || t('auth.errors.agreed_to_terms')]"
         aria-label="agreedToTerms"
       >
         <template #label>
@@ -75,27 +70,31 @@
     <div class="flex justify-center mt-4">
       <va-button class="my-0 flexStatic" @click="onsubmit">{{ t('auth.sign_up') }}</va-button>
     </div>
-  </form>
+  </VaForm>
 </template>
 
 <script setup>
   import PostgSail from '../../../services/api-client'
-  import { ref, computed } from 'vue'
+  import { ref, computed, reactive } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useGlobalStore } from '../../../stores/global-store'
+  import { useForm, useToast } from 'vuestic-ui'
 
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
+  const formData = reactive({
+    email: '',
+    password: '',
+    firstNameErrors: '',
+    lastNameErrors: '',
+    agreedToTerms: false,
+  })
+
   const isBusy = ref(false)
   const apiError = ref(null)
   const signupSuccess = ref(null)
-  const email = ref('')
-  const password = ref('')
-  const firstName = ref('')
-  const lastName = ref('')
-  const agreedToTerms = ref(false)
   const emailErrors = ref('')
   const passwordErrors = ref('')
   const firstNameErrors = ref('')
@@ -103,6 +102,9 @@
   const agreedToTermsErrors = ref('')
 
   const router = useRouter()
+  const { validate } = useForm('form')
+  const { push } = useRouter()
+  const { init } = useToast()
 
   const formReady = computed(() => {
     return !(
@@ -115,19 +117,21 @@
   })
 
   async function onsubmit() {
-    emailErrors.value = email.value ? [] : [t('auth.errors.email')]
-    passwordErrors.value = password.value ? [] : [t('auth.errors.password')]
-    firstNameErrors.value = firstName.value ? [] : [t('auth.errors.first_name')]
-    lastNameErrors.value = lastName.value ? [] : [t('auth.errors.last_name')]
-    agreedToTermsErrors.value = agreedToTerms.value ? [] : [t('auth.errors.agreed_to_terms')]
+    emailErrors.value = formData.email ? [] : [t('auth.errors.email')]
+    passwordErrors.value = formData.password ? [] : [t('auth.errors.password')]
+    firstNameErrors.value = formData.firstName ? [] : [t('auth.errors.first_name')]
+    lastNameErrors.value = formData.lastName ? [] : [t('auth.errors.last_name')]
+    agreedToTermsErrors.value = formData.agreedToTerms ? [] : [t('auth.errors.agreed_to_terms')]
 
+    console.log(formReady.value, formData.email, emailErrors.value.length, validate())
+    if (!validate()) return
     if (!formReady.value) return
 
     const payload = {
-      email: email.value,
-      pass: password.value,
-      firstname: firstName.value,
-      lastname: lastName.value,
+      email: formData.email,
+      pass: formData.password,
+      firstname: formData.firstName,
+      lastname: formData.lastName,
     }
 
     apiError.value = null
@@ -138,11 +142,17 @@
       const response = await api.signin(payload)
       if (response && response.token) {
         signupSuccess.value = true
-        api.setBearerAuth((GlobalStore.token = response.token))
+        api.setBearerAuth(GlobalStore.login(response.token, false))
         // Fetch updated settings then route
         await GlobalStore.fetchSettings(true)
+        // Popup success
+        init({
+          message: t('auth.account_created'),
+          color: 'success',
+        })
+        //redirect to activate page in 1sec
         setTimeout(() => {
-          router.push({ name: 'activate' })
+          push({ name: 'activate' })
         }, 1100)
       } else {
         console.warn('signin', response)

@@ -1,13 +1,13 @@
 [
   {
-    "name": "kapla",
-    "first": "2023-02-22 10:36:54.000",
-    "last": "2023-02-22 12:48:57.000",
-    "Number of Log Entries": 4,
-    "Max Speed": 7.1,
-    "Max Wind Speed": 44.2,
-    "Total Distance": 29.2865,
-    "Total Time Underway": "02:37:00",
-    "Longest Nonstop Sail": "8.6862 NM, 01:11:00 hours"
+    "name": "Kapla",
+    "first": "2021-05-03T11:04:30+00:00",
+    "last": "2023-12-18T17:20:15.434+00:00",
+    "number_of_log_entries": 161,
+    "max_speed": 11.5,
+    "max_wind_speed": 34.1,
+    "total_distance": 3059.3867,
+    "total_time_underway": "P21DT548H32M12.765S",
+    "longest_nonstop_sail": "173.473 NM, P12DT19H55M44.874S hours"
   }
 ]

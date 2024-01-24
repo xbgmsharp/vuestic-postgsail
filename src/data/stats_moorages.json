@@ -1,8 +1,8 @@
 [
   {
-    "Home Ports": 2,
-    "Unique Moorages": 4,
-    "Time Spent at Home Port(s)": "00:18:03",
-    "Time Spent Away": "00:05:00"
+    "home_ports": 0,
+    "unique_moorages": 48,
+    "time_spent_at_home_port(s)": "P1DT2000H21M3.507S",
+    "time_spent_away": "P810DT2000H21M3.507S"
   }
 ]

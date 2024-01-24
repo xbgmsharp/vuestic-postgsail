@@ -4,7 +4,7 @@ interface LocaleModule {
   default: Record<string, string>
 }
 
-const fileNameToLocaleModuleDict = import.meta.globEager('./locales/*.json')
+const fileNameToLocaleModuleDict = import.meta.glob('./locales/*.json', { eager: true })
 
 const messages: { [P: string]: Record<string, string> } = {}
 Object.entries(fileNameToLocaleModuleDict).forEach(([fileName, localeModule]) => {

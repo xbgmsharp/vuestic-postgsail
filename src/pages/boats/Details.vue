@@ -48,7 +48,7 @@
               <template v-if="item.plugin_version">
                 <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.plugin_version') }}</dt>
                 <dd class="flex">
-                  <template v-if="item.plugin_version === '0.2.0'">
+                  <template v-if="item.plugin_version === '0.3.1'">
                     <va-chip color="success" class="mr-6 mb-2">
                       {{ item.plugin_version }}
                     </va-chip> </template

@@ -260,6 +260,19 @@ router.beforeEach(async (to, from, next) => {
   const GlobalStore = useGlobalStore()
   const { is_public } = GlobalStore
 
+  if (!isLoggedIn && to.path === '/login' && to.query.next) {
+    if (
+      /\w+\/(logs|timelapse|stats|monitoring)/.test(to.query.next as string) ||
+      /\w+\/(log|timelapse\/\d+)/.test(to.query.next as string)
+    ) {
+      console.log(`req is in anonymous format and from login, set path to ${to.query.next}`)
+      const new_path = to.query.next
+      to.query.next = ''
+      next({ path: new_path as string })
+      return
+    }
+  }
+
   if (
     !isLoggedIn &&
     to.matched.some((record) => record.meta.requiresAuth) &&
@@ -279,6 +292,9 @@ router.beforeEach(async (to, from, next) => {
         next()
         return
       }
+      // we have a public url but with no public permission. redirect to login
+      next({ name: 'login' })
+      return
     } else if (to.name == 'faq' || to.name == 'privacy') {
       next()
       return

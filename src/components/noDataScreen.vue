@@ -15,6 +15,15 @@
         <router-link class="link" :to="{ name: 'faq' }">{{ t('nodata.help_link') }}</router-link>
         <br />
       </p>
+      <br />
+      <div>
+        <strong>Getting Started with PostgSail</strong><br />
+        Getting Started with PostgSail Welcome! The first step to get started is to link your boat monitoring device
+        with PostgSail. PostgSail is compatible with Victron GX monitoring devices that are integrated with your boat
+        network with a NMEA 2000 cable. If you are an advanced user, you can also run PostgSail on a Raspberry Pi or any
+        other device that supports the open Signal K platform. Once you have Signal K enabled, go to the App Store and
+        download the PostgSail plugin. Make sure it is connected to the Internet.
+      </div>
     </div>
   </div>
 </template>

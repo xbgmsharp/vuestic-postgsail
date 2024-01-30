@@ -3,7 +3,12 @@
     <template v-if="!gotVessel">
       <nodatayet />
     </template>
-    <template v-else> Grafana opened in a new window </template>
+    <template v-else>
+      Grafana opened in a new window.
+      <p>
+        You will need to create an account on https://auth.openplotter.cloud prior to access Grafana and other services.
+      </p></template
+    >
   </div>
 </template>
 <script setup>

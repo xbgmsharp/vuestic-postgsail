@@ -440,7 +440,7 @@
     "wait": "If you just entered your token, have a look at  ",
     "wait_link": "your Monitoring page.",
     "help": "If you are not clear what you need to do for logging, please see \"What do I need to use PostgSail?\" question on ",
-    "help_link": "our FAQ."
+    "help_link": "the FAQ."
   },
   "timelapse": {
     "choosetrips": "Choose Trips",

@@ -24,7 +24,7 @@
     "pushover_message": "Pushover validation",
     "reset": "Your password has been reset successfully.",
     "errors": {
-      "credentials": "Wrong credentials",
+      "credentials": "Your e-mail address and password didn't match. Please try again.",
       "email": "Email is required",
       "password": "Password is required",
       "mismatch_pass": "Password Mismatch",
@@ -57,7 +57,8 @@
     "badges": "Badges",
     "eventlogs": "Event Logs",
     "help": "Help",
-    "history": "History"
+    "history": "History",
+    "windy": "Windy"
   },
   "notifications": {
     "all": "All",
@@ -338,19 +339,21 @@
       "website": "Website displayed alongside your stats, please enter the full URL starting with http:// or https://",
       "instagram_handle": "Instagram link displayed alongside your stats, please enter without a leading {'@'} sign",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}{1}/log/{0}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
       "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
-      "public_name": "When you enable your public profile, you will have the option to choose your boat name"
+      "public_name": "When you enable your public profile, you will have the option to choose your boat name",
+      "public_windy": "When you enable your public profile, you will have the option to transform your boat in a weather station integrate in Windy."
     },
     "url": {
-      "public_logs": "https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring"
+      "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
+      "public_windy": "https://www.windy.com/station/pws-{0}"
     }
   },
   "faq": {
@@ -430,7 +433,7 @@
     "Aloha Award": "Ticking off over 2300 NM across the great blue Pacific makes you the rare recipient of the Aloha Award. Well done and Aloha sailor!",
     "Navigator Award": "Woohoo! You made it, Ticking off over 100NM in one go, well done sailor!",
     "Captain Award": "Congratulation, you reach over 1000NM, well done sailor!",
-    "default": "Look at you sailling the",
+    "default": "Look at you sailing the",
     "locked": "Locked"
   },
   "nodata": {

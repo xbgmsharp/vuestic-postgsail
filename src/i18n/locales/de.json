@@ -57,7 +57,8 @@
     "badges": "Abzeichen",
     "eventlogs": "Event Logs",
     "help": "Help",
-    "history": "History"
+    "history": "History",
+    "windy": "Windy"
   },
   "notifications": {
     "all": "Alle",
@@ -340,14 +341,17 @@
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring"
+      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
+      "public_name": "Cuando habilites tu perfil público, tendrás la opción de elegir el nombre de tu barco",
+      "public_windy": "When you enable your public profile, you will have the option to transform your boat in a weather station integrate in Windy."
     },
     "url": {
-      "public_logs": "https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring"
+      "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
+      "public_windy": "https://www.windy.com/station/pws-{0}"
     }
   },
   "faq": {

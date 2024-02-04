@@ -185,6 +185,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'monitoring/history',
             component: () => import('../pages/monitoring/History.vue'),
           },
+          {
+            name: 'windy',
+            path: 'monitoring/windy',
+            component: () => import('../pages/monitoring/Windy.vue'),
+          },
         ],
       },
       {

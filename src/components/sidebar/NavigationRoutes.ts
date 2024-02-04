@@ -85,6 +85,13 @@ export default {
             icon: 'material-icons-tune',
           },
         },
+        {
+          name: 'windy',
+          displayName: 'menu.windy',
+          meta: {
+            icon: 'material-icons-wind_power',
+          },
+        },
       ],
     },
     {

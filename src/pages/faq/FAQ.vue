@@ -128,6 +128,52 @@
               </p>
             </div>
           </va-collapse>
+          <va-collapse header="Windy Personal Weather Station (PWS)">
+            <div class="pa-3">
+              <p>
+                Using your settings page, you can enable your profile to be public. Once you enable it, you will see an
+                option to publish your observations as a weather station on Windy.com.<br />
+                <br />
+                You must have the following SignalK path:<br />
+                - 'environment.outside.temperature'<br />
+                - 'environment.wind.speedOverGround'<br />
+                - 'environment.wind.directionTrue'<br />
+                - 'environment.outside.relativeHumidity'<br />
+                - 'environment.outside.pressure'<br />
+                <br />
+                You must configure monitoring data source for wind direction as `environment.wind.directionTrue` on your
+                monitoring device. This is necessary because reporting apparent wind directions to Windy will be very
+                confusing for those who are processing it! Data for `environment.wind.directionTrue` will likely be
+                unavailable in your NMEA network, which is expected. You can use the awesome derived-data plugin to
+                easily calculate it. You need to have outdoor temperature coming through
+                environment.outside.temperature. This is required as Windy doesn't accept observations that don't
+                include temperature readings. The more marine weather observations we have, the better forecasts we will
+                collectively have! Thank you for your turning boat into a live weather station!
+                <br />
+                It can take up to one hour for your station to be create and accessible in Windy. You will received a
+                notification when it is ready.
+                <br />
+                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
+                your signalk path.<br />
+                For reference:
+                <br />
+                -
+                <a
+                  href="https://signalk.org/specification/1.7.0/doc/vesselsBranch.html"
+                  target="_blank"
+                  class="va-text-bold va-link link"
+                  >SignalK vessels specification<va-icon name="fa-external-link" size="small" /></a
+                ><br />
+                -
+                <a
+                  href="https://community.windy.com/topic/8168/report-your-weather-station-data-to-windy"
+                  target="_blank"
+                  class="va-text-bold va-link link"
+                  >Report your Weather Station Data to Windy<va-icon name="fa-external-link" size="small"
+                /></a>
+              </p>
+            </div>
+          </va-collapse>
           <va-collapse header="URLs">
             <div class="pa-3">
               - Web Application:

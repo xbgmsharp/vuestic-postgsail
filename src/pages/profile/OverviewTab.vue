@@ -36,8 +36,8 @@
               </va-popover>
             </td>
             <td class="centerContainer">
-              <va-input
-                v-model="settings.preferences.website"
+              <VaInput
+                v-model="localpref.website"
                 outline
                 placeholder="(e.g. https://openplotter.cloud)"
                 @change="UpdatePref('website', settings.preferences.website)"
@@ -52,7 +52,7 @@
             </td>
             <td class="centerContainer">
               <va-input
-                v-model="settings.preferences.instagram_handle"
+                v-model="localpref.instagram_handle"
                 outline
                 placeholder="(e.g. @postgsail)"
                 @change="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
@@ -90,8 +90,8 @@
                 </va-popover>
               </td>
               <td class="">
-                <va-input
-                  v-model.trim="settings.preferences.public_vessel"
+                <VaInput
+                  v-model.trim.lazy="localpref.public_vessel"
                   outline
                   :rules="[(v) => v.length > 3 || 'Field is required']"
                   @change="UpdatePref('public_vessel', settings.preferences.public_vessel)"
@@ -184,7 +184,11 @@
             </tr>
             <tr class="sub-setting">
               <td>
-                <va-popover class="mr-2 mb-2" icon="info" :message="$t('profile.msg.public_logs')">
+                <va-popover
+                  class="mr-2 mb-2"
+                  icon="info"
+                  :message="$t('profile.url.public_logs', [settings.public_vessel, '{id}'])"
+                >
                   {{ t('profile.public_logs') }}
                 </va-popover>
               </td>
@@ -195,15 +199,8 @@
                   outline
                   @update:modelValue="UpdatePref('public_logs', $event)"
                 />
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a
-                  :href="$t('profile.url.public_logs', [settings.public_vessel])"
-                  target="_blank"
-                  class="va-link link"
-                  style="padding-left: 2em"
-                >
-                  {{ $t('profile.url.public_logs', [settings.public_vessel]) }}</a
-                >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {{ $t('profile.url.public_logs', [settings.public_vessel, '{id}']) }}
               </td>
             </tr>
             <tr class="sub-setting">
@@ -234,6 +231,32 @@
                 >
               </td>
             </tr>
+            <tr class="sub-setting">
+              <td>
+                <va-popover class="mr-2 mb-2" icon="info" :message="$t('profile.msg.public_windy')">
+                  Windy Station
+                </va-popover>
+              </td>
+              <td class="">
+                <va-switch
+                  v-model="settings.preferences.public_windy"
+                  size="small"
+                  outline
+                  @update:modelValue="UpdatePref('public_windy', $event)"
+                />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <template v-if="settings.preferences.windy">
+                  <a
+                    :href="$t('profile.url.public_windy', [settings.preferences.windy])"
+                    target="_blank"
+                    class="va-link"
+                    style="padding-left: 2em"
+                  >
+                    {{ $t('profile.url.public_windy', [settings.preferences.windy]) }}</a
+                  ></template
+                >
+              </td>
+            </tr>
           </template>
         </tbody>
       </table>
@@ -256,6 +279,8 @@
   const { settings } = storeToRefs(GlobalStore)
   const { fetchSettings, updatePref } = GlobalStore
   const error_vessel = ref('')
+
+  const localpref = ref({})
 
   const homepage_options = ref([
     {
@@ -282,7 +307,12 @@
   onBeforeMount(async () => {
     console.log(`onBeforeMount Overviewtab`)
     await fetchSettings()
-    console.log('OverviewTab onBeforeMount', `${settings.value.first} ${settings.value.last}`)
+    console.log(
+      'OverviewTab onBeforeMount',
+      `${settings.value.first} ${settings.value.last} ${settings.value.preferences.public_vessel}`,
+      settings.value,
+    )
+    localpref.value = GlobalStore.settings.preferences
   })
 
   //const UpdatePref = async (key: string, value: any) => {

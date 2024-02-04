@@ -76,11 +76,13 @@ const defaultState = {
       public_logs_list: false,
       public_timelapse: false,
       public_vessel: '',
+      public_windy: false,
       public_monitoring: false,
       preferred_homepage: 0,
       use_imperial_units: false,
       email_notifications: true,
       phone_notifications: false,
+      windy: null,
       /*cache_minutes: 10,
       cache_clear_on_logout: true*/
     },
@@ -251,6 +253,7 @@ export const useGlobalStore = defineStore('global', {
     firstName: (state) => state.settings?.first,
     instagram: (state) => state.settings?.preferences?.instagram_handle,
     website: (state) => state.settings?.preferences?.website,
+    windy: (state) => state.settings?.preferences?.windy,
   },
 })
 export default useGlobalStore

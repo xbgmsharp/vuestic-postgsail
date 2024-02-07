@@ -295,11 +295,11 @@
     if (Array.isArray(batterydata.value) && batterydata.value.length > 0 && Array.isArray(labels.value)) {
       batteryChartData.datasets[0].label = 'Charge'
       batteryChartData.datasets[0].yAxisID = 'y'
-      batteryChartData.datasets[0].data = batterydata.value[0]
+      batteryChartData.datasets[0].data = batterydata.value[1]
       batteryChartData.datasets[1] = {
         label: 'Voltage',
         fill: false,
-        data: batterydata.value[1],
+        data: batterydata.value[0],
         borderColor: ChartColorBis,
         backgroundColor: ChartbgColorBis,
         yAxisID: 'y1',
@@ -445,6 +445,7 @@
     } catch ({ response }) {
       console.log(response)
       apiError.value = t('history.error')
+      offline.value = false
       if (!import.meta.env.PROD) {
         console.warn('Fallback using sample data from local json...', apiError.value)
       }

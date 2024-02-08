@@ -50,7 +50,7 @@ A full-featured development environment ready to test and code.
   - [x] Update theme icon to night/day mode theme
   - [x] Update theme icon to day and night vision
 - [x] Logs:
-  - [x] Add Action '...' column with sub menu to export to CSV, GPX
+  - [ ] Add Action '...' column with sub menu to export to CSV, GPX
   - [x] Add button with icon to export to CSV to log list page
 - [ ] Log:
   - [ ] Add trash and save icon to log details page next to text
@@ -155,6 +155,7 @@ A full-featured development environment ready to test and code.
   - [ ] Widget ?!?
 - [x] /logs/, Logs
   - [x] Table layout from api view, filter and sort
+  - [x] Filter on log type, date range, name
 - [x] /log/:id
   - [x] Map layout from api
   - [x] Table layout from api
@@ -163,15 +164,15 @@ A full-featured development environment ready to test and code.
 - [x] /moorages, Moorages
   - [x] Map layout from api
   - [x] Table layout from api view, filter and sort
-  - [ ] Filter on stay type, date range, name
-- [ ] /moorage/:id
+  - [x] Filter on moorage type, name
+- [x] /moorage/:id
   - [x] Map layout from api
   - [x] Table layout from api,
   - [x] Edit notes and name and Stayed at (select)
-- [ ] /stays, stays
+- [x] /stays, stays
   - [x] Table layout from api view, filter and sort
-  - [ ] Filter on stay type, date range, name
-- [ ] /stay/:id
+  - [x] Filter on stay date range, name
+- [x] /stay/:id
   - [x] Map layout from api
   - [x] Table layout from api
   - [x] Edit notes and name and Stayed at (select)
@@ -204,6 +205,7 @@ A full-featured development environment ready to test and code.
 - [ ] /privacy, Privacy
   - [ ] Add translation
 - [x] /grafana, external link, open a new window/tab
+- [x] windy,external link, open a new window/tab
 - [x] /eventlogs, Event Logs
   - [ ] Table from api
   - [ ] Display as a timeline?

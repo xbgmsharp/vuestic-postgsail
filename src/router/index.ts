@@ -276,6 +276,18 @@ router.beforeEach(async (to, from, next) => {
       next({ path: new_path as string })
       return
     }
+    if (
+      (/reset-password/.test(to.query.next as string) || /reset/.test(to.query.next as string)) &&
+      to.query.token &&
+      to.query.uuid
+    ) {
+      console.log(`req is reset-password and from login, set path to ${to.query.next}`)
+      const new_path = to.query.next
+      to.query.next = ''
+      next({ path: new_path as string })
+      return
+    }
+    //console.log(`req has query next: ${to.query.next}`)
   }
 
   if (

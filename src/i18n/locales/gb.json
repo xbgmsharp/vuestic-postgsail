@@ -297,6 +297,12 @@
       },
       "notifications": {
         "title": "Notifications"
+      },
+      "monitoring": {
+        "title": "Monitoring"
+      },
+      "Correlations": {
+        "title": "Correlations"
       }
     },
     "name": "Name",
@@ -354,6 +360,20 @@
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
       "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
       "public_windy": "https://www.windy.com/station/pws-{0}"
+    },
+    "monitoring": {
+      "depthKey": "Monitoring data source for depth",
+      "waterTemperatureKey": "Monitoring data source for water temperature",
+      "windSpeedKey": "Monitoring data source for wind speed",
+      "windDirectionKey": "Monitoring data source for wind direction",
+      "insidePressureKey": "Monitoring data source for inside atmospheric pressure",
+      "outsidePressureKey": "Monitoring data source for outside atmospheric pressure",
+      "insideTemperatureKey": "Monitoring data source for inside temperature",
+      "outsideTemperatureKey": "Monitoring data source for outside temperature",
+      "insideHumidityKey": "Monitoring data source for inside humidity",
+      "outsideHumidityKey": "Monitoring data source for outside humidity",
+      "stateOfChargeKey": "Monitoring data source for main battery stateOfCharge",
+      "voltageKey": "Monitoring data source for main battery Voltage"
     }
   },
   "faq": {

@@ -301,7 +301,7 @@
       "monitoring": {
         "title": "Monitoring"
       },
-      "Correlations": {
+      "correlations": {
         "title": "Correlations"
       }
     },

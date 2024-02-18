@@ -14,7 +14,11 @@
             <va-tab name="MonitoringTab">
               {{ t('profile.tabs.monitoring.title') }}
             </va-tab>
-            -->
+-->
+            <va-tab name="CorrelationsTab">
+              {{ t('profile.tabs.correlations.title') }}
+            </va-tab>
+
             <va-tab name="NotificationsTab">
               {{ t('profile.tabs.notifications.title') }}
             </va-tab>
@@ -35,7 +39,8 @@
 
   const tabs = {
     OverviewTab: defineAsyncComponent(() => import('./OverviewTab.vue')),
-    //MonitoringTab: defineAsyncComponent(() => import('./MonitoringTab.vue')),
+    //MonitoringTab: defineAsyncComponent(() => import('./Correlations.vue')),
+    CorrelationsTab: defineAsyncComponent(() => import('./Correlations.vue')),
     NotificationsTab: defineAsyncComponent(() => import('./NotificationsTab.vue')),
   }
 

@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
-    "@testing-library/vue": "^6.6.1",
+    "@testing-library/vue": "^8.0.2",
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",

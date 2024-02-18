@@ -33,8 +33,8 @@
 
   onMounted(() => {
     console.log('Windy onMounted')
-    /* redirect to grafana if we have a vessel */
-    if (GlobalStore.hasVessel) {
+    /* redirect to Windy if we have a vessel and windy is enable */
+    if (gotVessel.value && windy_enable.value) {
       window.open(`https://www.windy.com/station/pws-${GlobalStore.windy}`, '_blank')
     }
   })

@@ -80,7 +80,8 @@
               use Fahrenheit enable "Use Imperial Units".<br />
               All depth from the backend are in Meters. The frontend will by default display it as Meters. To use Foot
               enable "Use Imperial Units".<br />
-              Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
+              Check the
+              <router-link class="va-text-bold va-link link" :to="{ name: 'explore' }">explore page</router-link> to see
               your signalk path.
             </div>
           </va-collapse>
@@ -93,8 +94,9 @@
                 - electrical.batteries.*.current<br />
                 - electrical.batteries.*.voltage<br />
                 - tanks.*.currentLevel.*<br />
-                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
-                your signalk path.
+                Check the
+                <router-link class="va-text-bold va-link link" :to="{ name: 'explore' }">explore page</router-link> to
+                see your signalk path.
               </p>
             </div>
           </va-collapse>
@@ -114,8 +116,9 @@
                 - 'electrical.batteries.House.capacity.stateOfCharge' AS batteryCharge<br />
                 - 'electrical.batteries.House.voltage' AS batteryVoltage<br />
                 - 'environment.depth.belowTransducer' AS depth<br />
-                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
-                your signalk path.<br />
+                Check the
+                <router-link class="va-text-bold va-link link" :to="{ name: 'explore' }">explore page</router-link> to
+                see your signalk path.<br />
                 For reference,
                 <a
                   href="https://signalk.org/specification/1.7.0/doc/vesselsBranch.html"
@@ -153,8 +156,9 @@
                 It can take up to one hour for your station to be create and accessible in Windy. You will received a
                 notification when it is ready.
                 <br />
-                Check the <router-link class="va-text-bold va-link link" to="explore">explore page</router-link> to see
-                your signalk path.<br />
+                Check the
+                <router-link class="va-text-bold va-link link" :to="{ name: 'explore' }">explore page</router-link> to
+                see your signalk path.<br />
                 For reference:
                 <br />
                 -

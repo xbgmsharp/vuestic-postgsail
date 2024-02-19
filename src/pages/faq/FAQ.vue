@@ -240,17 +240,14 @@
           </va-collapse>
           <va-collapse header="Contact">
             <div class="pa-3">
-              You can send me an email or create a GitHub issue or join us on Slack.<br />
+              You can send me an email or create a GitHub issue or join us on Discord.<br />
               -
               <a href="https://github.com/xbgmsharp/postgsail/issues" target="_blank" class="va-text-bold va-link link"
                 >GitHub issue<va-icon name="fa-external-link" size="small" /></a
               ><br />
               -
-              <a
-                href="https://join.slack.com/t/signalk-dev/shared_invite/zt-1leccop43-KrU7G6yBq9g91KXjZtNg1g"
-                target="_blank"
-                class="va-text-bold va-link link"
-                >Slack<va-icon name="fa-external-link" size="small" /></a
+              <a href="https://discord.gg/cpGqA5sZ" target="_blank" class="va-text-bold va-link link"
+                >Discord<va-icon name="fa-external-link" size="small" /></a
               ><br />
             </div>
           </va-collapse>

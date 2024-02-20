@@ -1,7 +1,7 @@
 <template>
   <div class="monitoring-tab pt-2 layout">
     <div class="va-table-responsive">
-      <h2 class="va-text-center">Map SignalK instances to PostgSail instances</h2>
+      <h2 class="va-text-center">Map SignalK path to PostgSail</h2>
       <table class="va-table va-table--striped va-table--hoverable">
         <tbody>
           <tr>
@@ -9,18 +9,15 @@
               {{ t('profile.monitoring.depthKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.depthKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.depthKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="environment_keys.length >= 1"
-                  :data="sk_keys.depthKey.key"
-                  :object="environment_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref"
-                /> </template
-              ><br />
+              <MySelect
+                v-if="environment_keys.length >= 1"
+                :data="settings?.preferences?.monitoring?.depthKey"
+                :object="environment_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="depthKey"
+                @clickFromChildComponent="UpdatePref"
+              />
+              <br />
               <div>Default: environment.depth.belowTransducer</div>
             </td>
           </tr>
@@ -29,18 +26,14 @@
               {{ t('profile.monitoring.waterTemperatureKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.waterTemperatureKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.waterTemperatureKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="temperatures_keys.length >= 1"
-                  :data="sk_keys.waterTemperatureKey.key"
-                  :object="temperatures_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref"
-                />
-              </template>
+              <MySelect
+                v-if="temperatures_keys.length >= 1"
+                :data="settings.preferences.monitoring.waterTemperatureKey"
+                :object="temperatures_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="waterTemperatureKey"
+                @clickFromChildComponent="UpdatePref"
+              />
               <br />
               <div>Default: environment.water.temperature</div>
             </td>
@@ -50,18 +43,14 @@
               {{ t('profile.monitoring.windSpeedKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.windSpeedKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.windSpeedKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="wind_keys.length >= 1"
-                  :data="sk_keys.windSpeedKey.key"
-                  :object="wind_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref"
-                />
-              </template>
+              <MySelect
+                v-if="wind_keys.length >= 1"
+                :data="settings.preferences.monitoring.windSpeedKey"
+                :object="wind_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="windSpeedKey"
+                @clickFromChildComponent="UpdatePref"
+              />
               <br />
               <div>Default: environment.wind.speedTrue</div>
             </td>
@@ -71,17 +60,15 @@
               {{ t('profile.monitoring.windDirectionKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.windDirectionKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.windDirectionKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="wind_keys.length >= 1"
-                  :data="sk_keys.windDirectionKey.key"
-                  :object="wind_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="wind_keys.length >= 1"
+                :data="settings.preferences.monitoring.windDirectionKey"
+                :object="wind_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="windDirectionKey"
+                @clickFromChildComponent="UpdatePref"
+              />
+              <br />
               <div>Default: environment.wind.directionTrue</div>
             </td>
           </tr>
@@ -90,17 +77,15 @@
               {{ t('profile.monitoring.insidePressureKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.insidePressureKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.insidePressureKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="pressure_keys.length >= 1"
-                  :data="sk_keys.insidePressureKey.key"
-                  :object="pressure_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="pressure_keys.length >= 1"
+                :data="settings.preferences.monitoring.insidePressureKey"
+                :object="pressure_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="insidePressureKey"
+                @clickFromChildComponent="UpdatePref"
+              />
+              <br />
               <div>Default: environment.inside.pressure</div>
             </td>
           </tr>
@@ -109,17 +94,15 @@
               {{ t('profile.monitoring.outsidePressureKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.outsidePressureKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.outsidePressureKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="pressure_keys.length >= 1"
-                  :data="sk_keys.outsidePressureKey.key"
-                  :object="pressure_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="pressure_keys.length >= 1"
+                :data="settings.preferences.monitoring.outsidePressureKey"
+                :object="pressure_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="outsidePressureKey"
+                @clickFromChildComponent="UpdatePref"
+              />
+              <br />
               <div>Default: environment.outside.pressure</div>
             </td>
           </tr>
@@ -128,17 +111,14 @@
               {{ t('profile.monitoring.insideTemperatureKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.insideTemperatureKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.insideTemperatureKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="temperatures_keys.length >= 1"
-                  :data="sk_keys.insideTemperatureKey.key"
-                  :object="temperatures_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="temperatures_keys.length >= 1"
+                :data="settings.preferences.monitoring.insideTemperatureKey"
+                :object="temperatures_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="insideTemperatureKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: environment.inside.temperature</div>
             </td>
           </tr>
@@ -147,19 +127,14 @@
               {{ t('profile.monitoring.outsideTemperatureKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.outsideTemperatureKey.exist">
-                <va-chip outline color="success">{{
-                  settings?.preferences?.monitoring?.outsideTemperatureKey
-                }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="temperatures_keys.length >= 1"
-                  :data="sk_keys.outsideTemperatureKey.key"
-                  :object="temperatures_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="temperatures_keys.length >= 1"
+                :data="settings.preferences.monitoring.outsideTemperatureKey"
+                :object="temperatures_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="outsideTemperatureKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: environment.outside.temperature</div>
             </td>
           </tr>
@@ -168,17 +143,14 @@
               {{ t('profile.monitoring.insideHumidityKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.insideHumidityKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.insideHumidityKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="humidity_keys.length >= 1"
-                  :data="sk_keys.insideHumidityKey.key"
-                  :object="humidity_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="humidity_keys.length >= 1"
+                :data="settings.preferences.monitoring.insideHumidityKey"
+                :object="humidity_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="insideHumidityKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: environment.inside.relativeHumidity</div>
             </td>
           </tr>
@@ -187,17 +159,14 @@
               {{ t('profile.monitoring.outsideHumidityKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.outsideHumidityKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.outsideHumidityKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="humidity_keys.length >= 1"
-                  :data="sk_keys.outsideHumidityKey.key"
-                  :object="humidity_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="humidity_keys.length >= 1"
+                :data="settings.preferences.monitoring.outsideHumidityKey"
+                :object="humidity_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="outsideHumidityKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: environment.outside.relativeHumidity</div>
             </td>
           </tr>
@@ -206,17 +175,14 @@
               {{ t('profile.monitoring.stateOfChargeKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.stateOfChargeKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.stateOfChargeKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="stateOfCharge_keys.length >= 1"
-                  :data="sk_keys.stateOfChargeKey.key"
-                  :object="stateOfCharge_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="stateOfCharge_keys.length >= 1"
+                :data="settings.preferences.monitoring.stateOfChargeKey"
+                :object="stateOfCharge_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="stateOfChargeKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: electrical.batteries.House.capacity.stateOfCharge</div>
             </td>
           </tr>
@@ -225,17 +191,14 @@
               {{ t('profile.monitoring.voltageKey') }}
             </td>
             <td>
-              <template v-if="sk_keys.voltageKey.exist">
-                <va-chip outline color="success">{{ settings?.preferences?.monitoring?.voltageKey }}</va-chip>
-              </template>
-              <template v-else>
-                <MySelect
-                  v-if="batteryVoltage_keys.length >= 1"
-                  :data="sk_keys.voltageKey.key"
-                  :object="batteryVoltage_keys"
-                  :sk_key="settings.preferences.monitoring"
-                  @clickFromChildComponent="UpdatePref" /></template
-              ><br />
+              <MySelect
+                v-if="batteryVoltage_keys.length >= 1"
+                :data="settings.preferences.monitoring.voltageKey"
+                :object="batteryVoltage_keys"
+                :sk_key="settings.preferences.monitoring"
+                map="voltageKey"
+                @clickFromChildComponent="UpdatePref"
+              /><br />
               <div>Default: electrical.batteries.House.voltage</div>
             </td>
           </tr>
@@ -268,58 +231,6 @@
   const apiData = reactive([])
   const offline = ref(false)
 
-  const sk_keys = computed(() => {
-    return {
-      depthKey: {
-        key: settings?.preferences?.monitoring?.depthKey || '',
-        exist: environment_keys.value.indexOf(settings?.preferences?.monitoring?.depthKey) || false,
-      },
-      windSpeedKey: {
-        key: settings?.preferences?.monitoring?.windSpeedKey || '',
-        exist: wind_keys.value.indexOf(settings?.preferences?.monitoring?.windSpeedKey) || false,
-      },
-      windDirectionKey: {
-        key: settings?.preferences?.monitoring?.outsideHumidityKey || '',
-        exist: wind_keys.value.indexOf(settings?.preferences?.monitoring?.windSpeedKey) || false,
-      },
-      insideHumidityKey: {
-        key: settings?.preferences?.monitoring?.insideHumidityKey || '',
-        exist: humidity_keys.value.indexOf(settings?.preferences?.monitoring?.insideHumidityKey) || false,
-      },
-      outsideHumidityKey: {
-        key: settings?.preferences?.monitoring?.outsideHumidityKey || '',
-        exist: humidity_keys.value.indexOf(settings?.preferences?.monitoring?.outsideHumidityKey) || false,
-      },
-      insidePressureKey: {
-        key: settings?.preferences?.monitoring?.insidePressureKey || '',
-        exist: pressure_keys.value.indexOf(settings?.preferences?.monitoring?.insidePressureKey) || false,
-      },
-      outsidePressureKey: {
-        key: settings?.preferences?.monitoring?.outsidePressureKey || '',
-        exist: pressure_keys.value.indexOf(settings?.preferences?.monitoring?.outsidePressureKey) || false,
-      },
-      waterTemperatureKey: {
-        key: settings?.preferences?.monitoring?.waterTemperatureKey || '',
-        exist: temperatures_keys.value.indexOf(settings?.preferences?.monitoring?.waterTemperatureKey) || false,
-      },
-      insideTemperatureKey: {
-        key: settings?.preferences?.monitoring?.insideTemperatureKey || '',
-        exist: temperatures_keys.value.indexOf(settings?.preferences?.monitoring?.insideTemperatureKey) || false,
-      },
-      outsideTemperatureKey: {
-        key: settings?.preferences?.monitoring?.outsideTemperatureKey || '',
-        exist: temperatures_keys.value.indexOf(settings?.preferences?.monitoring?.outsideTemperatureKey) || false,
-      },
-      stateOfChargeKey: {
-        key: settings?.preferences?.monitoring?.stateOfChargeKey || '',
-        exist: stateOfCharge_keys.value.indexOf(settings?.preferences?.monitoring?.stateOfChargeKey) || false,
-      },
-      voltageKey: {
-        key: settings?.preferences?.monitoring?.voltageKey || '',
-        exist: batteryVoltage_keys.value.indexOf(settings?.preferences?.monitoring?.voltageKey) || false,
-      },
-    }
-  })
   const environment_keys = computed(() => {
     const f = Array.isArray(apiData.value)
       ? apiData.value
@@ -409,21 +320,24 @@
   })
 
   //const UpdatePref = async (key: string, value: any) => {
-  const UpdatePref = async (key, value) => {
-    console.log(key, value)
+  const UpdatePref = async (key, value, map) => {
+    console.log(key, value, map)
     if (!key || typeof value == 'undefined') return
     if (key === 'monitoring' && typeof value === 'object') {
       console.debug(`Updating ${key}:`, JSON.stringify(value))
     }
-    console.debug('Correlation Tab UpdatePref', `Updating ${key}: ${value}`)
-    console.debug(JSON.stringify(key))
+    console.debug('Correlation Tab UpdatePref', `Updating ${map}: ${value}`)
+    let obj = {}
+    obj[map] = value
+    console.debug(JSON.stringify({ ...key, ...obj }))
+    GlobalStore.settings.preferences.monitoring = { ...key, ...obj }
     // Update GlobalStore should be automatic maybe need to use reactive()
     // API Call api.update_user_preferences({ key: ${key}, value: ${value} }) from the store
     //const response = await updatePref('monitoring', `{"${key}": "${value}"}`)
-    const response = await updatePref('monitoring', JSON.stringify(key))
+    const response = await updatePref('monitoring', JSON.stringify({ ...key, ...obj }))
     // Notify user on success or failure using va-toast.
     initToast({
-      message: `${response ? 'Successfully updated' : 'Error updating'} ${key} with ${value}`,
+      message: `${response ? 'Successfully updated' : 'Error updating'} ${map} with ${value}`,
       position: 'top-right',
       color: 'primary',
       //color: response.ok ? 'success' : 'warning',

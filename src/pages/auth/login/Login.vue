@@ -27,6 +27,7 @@
         :label="$t('auth.password')"
         :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
         aria-label="Password"
+        @keyup.enter="onsubmit"
       />
 
       <div class="auth-layout__options flex items-center justify-between">

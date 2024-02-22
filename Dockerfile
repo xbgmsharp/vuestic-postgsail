@@ -1,5 +1,8 @@
 FROM node:lts
 
+ARG VITE_PGSAIL_URL
+ARG VITE_APP_TITLE
+
 WORKDIR /app
 
 ADD . /app/

@@ -26,7 +26,7 @@
     console.log('Grafana onMounted')
     /* redirect to grafana if we have a vessel */
     if (GlobalStore.hasVessel) {
-      window.open('https://app.openplotter.cloud', '_blank')
+      window.open(import.meta.env.VITE_GRAFANA_URL, '_blank')
     }
   })
 </script>

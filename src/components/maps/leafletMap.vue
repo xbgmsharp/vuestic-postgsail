@@ -117,6 +117,16 @@
       baseMaps[this.mapType].addTo(this.map)
       openseamap.addTo(this.map)
 
+      const simpleDot = function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 2,
+          fillColor: '#00FFFF',
+          color: '#000',
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8,
+        })
+      }
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
@@ -190,7 +200,7 @@
       }
 
       const layer = L.geoJSON(geojson, {
-        pointToLayer: sailBoatIcon,
+        pointToLayer: simpleDot,
         onEachFeature: popup,
       }).addTo(this.map)
       console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)

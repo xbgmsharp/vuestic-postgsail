@@ -79,6 +79,12 @@
         maxZoom: 18,
       })
       //.addTo(this.map)
+      // OpenSeaMap
+      const openseamap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
+        maxZoom: 18,
+      })
+      //.addTo(this.map)
       // Satellite
       const sat = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -101,12 +107,15 @@
         Satellite: sat,
         NOAA: noaa,
       }
-      const overlays = {}
+      const overlays = {
+        OpenSeaMap: openseamap,
+      }
       if (this.controlLayer) {
         L.control.layers(baseMaps, overlays).addTo(this.map)
       }
       //baseMaps['OpenStreetMap'].addTo(this.map)
       baseMaps[this.mapType].addTo(this.map)
+      openseamap.addTo(this.map)
 
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {

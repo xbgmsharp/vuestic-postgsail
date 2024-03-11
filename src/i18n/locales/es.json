@@ -268,7 +268,8 @@
       "status": "Status",
       "plugin_version": "Plugin version",
       "signalk_version": "Signalk version",
-      "signalk": "Estos datos se extraen del 'Vessel Base Data' de SignalK."
+      "signalk": "Estos datos se extraen del 'Vessel Base Data' de SignalK.",
+      "platform": "Plataforma"
     },
     "errors": {
       "name": "Name is required",

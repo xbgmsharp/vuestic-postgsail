@@ -45,9 +45,17 @@
               </div>
             </div>
           </div>
-          <div class="col-span-6 flex flex-col va-text-center align-center">
-            <img class="" :src="currentWeather.img" :width="96" :height="96" />
-            <p class="va-text-center">{{ currentWeather.description }}</p>
+          <div class="col-span-6 flex flex-col va-text-center">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <img class="" :src="currentWeather.img" :width="96" :height="96" />
+                <div>{{ currentWeather.description }}</div>
+              </div>
+              <div>
+                <img class="" :src="Lunar.src" :width="96" :height="96" style="padding: 20%" />
+                <div>{{ Lunar.text }}</div>
+              </div>
+            </div>
           </div>
         </va-card-content>
       </va-card>
@@ -168,7 +176,17 @@
   const lMap = defineAsyncComponent(() => import('../../components/maps/leafletMap.vue'))
   import PostgSail from '../../services/api-client'
   import { fromNow, localTime } from '../../utils/dateFormatter.js'
-
+  import { Moon } from 'lunarphase-js'
+  const moon_phases = [
+    'New',
+    'Waxing Crescent',
+    'First Quarter',
+    'Waxing Gibbous',
+    'Full',
+    'Waning Gibbous',
+    'Last Quarter',
+    'Waning Crescent',
+  ]
   const { t } = useI18n()
 
   const GlobalStore = useGlobalStore()
@@ -300,6 +318,15 @@
       }
     })
     return obj
+  })
+
+  const Lunar = computed(() => {
+    if (!Array.isArray(moon_phases)) return { src: '', text: '' }
+    const text = Moon.lunarPhase()
+    const isPhase = (element) => element === text
+    const index = moon_phases.findIndex(isPhase)
+    //console.log(`/moon_phase_${index}.svg`)
+    return { src: `/moon_phase_${index}.svg`, text: text.toLowerCase() }
   })
 
   onMounted(async () => {

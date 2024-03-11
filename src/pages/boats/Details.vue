@@ -62,7 +62,7 @@
                 </dd>
               </template>
               <template v-if="item.platform">
-                <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.plugin_version') }}</dt>
+                <dt class="flex xs12 md6 pa-2 font-bold">{{ $t('boats.boat.platform') }}</dt>
                 <dd class="flex">
                   {{ item.platform }}
                 </dd>

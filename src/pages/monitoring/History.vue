@@ -269,7 +269,7 @@
   })
   const batteryChartOptionsComputed = computed(() => {
     let batteryChartOptions = structuredClone(ChartOptionsDefault)
-    batteryChartOptions.scales.y1 = structuredClone(batteryChartOptions.scales.y)
+    //batteryChartOptions.scales.y1 = structuredClone(batteryChartOptions.scales.y)
     batteryChartOptions.scales.y.ticks.callback = (value) => {
       return value + '%'
     }
@@ -440,6 +440,11 @@
         //console.log('response', apiData.value[0].time_bucket)
       } else {
         console.warn('history response error:', response)
+        if (response.history_metrics === null) {
+          offline.value = true
+          // if null it is not an error
+          return
+        }
         throw { response }
       }
     } catch ({ response }) {

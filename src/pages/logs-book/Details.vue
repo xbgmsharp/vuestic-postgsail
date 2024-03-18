@@ -122,7 +122,17 @@
                 </va-divider>
                 <dl v-for="(value, index) in Object.entries(item.extra)" :key="index" class="dl-details row mb-3">
                   <dt class="flex xs12 md6 pa-2 va-text-bold">{{ value[0] }}</dt>
-                  <dd class="flex xs12 md6 pa-2">{{ value[1] }}</dd>
+                  <template v-if="value[0].toLowerCase().includes('runtime')">
+                    <dd class="flex xs12 md6 pa-2">
+                      {{ durationFormatHours(value[1]) }} {{ durationI18nHours(value[1]) }}
+                    </dd>
+                  </template>
+                  <template v-else-if="value[0].toLowerCase().includes('log')">
+                    <dd class="flex xs12 md6 pa-2">{{ value[1] }} NM</dd>
+                  </template>
+                  <template v-else>
+                    <dd class="flex xs12 md6 pa-2">{{ value[1] }}</dd>
+                  </template>
                 </dl>
               </template>
               <!-- observations section -->

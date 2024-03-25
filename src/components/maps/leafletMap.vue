@@ -41,6 +41,10 @@
         type: String,
         default: 'OpenStreetMap',
       },
+      geoFilter: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -65,10 +69,10 @@
         centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
         geojson = this.geoJsonFeatures
       }
-      console.log(`LeafletMap`)
+      console.debug(`LeafletMap`, geojson)
       if (centerLat == 0 && centerLng == 0) return
 
-      console.log(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
+      console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map('mapContainer', {
         zoomControl: this.controlLayer,
       }).setView([centerLat, centerLng], this.zoom)
@@ -188,8 +192,21 @@
         }
         layer.bindPopup(popupContent)
       }
+      const geoFilter = this.geoFilter
+      const geoMapFilter = function (feature, layer) {
+        console.log(geoFilter)
+        if (!geoFilter) {
+          return true
+        }
+        if (feature.geometry) {
+          // If the geometry is not a LineString, return false (don't render features under construction)
+          return feature.geometry.type != 'LineString' ? false : true
+        }
+        return false
+      }
 
       const layer = L.geoJSON(geojson, {
+        filter: geoMapFilter,
         pointToLayer: sailBoatIcon,
         onEachFeature: popup,
       }).addTo(this.map)

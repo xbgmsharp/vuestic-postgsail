@@ -7,7 +7,7 @@ import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import { useGlobalStore } from '../stores/global-store'
-import { isArrayTypeNode } from 'typescript'
+//import { isArrayTypeNode } from 'typescript'
 //import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
@@ -190,6 +190,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'monitoring/windy',
             component: () => import('../pages/monitoring/Windy.vue'),
           },
+          {
+            name: 'polar',
+            path: 'monitoring/polar',
+            component: () => import('../pages/monitoring/Polar_d3.vue'),
+          },
         ],
       },
       {
@@ -235,6 +240,25 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    name: 'headless-menu',
+    path: '/:boat(\\w+)?',
+    meta: { requiresAuth: true },
+    children: [
+      {
+        name: 'headless-map',
+        path: 'map/:id(\\d+)?',
+        component: () => import('../pages/map/Map.vue'),
+        meta: { isPublic: true, type: 'public_logs' },
+      },
+      {
+        name: 'headless-replay',
+        path: 'maplapse/:id(\\d+)?',
+        component: () => import('../pages/timelapse/Timelapse2.vue'),
+        meta: { isPublic: true, type: 'public_timelapse' },
+      },
+    ],
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'error-404',
     component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
@@ -267,12 +291,16 @@ router.beforeEach(async (to, from, next) => {
 
   if (!isLoggedIn && to.path === '/login' && to.query.next) {
     if (
-      /\w+\/(logs|timelapse|stats|monitoring)/.test(to.query.next as string) ||
-      /\w+\/(log|timelapse\/\d+)/.test(to.query.next as string)
+      /\w+\/(logs|timelapse|stats|monitoring|map)/.test(to.query.next as string) ||
+      /\w+\/(log|map|timelapse\/\d+)/.test(to.query.next as string)
     ) {
       console.log(`req is in anonymous format and from login, set path to ${to.query.next}`)
       const new_path = to.query.next
       to.query.next = ''
+      if (to.query.height) {
+        next({ path: new_path as string, query: { height: to.query.height } })
+        return
+      }
       next({ path: new_path as string })
       return
     }

@@ -5,7 +5,7 @@
     </template>
     <va-inner-loading :loading="isBusy">
       <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-        <div ref="mapContainer" style="height: 80vh" class="leaflet-map h-full" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map h-full" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -52,7 +52,8 @@
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
-    color = ref(route.query.color || 'dodgerblue')
+    color = ref(route.query.color || 'dodgerblue'),
+    mapHeight = ref(route.query.height || '80vh')
 
   console.debug(
     'Timelapse2 QS',
@@ -65,6 +66,7 @@
     delay.value,
     zoom.value,
     color.value,
+    mapHeight.value,
   )
 
   onMounted(async () => {
@@ -298,5 +300,8 @@
     .leaflet-center.leaflet-middle {
       transform: translate(-50%, -50%);
     }
+  }
+  #mapContainer {
+    height: v-bind(mapHeight);
   }
 </style>

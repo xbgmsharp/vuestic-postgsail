@@ -83,14 +83,39 @@
                       :to="{ name: 'timelapse-replay', params: { id: item.id } }"
                     >
                       timelapse
+                    </router-link>
+                    ,
+                    <router-link
+                      v-if="typeof item.id !== 'undefined'"
+                      class="va-text-bold va-link link"
+                      :to="{ name: 'headless-replay', params: { id: item.id }, query: { height: '100vh' } }"
+                      target="_blank"
+                    >
+                      fullscreen
                     </router-link> </template
                   ><template v-else>
                     <router-link
                       v-if="typeof item.id !== 'undefined'"
                       class="va-text-bold va-link link"
-                      :to="{ name: 'timelapse-replay', params: { boat: publicVessel, id: item.id } }"
+                      :to="{
+                        name: 'timelapse-replay',
+                        params: { boat: publicVessel, id: item.id },
+                      }"
                     >
                       timelapse
+                    </router-link>
+                    ,
+                    <router-link
+                      v-if="typeof item.id !== 'undefined'"
+                      class="va-text-bold va-link link"
+                      :to="{
+                        name: 'headless-replay',
+                        params: { boat: publicVessel, id: item.id },
+                        query: { height: '100vh' },
+                      }"
+                      target="_blank"
+                    >
+                      fullscreen
                     </router-link>
                   </template>
                   )

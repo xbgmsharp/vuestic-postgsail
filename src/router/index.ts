@@ -296,9 +296,9 @@ router.beforeEach(async (to, from, next) => {
     ) {
       console.log(`req is in anonymous format and from login, set path to ${to.query.next}`)
       const new_path = to.query.next
-      to.query.next = ''
-      if (to.query.height) {
-        next({ path: new_path as string, query: { height: to.query.height } })
+      delete to.query.next
+      if (Object.keys(to.query).length) {
+        next({ path: new_path as string, query: to.query })
         return
       }
       next({ path: new_path as string })

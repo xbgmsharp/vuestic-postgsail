@@ -54,9 +54,9 @@
   const sidebarWidth = ref('16rem')
   const sidebarMinimizedWidth = ref(undefined)
 
-  const isMobile = ref(false)
+  //const isMobile = ref(false)
   const isTablet = ref(false)
-  const { isSidebarMinimized, isPublic } = storeToRefs(GlobalStore)
+  const { isSidebarMinimized, isMobile } = storeToRefs(GlobalStore)
   const { fetchSettings } = GlobalStore
 
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
@@ -102,12 +102,14 @@
     if (checkIsTablet()) {
       // Collapse sidebar after route change for Mobile
       isSidebarMinimized.value = true
+      isMobile.value = true
     }
   })
 
   onResize()
 
   const isFullScreenSidebar = computed(() => isTablet.value && !isSidebarMinimized.value)
+  const isFullScreenNavbar = computed(() => isTablet.value && !isSidebarMinimized.value)
 
   const onCloseSidebarButtonClick = () => {
     isSidebarMinimized.value = true

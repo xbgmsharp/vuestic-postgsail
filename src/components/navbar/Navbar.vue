@@ -16,15 +16,17 @@
       </template>
       <template #center> </template>
       <template #right>
-        <div class="app-navbar__actions flex">
-          <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
-            <va-icon name="github2" class="app-navbar-actions__item" :size="32" />
-          </a>
-          <a href="https://discord.gg/cpGqA5sZ" target="_blank">
-            <va-icon name="discord" class="app-navbar-actions__item" :size="32" />
-          </a>
-        </div>
-        <app-navbar-actions class="app-navbar__actions" :user-name="userName" />
+        <template v-if="!GlobalStore.isMobile">
+          <div class="app-navbar__actions flex">
+            <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
+              <va-icon name="github2" class="app-navbar-actions__item" :size="32" />
+            </a>
+            <a href="https://discord.gg/cpGqA5sZ" target="_blank">
+              <va-icon name="discord" class="app-navbar-actions__item" :size="32" />
+            </a>
+          </div>
+        </template>
+        <app-navbar-actions class="app-navbar__actions" :user-name="userName" :is-mobile="GlobalStore.isMobile" />
       </template>
     </va-navbar>
   </div>
@@ -42,11 +44,16 @@
   const GlobalStore = useGlobalStore()
 
   const { toggleSidebar } = GlobalStore
-  const { isSidebarMinimized, userName } = storeToRefs(GlobalStore)
+  const { isSidebarMinimized, userName, isMobile } = storeToRefs(GlobalStore)
   watch(isSidebarMinimized, () => {
     console.log('isSidebarMinimized ref changed!')
     console.log('isSidebarMinimized:', isSidebarMinimized.value)
     //GlobalStore.$state.isSidebarMinimized = isSidebarMinimized.value
+  })
+  watch(isMobile, () => {
+    console.log('isMobile ref changed!')
+    console.log('isMobile:', isMobile.value)
+    GlobalStore.$state.isMobile = isMobile.value
   })
 
   const { getColors } = useColors()

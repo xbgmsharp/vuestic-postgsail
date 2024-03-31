@@ -1,9 +1,11 @@
 <template>
   <div class="app-navbar-actions">
-    <!-- <color-dropdown class="app-navbar-actions__item" /> -->
-    <color-switch class="app-navbar-actions__item" />
-    <!-- <notification-dropdown class="app-navbar-actions__item" /> -->
-    <language-dropdown class="app-navbar-actions__item" />
+    <template v-if="!isMobile">
+      <!-- <color-dropdown class="app-navbar-actions__item" /> -->
+      <color-switch class="app-navbar-actions__item" />
+      <!-- <notification-dropdown class="app-navbar-actions__item" /> -->
+      <language-dropdown class="app-navbar-actions__item" />
+    </template>
     <profile-dropdown class="app-navbar-actions__item app-navbar-actions__item--profile">
       <span>{{ userName }}</span>
     </profile-dropdown>
@@ -21,10 +23,12 @@
     defineProps<{
       userName?: string
       isTopBar?: boolean
+      isMobile?: boolean
     }>(),
     {
       userName: '',
       isTopBar: false,
+      isMobile: false,
     },
   )
 

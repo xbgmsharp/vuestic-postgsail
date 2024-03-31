@@ -1,0 +1,273 @@
+<template>
+  <div>
+    <va-card class="mb-3">
+      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
+      <va-card-content>
+        <div class="layout gutter--md">
+          <div class="py-2 grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-6 flex flex-col">
+              <va-input v-model="filter.name" :label="$t('logs.list.filter.name')" placeholder="Filter by name..." />
+            </div>
+            <div class="col-span-12 md:col-span-6 flex flex-col">
+              <va-date-input
+                v-model="filter.dateRange"
+                :label="$t('logs.list.filter.date_range')"
+                :readonly="false"
+                mode="range"
+              />
+            </div>
+            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
+              $t('logs.list.filter.reset')
+            }}</va-button>
+            <va-icon
+              v-if="items.length > 0"
+              name="csv"
+              outline
+              :size="34"
+              style="grid-column-end: 12"
+              class="themed"
+              @click="handleCSV_all(items)"
+            ></va-icon>
+          </div>
+        </div>
+      </va-card-content>
+    </va-card>
+  </div>
+
+  <VaCard>
+    <VaCardContent>
+      <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
+        <div class="flex flex-col md:flex-row gap-2 justify-start">
+          <VaButtonToggle
+            v-model="doShowAsCards"
+            color="background-element"
+            border-color="background-element"
+            :options="[
+              { label: 'Cards', value: true },
+              { label: 'Tables', value: false },
+            ]"
+          />
+        </div>
+      </div>
+
+      <LogbookCards v-if="doShowAsCards" :logbook="items" :loading="isBusy" @edit="editTrip" @delete="onTripDeleted" />
+      <LogbookTable
+        v-else
+        v-model:sort-by="sorting.sortBy"
+        v-model:sorting-order="sorting.sortingOrder"
+        v-model:pagination="pagination"
+        :logbook="items"
+        :loading="isBusy"
+        @edit="editTrip"
+        @delete="onTripDeleted"
+      />
+    </VaCardContent>
+  </VaCard>
+</template>
+
+<script setup>
+  import { computed, ref, reactive, onMounted, watch } from 'vue'
+  import { areIntervalsOverlapping } from 'date-fns'
+  import { useI18n } from 'vue-i18n'
+  import { useCacheStore } from '../../stores/cache-store'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { asBusy, handleExport } from '../../utils/handleExports'
+  import { useRoute } from 'vue-router'
+  import logsData from '../../data/logs.json'
+  import LogbookCards from './widgets/Cards.vue'
+  import LogbookTable from './widgets/Table.vue'
+  import { useModal, useToast } from 'vuestic-ui'
+  import { useRouter } from 'vue-router'
+  import { useGlobalStore } from '../../stores/global-store'
+  import { storeToRefs } from 'pinia'
+  import PostgSail from '../../services/api-client'
+  const GlobalStore = useGlobalStore()
+  const { isMobile, doShowAsCards } = storeToRefs(GlobalStore)
+
+  const CacheStore = useCacheStore()
+  const router = useRouter()
+  const { t } = useI18n()
+  const sorting = ref({ sortBy: 'started', sortingOrder: 'desc' })
+  const { confirm } = useModal()
+  const { init: notify } = useToast()
+
+  // If mobile display as card by default. ?!?
+  if (isMobile.value) {
+    doShowAsCards.value = true
+  }
+  watch(doShowAsCards, () => {
+    console.log('doShowAsCards ref changed!')
+    console.log('doShowAsCards:', doShowAsCards.value)
+    GlobalStore.$state.doShowAsCards = doShowAsCards.value
+  })
+
+  const onTripDeleted = async (log) => {
+    const response = await confirm({
+      title: 'Delete trip',
+      message: `Are you sure you want to delete trip "${log.name}"?`,
+      okText: 'Delete',
+      size: 'small',
+      maxWidth: '380px',
+    })
+
+    if (!response) {
+      return
+    }
+
+    const api = new PostgSail()
+    const id = route.params.id
+    try {
+      const response = await api.log_delete(id)
+      if (response) {
+        console.log('log_delete success', response)
+      } else {
+        throw { response }
+      }
+    } catch (err) {
+      const { response } = err
+      console.log('log_delete failed', response)
+      apiError.value = response.message
+    } finally {
+      isBusy.value = false
+      notify({
+        message: apiError.value ? `Error deleting log entry` : `Successfully deleted log entry`,
+        position: 'top-right',
+        color: apiError.value ? 'warning' : 'success',
+      })
+    }
+  }
+
+  const editTrip = async (log) => {
+    router.push({ name: 'log-map', params: { id: log.id } })
+    return
+  }
+
+  const action_options = [
+      {
+        value: null,
+        text: '...',
+      },
+      {
+        value: handleCSV,
+        text: t('logs.log.export') + ' CSV',
+      },
+      {
+        value: handleGPX,
+        text: t('logs.log.export') + ' GPX',
+      },
+    ],
+    action_verbs = {
+      handleCSV,
+      handleGPX,
+    }
+
+  const getDefaultFilter = () => {
+    return {
+      name: null,
+      dateRange: null,
+    }
+  }
+
+  const route = useRoute()
+  const isBusy = ref(false)
+  const apiError = ref(null)
+  const rowsData = ref([])
+  const filter = reactive(getDefaultFilter())
+  const filter_moorage_id = route.params.id || null
+  const items = computed(() => {
+    return Array.isArray(rowsData.value)
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            name: row.name,
+            from: row.from,
+            to: row.to,
+            fromTime: dateFormatUTC(row.started),
+            toTime: dateFormatUTC(row.ended),
+            distance: distanceFormat(row.distance),
+            duration: durationFormat(row.duration),
+            fromMoorageId: row._from_moorage_id,
+            toMoorageId: row._to_moorage_id,
+          }))
+          .filter((row) => {
+            if (filter_moorage_id) {
+              console.log('filter on moorage id')
+              if (row.fromMoorageId == filter_moorage_id || row.toMoorageId == filter_moorage_id) {
+                return true
+              }
+              return false
+            } else {
+              const f = filter
+              if (Object.keys(f).every((fkey) => !f[fkey])) {
+                return true
+              }
+              return Object.keys(f).every((fkey) => {
+                if (!f[fkey]) {
+                  return true
+                }
+                switch (fkey) {
+                  case 'name':
+                    return row.name.toLowerCase().includes(f[fkey].toLowerCase())
+                  case 'dateRange':
+                    return areIntervalsOverlapping(
+                      { start: new Date(row.fromTime), end: new Date(row.toTime) },
+                      f[fkey],
+                    )
+                }
+              })
+            }
+          })
+      : []
+  })
+
+  function durationFormat(value) {
+    return durationFormatHours(value) + ' ' + durationI18nHours(value)
+  }
+  const pagination = reactive({ page: 1, perPage: 10, total: items.value.length })
+
+  onMounted(async () => {
+    isBusy.value = true
+    apiError.value = null
+    try {
+      const response = await CacheStore.getAPI('logs')
+      if (Array.isArray(response)) {
+        rowsData.value.splice(0, rowsData.value.length || [])
+        rowsData.value.push(...response)
+        console.log('Logs list', rowsData.value)
+      } else {
+        throw { response }
+      }
+    } catch (e) {
+      apiError.value = e
+      if (!import.meta.env.PROD) {
+        console.warn('Fallback using sample data from local json...', apiError.value)
+        rowsData.value.splice(0, rowsData.value.length || [])
+        rowsData.value.push(...logsData)
+      }
+    } finally {
+      isBusy.value = false
+    }
+  })
+
+  function resetFilter() {
+    Object.assign(filter, { ...getDefaultFilter() })
+  }
+
+  function runBusy(fn, ...args) {
+    asBusy(isBusy, apiError, fn, ...args)
+  }
+
+  function handleCSV_all(items) {
+    runBusy(handleExport, 'csv', 'logs', items)
+  }
+  function handleCSV(item) {
+    runBusy(handleExport, 'csv', 'log', [item])
+  }
+  function handleGPX(item) {
+    runBusy(handleExport, 'gpx', 'log', item)
+  }
+  function handleAction({ value }, id) {
+    value(id)
+  }
+</script>

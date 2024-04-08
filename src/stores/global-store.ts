@@ -10,6 +10,7 @@ const defaultState = {
   keepLoggedIn: false,
   isLoggedIn: false,
   isSidebarMinimized: false,
+  isMobile: false,
   currentTheme: 'light',
   token: '',
   // de-duplication to reduce syncing requirements; now in getters:

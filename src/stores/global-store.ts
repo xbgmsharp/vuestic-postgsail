@@ -11,6 +11,7 @@ const defaultState = {
   isLoggedIn: false,
   isSidebarMinimized: false,
   isMobile: false,
+  doShowAsCards: true,
   currentTheme: 'light',
   token: '',
   // de-duplication to reduce syncing requirements; now in getters:

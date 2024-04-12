@@ -105,7 +105,7 @@
   const onTripDeleted = async (log) => {
     const response = await confirm({
       title: 'Delete trip',
-      message: `Are you sure you want to delete trip "${log.name}"?`,
+      message: `Are you sure you want to delete trip "${log.name}"? This will permanently delete the Log Entry and any associated Stays. Do you really want to continue?`,
       okText: 'Delete',
       size: 'small',
       maxWidth: '380px',

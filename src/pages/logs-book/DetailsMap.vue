@@ -3,7 +3,7 @@
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
-    <va-inner-loading :loading="isBusy">
+    <va-inner-loading :loading="item && isBusy">
       <va-card title="Leaflet Maps">
         <div id="sidebar" ref="sidebarContainer" class="leaflet-sidebar collapsed">
           <!-- Nav tabs -->
@@ -17,10 +17,13 @@
               <li class="disabled">
                 <a href="#messages" role="tab"><VaIcon name="envelope" /></a>
               </li>
-              <li>
-                <a href="#profile" role="tab"><VaIcon name="user" /></a>
-              </li>
               -->
+              <li>
+                <a href="#messages" role="tab"><VaIcon name="envelope" /></a>
+              </li>
+              <li>
+                <a href="#profile" role="tab"><VaIcon name="insights" /></a>
+              </li>
             </ul>
 
             <ul role="tablist">
@@ -38,13 +41,12 @@
                 Trip summary
                 <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
               </h1>
-              <VaDivider class="my-6" />
               <template v-if="isLoggedIn">
                 <VaInput
                   v-model="formData.name"
                   outline
                   :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-                  class="text-lg"
+                  class="text-lg p-2"
                   @change="handleSubmit"
                 /> </template
               ><template v-else>
@@ -232,16 +234,16 @@
 
               <VaDivider class="my-6" />
               <template v-if="updateError">
-                <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</va-alert>
+                <VaAlert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ updateError }}</VaAlert>
               </template>
               <template v-if="isLoggedIn">
                 <!--
                 <div class="flex flex-row pa-2">
-                  <va-button :disabled="!canSubmit" @click="handleSubmit">Save</va-button>
+                  <VaButton :disabled="!canSubmit" @click="handleSubmit">Save</VaButton>
                 </div>
                 -->
                 <div class="flex flex-row pa-2">
-                  <va-button color="danger" @click="handleDelete">Delete</va-button>
+                  <VaButton color="danger" @click="handleDelete(item)">Delete</VaButton>
                 </div>
               </template>
             </div>
@@ -249,20 +251,39 @@
             <div id="messages" class="leaflet-sidebar-pane">
               <h1 class="leaflet-sidebar-header">
                 Messages
-                <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
               </h1>
+              <template v-if="item">
+                <tripSummary
+                  v-if="item"
+                  :logbook="item"
+                  :form-data="formData"
+                  :loading="isBusy"
+                  @delete="handleDelete"
+                  @save="handleSubmit"
+                />
+              </template>
             </div>
 
             <div id="profile" class="leaflet-sidebar-pane">
               <h1 class="leaflet-sidebar-header">
-                Profile
-                <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+                Performance
+                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
               </h1>
+              <template v-if="item">
+                <tripPerformance
+                  v-if="item"
+                  :winddata="wind_arr"
+                  :speeddata="speed_arr"
+                  :labels="labels_arr"
+                  :loading="isBusy"
+                />
+              </template>
             </div>
           </div>
         </div>
 
-        <div ref="mapContainer" class="sidebar-map" style="height: 80vh" />
+        <div id="mapContainer" ref="mapContainer" class="sidebar-map" style="height: 80vh" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -278,7 +299,13 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC, durationFormatHours, durationI18nHours, durationI18nDays } from '../../utils/dateFormatter.js'
+  import {
+    dateFormatUTC,
+    durationFormatHours,
+    durationI18nHours,
+    durationI18nDays,
+    dateFormatTime,
+  } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
@@ -292,6 +319,9 @@
   import { useGlobalStore } from '../../stores/global-store'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
 
+  import tripSummary from './sidebars/Summary.vue'
+  import tripPerformance from './sidebars/Performance.vue'
+
   const CacheStore = useCacheStore()
   const route = useRoute()
   const isBusy = ref(false)
@@ -302,11 +332,16 @@
     isValid: true,
     name: null,
     notes: null,
+    geojson: null,
   })
   const mapContainer = ref(),
     map = ref(),
     sidebarContainer = ref(),
-    sidebar = ref()
+    sidebar = ref(),
+    speed_arr = ref([]),
+    wind_arr = ref([]),
+    labels_arr = ref([]),
+    GeoJSONlayer = ref()
 
   const item = computed(() => {
     return apiData.row
@@ -342,6 +377,10 @@
     const isDirty = item.value.name !== formData.name || item.value.notes !== formData.notes
     return !isBusy.value && formData.isValid && isDirty
   })
+  function delButton(event) {
+    console.log(event)
+    return false
+  }
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -352,8 +391,16 @@
       apiData.row = response[0]
       formData.name = apiData.row.name || null
       formData.notes = apiData.row.notes || null
+      formData.geojson = apiData.row.geojson || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
       document.title = `${publicVessel}'s Trip From ${apiData.row.name}`
+      let geo_arr = apiData.row.geojson.features
+      for (var i = 1; i < geo_arr.length; i++) {
+        //console.log(geo_arr[i].properties)
+        wind_arr.value.push(geo_arr[i].properties.truewindspeed)
+        speed_arr.value.push(geo_arr[i].properties.speedoverground)
+        labels_arr.value.push(dateFormatTime(geo_arr[i].properties.time))
+      }
       map_setup()
     } catch (e) {
       apiError.value = e
@@ -368,9 +415,32 @@
   })
   const cloudCoverage = ref(-1)
   const map_setup = () => {
-    const geojson = mapGeoJsonFeatures.value
+    let geojson = mapGeoJsonFeatures.value
+    let centerLat = 0
+    let centerLng = 0
+    if (mapGeoJsonFeatures.value && mapGeoJsonFeatures.value.geometry) {
+      centerLat = mapGeoJsonFeatures.value.geometry.coordinates[1]
+      centerLng = mapGeoJsonFeatures.value.geometry.coordinates[0]
+      geojson = mapGeoJsonFeatures.value
+    }
 
-    map.value = L.map(mapContainer.value, { zoomControl: false }).setView([0, 0], 1)
+    if (mapGeoJsonFeatures.value && mapGeoJsonFeatures.value.length > 0) {
+      const midPoint = Math.round(mapGeoJsonFeatures.value.length / 2)
+      console.log(`${mapGeoJsonFeatures.value.length} ${midPoint}`)
+      console.log(mapGeoJsonFeatures.value)
+      centerLat = mapGeoJsonFeatures.value[midPoint].geometry.coordinates[1]
+      centerLng = mapGeoJsonFeatures.value[midPoint].geometry.coordinates[0]
+      geojson = mapGeoJsonFeatures.value
+    }
+    console.debug(`DetailsMap`, geojson)
+    if (centerLat == 0 && centerLng == 0) return
+
+    console.debug(`DetailsMap centerLatLng: ${centerLat} ${centerLng}`)
+    map.value = L.map(mapContainer.value, {
+      zoomControl: false,
+    }).setView([centerLat, centerLng], 17)
+    //map.value = L.map(mapContainer.value, { zoomControl: false })
+    // Add new Zoom control
     L.control.zoom({ position: 'bottomright' }).addTo(map.value)
     // OSM
     const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -414,7 +484,15 @@
     L.control.layers(baseMaps, overlays).addTo(map.value)
     baseMaps['OpenStreetMap'].addTo(map.value)
     openseamap.addTo(map.value)
-    const sailBoatIcon = function (feature, latlng) {
+    const BoatIcon = function (feature, latlng) {
+      /*return L.circleMarker(latlng, {
+        radius: 2,
+        fillColor: '#00FFFF',
+        color: '#000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8,
+      })*/
       return L.marker(latlng, {
         icon: new L.Icon({
           iconSize: [15, 30],
@@ -424,10 +502,132 @@
         rotationAngle: feature.properties.courseovergroundtrue,
       })
     }
-    const layer = L.geoJSON(geojson, {
-      pointToLayer: sailBoatIcon,
+
+    const popup = function (feature, layer) {
+      /* Boat popup
+                  Boat Name
+          Time	13 minutes ago
+          Boat Speed	0 knots
+          Wind Speed	4 knots
+          Latitude	41.3869066667
+          Longitude	2.19916333333
+          */
+      /* Track popup
+                  Boat Name
+            Time	8/8/2022, 11:11:30 AM
+            Boat Speed	4.2 knots
+            Latitude	39.5302133333
+            Longitude	2.34970166667
+          */
+      var popupContent =
+        '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
+      // If geo Point click
+      if (feature.properties && feature.properties.time) {
+        //console.log(`popup`, feature.properties)
+        let time = dateFormatUTC(feature.properties.time)
+        let speed = speedFormat(feature.properties.speedoverground) || 0
+        let wind = speedFormat(feature.properties.windspeedapparent) || 0
+        let latitude = parseFloat(feature.properties.latitude).toFixed(5)
+        let longitude = parseFloat(feature.properties.longitude).toFixed(5)
+        let text = `<div class='center' id='${time}'><h4>${publicVessel}</h4></div><br/>
+              Time: ${time}<br/>
+              Boat Speed: ${speed}<br/>
+              Wind Speed ${wind}<br/>
+              Latitude: ${latitude}<br/>
+              Longitude: ${longitude}<br/>`
+        // Form content
+        var content =
+          text +
+          'Notes:<br/>' +
+          "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
+          feature.properties.notes +
+          '</textarea><br>' +
+          "<div class='center'><button class='save' onclick='saveNote()'>Save</button>" +
+          "<button class='delete' onclick='deletePoint(" +
+          JSON.stringify(feature.geometry.coordinates) +
+          ")'>Delete</button></div>"
+
+        layer.bindPopup(content)
+
+        // Save note to GeoJSON properties
+        window.saveNote = async function () {
+          var note = document.getElementById('noteTextarea').value
+          feature.properties.notes = note
+          layer.closePopup()
+
+          // Update GeoJSON layer on the map
+          GeoJSONlayer.value.clearLayers()
+          GeoJSONlayer.value.addData(geojson)
+          console.log(geojson.length)
+          console.log(geojson)
+          const track_geojson = {
+            type: 'FeatureCollection',
+            features: geojson,
+          }
+          const isSaved = await handleSubmit(track_geojson)
+          if (isSaved) {
+            console.log('deletePoint saved')
+          }
+        }
+
+        // Delete point from GeoJSON features
+        window.deletePoint = async function (coordinates) {
+          console.log('deletePoint to delete:', coordinates)
+          const toDelete = await confirmDeleteTrackpoint()
+          if (toDelete) {
+            console.log('deletePoint confirmed continue')
+            geojson = geojson.filter(function (feature) {
+              if (feature.geometry.type === 'Point') {
+                return JSON.stringify(feature.geometry.coordinates) !== JSON.stringify(coordinates)
+              } else if (feature.geometry.type === 'LineString') {
+                feature.geometry.coordinates = feature.geometry.coordinates.filter(function (lineStringCoords) {
+                  return JSON.stringify(lineStringCoords) !== JSON.stringify(coordinates)
+                })
+                return feature.geometry.coordinates.length > 0
+              }
+              return true
+            })
+            GeoJSONlayer.value.clearLayers()
+            GeoJSONlayer.value.addData(geojson)
+            console.log(geojson.length)
+            console.log(geojson)
+            const track_geojson = {
+              type: 'FeatureCollection',
+              features: geojson,
+            }
+            const isSaved = await handleSubmit(track_geojson)
+            if (isSaved) {
+              console.log('deletePoint saved')
+            }
+          }
+          isBusy.value = false
+          document.getElementById('mapContainer').style.display = ''
+          console.log('deletePoint done')
+        }
+      }
+      // If geo LineString click
+      if (feature.properties && feature.properties._from_time) {
+        //console.log(`popup`, feature.properties)
+        let time = dateFormatUTC(feature.properties._from_time)
+        let avg_speed = speedFormat(feature.properties.avg_speed)
+        let duration = durationFormatHours(feature.properties.duration)
+        let distance = parseFloat(feature.properties.distance).toFixed(5)
+        let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
+              Time: ${time}<br/>
+              avg_speed: ${avg_speed}<br/>
+              Duration: ${duration}<br/>
+              Distance: ${distance}<br/>`
+        layer.bindPopup(text)
+      }
+    }
+    // Add geoJSON
+    //console.log(geojson.length)
+    GeoJSONlayer.value = L.geoJSON(geojson, {
+      pointToLayer: BoatIcon,
+      onEachFeature: popup,
     }).addTo(map.value)
-    map.value.fitBounds(layer.getBounds(), { maxZoom: 17, zoomControl: false })
+    map.value.fitBounds(GeoJSONlayer.value.getBounds(), { maxZoom: 17, zoomControl: false })
+    // Add sidebar
     sidebar.value = L.control
       .sidebar({
         autopan: false, // whether to maintain the centered map point when opening the sidebar
@@ -436,9 +636,50 @@
         position: 'left', // left or right
       })
       .addTo(map.value)
+
+    /*
+    // Custom control for external link
+    var externalLinkControl = L.control({ position: 'bottomright' })
+    externalLinkControl.onAdd = function () {
+      var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
+      div.innerHTML =
+        '<a href="https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&amp;start_date=2021-05-01&amp;end_date=2021-11-01&amp;map_type=1&amp;speed=90&amp;delay=1&amp;zoom=11" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>'
+      // Adding tooltip
+      div.title = 'Extended map'
+      return div
+    }
+    externalLinkControl.addTo(map.value)
+    */
+  } // end map setup
+
+  const confirmDeleteTrackpoint = async () => {
+    console.log('confirmDeleteTrackpoint')
+    sidebar.value.close()
+    document.getElementById('mapContainer').style.display = 'none'
+    isBusy.value = true
+    updateError.value = null
+    let canDelete = false
+
+    const modal_result = await confirm({
+      message: 'This will permanently delete the Trackpoint! Do you really want to continue?',
+      title: 'Are you sure?',
+      okText: 'Yes, I agree',
+      cancelText: 'No, keep my data',
+      zIndex: -9999,
+    })
+    if (modal_result) {
+      canDelete = true
+    } else {
+      isBusy.value = false
+      sidebar.value.open('home')
+      document.getElementById('mapContainer').style.display = ''
+      initToast('Operation cancel')
+    }
+
+    return canDelete
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (local_geojson) => {
     isBusy.value = true
     updateError.value = null
 
@@ -447,6 +688,7 @@
     const payload = {
       name: formData.name,
       notes: formData.notes,
+      track_geojson: local_geojson,
     }
     try {
       const response = await api.log_update(id, payload)
@@ -474,21 +716,26 @@
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (log) => {
+    sidebar.value.close()
+    document.getElementById('mapContainer').style.display = 'none'
     isBusy.value = true
     updateError.value = null
     let canDelete = false
 
     const modal_result = await confirm({
-      message: 'This will permanently delete the Log Entry and any associated Stays. Do you really want to continue?',
+      message: `This will permanently delete the Log Entry and any associated Stays. Do you really want to continue? Trip: ${log.name}`,
       title: 'Are you sure?',
       okText: 'Yes, I agree',
       cancelText: 'No, keep my data',
+      zIndex: -9999,
     })
     if (modal_result) {
       canDelete = true
     } else {
       isBusy.value = false
+      sidebar.value.open('home')
+      document.getElementById('mapContainer').style.display = ''
       initToast('Operation cancel')
     }
 
@@ -511,6 +758,27 @@
       isBusy.value = false
     }
   }
+
+  function createButton(label, cssClass, container, id) {
+    var btn = L.DomUtil.create('button', cssClass, container)
+    btn.setAttribute('type', 'button')
+    btn.setAttribute('id', id)
+    btn.innerHTML = label
+    return btn
+  }
 </script>
 
-<style></style>
+<style>
+  .save {
+    width: 50%;
+    padding: 5px;
+    color: white;
+    background-color: blue;
+  }
+  .delete {
+    width: 50%;
+    color: white;
+    background-color: red;
+    padding: 5px;
+  }
+</style>

@@ -67,13 +67,20 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'logs',
         path: 'logs',
-        component: () => import('../pages/logs-book/List.vue'),
+        //component: () => import('../pages/logs-book/List.vue'),
+        component: () => import('../pages/logs-book/Page.vue'),
         meta: { isPublic: true, type: 'public_logs_list' },
       },
       {
         name: 'log-details',
         path: 'log/:id(\\d+)',
         component: () => import('../pages/logs-book/Details.vue'),
+        meta: { isPublic: true, type: 'public_logs' },
+      },
+      {
+        name: 'log-map',
+        path: 'logmap/:id(\\d+)',
+        component: () => import('../pages/logs-book/DetailsMap.vue'),
         meta: { isPublic: true, type: 'public_logs' },
       },
       {
@@ -130,6 +137,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'profile',
         name: 'profile',
         component: () => import('../pages/profile/Profile.vue'),
+      },
+      {
+        name: 'settings',
+        path: 'settings',
+        component: () => import('../pages/settings/Settings.vue'),
       },
       {
         name: 'help-menu',
@@ -291,8 +303,8 @@ router.beforeEach(async (to, from, next) => {
 
   if (!isLoggedIn && to.path === '/login' && to.query.next) {
     if (
-      /\w+\/(logs|timelapse|stats|monitoring|map)/.test(to.query.next as string) ||
-      /\w+\/(log|map|timelapse\/\d+)/.test(to.query.next as string)
+      /\w+\/(logs|timelapse|stats|monitoring|map|logmap)/.test(to.query.next as string) ||
+      /\w+\/(log|map|logmap|timelapse\/\d+)/.test(to.query.next as string)
     ) {
       console.log(`req is in anonymous format and from login, set path to ${to.query.next}`)
       const new_path = to.query.next

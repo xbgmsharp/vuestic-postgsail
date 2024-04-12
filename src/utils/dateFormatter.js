@@ -37,6 +37,11 @@ export const dateFormatUTC = (dateString, format = 'll LT') => {
   const date = new Date(dateString).toLocaleString()
   return date
 }
+export const dateFormatTime = (dateString) => {
+  if (!dateString) return null
+  const date = new Date(dateString).toLocaleTimeString()
+  return date
+}
 
 export function localTime() {
   return moment().locale(moment_locale()).format('LT')

@@ -138,11 +138,13 @@ const routes: Array<RouteRecordRaw> = [
         name: 'profile',
         component: () => import('../pages/profile/Profile.vue'),
       },
+      /*
       {
         name: 'settings',
         path: 'settings',
         component: () => import('../pages/settings/Settings.vue'),
       },
+      */
       {
         name: 'help-menu',
         path: '/:boat(\\w+)?',

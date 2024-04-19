@@ -11,6 +11,8 @@ export type Log = {
   toTime: string
   distance: number
   duration: string
+  distance_format: string
+  duration_format: string
   _from_moorage_id: number
   _to_moorage_id: number
 }

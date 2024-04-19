@@ -36,55 +36,102 @@
       outlined
     >
       <VaCardContent class="flex flex-col h-full">
-        <div class="text-[var(--va-secondary)]">{{ log.fromTime }}</div>
-        <div class="flex flex-col items-center gap-4 grow">
-          <h4 class="va-h4 text-center self-stretch overflow-hidden line-clamp-2 text-ellipsis">
-            <template v-if="isLoggedIn">
-              <router-link :to="{ name: 'log-details', params: { id: log.id } }">
-                {{ log.name }}
-              </router-link> </template
-            ><template v-else>
-              <router-link :to="{ name: 'log-details', params: { boat: publicVessel, id: log.id } }">
-                {{ log.name }}
-              </router-link>
-            </template>
-          </h4>
-        </div>
-        <div>
-          <div class="w-full flex items-center justify-between p-2">
-            <div class="justify-left">
-              <span class="text-[var(--va-secondary)]">{{ t('logs.log.distance') }}: </span>
-              <span>{{ log.distance }}</span>
-            </div>
-            <div class="justify-right">
-              <span class="text-[var(--va-secondary)]">{{ t('logs.log.duration') }}: </span>
-              <span>{{ log.duration }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="w-full flex items-center justify-between p-2">
-          <div class="justify-left">
-            <span class="text-[var(--va-secondary)]">{{ t('logs.log.from') }}: </span>
-            <span
-              ><router-link class="va-link link" :to="{ name: 'logs', params: { id: log._from_moorage_id } }">
-                {{ log.from }}
-              </router-link></span
-            >
-          </div>
-          <div class="justify-right">
-            <span class="text-[var(--va-secondary)]">{{ t('logs.log.to') }}: </span>
-            <span
-              ><router-link class="va-link link" :to="{ name: 'logs', params: { id: log._to_moorage_id } }">
-                {{ log.to }}
-              </router-link></span
-            >
-          </div>
-        </div>
+        <div class="">
+          <!-- Date and Icon Menu -->
+          <div class="flex text-sm">
+            <div class="text-[var(--va-secondary)] flow-root">
+              <div class="float-left">{{ log.fromTime }}</div>
+              <div class="float-right">
+                <va-dropdown class="">
+                  <template #anchor>
+                    <va-icon name="menu" />
+                  </template>
+                  <va-dropdown-content class="float-left">
+                    <div class="grid grid-cols-1">
+                      <VaButton
+                        preset="secondary"
+                        icon="edit"
+                        size="medium"
+                        color="secondary"
+                        @click="$emit('edit', log)"
+                      >
+                        Edit</VaButton
+                      >
+                    </div>
+                    <div class="grid grid-cols-1">
+                      <VaButton
+                        preset="secondary"
+                        icon="delete"
+                        size="medium"
+                        color="secondary"
+                        @click="$emit('delete', log)"
+                      >
+                        Delete</VaButton
+                      >
+                    </div>
+                  </va-dropdown-content>
+                </va-dropdown>
 
-        <VaDivider class="my-6" />
-        <div class="flex justify-between">
-          <VaButton preset="secondary" icon="edit" color="secondary" @click="$emit('edit', log)" />
-          <VaButton preset="secondary" icon="delete" color="danger" @click="$emit('delete', log)" />
+                <!--
+                <div class="">
+                    <VaButtonDropdown :offset="[13, 0]" stick-to-edges icon="menu">
+                    <va-dropdown-content class="">
+                      <div class="" style="">
+                        <VaButton
+                          preset="secondary"
+                          icon="edit"
+                          size="large"
+                          color="secondary"
+                          @click="$emit('edit', log)"
+                        />
+                        <span class="dropdown-item__text"> Edit </span>
+                        <VaButton
+                          preset="secondary"
+                          icon="delete"
+                          size="large"
+                          color="secondary"
+                          @click="$emit('delete', log)"
+                        />
+                        <span class="dropdown-item__text"> Delete </span>
+                      </div>
+                    </va-dropdown-content>
+                  </VaButtonDropdown>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- Item List -->
+          <div class="">
+            <h4 class="va-h4 text-center self-stretch overflow-hidden line-clamp-2 text-ellipsis">
+              <template v-if="isLoggedIn">
+                <router-link :to="{ name: 'log-details', params: { id: log.id } }">
+                  {{ log.name }}
+                </router-link> </template
+              ><template v-else>
+                <router-link :to="{ name: 'log-details', params: { boat: publicVessel, id: log.id } }">
+                  {{ log.name }}
+                </router-link>
+              </template>
+            </h4>
+            <div class="justify-center text-center">
+              <p>
+                <span class="text-[var(--va-secondary)]">{{ t('logs.log.distance') }}: </span>
+                <span>{{ log.distance_format }}</span>
+              </p>
+              <p>
+                <span class="text-[var(--va-secondary)]">{{ t('logs.log.duration') }}: </span>
+                <span>{{ log.duration_format }}</span>
+              </p>
+              <p>
+                <span class="text-[var(--va-secondary)]">{{ t('logs.log.from') }}: </span>
+                <span>{{ log.from }}</span>
+              </p>
+              <p>
+                <span class="text-[var(--va-secondary)]">{{ t('logs.log.to') }}: </span>
+                <span>{{ log.to }}</span>
+              </p>
+            </div>
+          </div>
         </div>
       </VaCardContent>
     </VaCard>

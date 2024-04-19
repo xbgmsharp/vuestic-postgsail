@@ -70,7 +70,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours, durationHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'
@@ -116,17 +116,29 @@
     }
 
     const api = new PostgSail()
-    const id = route.params.id
     try {
-      const response = await api.log_delete(id)
+      const response = await api.log_delete(log.id)
       if (response) {
         console.log('log_delete success', response)
+        // Remove from layout
+        const indexToRemove = rowsData.value.findIndex((trip) => trip.id === log.id)
+        rowsData.value.splice(indexToRemove, 1)
+        // Clean CacheStore and force refresh
+        CacheStore.logs = []
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
+        const resp = await CacheStore.getAPI('logs')
+        if (Array.isArray(resp)) {
+          rowsData.value.splice(0, rowsData.value.length || [])
+          rowsData.value.push(...resp)
+          console.log('Logs list', rowsData.value)
+        }
       } else {
         throw { response }
       }
     } catch (err) {
       const { response } = err
-      console.log('log_delete failed', response)
+      console.log('log_delete failed', err)
       apiError.value = response.message
     } finally {
       isBusy.value = false
@@ -185,6 +197,8 @@
             to: row.to,
             fromTime: dateFormatUTC(row.started),
             toTime: dateFormatUTC(row.ended),
+            distance_format: parseFloat(parseFloat(row.distance).toFixed(2)) + ' NM',
+            duration_format: parseInt(durationHours(row.duration)) + ' h',
             distance: distanceFormat(row.distance),
             duration: durationFormat(row.duration),
             fromMoorageId: row._from_moorage_id,

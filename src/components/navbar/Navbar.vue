@@ -21,7 +21,7 @@
             <a href="https://github.com/xbgmsharp/vuestic-postgsail/" target="_blank">
               <va-icon name="github2" class="app-navbar-actions__item" :size="32" />
             </a>
-            <a href="https://discord.gg/cpGqA5sZ" target="_blank">
+            <a href="https://discord.gg/uuZrwz4dCS" target="_blank">
               <va-icon name="discord" class="app-navbar-actions__item" :size="32" />
             </a>
           </div>

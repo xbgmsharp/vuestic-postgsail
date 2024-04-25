@@ -152,6 +152,10 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/timelapse_fn`, payload)
   }
 
+  async timelapse_by_points(payload: JSObj) {
+    return this.post(`rpc/timelapse2_fn`, payload)
+  }
+
   async logs_export_gpx(payload: JSObj) {
     this.setHeader('Accept', 'text/xml')
     const data = this.post(`rpc/export_logbooks_gpx_fn`, payload)
@@ -174,6 +178,9 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/update_logbook_observations_fn`, payload)
   }
 
+  async logs_geojson() {
+    return this.get(`logbook?select=track_geojson&track_geojson.is.not.null&order=_from_time.desc&limit=10`)
+  }
   /*
    * Moorages API endpoint
    */

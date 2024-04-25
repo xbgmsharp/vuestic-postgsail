@@ -11,7 +11,7 @@ const defaultState = {
   isLoggedIn: false,
   isSidebarMinimized: false,
   isMobile: false,
-  doShowAsCards: true,
+  doShowAsCards: 1,
   currentTheme: 'light',
   token: '',
   // de-duplication to reduce syncing requirements; now in getters:
@@ -258,6 +258,12 @@ export const useGlobalStore = defineStore('global', {
     instagram: (state) => state.settings?.preferences?.instagram_handle,
     website: (state) => state.settings?.preferences?.website,
     windy: (state) => state.settings?.preferences?.windy,
+    readOnly: (state) => {
+      if (state.settings?.email != 'demo@openplotter.cloud') {
+        return false
+      }
+      return import.meta.env.PROD ? true : false
+    },
   },
 })
 export default useGlobalStore

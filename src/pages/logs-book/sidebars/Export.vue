@@ -45,31 +45,31 @@
   <div>
     <!-- export section -->
     <div class="">
-      <div class="">
-        <va-icon name="gpx" :size="44" @click="handleGPX(logbook.id)" />
-        <va-icon name="geojson" :size="44" @click="handleGeoJSON(logbook.id)" />
-        <va-icon name="kml" :size="44" @click="handleKML(logbook.id)" />
+      <div class="export-buttons flex justify-center pa-1">
+        <va-icon name="gpx" :size="48" @click="handleGPX(logbook.id)" />
+        <va-icon name="geojson" :size="48" @click="handleGeoJSON(logbook.id)" />
+        <va-icon name="kml" :size="48" @click="handleKML(logbook.id)" />
       </div>
     </div>
     <!-- sharing section -->
     <!-- EMail, Facebook, more? -->
     <div class="">
-      <div class="">
+      <div class="export-buttons flex justify-center pa-1">
         <a
           :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Flog%2F${logbook.id}&t=${publicVessel}'s Trip From ${formData.name}`"
           target="_blank"
-          ><va-icon name="facebook" :size="44"
+          ><va-icon name="facebook" :size="48"
         /></a>
         <template v-if="instagram">
           <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
-            <va-icon name="instagram" :size="44"
+            <va-icon name="instagram" :size="48"
           /></a>
         </template>
         <a
           :href="`https://twitter.com/intent/tweet?text=From ${formData.name}&url=https%3A%2F%2Fiot.openplotter.cloud/${publicVessel}/log/${logbook.id}`"
           target="_blank"
         >
-          <va-icon name="x-twitter" :size="44"
+          <va-icon name="x-twitter" :size="48"
         /></a>
         <a
           :href="
@@ -89,3 +89,11 @@
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  .export-buttons {
+    > .va-icon {
+      display: inline-block;
+    }
+  }
+</style>

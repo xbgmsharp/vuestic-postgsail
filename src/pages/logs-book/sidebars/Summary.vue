@@ -5,7 +5,7 @@
   import { useI18n } from 'vue-i18n'
   import { useRoute } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
-  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  const { isLoggedIn, publicVessel, instagram, website, readOnly } = useGlobalStore()
   const { t } = useI18n()
   const route = useRoute()
   const props = defineProps({
@@ -31,7 +31,7 @@
 
 <template>
   <template v-if="isLoggedIn && logbook.id > 0">
-    <VaInput
+    <va-input
       v-model="$props.formData.name"
       outline
       :rules="[(value) => (value && value.length > 0) || 'Field is required']"
@@ -221,7 +221,7 @@
                 </div>
                 -->
     <div class="flex flex-row pa-2">
-      <va-button color="danger" @click="$emit('delete', logbook as Trip)">Delete</va-button>
+      <va-button :disable="readOnly" color="danger" @click="$emit('delete', logbook as Trip)">Delete</va-button>
     </div>
   </template>
 </template>

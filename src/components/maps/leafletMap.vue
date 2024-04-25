@@ -171,6 +171,16 @@
         return '/sailboat.png'
       }
 
+      const simpleDot = function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 2,
+          fillColor: '#00FFFF',
+          color: '#000',
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8,
+        })
+      }
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({

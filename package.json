@@ -1,7 +1,7 @@
 {
   "name": "vuestic-postgsail",
   "private": false,
-  "version": "0.1.0-beta5",
+  "version": "0.1.0-beta6",
   "scripts": {
     "prepare": "chmod +x ./node_modules/husky/lib/bin.js && husky install",
     "dev": "vite",
@@ -51,9 +51,9 @@
     "sass": "^1.72.0",
     "sirv": "^2.0.4",
     "steelseries": "^2.0.7",
-    "vue": "^3.4.23",
+    "vue": "^3.4.25",
     "vue-chartjs": "^5.3.1",
-    "vue-i18n": "^9.13.0",
+    "vue-i18n": "^9.13.1",
     "vue-router": "^4.3.2",
     "vuestic-ui": "^1.8.8"
   },

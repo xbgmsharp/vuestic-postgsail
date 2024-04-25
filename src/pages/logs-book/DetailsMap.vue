@@ -131,7 +131,7 @@
   const { init: initToast } = useToast()
   import logBook from '../../data/logbook.json'
   import { useGlobalStore } from '../../stores/global-store'
-  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  const { isLoggedIn, publicVessel, instagram, website, readOnly } = useGlobalStore()
 
   import tripSummary from './sidebars/Summary.vue'
   import tripPerformance from './sidebars/Performance.vue'
@@ -196,7 +196,6 @@
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
-    const CacheStore = useCacheStore()
     const id = route.params.id
     try {
       const response = await CacheStore.getAPI('log_get', id)
@@ -283,12 +282,30 @@
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>',
       maxZoom: 18,
     })
+    // https://emodnet.ec.europa.eu
+    var bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+      layers: 'emodnet:mean_atlas_land',
+      format: 'image/png',
+      transparent: true,
+      attribution: 'EMODnet Bathymetry',
+      opacity: 0.8,
+    })
+    var coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+      layers: 'coastlines',
+      format: 'image/png',
+      transparent: true,
+      attribution: 'EMODnet Bathymetry',
+      opacity: 0.8,
+    })
+    var bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
+    //bathymetryGroupLayer.addTo(map)
 
     const baseMaps = {
       OpenStreetMap: osm,
       Satellite: sat,
       NOAA: noaa,
       Carto: cartodb,
+      'EMODnet Bathymetry': bathymetryGroupLayer,
     }
     const overlays = {
       OpenSeaMap: openseamap,
@@ -369,8 +386,8 @@
           // Update GeoJSON layer on the map
           GeoJSONlayer.value.clearLayers()
           GeoJSONlayer.value.addData(geojson)
-          console.log(geojson.length)
-          console.log(geojson)
+          //console.log(geojson.length)
+          //console.log(geojson)
           const track_geojson = {
             type: 'FeatureCollection',
             features: geojson,
@@ -480,6 +497,14 @@
     })
     if (modal_result) {
       canDelete = true
+      if (readOnly) {
+        initToast({
+          message: `Demo account readonly`,
+          position: 'top-right',
+          color: 'warning',
+        })
+        return false
+      }
     } else {
       isBusy.value = false
       document.getElementById('mapContainer').style.display = ''
@@ -493,12 +518,23 @@
     isBusy.value = true
     updateError.value = null
 
+    if (readOnly) {
+      initToast({
+        message: `Demo account readonly`,
+        position: 'top-right',
+        color: 'warning',
+      })
+      isBusy.value = false
+      return true
+    }
+    /* From the emit we received a logbook trip entry
+    From the leaflet map we received a valid geojson */
     const api = new PostgSail()
     const id = route.params.id
     const payload = {
       name: formData.name,
       notes: formData.notes,
-      track_geojson: local_geojson,
+      track_geojson: local_geojson?.geojson ? local_geojson.geojson : local_geojson,
     }
     try {
       const response = await api.log_update(id, payload)

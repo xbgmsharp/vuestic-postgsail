@@ -20,6 +20,7 @@
   defineEmits<{
     (event: 'edit', log: Log): void
     (event: 'delete', log: Log): void
+    (event: 'replay', log: Log): void
   }>()
 </script>
 
@@ -67,6 +68,17 @@
                         @click="$emit('delete', log)"
                       >
                         Delete</VaButton
+                      >
+                    </div>
+                    <div class="grid grid-cols-1">
+                      <VaButton
+                        preset="secondary"
+                        icon="timelapse"
+                        size="medium"
+                        color="secondary"
+                        @click="$emit('replay', log)"
+                      >
+                        Replay</VaButton
                       >
                     </div>
                   </va-dropdown-content>

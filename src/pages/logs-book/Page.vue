@@ -43,16 +43,24 @@
             color="background-element"
             border-color="background-element"
             :options="[
-              { label: 'Cards', value: true },
-              { label: 'Tables', value: false },
+              { label: 'Cards', value: 1 },
+              { label: 'Tables', value: 2 },
+              { label: 'Map', value: 3 },
             ]"
           />
         </div>
       </div>
 
-      <LogbookCards v-if="doShowAsCards" :logbook="items" :loading="isBusy" @edit="editTrip" @delete="onTripDeleted" />
+      <LogbookCards
+        v-if="doShowAsCards === 1"
+        :logbook="items"
+        :loading="isBusy"
+        @edit="editTrip"
+        @delete="onTripDeleted"
+        @replay="replayTrip"
+      />
       <LogbookTable
-        v-else
+        v-if="doShowAsCards === 2"
         v-model:sort-by="sorting.sortBy"
         v-model:sorting-order="sorting.sortingOrder"
         v-model:pagination="pagination"
@@ -61,6 +69,7 @@
         @edit="editTrip"
         @delete="onTripDeleted"
       />
+      <LogbookMap v-if="doShowAsCards === 3" :loading="isBusy" />
     </VaCardContent>
   </VaCard>
 </template>
@@ -77,13 +86,14 @@
   import logsData from '../../data/logs.json'
   import LogbookCards from './widgets/Cards.vue'
   import LogbookTable from './widgets/Table.vue'
+  import LogbookMap from './widgets/Map.vue'
   import { useModal, useToast } from 'vuestic-ui'
   import { useRouter } from 'vue-router'
   import { useGlobalStore } from '../../stores/global-store'
   import { storeToRefs } from 'pinia'
   import PostgSail from '../../services/api-client'
   const GlobalStore = useGlobalStore()
-  const { isMobile, doShowAsCards } = storeToRefs(GlobalStore)
+  const { isMobile, doShowAsCards, readOnly } = storeToRefs(GlobalStore)
 
   const CacheStore = useCacheStore()
   const router = useRouter()
@@ -112,6 +122,15 @@
     })
 
     if (!response) {
+      return
+    }
+
+    if (readOnly) {
+      notify({
+        message: `Demo account readonly`,
+        position: 'top-right',
+        color: 'warning',
+      })
       return
     }
 
@@ -152,6 +171,11 @@
 
   const editTrip = async (log) => {
     router.push({ name: 'log-map', params: { id: log.id } })
+    return
+  }
+
+  const replayTrip = async (log) => {
+    router.push({ name: 'timelapse-replay', params: { id: log.id } })
     return
   }
 

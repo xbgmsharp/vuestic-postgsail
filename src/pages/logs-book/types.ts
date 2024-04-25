@@ -36,6 +36,9 @@ export type Trip = {
   extra: JSONObject
   from_moorage_id: number
   to_moorage_id: number
+  seaState: number
+  cloudCoverage: number
+  visibility: number
 }
 
 export type Pagination = {

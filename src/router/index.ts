@@ -226,7 +226,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             name: 'timelapse-replay',
             path: 'timelapse/:id(\\d+)?',
-            component: () => import('../pages/timelapse/Timelapse2.vue'),
+            component: () => import('../pages/timelapse/Timelapse3.vue'),
             meta: { isPublic: true, type: 'public_timelapse' },
           },
           {
@@ -267,7 +267,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'headless-replay',
         path: 'maplapse/:id(\\d+)?',
-        component: () => import('../pages/timelapse/Timelapse2.vue'),
+        component: () => import('../pages/timelapse/Timelapse3.vue'),
         meta: { isPublic: true, type: 'public_timelapse' },
       },
     ],

@@ -14,9 +14,7 @@
   const { publicVessel } = useGlobalStore()
   /*
    * TODO
-   * Add boat name
    * Add motorboat icon
-   * Add Emodnet bathymetry
    */
   export default {
     name: 'LeafletMap',
@@ -30,18 +28,32 @@
         default: null,
       },
       zoom: {
+        /*default zoom Level */
         type: Number,
         default: 17,
       },
       controlLayer: {
+        /* Enable / Disable zoom Control */
         type: Boolean,
         default: true,
       },
       mapType: {
+        /* set the default tile Layer */
         type: String,
         default: 'OpenStreetMap',
       },
       geoFilter: {
+        /* use to filter the geojson geometry type */
+        type: Boolean,
+        default: false,
+      },
+      openseamapLayer: {
+        /* use to display OpenSeaMap layer */
+        type: Boolean,
+        default: true,
+      },
+      multigeojson: {
+        /* use to handle an array of geojson*/
         type: Boolean,
         default: false,
       },
@@ -52,6 +64,7 @@
       }
     },
     mounted() {
+      console.debug('Props maptype:', this.maptype, ' openseamapLayer', this.openseamapLayer, ' Zoom:', this.zoom)
       let centerLat = 0
       let centerLng = 0
       let geojson = null
@@ -65,8 +78,13 @@
         const midPoint = Math.round(this.geoJsonFeatures.length / 2)
         console.log(`${this.geoJsonFeatures.length} ${midPoint}`)
         console.log(this.geoJsonFeatures)
-        centerLat = this.geoJsonFeatures[midPoint].geometry.coordinates[1]
-        centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
+        if (this.multigeojson) {
+          centerLat = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[1])
+          centerLng = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[0])
+        } else {
+          centerLat = this.geoJsonFeatures[midPoint].geometry.coordinates[1]
+          centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
+        }
         geojson = this.geoJsonFeatures
       }
       console.debug(`LeafletMap`, geojson)
@@ -105,11 +123,29 @@
         maxZoom: 18,
       })
       //.addTo(this.map)
+      // https://emodnet.ec.europa.eu
+      var bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+        layers: 'emodnet:mean_atlas_land',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'EMODnet Bathymetry',
+        opacity: 0.8,
+      })
+      var coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+        layers: 'coastlines',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'EMODnet Bathymetry',
+        opacity: 0.8,
+      })
+      var bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
+      //bathymetryGroupLayer.addTo(map)
 
       const baseMaps = {
         OpenStreetMap: osm,
         Satellite: sat,
         NOAA: noaa,
+        'EMODnet Bathymetry': bathymetryGroupLayer,
       }
       const overlays = {
         OpenSeaMap: openseamap,
@@ -119,7 +155,9 @@
       }
       //baseMaps['OpenStreetMap'].addTo(this.map)
       baseMaps[this.mapType].addTo(this.map)
-      openseamap.addTo(this.map)
+      if (this.openseamapLayer) {
+        openseamap.addTo(this.map)
+      }
 
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
@@ -181,14 +219,21 @@
           //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties._from_time)
           let avg_speed = speedFormat(feature.properties.avg_speed)
-          let duration = durationFormatHours(feature.properties.duration)
-          let distance = parseFloat(feature.properties.distance).toFixed(5)
-          let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
+          let duration = durationFormatHours(feature.properties.duration) + ' H'
+          let distance = parseFloat(feature.properties.distance).toFixed(5) + ' NM'
+          let text = `<div class='center'><h4><a id="logLink" style="cursor: pointer;" onclick="logLink(${feature.properties.id})">${feature.properties.name}</a></h4></div><br/>
               Time: ${time}<br/>
               avg_speed: ${avg_speed}<br/>
               Duration: ${duration}<br/>
               Distance: ${distance}<br/>`
           popupContent = text
+
+          // Save note to GeoJSON properties
+          window.logLink = async function (log_id) {
+            let tripLink = document.getElementById('logLink')
+            tripLink.href = `/logmap/${log_id}`
+            return
+          }
         }
         layer.bindPopup(popupContent)
       }
@@ -205,11 +250,30 @@
         return false
       }
 
-      const layer = L.geoJSON(geojson, {
-        filter: geoMapFilter,
-        pointToLayer: sailBoatIcon,
-        onEachFeature: popup,
-      }).addTo(this.map)
+      let layer = null
+      if (this.multigeojson) {
+        let layers = []
+        let featGroup = new L.FeatureGroup()
+        const midPoint = Math.round(geojson.length / 2)
+        //console.log(geojson.length)
+        for (let i = 0; i < geojson.length; i++) {
+          //console.log(geojson[i].track_geojson)
+          layers[i] = L.geoJSON(geojson[i].track_geojson, {
+            style: { color: random_rgb_dark() },
+            filter: geoMapFilter,
+            pointToLayer: sailBoatIcon,
+            onEachFeature: popup,
+          }).addTo(featGroup)
+          featGroup.addTo(this.map)
+        }
+        layer = featGroup
+      } else {
+        layer = L.geoJSON(geojson, {
+          filter: geoMapFilter,
+          pointToLayer: sailBoatIcon,
+          onEachFeature: popup,
+        }).addTo(this.map)
+      }
       console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
       this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
       //this.map.setZoom(this.zoom)
@@ -219,6 +283,13 @@
         this.map.remove()
       }
     },
+  }
+
+  function random_rgb_dark() {
+    var o = Math.floor,
+      r = Math.random,
+      s = 256
+    return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')'
   }
 </script>
 

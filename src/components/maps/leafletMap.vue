@@ -242,7 +242,7 @@
           let distance = parseFloat(feature.properties.distance).toFixed(5) + ' NM'
           let text = `<div class='center'><h4><a id="logLink" style="cursor: pointer;" onclick="logLink(${feature.properties.id})">${feature.properties.name}</a></h4></div><br/>
               Time: ${time}<br/>
-              avg_speed: ${avg_speed}<br/>
+              Average Speed: ${avg_speed}<br/>
               Duration: ${duration}<br/>
               Distance: ${distance}<br/>`
           popupContent = text

@@ -45,6 +45,7 @@
   const emit = defineEmits<{
     (event: 'edit', log: Log): void
     (event: 'delete', log: Log): void
+    (event: 'replay', log: Log): void
   }>()
 
   const sortByVModel = useVModel(props, 'sortBy', emit)
@@ -100,6 +101,43 @@
       <template #cell(duration)="{ value }"> {{ value }} </template>
       <template #cell(actions)="{ rowData: log }">
         <div class="flex gap-2 justify-end">
+          <va-dropdown class="">
+            <template #anchor>
+              <va-icon name="more_vert" />
+            </template>
+            <va-dropdown-content class="float-left">
+              <div class="grid grid-cols-1">
+                <VaButton preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
+                  Edit</VaButton
+                >
+              </div>
+              <div class="grid grid-cols-1">
+                <VaButton
+                  preset="secondary"
+                  icon="delete"
+                  size="medium"
+                  color="secondary"
+                  @click="$emit('delete', log)"
+                >
+                  Delete</VaButton
+                >
+              </div>
+              <div class="grid grid-cols-1">
+                <VaButton
+                  preset="secondary"
+                  icon="timelapse"
+                  size="medium"
+                  color="secondary"
+                  @click="$emit('replay', log)"
+                >
+                  Replay</VaButton
+                >
+              </div>
+            </va-dropdown-content>
+          </va-dropdown>
+        </div>
+        <!--
+        <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
             size="small"
@@ -117,6 +155,7 @@
             @click="$emit('delete', log as Log)"
           />
         </div>
+        -->
       </template>
     </VaDataTable>
     <template v-if="logbook.length > $props.pagination.perPage">

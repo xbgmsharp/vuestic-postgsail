@@ -314,7 +314,7 @@
     baseMaps['OpenStreetMap'].addTo(map.value)
     openseamap.addTo(map.value)
 
-    const sailBoatIconImg = function (feature) {
+    const sailConfigIconImg = function (feature) {
       if (
         feature.properties.status == 'sailing' &&
         feature.properties.truewinddirection &&
@@ -325,12 +325,12 @@
       return '/sailboat-000.png'
     }
 
-    const BoatIcon = function (feature, latlng) {
+    const sailConfigIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
           iconSize: [32, 32],
-          iconAnchor: [16, 16],
-          iconUrl: sailBoatIconImg(feature),
+          iconAnchor: [16, 10],
+          iconUrl: sailConfigIconImg(feature),
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
       })
@@ -338,8 +338,8 @@
     const sailBoatIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
-          iconSize: [15, 30],
-          iconAnchor: [7.5, 10],
+          iconSize: [16, 32],
+          iconAnchor: [8, 10],
           iconUrl: '/sailboaticon.png',
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
@@ -348,14 +348,14 @@
     const powerBoatIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
-          iconSize: [15, 30],
-          iconAnchor: [7.5, 10],
+          iconSize: [16, 32],
+          iconAnchor: [8, 10],
           iconUrl: '/powerboaticon.png',
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
       })
     }
-    const CircleIcon = function (feature, latlng) {
+    const simpleDotIcon = function (feature, latlng) {
       return L.circleMarker(latlng, {
         radius: 2,
         fillColor: '#00FFFF',
@@ -520,16 +520,16 @@
         pointToLayer: sailBoatIcon,
         onEachFeature: popup,
       }),
+      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: sailConfigIcon,
+        onEachFeature: popup,
+      }),
       Powerboat: L.geoJSON(mapGeoJsonFeatures.value, {
         pointToLayer: powerBoatIcon,
         onEachFeature: popup,
       }),
       SimpleDots: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: CircleIcon,
-        onEachFeature: popup,
-      }),
-      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: BoatIcon,
+        pointToLayer: simpleDotIcon,
         onEachFeature: popup,
       }),
     }

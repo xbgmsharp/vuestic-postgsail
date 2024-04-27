@@ -159,7 +159,8 @@
     wind_arr = ref([]),
     labels_arr = ref([]),
     GeoJSONlayer = ref(),
-    GeoJSONfeatures = ref()
+    GeoJSONfeatures = ref(),
+    GeoJSONbasemapObj = ref({})
 
   const item = computed(() => {
     return apiData.row
@@ -477,8 +478,8 @@
             })
             GeoJSONlayer.value.clearLayers()
             GeoJSONlayer.value.addData(GeoJSONfeatures.value)
-            console.log(GeoJSONfeatures.value.length)
-            console.log(GeoJSONfeatures.value)
+            //console.log(GeoJSONfeatures.value.length)
+            //console.log(GeoJSONfeatures.value)
             const track_geojson = {
               type: 'FeatureCollection',
               features: GeoJSONfeatures.value,
@@ -515,7 +516,7 @@
       }
     }
 
-    const GeoJSONbasemapObj = {
+    GeoJSONbasemapObj.value = {
       Sailboat: L.geoJSON(mapGeoJsonFeatures.value, {
         pointToLayer: sailBoatIcon,
         onEachFeature: popup,
@@ -533,47 +534,9 @@
         onEachFeature: popup,
       }),
     }
-    L.control.layers(GeoJSONbasemapObj).addTo(map.value)
-    GeoJSONbasemapObj['Sailboat'].addTo(map.value)
-    map.value.fitBounds(GeoJSONbasemapObj['Sailboat'].getBounds(), { maxZoom: 17, zoomControl: false })
-
-    /*
-    let types = ['Sailboat', 'Powerboat', 'SimpleDots', 'SailConfig']
-    var layerGroup = L.layerGroup().addTo(map.value)
-    var layerControl = L.control.layers()
-    let featGroup = new L.FeatureGroup()
-    //console.log(geojson.length)
-    types.forEach(function (type) {
-      let layer = L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: BoatIcon,
-        onEachFeature: popup,
-      }).addTo(featGroup)
-      //featGroup.addTo(map.value)
-      //layerControl.addOverlay(featGroup, type)
-      layerGroup.addLayer(layer)
-    })
-    L.control
-      .layers(null, {
-        polygon: layerGroup,
-      })
-      .addTo(map.value)
-    */
-
-    /*
-    var types = ['Sailboat', 'Powerboat', 'SimpleDots', 'SailConfig']
-    let featGroup = new L.FeatureGroup()
-    var layerControl = L.control.layers()
-    // iterate over types, filter by that type, and format the layer for that feature type
-    types.forEach(function (type) {
-      var layer = L.geoJson(mapGeoJsonFeatures.value, {
-        pointToLayer: BoatIcon,
-        onEachFeature: popup,
-      })
-      // all done with the layer, add it to the control
-      layerControl.addOverlay(layer, type)
-    })
-    featGroup.addTo(map.value)
-    */
+    L.control.layers(GeoJSONbasemapObj.value).addTo(map.value)
+    GeoJSONbasemapObj.value['Sailboat'].addTo(map.value)
+    map.value.fitBounds(GeoJSONbasemapObj.value['Sailboat'].getBounds(), { maxZoom: 17, zoomControl: false })
 
     /*
     // Add geoJSON
@@ -595,19 +558,16 @@
       })
       .addTo(map.value)
 
-    /*
-      // Custom control for external link
-      var externalLinkControl = L.control({ position: 'bottomright' })
-      externalLinkControl.onAdd = function () {
-        var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
-        div.innerHTML =
-          '<a href="https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&amp;start_date=2021-05-01&amp;end_date=2021-11-01&amp;map_type=1&amp;speed=90&amp;delay=1&amp;zoom=11" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>'
-        // Adding tooltip
-        div.title = 'Extended map'
-        return div
-      }
-      externalLinkControl.addTo(map.value)
-      */
+    // Custom control for external link
+    var externalLinkControl = L.control({ position: 'bottomright' })
+    externalLinkControl.onAdd = function () {
+      var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
+      div.innerHTML = `<a href="/maplapse/${item.value.id}?height=100vh" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>`
+      // Adding tooltip
+      div.title = 'Extended map'
+      return div
+    }
+    externalLinkControl.addTo(map.value)
   } // end map setup
 
   const confirmDeleteTrackpoint = async () => {
@@ -668,17 +628,20 @@
       // Update the corresponding geojson display on the map.
       mapGeoJsonFeatures.value[0].properties.name = formData.name
       mapGeoJsonFeatures.value[0].properties.notes = formData.notes
-      // Update the corresponding lealfet layer popup on lineString click
-      GeoJSONlayer.value.eachLayer(function (layer) {
-        if (layer.LineString) {
-          //console.log(layer)
-          layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
+      // Update the corresponding leaflet layer popup on lineString click
+      Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+        //GeoJSONbasemapObj.value.forEach(function (GeoJSONlayer) {
+        GeoJSONbasemapObj.value[GeoJSONlayer].eachLayer(function (layer) {
+          if (layer.LineString) {
+            //console.log(layer)
+            layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
                 Time: ${item.value.fromTime}<br/>
                 avg_speed: ${item.value.avg_speed}<br/>
                 Duration: ${item.value.duration}<br/>
                 Distance: ${item.value.distance}<br/>
                 Notes: ${formData.notes}<br/>`)
-        }
+          }
+        })
       })
     } else {
       geojson = local_geojson

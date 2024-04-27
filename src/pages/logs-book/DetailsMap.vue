@@ -157,7 +157,8 @@
     speed_arr = ref([]),
     wind_arr = ref([]),
     labels_arr = ref([]),
-    GeoJSONlayer = ref()
+    GeoJSONlayer = ref(),
+    GeoJSONfeatures = ref()
 
   const item = computed(() => {
     return apiData.row
@@ -226,13 +227,12 @@
   })
   const cloudCoverage = ref(-1)
   const map_setup = () => {
-    let geojson = mapGeoJsonFeatures.value
+    GeoJSONfeatures.value = mapGeoJsonFeatures.value
     let centerLat = 0
     let centerLng = 0
     if (mapGeoJsonFeatures.value && mapGeoJsonFeatures.value.geometry) {
       centerLat = mapGeoJsonFeatures.value.geometry.coordinates[1]
       centerLng = mapGeoJsonFeatures.value.geometry.coordinates[0]
-      geojson = mapGeoJsonFeatures.value
     }
 
     if (mapGeoJsonFeatures.value && mapGeoJsonFeatures.value.length > 0) {
@@ -241,16 +241,15 @@
       console.log(mapGeoJsonFeatures.value)
       centerLat = mapGeoJsonFeatures.value[midPoint].geometry.coordinates[1]
       centerLng = mapGeoJsonFeatures.value[midPoint].geometry.coordinates[0]
-      geojson = mapGeoJsonFeatures.value
     }
-    console.debug(`DetailsMap`, geojson)
+    console.debug(`DetailsMap`, GeoJSONfeatures.value)
     if (centerLat == 0 && centerLng == 0) return
 
     console.debug(`DetailsMap centerLatLng: ${centerLat} ${centerLng}`)
     map.value = L.map(mapContainer.value, {
       zoomControl: false,
+      zoomAnimation: false,
     }).setView([centerLat, centerLng], 17)
-    //map.value = L.map(mapContainer.value, { zoomControl: false })
     // Add new Zoom control
     L.control.zoom({ position: 'bottomright' }).addTo(map.value)
     // OSM
@@ -283,21 +282,21 @@
       maxZoom: 18,
     })
     // https://emodnet.ec.europa.eu
-    var bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+    const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'emodnet:mean_atlas_land',
       format: 'image/png',
       transparent: true,
       attribution: 'EMODnet Bathymetry',
       opacity: 0.8,
     })
-    var coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+    const coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'coastlines',
       format: 'image/png',
       transparent: true,
       attribution: 'EMODnet Bathymetry',
       opacity: 0.8,
     })
-    var bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
+    const bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
     //bathymetryGroupLayer.addTo(map)
 
     const baseMaps = {
@@ -315,13 +314,13 @@
     openseamap.addTo(map.value)
     const BoatIcon = function (feature, latlng) {
       /*return L.circleMarker(latlng, {
-        radius: 2,
-        fillColor: '#00FFFF',
-        color: '#000',
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8,
-      })*/
+          radius: 2,
+          fillColor: '#00FFFF',
+          color: '#000',
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8,
+        })*/
       return L.marker(latlng, {
         icon: new L.Icon({
           iconSize: [15, 30],
@@ -331,23 +330,53 @@
         rotationAngle: feature.properties.courseovergroundtrue,
       })
     }
+    const sailBoatIcon = function (feature, latlng) {
+      return L.marker(latlng, {
+        icon: new L.Icon({
+          iconSize: [15, 30],
+          iconAnchor: [7.5, 10],
+          iconUrl: '/sailboaticon.png',
+        }),
+        rotationAngle: feature.properties.courseovergroundtrue,
+      })
+    }
+    const powerBoatIcon = function (feature, latlng) {
+      return L.marker(latlng, {
+        icon: new L.Icon({
+          iconSize: [15, 30],
+          iconAnchor: [7.5, 10],
+          iconUrl: '/powerboaticon.png',
+        }),
+        rotationAngle: feature.properties.courseovergroundtrue,
+      })
+    }
+    const CircleIcon = function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: 2,
+        fillColor: '#00FFFF',
+        color: '#000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8,
+      })
+    }
 
     const popup = function (feature, layer) {
       /* Boat popup
-                  Boat Name
-          Time	13 minutes ago
-          Boat Speed	0 knots
-          Wind Speed	4 knots
-          Latitude	41.3869066667
-          Longitude	2.19916333333
-          */
+                    Boat Name
+            Time	13 minutes ago
+            Boat Speed	0 knots
+            Wind Speed	4 knots
+            Latitude	41.3869066667
+            Longitude	2.19916333333
+            */
       /* Track popup
-                  Boat Name
-            Time	8/8/2022, 11:11:30 AM
-            Boat Speed	4.2 knots
-            Latitude	39.5302133333
-            Longitude	2.34970166667
-          */
+                    Boat Name
+              Time	8/8/2022, 11:11:30 AM
+              Boat Speed	4.2 knots
+              Latitude	39.5302133333
+              Longitude	2.34970166667
+            */
       var popupContent =
         '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
       // If geo Point click
@@ -359,11 +388,11 @@
         let latitude = parseFloat(feature.properties.latitude).toFixed(5)
         let longitude = parseFloat(feature.properties.longitude).toFixed(5)
         let text = `<div class='center' id='${time}'><h4>${publicVessel}</h4></div><br/>
-              Time: ${time}<br/>
-              Boat Speed: ${speed}<br/>
-              Wind Speed ${wind}<br/>
-              Latitude: ${latitude}<br/>
-              Longitude: ${longitude}<br/>`
+                Time: ${time}<br/>
+                Boat Speed: ${speed}<br/>
+                Wind Speed ${wind}<br/>
+                Latitude: ${latitude}<br/>
+                Longitude: ${longitude}<br/>`
         // Form content
         let content =
           text +
@@ -371,30 +400,49 @@
           "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
           feature.properties.notes +
           '</textarea><br>' +
-          "<div class='center'><button class='save' onclick='saveNote()'>Save</button>" +
+          "<div class='center'><button class='save' onclick='saveNote(" +
+          JSON.stringify(feature.geometry.coordinates) +
+          ")'>Save</button>" +
           "<button class='delete' onclick='deletePoint(" +
           JSON.stringify(feature.geometry.coordinates) +
           ")'>Delete</button></div>"
         layer.bindPopup(content)
 
         // Save note to GeoJSON properties
-        window.saveNote = async function () {
+        window.saveNote = async function (coordinates) {
+          console.log('saveNote to update:', coordinates)
           var note = document.getElementById('noteTextarea').value
-          feature.properties.notes = note
-          layer.closePopup()
+          //layer.closePopup()
+
+          // Save the note to the GeoJSON
+          for (let i = 0; i < GeoJSONfeatures.value.length; i++) {
+            const geofeature = GeoJSONfeatures.value[i]
+            // Check if the feature is a point
+            if (geofeature.geometry.type === 'Point') {
+              // Get the coordinates of the point
+              const pointCoordinates = geofeature.geometry.coordinates
+              // Check if the coordinates match the target coordinates
+              if (pointCoordinates[0] === coordinates[0] && pointCoordinates[1] === coordinates[1]) {
+                console.log('GeoJSONfeatures index:', i)
+                GeoJSONfeatures.value[i].properties.notes = note
+                break // Exit loop if the point is found
+              }
+            }
+          }
 
           // Update GeoJSON layer on the map
           GeoJSONlayer.value.clearLayers()
-          GeoJSONlayer.value.addData(geojson)
-          //console.log(geojson.length)
-          //console.log(geojson)
+          GeoJSONlayer.value.addData(GeoJSONfeatures.value)
+          //console.log(GeoJSONfeatures.length)
+          //console.log(GeoJSONfeatures)
           const track_geojson = {
             type: 'FeatureCollection',
-            features: geojson,
+            features: GeoJSONfeatures.value,
           }
+          // Save change the new GeoJSON to the DB
           const isSaved = await handleSubmit(track_geojson)
           if (isSaved) {
-            console.log('deletePoint saved')
+            console.log('saveNote saved')
           }
         }
 
@@ -404,11 +452,11 @@
           const toDelete = await confirmDeleteTrackpoint()
           if (toDelete) {
             console.log('deletePoint confirmed continue')
-            geojson = geojson.filter(function (feature) {
-              if (feature.geometry.type === 'Point') {
-                return JSON.stringify(feature.geometry.coordinates) !== JSON.stringify(coordinates)
-              } else if (feature.geometry.type === 'LineString') {
-                feature.geometry.coordinates = feature.geometry.coordinates.filter(function (lineStringCoords) {
+            GeoJSONfeatures.value = GeoJSONfeatures.value.filter(function (geofeature) {
+              if (geofeature.geometry.type === 'Point') {
+                return JSON.stringify(geofeature.geometry.coordinates) !== JSON.stringify(coordinates)
+              } else if (geofeature.geometry.type === 'LineString') {
+                geofeature.geometry.coordinates = geofeature.geometry.coordinates.filter(function (lineStringCoords) {
                   return JSON.stringify(lineStringCoords) !== JSON.stringify(coordinates)
                 })
                 return feature.geometry.coordinates.length > 0
@@ -416,16 +464,17 @@
               return true
             })
             GeoJSONlayer.value.clearLayers()
-            GeoJSONlayer.value.addData(geojson)
-            console.log(geojson.length)
-            console.log(geojson)
+            GeoJSONlayer.value.addData(GeoJSONfeatures.value)
+            console.log(GeoJSONfeatures.value.length)
+            console.log(GeoJSONfeatures.value)
             const track_geojson = {
               type: 'FeatureCollection',
-              features: geojson,
+              features: GeoJSONfeatures.value,
             }
+            // Save change the new GeoJSON to the DB
             const isSaved = await handleSubmit(track_geojson)
             if (isSaved) {
-              console.log('deletePoint saved')
+              console.log('deletePoint removed')
             }
           }
           isBusy.value = false
@@ -436,25 +485,94 @@
       // If geo LineString click
       if (feature.properties && feature.properties._from_time) {
         //console.log(`popup`, feature.properties)
+        // Those value are read directly from the geojson so they are unformatted.
+        // We could used the log details item ref for performance
         let time = dateFormatUTC(feature.properties._from_time)
         let avg_speed = speedFormat(feature.properties.avg_speed)
         let duration = durationFormatHours(feature.properties.duration)
         let distance = parseFloat(feature.properties.distance).toFixed(5)
         let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
-              Time: ${time}<br/>
-              avg_speed: ${avg_speed}<br/>
-              Duration: ${duration}<br/>
-              Distance: ${distance}<br/>`
+                Time: ${time}<br/>
+                avg_speed: ${avg_speed}<br/>
+                Duration: ${duration}<br/>
+                Distance: ${distance}<br/>
+                Notes: ${feature.properties.notes}<br/>`
         layer.bindPopup(text)
+        layer.LineString = true // tag the layer to find it when name or notes is updated
+        //console.log(layer)
       }
     }
+
+    const GeoJSONbasemapObj = {
+      Sailboat: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: sailBoatIcon,
+        onEachFeature: popup,
+      }),
+      Powerboat: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: powerBoatIcon,
+        onEachFeature: popup,
+      }),
+      SimpleDots: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: CircleIcon,
+        onEachFeature: popup,
+      }),
+      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: BoatIcon,
+        onEachFeature: popup,
+      }),
+    }
+    L.control.layers(GeoJSONbasemapObj).addTo(map.value)
+    GeoJSONbasemapObj['Sailboat'].addTo(map.value)
+    map.value.fitBounds(GeoJSONbasemapObj['Sailboat'].getBounds(), { maxZoom: 17, zoomControl: false })
+
+    /*
+    let types = ['Sailboat', 'Powerboat', 'SimpleDots', 'SailConfig']
+    var layerGroup = L.layerGroup().addTo(map.value)
+    var layerControl = L.control.layers()
+    let featGroup = new L.FeatureGroup()
+    //console.log(geojson.length)
+    types.forEach(function (type) {
+      let layer = L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: BoatIcon,
+        onEachFeature: popup,
+      }).addTo(featGroup)
+      //featGroup.addTo(map.value)
+      //layerControl.addOverlay(featGroup, type)
+      layerGroup.addLayer(layer)
+    })
+    L.control
+      .layers(null, {
+        polygon: layerGroup,
+      })
+      .addTo(map.value)
+    */
+
+    /*
+    var types = ['Sailboat', 'Powerboat', 'SimpleDots', 'SailConfig']
+    let featGroup = new L.FeatureGroup()
+    var layerControl = L.control.layers()
+    // iterate over types, filter by that type, and format the layer for that feature type
+    types.forEach(function (type) {
+      var layer = L.geoJson(mapGeoJsonFeatures.value, {
+        pointToLayer: BoatIcon,
+        onEachFeature: popup,
+      })
+      // all done with the layer, add it to the control
+      layerControl.addOverlay(layer, type)
+    })
+    featGroup.addTo(map.value)
+    */
+
+    /*
     // Add geoJSON
     //console.log(geojson.length)
-    GeoJSONlayer.value = L.geoJSON(geojson, {
+    GeoJSONlayer.value = L.geoJSON(mapGeoJsonFeatures.value, {
       pointToLayer: BoatIcon,
       onEachFeature: popup,
     }).addTo(map.value)
     map.value.fitBounds(GeoJSONlayer.value.getBounds(), { maxZoom: 17, zoomControl: false })
+    */
+
     // Add sidebar
     sidebar.value = L.control
       .sidebar({
@@ -466,18 +584,18 @@
       .addTo(map.value)
 
     /*
-    // Custom control for external link
-    var externalLinkControl = L.control({ position: 'bottomright' })
-    externalLinkControl.onAdd = function () {
-      var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
-      div.innerHTML =
-        '<a href="https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&amp;start_date=2021-05-01&amp;end_date=2021-11-01&amp;map_type=1&amp;speed=90&amp;delay=1&amp;zoom=11" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>'
-      // Adding tooltip
-      div.title = 'Extended map'
-      return div
-    }
-    externalLinkControl.addTo(map.value)
-    */
+      // Custom control for external link
+      var externalLinkControl = L.control({ position: 'bottomright' })
+      externalLinkControl.onAdd = function () {
+        var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
+        div.innerHTML =
+          '<a href="https://iot.openplotter.cloud/Elysian/timelapse?color=yellow&amp;start_date=2021-05-01&amp;end_date=2021-11-01&amp;map_type=1&amp;speed=90&amp;delay=1&amp;zoom=11" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>'
+        // Adding tooltip
+        div.title = 'Extended map'
+        return div
+      }
+      externalLinkControl.addTo(map.value)
+      */
   } // end map setup
 
   const confirmDeleteTrackpoint = async () => {
@@ -528,13 +646,38 @@
       return true
     }
     /* From the emit we received a logbook trip entry
-    From the leaflet map we received a valid geojson */
+      From the leaflet map we received a valid geojson */
+    //console.debug(local_geojson.geoJson.features[0].properties)
+    let geojson = {}
+    if (local_geojson.name) {
+      // If we have a log entry object, then update the geojson name in linestring geometry
+      local_geojson.geoJson.features[0].properties.name = formData.name
+      geojson = local_geojson.geoJson
+      // Update the corresponding geojson display on the map.
+      mapGeoJsonFeatures.value[0].properties.name = formData.name
+      mapGeoJsonFeatures.value[0].properties.notes = formData.notes
+      // Update the corresponding lealfet layer popup on lineString click
+      GeoJSONlayer.value.eachLayer(function (layer) {
+        if (layer.LineString) {
+          //console.log(layer)
+          layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
+                Time: ${item.value.fromTime}<br/>
+                avg_speed: ${item.value.avg_speed}<br/>
+                Duration: ${item.value.duration}<br/>
+                Distance: ${item.value.distance}<br/>
+                Notes: ${formData.notes}<br/>`)
+        }
+      })
+    } else {
+      geojson = local_geojson
+    }
+    console.debug(local_geojson)
     const api = new PostgSail()
     const id = route.params.id
     const payload = {
       name: formData.name,
       notes: formData.notes,
-      track_geojson: local_geojson?.geojson ? local_geojson.geojson : local_geojson,
+      track_geojson: geojson,
     }
     try {
       const response = await api.log_update(id, payload)

@@ -122,6 +122,7 @@
   } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
+  import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { seaState, visibility } from '../../utils/PostgSail'
@@ -312,20 +313,24 @@
     L.control.layers(baseMaps, overlays).addTo(map.value)
     baseMaps['OpenStreetMap'].addTo(map.value)
     openseamap.addTo(map.value)
-    const BoatIcon = function (feature, latlng) {
-      /*return L.circleMarker(latlng, {
-          radius: 2,
-          fillColor: '#00FFFF',
-          color: '#000',
-          weight: 1,
-          opacity: 1,
-          fillOpacity: 0.8,
-        })*/
+
+    const sailConfigIconImg = function (feature) {
+      if (
+        feature.properties.status == 'sailing' &&
+        feature.properties.truewinddirection &&
+        feature.properties.courseovergroundtrue
+      ) {
+        return sailConfigImage(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
+      }
+      return '/sailboat-000.png'
+    }
+
+    const sailConfigIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
-          iconSize: [15, 30],
-          iconAnchor: [7.5, 10],
-          iconUrl: '/sailboaticon.png',
+          iconSize: [32, 32],
+          iconAnchor: [16, 10],
+          iconUrl: sailConfigIconImg(feature),
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
       })
@@ -333,8 +338,8 @@
     const sailBoatIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
-          iconSize: [15, 30],
-          iconAnchor: [7.5, 10],
+          iconSize: [16, 32],
+          iconAnchor: [8, 10],
           iconUrl: '/sailboaticon.png',
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
@@ -343,14 +348,14 @@
     const powerBoatIcon = function (feature, latlng) {
       return L.marker(latlng, {
         icon: new L.Icon({
-          iconSize: [15, 30],
-          iconAnchor: [7.5, 10],
+          iconSize: [16, 32],
+          iconAnchor: [8, 10],
           iconUrl: '/powerboaticon.png',
         }),
         rotationAngle: feature.properties.courseovergroundtrue,
       })
     }
-    const CircleIcon = function (feature, latlng) {
+    const simpleDotIcon = function (feature, latlng) {
       return L.circleMarker(latlng, {
         radius: 2,
         fillColor: '#00FFFF',
@@ -382,17 +387,24 @@
       // If geo Point click
       if (feature.properties && feature.properties.time) {
         //console.log(`popup`, feature.properties)
+        let status = feature.properties.status || ''
         let time = dateFormatUTC(feature.properties.time)
         let speed = speedFormat(feature.properties.speedoverground) || 0
+        let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
+        let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
         let wind = speedFormat(feature.properties.windspeedapparent) || 0
+        let winddir = angleFormat(feature.properties.truewinddirection) || 0
         let latitude = parseFloat(feature.properties.latitude).toFixed(5)
         let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-        let text = `<div class='center' id='${time}'><h4>${publicVessel}</h4></div><br/>
-                Time: ${time}<br/>
-                Boat Speed: ${speed}<br/>
-                Wind Speed ${wind}<br/>
-                Latitude: ${latitude}<br/>
-                Longitude: ${longitude}<br/>`
+        let text = `<div class='center' id='${time}'><h4>${publicVessel}: ${status}</h4></div><br/>
+              Time: ${time}<br/>
+              Boat Speed: ${speed}<br/>
+              Course Over Ground: ${cog}<br/>
+              Apparent Wind Angle: ${awa}<br/>
+              Wind Speed: ${wind}<br/>
+              Wind Direction: ${winddir}<br/>
+              Latitude: ${latitude}<br/>
+              Longitude: ${longitude}<br/>`
         // Form content
         let content =
           text +
@@ -490,10 +502,10 @@
         let time = dateFormatUTC(feature.properties._from_time)
         let avg_speed = speedFormat(feature.properties.avg_speed)
         let duration = durationFormatHours(feature.properties.duration)
-        let distance = parseFloat(feature.properties.distance).toFixed(5)
+        let distance = parseFloat(feature.properties.distance).toFixed(1)
         let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
                 Time: ${time}<br/>
-                avg_speed: ${avg_speed}<br/>
+                Average Speed: ${avg_speed}<br/>
                 Duration: ${duration}<br/>
                 Distance: ${distance}<br/>
                 Notes: ${feature.properties.notes}<br/>`
@@ -508,16 +520,16 @@
         pointToLayer: sailBoatIcon,
         onEachFeature: popup,
       }),
+      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: sailConfigIcon,
+        onEachFeature: popup,
+      }),
       Powerboat: L.geoJSON(mapGeoJsonFeatures.value, {
         pointToLayer: powerBoatIcon,
         onEachFeature: popup,
       }),
       SimpleDots: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: CircleIcon,
-        onEachFeature: popup,
-      }),
-      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: BoatIcon,
+        pointToLayer: simpleDotIcon,
         onEachFeature: popup,
       }),
     }

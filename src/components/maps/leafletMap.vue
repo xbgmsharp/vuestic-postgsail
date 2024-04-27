@@ -244,13 +244,20 @@
               Time: ${time}<br/>
               Average Speed: ${avg_speed}<br/>
               Duration: ${duration}<br/>
-              Distance: ${distance}<br/>`
+              Distance: ${distance}<br/>
+              <a id="timelapseLink" style="cursor: pointer;" onclick="timelapseLink(${feature.properties.id})">Play timelapse</a>`
           popupContent = text
 
-          // Save note to GeoJSON properties
+          // Go to logbook details page
           window.logLink = async function (log_id) {
             let tripLink = document.getElementById('logLink')
             tripLink.href = `/logmap/${log_id}`
+            return
+          }
+          // Go to timelapse page
+          window.timelapseLink = async function (log_id) {
+            let link = document.getElementById('timelapseLink')
+            link.href = `/timelapse/${log_id}`
             return
           }
         }

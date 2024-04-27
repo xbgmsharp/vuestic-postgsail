@@ -116,6 +116,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
+  import { useGlobalStore } from '../../stores/global-store'
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
@@ -128,6 +129,7 @@
 
   const route = useRoute()
   const CacheStore = useCacheStore()
+  const { readOnly } = useGlobalStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const updateError = ref(null)
@@ -293,6 +295,14 @@
     })
     if (modal_result) {
       canDelete = true
+      if (readOnly) {
+        initToast({
+          message: `Demo account readonly`,
+          position: 'top-right',
+          color: 'warning',
+        })
+        return false
+      }
     } else {
       isBusy.value = false
       initToast('Operation cancel')

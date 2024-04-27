@@ -68,6 +68,7 @@
         :loading="isBusy"
         @edit="editTrip"
         @delete="onTripDeleted"
+        @replay="replayTrip"
       />
       <LogbookMap v-if="doShowAsCards === 3" :loading="isBusy" />
     </VaCardContent>

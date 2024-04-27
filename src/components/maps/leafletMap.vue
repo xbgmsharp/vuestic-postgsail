@@ -168,7 +168,7 @@
         ) {
           return sailConfigImage(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
         }
-        return '/sailboat.png'
+        return '/sailboat-000.png'
       }
 
       const sailBoatIcon = function (feature, latlng) {

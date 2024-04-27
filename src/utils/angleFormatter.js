@@ -18,7 +18,7 @@ export const sailConfigImage = (twd, cog) => {
   } else if (awa > 25) {
     return `/sailboat-045${tack}.png` // close-hauled, beating
   } else {
-    return '/sailboat.png'
+    return '/sailboat-000.png'
   }
 }
 

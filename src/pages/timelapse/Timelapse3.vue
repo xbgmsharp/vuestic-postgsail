@@ -51,7 +51,7 @@
     map_type = ref(route.query.map_type || 1),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
-    zoom = ref(route.query.zoom || 12),
+    zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     mapHeight = ref(route.query.height || '80vh'),
     ignore_moorage_overlay = ref(route.query.ignore_moorage_overlay || false)
@@ -145,21 +145,21 @@
     })
     //.addTo(this.map)
     // https://emodnet.ec.europa.eu
-    var bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+    const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'emodnet:mean_atlas_land',
       format: 'image/png',
       transparent: true,
       attribution: 'EMODnet Bathymetry',
       opacity: 0.8,
     })
-    var coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+    const coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'coastlines',
       format: 'image/png',
       transparent: true,
       attribution: 'EMODnet Bathymetry',
       opacity: 0.8,
     })
-    var bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
+    const bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
     //bathymetryGroupLayer.addTo(map)
 
     const baseMaps = {
@@ -234,7 +234,7 @@
           return
         }
         // Display overlay notes
-        console.debug(geojson.features[index])
+        //console.debug(geojson.features[index])
         if (geojson.features[index].properties.notes.length != 0 && !ignore_moorage_overlay.value) {
           noteView.innerText = geojson.features[index].properties.notes
           noteView.style.opacity = 1

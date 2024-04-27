@@ -19,7 +19,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       #- run: npm ci
-      run: |
-        npm install --include=dev
-        npm run build:ci --if-present
+      - name: Install and Build 🔧
+        run: |
+          npm install --include=dev
+          npm run build:ci
       #- run: npm test

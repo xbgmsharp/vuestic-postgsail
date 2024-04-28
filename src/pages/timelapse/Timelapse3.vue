@@ -37,6 +37,7 @@
     polyLine = ref(),
     marker = ref(),
     timelapse = ref(),
+    stopped = ref(false),
     play_pause = ref(true)
 
   // Query-string
@@ -110,26 +111,52 @@
     }
   })
 
-  const map_setup = () => {
+  const map_track_setup = () => {
     const geojson = timelapse.value,
-      coord_rev = geojson.features[0].geometry.coordinates.reverse()
-    map.value = L.map(mapContainer.value).setView(coord_rev, zoom.value)
+      coord_rev = geojson.features[0].geometry.coordinates.toReversed()
+    map.value.setView(coord_rev, zoom.value)
+
+    // Create the line
+    polyLine.value = L.polyline([coord_rev], {
+      weight: 3,
+      color: color.value,
+      opacity: 0.9,
+    }).addTo(map.value)
+    // Create the marker
+    marker.value = L.polyline([coord_rev, coord_rev], {
+      weight: 8,
+      color: 'red',
+    }).addTo(map.value)
+    // Update map every x ms
+    setTimeout(() => {
+      map_update()
+    }, 1000 + delay.value * 1000) //ms
+  }
+
+  const map_track_replay = () => {
+    map.value.removeLayer(polyLine.value)
+    map.value.removeLayer(marker.value)
+    map_track_setup()
+  }
+
+  const map_setup = () => {
+    const geojson = timelapse.value
 
     // The geoJSon only contains Geometry Point
     if (geojson.features[0].geometry.type != 'Point') return
+
+    map.value = L.map(mapContainer.value)
 
     // OSM
     const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // OpenSeaMap
     const openseamap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // Satellite
     const sat = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -139,13 +166,11 @@
         maxZoom: 17,
       },
     )
-    //.addTo(this.map)
     // NOAA
     const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
       attribution: 'NOAA',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // https://emodnet.ec.europa.eu
     const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'emodnet:mean_atlas_land',
@@ -162,7 +187,6 @@
       opacity: 0.8,
     })
     const bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
-    //bathymetryGroupLayer.addTo(map)
 
     const baseMaps = {
       OpenStreetMap: osm,
@@ -202,43 +226,50 @@
     // Add the note overlay to the map
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
-      const moorageView = L.DomUtil.create('div', 'overlay')
-      L.DomUtil.create('span', 'note', moorageView)
-      return moorageView
+      const overlayView = L.DomUtil.create('div', 'overlay')
+      const topRow = L.DomUtil.create('div', 'top-row', overlayView)
+      L.DomUtil.create('span', 'trip', topRow)
+      const bottomRow = L.DomUtil.create('div', 'bottom-row', overlayView)
+      L.DomUtil.create('span', 'note', bottomRow)
+      return overlayView
     }
     overlay.addTo(map.value)
-    // Create the line
-    polyLine.value = L.polyline([coord_rev], {
-      weight: 3,
-      color: color.value,
-      opacity: 0.9,
-    }).addTo(map.value)
-    // Create the marker
-    marker.value = L.polyline([coord_rev, coord_rev], {
-      weight: 8,
-      color: 'red',
-    }).addTo(map.value)
-    // Update map every x ms
-    setTimeout(() => {
-      map_update()
-    }, 1000 + delay.value * 1000) //ms
+
+    map_track_setup()
   }
 
   const map_update = () => {
-    let index = 1,
+    let index = 0,
       last = null,
       distance = 0,
       distanceView = map.value._container.querySelector('.legend > .top-row > .distance'),
       playerView = map.value._container.querySelector('.legend > .top-row > .player'),
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
-      noteView = map.value._container.querySelector('.overlay > .note')
+      tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
+      noteView = map.value._container.querySelector('.overlay > .bottom-row > .note')
 
-    playerView.innerText = '▶'
+    playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     const geojson = timelapse.value,
       //km = !GlobalStore.imperialUnits,
       interval = setInterval(function () {
         if (play_pause.value === false) {
           return
+        }
+
+        // Display trip data
+        if (
+          geojson.features[index].properties.trip &&
+          geojson.features[index].properties.trip.name.length != 0 &&
+          !ignore_moorage_overlay.value
+        ) {
+          tripView.innerText = geojson.features[index].properties.trip.name
+          tripView.style.opacity = 1
+          tripView.style.display = 'block'
+        } else {
+          tripView.style.opacity -= 0.0125 // slower fade-out
+          if (tripView.style.opacity < 0.5) {
+            tripView.style.display = 'none'
+          }
         }
         // Display overlay notes
         //console.debug(geojson.features[index])
@@ -247,13 +278,13 @@
           noteView.style.opacity = 1
           noteView.style.display = 'block'
         } else {
-          noteView.style.opacity -= 0.025
+          noteView.style.opacity -= 0.025 // faster fade-out
           if (noteView.style.opacity < 0.5) {
             noteView.style.display = 'none'
           }
         }
         // Get the next coordinates from the geojson
-        let coord_rev = geojson.features[index].geometry.coordinates.reverse()
+        let coord_rev = geojson.features[index].geometry.coordinates.toReversed()
         // Add the next point to the polyLine
         polyLine.value.addLatLng(coord_rev)
         // Move the maker to a next point
@@ -266,16 +297,18 @@
           distance += last.distanceTo(coord_rev)
           // convert meters -> KM -> NM
           distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(3) + ' NM'
-          //distanceView.innerText = distanceLatLng((distance += last.distanceTo(coord_rev)))
           datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)
-        if (
-          // If last entry cancel Interval
-          index ===
-          geojson.features.length - 1
-        )
+        // if last entry, cancel internal, show replay
+        if (index === geojson.features.length - 1) {
           clearInterval(interval)
+          last = null
+          distance = 0
+          play_pause.value = true
+          stopped.value = true
+          playerView.innerHTML = '<i class="va-icon material-icons">replay</i>'
+        }
         index++
       }, speed.value)
   }
@@ -283,13 +316,15 @@
   function playAndPause(e) {
     console.log('playAndPause', e, play_pause.value)
     let playerView = map.value._container.querySelector('.legend > .top-row > .player')
-    if (play_pause.value === true) {
+    if (stopped.value === true) {
+      // replay button clicked
+      map_track_replay()
+      playerView.innerHTML = '<i class="va-icon material-icons">pause</i>'
+    } else if (play_pause.value === true) {
       play_pause.value = false
-      //playerView.innerText = '⏸︎'
       playerView.innerHTML = '<i class="va-icon material-icons">pause</i>'
     } else {
       play_pause.value = true
-      //playerView.innerText = '▶'
       playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     }
   }
@@ -342,7 +377,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.1rem;
       }
       .bottom-row {
         font-size: 12pt;
@@ -353,6 +387,9 @@
       }
       .player {
         cursor: pointer;
+        i.material-icons {
+          font-size: 24pt;
+        }
       }
     }
 
@@ -377,8 +414,14 @@
       top: 70px;
       color: #ddd;
       text-align: center;
-      font-size: 18pt;
-      .note {
+      .top-row {
+        font-size: 18pt;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .bottom-row {
+        font-size: 16pt;
       }
     }
   }

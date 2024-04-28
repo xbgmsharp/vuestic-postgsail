@@ -59,6 +59,13 @@
     mapHeight = ref(route.query.height || '80vh'),
     ignore_moorage_overlay = ref(route.query.ignore_moorage_overlay || false)
 
+  // Ensure we have end_ parameter if there is a start_ parameter
+  if (end_log.value === null && start_log.value != null) {
+    end_log.value = start_log.value
+  }
+  if (end_date.value === null && start_date.value != null) {
+    end_date.value = start_date.value
+  }
   console.debug(
     'Timelapse3 QS',
     start_log.value,
@@ -259,8 +266,8 @@
         // Display trip data
         if (
           geojson.features[index].properties.trip &&
-          geojson.features[index].properties.trip.name.length != 0 &&
-          !ignore_moorage_overlay.value
+          geojson.features[index].properties.trip?.name.length != 0 &&
+          !!ignore_moorage_overlay.value
         ) {
           tripView.innerText = geojson.features[index].properties.trip.name
           tripView.style.opacity = 1
@@ -273,7 +280,7 @@
         }
         // Display overlay notes
         //console.debug(geojson.features[index])
-        if (geojson.features[index].properties.notes.length != 0 && !ignore_moorage_overlay.value) {
+        if (geojson.features[index].properties.notes.length != 0 && !!ignore_moorage_overlay.value) {
           noteView.innerText = geojson.features[index].properties.notes
           noteView.style.opacity = 1
           noteView.style.display = 'block'

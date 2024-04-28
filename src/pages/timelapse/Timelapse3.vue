@@ -268,7 +268,7 @@
         if (
           geojson.features[index].properties.trip &&
           geojson.features[index].properties.trip?.name.length != 0 &&
-          !ignore_moorage_overlay.value
+          !!ignore_moorage_overlay.value
         ) {
           tripView.innerText = geojson.features[index].properties.trip.name
           tripView.style.opacity = 1
@@ -281,7 +281,7 @@
         }
         // Display overlay notes
         //console.debug(geojson.features[index])
-        if (geojson.features[index].properties.notes.length != 0 && !ignore_moorage_overlay.value) {
+        if (geojson.features[index].properties.notes.length != 0 && !!ignore_moorage_overlay.value) {
           noteView.innerText = geojson.features[index].properties.notes
           noteView.style.opacity = 1
           noteView.style.display = 'block'

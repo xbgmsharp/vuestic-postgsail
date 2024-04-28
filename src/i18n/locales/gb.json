@@ -205,7 +205,7 @@
         "reset": "Reset"
       },
       "moorage": "Moorage",
-      "default_stay": "Default Stay",
+      "default_stay": "Default Stay Type",
       "total_stay": "Total Stay",
       "arrivals": "Arrivals & Departures",
       "duration_unit": "days"

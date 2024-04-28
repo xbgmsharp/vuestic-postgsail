@@ -12,7 +12,11 @@
                 <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
               </div>
               <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-input v-model="filter.default_stay" :clearable="true" placeholder="Filter by type..." />
+                <va-input
+                  v-model="filter.default_stay"
+                  :clearable="true"
+                  placeholder="Filter by default stay type..."
+                />
               </div>
             </div>
           </div>

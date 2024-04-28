@@ -1,34 +1,22 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-title>{{ $t('stays.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
           <div class="py-2 grid grid-cols-12 gap-6">
             <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :label="$t('stays.list.filter.name')" placeholder="Filter by name..." />
+              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
             </div>
             <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-date-input
                 v-model="filter.dateRange"
-                :label="$t('stays.list.filter.date_range')"
                 style="width: 100%"
                 :readonly="false"
+                :clearable="true"
+                placeholder="Filter by date range..."
                 mode="range"
               />
             </div>
-            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
-              $t('stays.list.filter.reset')
-            }}</va-button>
-            <va-icon
-              v-if="items.length > 0"
-              name="csv"
-              outline
-              :size="34"
-              style="grid-column-end: 13"
-              class="themed"
-              @click="handleCSV(items)"
-            ></va-icon>
           </div>
         </div>
       </va-card-content>
@@ -114,6 +102,17 @@
             <va-pagination v-model="currentPage" input :pages="pages" />
           </div>
         </template>
+        <div class="flex mt-4">
+          <va-icon
+            v-if="items.length > 0"
+            name="csv"
+            outline
+            :size="34"
+            style="grid-column-end: 13"
+            class="themed"
+            @click="handleCSV(items)"
+          ></va-icon>
+        </div>
       </va-card-content>
     </va-card>
   </div>
@@ -204,10 +203,6 @@
       isBusy.value = false
     }
   })
-
-  function resetFilter() {
-    Object.assign(filter, { ...getDefaultFilter() })
-  }
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)

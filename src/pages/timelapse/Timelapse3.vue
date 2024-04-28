@@ -19,6 +19,8 @@
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
+  import { dateFormatUTC } from '../../utils/dateFormatter.js'
+
   //import { useGlobalStore } from '../../stores/global-store'
   //import timelapseGeoJSON from '../../data/timelapse3.json'
   //import { useI18n } from 'vue-i18n'
@@ -183,16 +185,20 @@
       .addTo(map.value)
     // Add the note player and distance info to the map
     const legend = L.control({ position: 'bottomcenter' })
-    legend.onAdd = function (/*map*/) {
-      const distanceView = L.DomUtil.create('div', 'legend')
-      L.DomUtil.create('span', 'distance', distanceView)
-      var player = L.DomUtil.create('span', 'player', distanceView)
+    legend.onAdd = function () {
+      const legendView = L.DomUtil.create('div', 'legend')
+      const topRow = L.DomUtil.create('div', 'top-row', legendView)
+      L.DomUtil.create('span', 'distance', topRow)
+      var player = L.DomUtil.create('span', 'player', topRow)
       player.addEventListener('click', () => {
         playAndPause('myevent')
       })
-      return distanceView
+      const bottomRow = L.DomUtil.create('div', 'bottom-row', legendView)
+      L.DomUtil.create('span', 'datetime', bottomRow)
+      return legendView
     }
     legend.addTo(map.value)
+
     // Add the note overlay to the map
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
@@ -222,8 +228,9 @@
     let index = 1,
       last = null,
       distance = 0,
-      distanceView = map.value._container.querySelector('.legend > .distance'),
-      playerView = map.value._container.querySelector('.legend > .player'),
+      distanceView = map.value._container.querySelector('.legend > .top-row > .distance'),
+      playerView = map.value._container.querySelector('.legend > .top-row > .player'),
+      datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       noteView = map.value._container.querySelector('.overlay > .note')
 
     playerView.innerText = '▶'
@@ -240,8 +247,8 @@
           noteView.style.opacity = 1
           noteView.style.display = 'block'
         } else {
-          noteView.style.opacity -= 0.0125
-          if (noteView.style.opacity < 0) {
+          noteView.style.opacity -= 0.025
+          if (noteView.style.opacity < 0.5) {
             noteView.style.display = 'none'
           }
         }
@@ -260,6 +267,7 @@
           // convert meters -> KM -> NM
           distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(3) + ' NM'
           //distanceView.innerText = distanceLatLng((distance += last.distanceTo(coord_rev)))
+          datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)
         if (
@@ -274,7 +282,7 @@
 
   function playAndPause(e) {
     console.log('playAndPause', e, play_pause.value)
-    let playerView = map.value._container.querySelector('.legend > .player')
+    let playerView = map.value._container.querySelector('.legend > .top-row > .player')
     if (play_pause.value === true) {
       play_pause.value = false
       //playerView.innerText = '⏸︎'
@@ -318,7 +326,7 @@
     .legend {
       position: absolute;
       width: 260px;
-      height: 50px;
+      height: 70px;
       left: 50%;
       margin-left: -125px;
       padding: 0 0.7rem;
@@ -328,7 +336,17 @@
       color: #fff;
       border-radius: 5px;
       text-align: center;
-      font-size: 24pt;
+
+      .top-row {
+        font-size: 24pt;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.1rem;
+      }
+      .bottom-row {
+        font-size: 12pt;
+      }
 
       .distance {
         margin-right: 1rem;

@@ -420,7 +420,10 @@
     .overlay {
       padding: 0 0.7rem;
       top: 70px;
-      color: #ddd;
+      background: #000;
+      opacity: 0.5;
+      color: #fff;
+      border-radius: 5px;
       text-align: center;
       .top-row {
         font-size: 18pt;

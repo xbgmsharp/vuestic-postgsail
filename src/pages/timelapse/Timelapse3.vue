@@ -144,23 +144,21 @@
   const map_setup = () => {
     const geojson = timelapse.value
 
-    map.value = L.map(mapContainer.value)
-
     // The geoJSon only contains Geometry Point
     if (geojson.features[0].geometry.type != 'Point') return
+
+    map.value = L.map(mapContainer.value)
 
     // OSM
     const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // OpenSeaMap
     const openseamap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // Satellite
     const sat = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -170,13 +168,11 @@
         maxZoom: 17,
       },
     )
-    //.addTo(this.map)
     // NOAA
     const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
       attribution: 'NOAA',
       maxZoom: 18,
     })
-    //.addTo(this.map)
     // https://emodnet.ec.europa.eu
     const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
       layers: 'emodnet:mean_atlas_land',
@@ -193,7 +189,6 @@
       opacity: 0.8,
     })
     const bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
-    //bathymetryGroupLayer.addTo(map)
 
     const baseMaps = {
       OpenStreetMap: osm,
@@ -286,7 +281,6 @@
           distance += last.distanceTo(coord_rev)
           // convert meters -> KM -> NM
           distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(3) + ' NM'
-          //distanceView.innerText = distanceLatLng((distance += last.distanceTo(coord_rev)))
           datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)
@@ -367,7 +361,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.1rem;
       }
       .bottom-row {
         font-size: 12pt;

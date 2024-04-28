@@ -37,6 +37,7 @@
     polyLine = ref(),
     marker = ref(),
     timelapse = ref(),
+    stopped = ref(false),
     play_pause = ref(true)
 
   // Query-string
@@ -110,10 +111,40 @@
     }
   })
 
-  const map_setup = () => {
+  const map_track_setup = () => {
     const geojson = timelapse.value,
       coord_rev = geojson.features[0].geometry.coordinates.reverse()
-    map.value = L.map(mapContainer.value).setView(coord_rev, zoom.value)
+    map.value.setView(coord_rev, zoom.value)
+
+    console.log('map_track_setup', coord_rev)
+
+    // Create the line
+    polyLine.value = L.polyline([coord_rev], {
+      weight: 3,
+      color: color.value,
+      opacity: 0.9,
+    }).addTo(map.value)
+    // Create the marker
+    marker.value = L.polyline([coord_rev, coord_rev], {
+      weight: 8,
+      color: 'red',
+    }).addTo(map.value)
+    // Update map every x ms
+    setTimeout(() => {
+      map_update()
+    }, 1000 + delay.value * 1000) //ms
+  }
+
+  const map_track_replay = () => {
+    map.value.removeLayer(polyLine.value)
+    map.value.removeLayer(marker.value)
+    map_track_setup()
+  }
+
+  const map_setup = () => {
+    const geojson = timelapse.value
+
+    map.value = L.map(mapContainer.value)
 
     // The geoJSon only contains Geometry Point
     if (geojson.features[0].geometry.type != 'Point') return
@@ -207,21 +238,8 @@
       return moorageView
     }
     overlay.addTo(map.value)
-    // Create the line
-    polyLine.value = L.polyline([coord_rev], {
-      weight: 3,
-      color: color.value,
-      opacity: 0.9,
-    }).addTo(map.value)
-    // Create the marker
-    marker.value = L.polyline([coord_rev, coord_rev], {
-      weight: 8,
-      color: 'red',
-    }).addTo(map.value)
-    // Update map every x ms
-    setTimeout(() => {
-      map_update()
-    }, 1000 + delay.value * 1000) //ms
+
+    map_track_setup()
   }
 
   const map_update = () => {
@@ -233,7 +251,9 @@
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       noteView = map.value._container.querySelector('.overlay > .note')
 
-    playerView.innerText = '▶'
+    console.log('map_update', index)
+
+    playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     const geojson = timelapse.value,
       //km = !GlobalStore.imperialUnits,
       interval = setInterval(function () {
@@ -270,12 +290,15 @@
           datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)
-        if (
-          // If last entry cancel Interval
-          index ===
-          geojson.features.length - 1
-        )
+        // if last entry, cancel internal, show replay
+        if (index === geojson.features.length - 1) {
           clearInterval(interval)
+          last = null
+          distance = 0
+          play_pause.value = true
+          stopped.value = true
+          playerView.innerHTML = '<i class="va-icon material-icons">replay</i>'
+        }
         index++
       }, speed.value)
   }
@@ -283,13 +306,15 @@
   function playAndPause(e) {
     console.log('playAndPause', e, play_pause.value)
     let playerView = map.value._container.querySelector('.legend > .top-row > .player')
-    if (play_pause.value === true) {
+    if (stopped.value === true) {
+      // replay button clicked
+      map_track_replay()
+      playerView.innerHTML = '<i class="va-icon material-icons">pause</i>'
+    } else if (play_pause.value === true) {
       play_pause.value = false
-      //playerView.innerText = '⏸︎'
       playerView.innerHTML = '<i class="va-icon material-icons">pause</i>'
     } else {
       play_pause.value = true
-      //playerView.innerText = '▶'
       playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     }
   }
@@ -353,6 +378,9 @@
       }
       .player {
         cursor: pointer;
+        i.material-icons {
+          font-size: 24pt;
+        }
       }
     }
 

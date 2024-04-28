@@ -297,7 +297,7 @@
           // Returns the distance (in meters)
           distance += last.distanceTo(coord_rev)
           // convert meters -> KM -> NM
-          distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(3) + ' NM'
+          distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(2) + ' NM'
           datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)

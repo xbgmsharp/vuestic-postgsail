@@ -116,8 +116,6 @@
       coord_rev = geojson.features[0].geometry.coordinates.toReversed()
     map.value.setView(coord_rev, zoom.value)
 
-    console.log('map_track_setup', coord_rev)
-
     // Create the line
     polyLine.value = L.polyline([coord_rev], {
       weight: 3,
@@ -228,9 +226,12 @@
     // Add the note overlay to the map
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
-      const moorageView = L.DomUtil.create('div', 'overlay')
-      L.DomUtil.create('span', 'note', moorageView)
-      return moorageView
+      const overlayView = L.DomUtil.create('div', 'overlay')
+      const topRow = L.DomUtil.create('div', 'top-row', overlayView)
+      L.DomUtil.create('span', 'trip', topRow)
+      const bottomRow = L.DomUtil.create('div', 'bottom-row', overlayView)
+      L.DomUtil.create('span', 'note', bottomRow)
+      return overlayView
     }
     overlay.addTo(map.value)
 
@@ -238,15 +239,14 @@
   }
 
   const map_update = () => {
-    let index = 1,
+    let index = 0,
       last = null,
       distance = 0,
       distanceView = map.value._container.querySelector('.legend > .top-row > .distance'),
       playerView = map.value._container.querySelector('.legend > .top-row > .player'),
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
-      noteView = map.value._container.querySelector('.overlay > .note')
-
-    console.log('map_update', index)
+      tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
+      noteView = map.value._container.querySelector('.overlay > .bottom-row > .note')
 
     playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     const geojson = timelapse.value,
@@ -255,6 +255,22 @@
         if (play_pause.value === false) {
           return
         }
+
+        // Display trip data
+        if (
+          geojson.features[index].properties.trip &&
+          geojson.features[index].properties.trip.name.length != 0 &&
+          !ignore_moorage_overlay.value
+        ) {
+          tripView.innerText = geojson.features[index].properties.trip.name
+          tripView.style.opacity = 1
+          tripView.style.display = 'block'
+        } else {
+          tripView.style.opacity -= 0.0125 // slower fade-out
+          if (tripView.style.opacity < 0.5) {
+            tripView.style.display = 'none'
+          }
+        }
         // Display overlay notes
         //console.debug(geojson.features[index])
         if (geojson.features[index].properties.notes.length != 0 && !ignore_moorage_overlay.value) {
@@ -262,7 +278,7 @@
           noteView.style.opacity = 1
           noteView.style.display = 'block'
         } else {
-          noteView.style.opacity -= 0.025
+          noteView.style.opacity -= 0.025 // faster fade-out
           if (noteView.style.opacity < 0.5) {
             noteView.style.display = 'none'
           }
@@ -398,8 +414,14 @@
       top: 70px;
       color: #ddd;
       text-align: center;
-      font-size: 18pt;
-      .note {
+      .top-row {
+        font-size: 18pt;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .bottom-row {
+        font-size: 16pt;
       }
     }
   }

@@ -136,6 +136,7 @@
   const map_track_replay = () => {
     map.value.removeLayer(polyLine.value)
     map.value.removeLayer(marker.value)
+    stopped.value = false
     map_track_setup()
   }
 

@@ -113,7 +113,7 @@
 
   const map_track_setup = () => {
     const geojson = timelapse.value,
-      coord_rev = geojson.features[0].geometry.coordinates.reverse()
+      coord_rev = geojson.features[0].geometry.coordinates.toReversed()
     map.value.setView(coord_rev, zoom.value)
 
     console.log('map_track_setup', coord_rev)
@@ -273,7 +273,7 @@
           }
         }
         // Get the next coordinates from the geojson
-        let coord_rev = geojson.features[index].geometry.coordinates.reverse()
+        let coord_rev = geojson.features[index].geometry.coordinates.toReversed()
         // Add the next point to the polyLine
         polyLine.value.addLatLng(coord_rev)
         // Move the maker to a next point

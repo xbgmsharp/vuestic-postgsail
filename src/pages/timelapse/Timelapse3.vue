@@ -28,6 +28,13 @@
   //import { distanceLatLng } from '../../utils/distanceFormatter.js'
   //import noDataScreen from '../../components/noDataScreen.vue'
 
+  function parseBooleanQueryParam(value) {
+    if (value === undefined || value === null || value === 'true') {
+      return true // also default value if not specified
+    }
+    return false
+  }
+
   const route = useRoute(),
     //{ t } = useI18n(),
     //GlobalStore = useGlobalStore(),
@@ -58,7 +65,7 @@
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
-    moorage_overlay = ref(route.query.moorage_overlay || true)
+    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {
@@ -75,7 +82,7 @@
     map_type.value = 'Satellite'
   }
 
-  console.debug(
+  console.log(
     'Timelapse3 QS',
     start_log.value,
     end_log.value,

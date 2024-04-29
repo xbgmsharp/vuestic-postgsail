@@ -55,12 +55,11 @@
     },
   })
   console.log(
-    'props moorage_map_id,zoom,controlLayer,mapType,overlayType',
+    'props moorage_map_id,zoom,controlLayer,mapType',
     props.moorage_map_id,
     props.zoom,
     props.controlLayer,
     props.mapType,
-    props.overlayMapType,
   )
 
   onMounted(async () => {

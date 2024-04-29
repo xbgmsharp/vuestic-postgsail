@@ -36,7 +36,7 @@
     inbound_logs_map = ref()
 
   const props = defineProps({
-    moorage_map_id: {
+    moorageMapId: {
       type: Number,
       default: 0,
       required: false,
@@ -55,8 +55,8 @@
     },
   })
   console.log(
-    'props moorage_map_id,zoom,controlLayer,mapType',
-    props.moorage_map_id,
+    'props moorageMapId,zoom,controlLayer,mapType',
+    props.moorageMapId,
     props.zoom,
     props.controlLayer,
     props.mapType,
@@ -97,8 +97,8 @@
   const map_setup = () => {
     const geojson = moorages_map.value
     let coord = geojson.features[0].geometry.coordinates
-    if (props.moorage_map_id != 0) {
-      coord = geojson.features.filter((geog) => geog.properties.id == props.moorage_map_id)[0].geometry.coordinates
+    if (props.moorageMapId != 0) {
+      coord = geojson.features.filter((geog) => geog.properties.id == props.moorageMapId)[0].geometry.coordinates
     }
     map.value = L.map(mapContainer.value).setView(coord, props.zoom)
     //console.log(coord)
@@ -168,8 +168,8 @@
     }).addTo(map.value)
 
     map.value.fitBounds(layer.getBounds(), { maxZoom: 17 })
-    if (props.moorage_map_id != 0) {
-      map.value.flyTo(coord.reverse(), props.map_zoom)
+    if (props.moorageMapId != 0) {
+      map.value.flyTo(coord.reverse(), props.zoom)
     }
   }
 

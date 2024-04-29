@@ -2,7 +2,7 @@
   <div>
     <va-card class="mb-3">
       <va-card-content>
-        <Map style="width: 100%; height: 40vh" :map_zoom="13" :moorage_map_id="Number.parseInt(route.params.id)" />
+        <Map style="width: 100%; height: 40vh" :zoom="13" :moorage-map-id="Number.parseInt(route.params.id)" />
       </va-card-content>
     </va-card>
     <va-card class="mb-3">

@@ -6,7 +6,7 @@
     <div>
       <va-card class="mb-3">
         <va-card-content>
-          <Map style="width: 100%; height: 45vh" :map_zoom="8" :moorage_map_id="0" />
+          <Map style="width: 100%; height: 45vh" :zoom="8" :moorage-map-id="0" />
         </va-card-content>
       </va-card>
       <va-card class="mb-3">

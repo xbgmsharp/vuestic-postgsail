@@ -28,9 +28,20 @@
   //import { distanceLatLng } from '../../utils/distanceFormatter.js'
   //import noDataScreen from '../../components/noDataScreen.vue'
 
-  function parseBooleanQueryParam(value) {
-    if (value === undefined || value === null || value === 'true') {
-      return true // also default value if not specified
+  function parseMapTypeQueryParam(value, default_value) {
+    if (value === undefined || value === null) {
+      return default_value
+    } else if (value in baseMaps()) {
+      return value
+    }
+    return default_value
+  }
+
+  function parseBooleanQueryParam(value, default_value) {
+    if (value === undefined || value === null) {
+      return default_value
+    } else if (value === 'true') {
+      return true
     }
     return false
   }
@@ -59,13 +70,13 @@
     end_log = ref(route.query.end_log || route.params.id || null),
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
-    map_type = ref(route.query.map_type || 'Satellite'),
+    map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
-    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay))
+    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {

@@ -31,7 +31,7 @@ export const baseMaps = function () {
     maxZoom: 18,
   })
 
-  // https://emodnet.ec.europa.eu
+  // European Marine Observation and Data Network https://emodnet.ec.europa.eu
   const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
     layers: 'emodnet:mean_atlas_land',
     format: 'image/png',

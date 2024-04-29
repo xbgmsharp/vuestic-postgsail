@@ -64,7 +64,7 @@
           <lMap
             :geo-json-feature="mapGeoJsonFeatures"
             :control-layer="false"
-            :zoom="10"
+            :map-zoom="10"
             style="width: 100%; height: 120px"
           />
         </va-card-content>

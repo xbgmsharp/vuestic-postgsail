@@ -3,7 +3,7 @@
     <va-card class="mb-3">
       <template v-if="item && item.moorage_id">
         <va-card-content>
-          <Map style="width: 100%; height: 40vh" :zoom="13" :moorage-map-id="Number.parseInt(item.moorage_id)" />
+          <Map style="width: 100%; height: 40vh" :map-zoom="13" :moorage-map-id="Number.parseInt(item.moorage_id)" />
         </va-card-content>
       </template>
     </va-card>

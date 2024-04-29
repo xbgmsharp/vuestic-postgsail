@@ -29,7 +29,7 @@
         type: Object,
         default: null,
       },
-      zoom: {
+      mapZoom: {
         type: Number,
         default: 17,
       },
@@ -58,7 +58,7 @@
       }
     },
     mounted() {
-      console.debug('Props mapType:', this.mapType, ' Zoom:', this.zoom)
+      console.debug('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom)
       let centerLat = 0
       let centerLng = 0
       let geojson = null
@@ -87,7 +87,7 @@
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map('mapContainer', {
         zoomControl: this.controlLayer,
-      }).setView([centerLat, centerLng], this.zoom)
+      }).setView([centerLat, centerLng], this.mapZoom)
 
       const bMaps = baseMaps()
       const oMaps = overlayMaps()

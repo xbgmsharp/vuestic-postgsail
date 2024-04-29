@@ -22,8 +22,8 @@
           <template v-if="items.geojson">
             <lMap
               :geo-json-feature="mapGeoJsonFeatures"
-              :zoom="13"
-              map-type="Satellite"
+              :map-zoom="13"
+              :map-type="Satellite"
               style="width: 100%; height: 250px"
             />
           </template>

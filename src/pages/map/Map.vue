@@ -2,7 +2,7 @@
   <template v-if="!isBusy && item">
     <lMap
       :geo-json-features="mapGeoJsonFeatures"
-      :zoom="10"
+      :map-zoom="10"
       :geo-filter="true"
       :control-layer="false"
       style="width: 100%; height: 100vh"

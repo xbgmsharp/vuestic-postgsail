@@ -47,7 +47,6 @@
       :zoom="11"
       :geo-filter="true"
       :multigeojson="true"
-      :openseamap-layer="false"
     />
   </div>
 </template>

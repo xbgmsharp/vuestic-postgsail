@@ -58,7 +58,7 @@
       }
     },
     mounted() {
-      console.debug('Props maptype:', this.maptype, ' openseamapLayer', this.openseamapLayer, ' Zoom:', this.zoom)
+      console.debug('Props mapType:', this.mapType, ' Zoom:', this.zoom)
       let centerLat = 0
       let centerLng = 0
       let geojson = null

@@ -6,6 +6,7 @@
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
+  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
@@ -29,29 +30,21 @@
         default: null,
       },
       zoom: {
-        /*default zoom Level */
         type: Number,
         default: 17,
       },
       controlLayer: {
-        /* Enable / Disable zoom Control */
         type: Boolean,
         default: true,
       },
       mapType: {
-        /* set the default tile Layer */
         type: String,
-        default: 'OpenStreetMap',
+        default: defaultBaseMapType(),
       },
       geoFilter: {
         /* use to filter the geojson geometry type */
         type: Boolean,
         default: false,
-      },
-      openseamapLayer: {
-        /* use to display OpenSeaMap layer */
-        type: Boolean,
-        default: true,
       },
       multigeojson: {
         /* use to handle an array of geojson*/
@@ -96,68 +89,12 @@
         zoomControl: this.controlLayer,
       }).setView([centerLat, centerLng], this.zoom)
 
-      // OSM
-      const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18,
-      })
-      //.addTo(this.map)
-      // OpenSeaMap
-      const openseamap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
-        maxZoom: 18,
-      })
-      //.addTo(this.map)
-      // Satellite
-      const sat = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution:
-            'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-          maxZoom: 17,
-        },
-      )
-      //.addTo(this.map)
-      // NOAA
-      const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-        attribution: 'NOAA',
-        maxZoom: 18,
-      })
-      //.addTo(this.map)
-      // https://emodnet.ec.europa.eu
-      var bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
-        layers: 'emodnet:mean_atlas_land',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'EMODnet Bathymetry',
-        opacity: 0.8,
-      })
-      var coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
-        layers: 'coastlines',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'EMODnet Bathymetry',
-        opacity: 0.8,
-      })
-      var bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
-      //bathymetryGroupLayer.addTo(map)
+      const bMaps = baseMaps()
+      const oMaps = overlayMaps()
+      bMaps[this.mapType].addTo(this.map)
 
-      const baseMaps = {
-        OpenStreetMap: osm,
-        Satellite: sat,
-        NOAA: noaa,
-        'EMODnet Bathymetry': bathymetryGroupLayer,
-      }
-      const overlays = {
-        OpenSeaMap: openseamap,
-      }
       if (this.controlLayer) {
-        L.control.layers(baseMaps, overlays).addTo(this.map)
-      }
-      //baseMaps['OpenStreetMap'].addTo(this.map)
-      baseMaps[this.mapType].addTo(this.map)
-      if (this.openseamapLayer) {
-        openseamap.addTo(this.map)
+        L.control.layers(bMaps, oMaps).addTo(this.map)
       }
 
       const sailBoatIconImg = function (feature) {

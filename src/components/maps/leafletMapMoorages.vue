@@ -18,6 +18,7 @@
    */
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
+  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
 
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import PostgSail from '../../services/api-client'
@@ -35,18 +36,32 @@
     inbound_logs_map = ref()
 
   const props = defineProps({
-    map_zoom: {
-      type: Number,
-      default: 8,
-      required: false,
-    },
     moorage_map_id: {
       type: Number,
       default: 0,
       required: false,
     },
+    zoom: {
+      type: Number,
+      default: 17,
+    },
+    controlLayer: {
+      type: Boolean,
+      default: true,
+    },
+    mapType: {
+      type: String,
+      default: defaultBaseMapType(),
+    },
   })
-  console.log('props map_zoom,moorage_map_id', props.map_zoom, props.moorage_map_id)
+  console.log(
+    'props moorage_map_id,zoom,controlLayer,mapType,overlayType',
+    props.moorage_map_id,
+    props.zoom,
+    props.controlLayer,
+    props.mapType,
+    props.overlayMapType,
+  )
 
   onMounted(async () => {
     isBusy.value = true
@@ -89,37 +104,16 @@
     if (props.moorage_map_id != 0) {
       coord = geojson.features.filter((geog) => geog.properties.id == props.moorage_map_id)[0].geometry.coordinates
     }
-    map.value = L.map(mapContainer.value).setView(coord, props.map_zoom)
+    map.value = L.map(mapContainer.value).setView(coord, props.zoom)
     //console.log(coord)
 
-    // OSM
-    const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    })
-    // Satellite
-    const sat = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        attribution:
-          'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 17,
-      },
-    )
-    // NOAA
-    const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-      attribution: 'NOAA',
-      maxZoom: 18,
-    })
+    const bMaps = baseMaps()
+    const oMaps = overlayMaps()
+    bMaps[props.mapType].addTo(map.value)
 
-    const baseMaps = {
-      OpenStreetMap: osm,
-      Satellite: sat,
-      NOAA: noaa,
+    if (props.controlLayer) {
+      L.control.layers(bMaps, oMaps).addTo(map.value)
     }
-    const overlays = {}
-    L.control.layers(baseMaps, overlays).addTo(map.value)
-    baseMaps['OpenStreetMap'].addTo(map.value)
 
     let multiplier = Math.max(map.value.getZoom(), 1)
     multiplier = Math.min(map.value.getZoom(), 9)

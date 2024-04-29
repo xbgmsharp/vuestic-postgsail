@@ -58,7 +58,7 @@
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
-    ignore_moorage_overlay = ref(route.query.ignore_moorage_overlay || false)
+    moorage_overlay = ref(route.query.moorage_overlay || true)
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {
@@ -87,7 +87,7 @@
     zoom.value,
     color.value,
     map_height.value,
-    ignore_moorage_overlay.value,
+    moorage_overlay.value,
   )
 
   onMounted(async () => {
@@ -224,7 +224,7 @@
         if (
           geojson.features[index].properties.trip &&
           geojson.features[index].properties.trip?.name.length != 0 &&
-          !!ignore_moorage_overlay.value
+          moorage_overlay.value
         ) {
           tripView.innerText = geojson.features[index].properties.trip.name
           tripView.style.opacity = 1
@@ -237,7 +237,7 @@
         }
         // Display overlay notes
         //console.debug(geojson.features[index])
-        if (geojson.features[index].properties.notes.length != 0 && !!ignore_moorage_overlay.value) {
+        if (geojson.features[index].properties.notes.length != 0 && moorage_overlay.value) {
           noteView.innerText = geojson.features[index].properties.notes
           noteView.style.opacity = 1
           noteView.style.display = 'block'

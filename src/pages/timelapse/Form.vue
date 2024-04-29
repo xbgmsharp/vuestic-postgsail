@@ -47,11 +47,11 @@
                   <td>{{ $t('timelapse.basemap') }}</td>
                   <td>
                     <MySelect
-                      v-if="map_type"
-                      :id="formData.map_type"
-                      key="map_type"
-                      :data="formData.map_type"
-                      :object="map_type"
+                      v-if="mapTypes"
+                      :id="mapIdx"
+                      key="mapTypes"
+                      :data="mapIdx"
+                      :object="mapTypes"
                       @clickFromChildComponent="handleMap"
                     />
                   </td>
@@ -191,6 +191,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
+  import { baseMaps } from '../../utils/leafletHelpers.js'
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'
@@ -203,7 +204,7 @@
   const CacheStore = useCacheStore()
   const { logs } = storeToRefs(CacheStore)
   const choose_trips = ref(false)
-  const overlay = ref(false)
+  const overlay = ref(true)
   const color = ref(0)
   const start_trip = ref(-1)
   const end_trip = ref(-1)
@@ -211,12 +212,12 @@
   const formData = reactive({
     start_log: '',
     end_log: '',
-    map_type: 1,
+    map_type: 'Satellite',
     speed: 250,
     delay: 0,
     zoom: 13,
     color: 'dodgerblue',
-    ignore_moorage_overlay: overlay.value,
+    moorage_overlay: overlay.value,
   })
   const timelapse_link = computed(() => {
     console.log('formData', formData)
@@ -228,16 +229,14 @@
     const searchParams = new URLSearchParams(formData)
     return `${window.location.protocol}//${window.location.host}/${publicVessel}/timelapse?${searchParams.toString()}`
   })
-  const map_type = [
-    {
-      value: 0,
-      text: 'OpenStreetMap',
-    },
-    {
-      value: 1,
-      text: 'Satellite',
-    },
-  ]
+
+  // get list from list of all maps
+  const mapIdx = 0 // Satellite
+  const mapTypes = Object.keys(baseMaps()).map((key, index) => ({
+    value: index,
+    text: key,
+  }))
+
   const speeds = [
     {
       value: 350,
@@ -385,7 +384,7 @@
     console.log('handleMap', new_value, obj)
     if (new_value >= 0) {
       console.log('handleMap obj:', obj.value + ', text:' + obj.text)
-      formData.map_type = obj.value
+      formData.map_type = obj.text
     }
   }
   const handleSpeed = async (new_value, obj) => {
@@ -418,7 +417,7 @@
   }
   const handleOverlay = async () => {
     console.log('handleOverlay', overlay.value)
-    formData.ignore_moorage_overlay = !overlay.value
+    formData.moorage_overlay = !overlay.value
   }
   const onsubmit = () => {
     console.log('onsubmit', formData)

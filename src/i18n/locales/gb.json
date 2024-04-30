@@ -472,7 +472,7 @@
     "end": "End Trip",
     "basemap": "Base Map",
     "trackcolor": "Track Color",
-    "overlay": "Remove Moorage Overlays",
+    "overlay": "Show Moorage Overlay",
     "zoom": "Zoom Level",
     "anim": "Animation Speed",
     "delay": "Initial Delay",

@@ -15,6 +15,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
   import 'leaflet.fullscreen'
+  import { fallbackBaseMapType, baseMaps } from '../../utils/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -26,6 +27,24 @@
   //import { useI18n } from 'vue-i18n'
   //import { distanceLatLng } from '../../utils/distanceFormatter.js'
   //import noDataScreen from '../../components/noDataScreen.vue'
+
+  function parseMapTypeQueryParam(value, default_value) {
+    if (value === undefined || value === null) {
+      return default_value
+    } else if (value in baseMaps()) {
+      return value
+    }
+    return default_value
+  }
+
+  function parseBooleanQueryParam(value, default_value) {
+    if (value === undefined || value === null) {
+      return default_value
+    } else if (value === 'true') {
+      return true
+    }
+    return false
+  }
 
   const route = useRoute(),
     //{ t } = useI18n(),
@@ -51,13 +70,13 @@
     end_log = ref(route.query.end_log || route.params.id || null),
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
-    map_type = ref(route.query.map_type || 1),
+    map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
-    mapHeight = ref(route.query.height || '80vh'),
-    ignore_moorage_overlay = ref(route.query.ignore_moorage_overlay || false)
+    map_height = ref(route.query.height || '80vh'),
+    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {
@@ -66,7 +85,15 @@
   if (end_date.value === null && start_date.value != null) {
     end_date.value = start_date.value
   }
-  console.debug(
+
+  // map_type backward compatibility: was using numerical values initially
+  if (map_type.value === '0') {
+    map_type.value = 'OpenStreetMap'
+  } else if (map_type.value === '1') {
+    map_type.value = 'Satellite'
+  }
+
+  console.log(
     'Timelapse3 QS',
     start_log.value,
     end_log.value,
@@ -77,8 +104,8 @@
     delay.value,
     zoom.value,
     color.value,
-    mapHeight.value,
-    ignore_moorage_overlay.value,
+    map_height.value,
+    moorage_overlay.value,
   )
 
   onMounted(async () => {
@@ -103,11 +130,8 @@
         if (response.geojson?.features && response.geojson.features[0].geometry.type == null) {
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)
-          const cartodbAttribution =
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-            attribution: cartodbAttribution,
-          }).addTo(map.value)
+          const bMaps = baseMaps()
+          bMaps[fallbackBaseMapType()].addTo(map.value)
           return
         }
       }
@@ -155,58 +179,8 @@
 
     map.value = L.map(mapContainer.value)
 
-    // OSM
-    const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    })
-    // OpenSeaMap
-    const openseamap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors',
-      maxZoom: 18,
-    })
-    // Satellite
-    const sat = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        attribution:
-          'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 17,
-      },
-    )
-    // NOAA
-    const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-      attribution: 'NOAA',
-      maxZoom: 18,
-    })
-    // https://emodnet.ec.europa.eu
-    const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
-      layers: 'emodnet:mean_atlas_land',
-      format: 'image/png',
-      transparent: true,
-      attribution: 'EMODnet Bathymetry',
-      opacity: 0.8,
-    })
-    const coastlinesLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
-      layers: 'coastlines',
-      format: 'image/png',
-      transparent: true,
-      attribution: 'EMODnet Bathymetry',
-      opacity: 0.8,
-    })
-    const bathymetryGroupLayer = L.layerGroup([bathymetryLayer, coastlinesLayer])
-
-    const baseMaps = {
-      OpenStreetMap: osm,
-      Satellite: sat,
-      NOAA: noaa,
-      'EMODnet Bathymetry': bathymetryGroupLayer,
-    }
-    const overlays = {
-      OpenSeaMap: openseamap,
-    }
-    L.control.layers(baseMaps, overlays).addTo(map.value)
-    baseMaps[Object.keys(baseMaps)[map_type.value]].addTo(map.value)
+    const bMaps = baseMaps()
+    bMaps[map_type.value].addTo(map.value)
 
     // create a fullscreen button and add it to the map
     L.control
@@ -268,7 +242,7 @@
         if (
           geojson.features[index].properties.trip &&
           geojson.features[index].properties.trip?.name.length != 0 &&
-          !!ignore_moorage_overlay.value
+          moorage_overlay.value
         ) {
           tripView.innerText = geojson.features[index].properties.trip.name
           tripView.style.opacity = 1
@@ -281,7 +255,7 @@
         }
         // Display overlay notes
         //console.debug(geojson.features[index])
-        if (geojson.features[index].properties.notes.length != 0 && !!ignore_moorage_overlay.value) {
+        if (geojson.features[index].properties.notes.length != 0 && moorage_overlay.value) {
           noteView.innerText = geojson.features[index].properties.notes
           noteView.style.opacity = 1
           noteView.style.display = 'block'
@@ -437,6 +411,6 @@
     }
   }
   #mapContainer {
-    height: v-bind(mapHeight);
+    height: v-bind(map_height);
   }
 </style>

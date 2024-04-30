@@ -44,10 +44,9 @@
       v-if="logbook_geojson.length > 1"
       :geo-json-features="logbook_geojson"
       style="width: 100%; height: 80vh"
-      :zoom="11"
+      :map-zoom="11"
       :geo-filter="true"
       :multigeojson="true"
-      :openseamap-layer="false"
     />
   </div>
 </template>

@@ -18,6 +18,7 @@
    */
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
+  import { defaultBaseMapType, fallbackBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
 
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import PostgSail from '../../services/api-client'
@@ -35,18 +36,31 @@
     inbound_logs_map = ref()
 
   const props = defineProps({
-    map_zoom: {
-      type: Number,
-      default: 8,
-      required: false,
-    },
-    moorage_map_id: {
+    moorageMapId: {
       type: Number,
       default: 0,
       required: false,
     },
+    mapZoom: {
+      type: Number,
+      default: 17,
+    },
+    controlLayer: {
+      type: Boolean,
+      default: true,
+    },
+    mapType: {
+      type: String,
+      default: defaultBaseMapType(),
+    },
   })
-  console.log('props map_zoom,moorage_map_id', props.map_zoom, props.moorage_map_id)
+  console.log(
+    'props moorageMapId,mapZoom,controlLayer,mapType',
+    props.moorageMapId,
+    props.mapZoom,
+    props.controlLayer,
+    props.mapType,
+  )
 
   onMounted(async () => {
     isBusy.value = true
@@ -63,11 +77,8 @@
         if (!response.geojson?.features) {
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)
-          const cartodbAttribution =
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-            attribution: cartodbAttribution,
-          }).addTo(map.value)
+          const bMaps = baseMaps()
+          bMaps[fallbackBaseMapType()].addTo(map.value)
           return
         }
       }
@@ -86,40 +97,19 @@
   const map_setup = () => {
     const geojson = moorages_map.value
     let coord = geojson.features[0].geometry.coordinates
-    if (props.moorage_map_id != 0) {
-      coord = geojson.features.filter((geog) => geog.properties.id == props.moorage_map_id)[0].geometry.coordinates
+    if (props.moorageMapId != 0) {
+      coord = geojson.features.filter((geog) => geog.properties.id == props.moorageMapId)[0].geometry.coordinates
     }
-    map.value = L.map(mapContainer.value).setView(coord, props.map_zoom)
+    map.value = L.map(mapContainer.value).setView(coord, props.mapZoom)
     //console.log(coord)
 
-    // OSM
-    const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    })
-    // Satellite
-    const sat = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        attribution:
-          'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 17,
-      },
-    )
-    // NOAA
-    const noaa = L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {
-      attribution: 'NOAA',
-      maxZoom: 18,
-    })
+    const bMaps = baseMaps()
+    const oMaps = overlayMaps()
+    bMaps[props.mapType].addTo(map.value)
 
-    const baseMaps = {
-      OpenStreetMap: osm,
-      Satellite: sat,
-      NOAA: noaa,
+    if (props.controlLayer) {
+      L.control.layers(bMaps, oMaps).addTo(map.value)
     }
-    const overlays = {}
-    L.control.layers(baseMaps, overlays).addTo(map.value)
-    baseMaps['OpenStreetMap'].addTo(map.value)
 
     let multiplier = Math.max(map.value.getZoom(), 1)
     multiplier = Math.min(map.value.getZoom(), 9)
@@ -178,8 +168,8 @@
     }).addTo(map.value)
 
     map.value.fitBounds(layer.getBounds(), { maxZoom: 17 })
-    if (props.moorage_map_id != 0) {
-      map.value.flyTo(coord.reverse(), props.map_zoom)
+    if (props.moorageMapId != 0) {
+      map.value.flyTo(coord.reverse(), props.mapZoom)
     }
   }
 

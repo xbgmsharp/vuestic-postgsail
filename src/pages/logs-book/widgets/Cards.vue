@@ -2,6 +2,7 @@
   import { PropType } from 'vue'
   import { Log } from '../types'
   import { useI18n } from 'vue-i18n'
+  import { dateFormatUTC } from '../../../utils/dateFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -41,7 +42,7 @@
           <!-- Date and Icon Menu -->
           <div class="flex text-sm">
             <div class="text-[var(--va-secondary)] flow-root">
-              <div class="float-left">{{ log.fromTime }}</div>
+              <div class="float-left">{{ dateFormatUTC(log.fromTime) }}</div>
               <div class="float-right">
                 <va-dropdown class="">
                   <template #anchor>
@@ -128,11 +129,11 @@
             <div class="justify-center text-center">
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.distance') }}: </span>
-                <span>{{ log.distance_format }}</span>
+                <span>{{ log.distance }}</span>
               </p>
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.duration') }}: </span>
-                <span>{{ log.duration_format }}</span>
+                <span>{{ log.duration }}</span>
               </p>
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.from') }}: </span>

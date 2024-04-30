@@ -21,6 +21,9 @@
                   mode="range"
                 />
               </div>
+              <div class="col-span-12 md:col-span-6 flex flex-col">
+                <va-input v-model="filter.stay_type" :clearable="true" placeholder="Filter by stay type..." />
+              </div>
             </div>
           </div>
         </va-card-content>
@@ -107,6 +110,7 @@
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
+      stay_type: null,
       dateRange: null,
     }
   }
@@ -150,6 +154,8 @@
                 return true
               }
               switch (fkey) {
+                case 'stay_type':
+                  return row.stayed_at.toLowerCase().includes(f[fkey].toLowerCase())
                 case 'dateRange':
                   return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
               }

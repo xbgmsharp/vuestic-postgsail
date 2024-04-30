@@ -18,7 +18,7 @@
    */
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
+  import { defaultBaseMapType, fallbackBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
 
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import PostgSail from '../../services/api-client'
@@ -78,7 +78,7 @@
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)
           const bMaps = baseMaps()
-          bMaps[props.mapType].addTo(map.value)
+          bMaps[fallbackBaseMapType()].addTo(map.value)
           return
         }
       }

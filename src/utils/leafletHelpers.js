@@ -63,6 +63,10 @@ export const defaultBaseMapType = function () {
   return 'OpenStreetMap'
 }
 
+export const fallbackBaseMapType = function () {
+  return 'CARTO'
+}
+
 // Additional overlay maps providers
 export const overlayMaps = function () {
   // OpenSeaMap

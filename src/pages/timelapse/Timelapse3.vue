@@ -15,7 +15,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
   import 'leaflet.fullscreen'
-  import { baseMaps } from '../../utils/leafletHelpers.js'
+  import { fallbackBaseMapType, baseMaps } from '../../utils/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -131,7 +131,7 @@
           console.warn('no data')
           map.value = L.map(mapContainer.value).setView([0, 0], 1)
           const bMaps = baseMaps()
-          bMaps[map_type.value].addTo(map.value)
+          bMaps[fallbackBaseMapType()].addTo(map.value)
           return
         }
       }

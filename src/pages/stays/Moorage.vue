@@ -32,6 +32,8 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <va-data-table
+            v-model:sort-by="sorting.sortBy"
+            v-model:sorting-order="sorting.sortingOrder"
             :columns="columns"
             :items="items"
             :loading="isBusy"
@@ -121,6 +123,7 @@
     { key: 'stayed_at', label: t('stays.moorage.stayed_at'), sortable: true },
     { key: 'duration', label: t('stays.moorage.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
   ])
+  const sorting = ref({ sortBy: 'departed', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
 
   const items = computed(() => {

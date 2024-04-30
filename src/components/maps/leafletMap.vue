@@ -97,23 +97,12 @@
         L.control.layers(bMaps, oMaps).addTo(this.map)
       }
 
-      const sailBoatIconImg = function (feature) {
-        if (
-          feature.properties.status == 'sailing' &&
-          feature.properties.truewinddirection &&
-          feature.properties.courseovergroundtrue
-        ) {
-          return sailConfigImage(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
-        }
-        return '/sailboat-000.png'
-      }
-
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
-            iconSize: [32, 32],
-            iconAnchor: [16, 16],
-            iconUrl: sailBoatIconImg(feature),
+            iconSize: [16, 32],
+            iconAnchor: [8, 10],
+            iconUrl: '/sailboaticon.png',
           }),
           rotationAngle: feature.properties.courseovergroundtrue,
         })
@@ -121,8 +110,8 @@
       const powerBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
-            iconSize: [15, 30],
-            iconAnchor: [7.5, 10],
+            iconSize: [16, 32],
+            iconAnchor: [8, 10],
             iconUrl: '/powerboaticon.png',
           }),
           rotationAngle: feature.properties.courseovergroundtrue,

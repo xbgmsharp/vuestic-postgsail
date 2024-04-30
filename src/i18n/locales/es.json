@@ -176,7 +176,7 @@
       "departure": "Departure Time",
       "arrival": "Arrival Time",
       "departed": "Departed To",
-      "arrived": "Arrived From",
+      "arrived": "Arrived",
       "stayed_at": "Stayed at",
       "duration": "Duración [d]",
       "note": "Note | Notes"

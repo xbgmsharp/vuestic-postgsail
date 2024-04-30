@@ -181,8 +181,8 @@
       "moorage": "Moorage",
       "departure": "Departure Time",
       "arrival": "Arrival Time",
-      "departed": "Departed To",
-      "arrived": "Arrived From",
+      "departed": "Departed",
+      "arrived": "Arrived",
       "stayed_at": "Stayed at",
       "duration": "Duration [d]",
       "note": "Note | Notes"

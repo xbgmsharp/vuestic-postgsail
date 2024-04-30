@@ -175,8 +175,8 @@
       "moorage": "Moorage",
       "departure": "Hora de partida",
       "arrival": "Arrival Time",
-      "departed": "Departed To",
-      "arrived": "Arrived From",
+      "departed": "Departed",
+      "arrived": "Arrived",
       "stayed_at": "Fiquei em",
       "duration": "Duração [d]",
       "note": "Note | Notes"

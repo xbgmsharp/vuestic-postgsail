@@ -179,8 +179,8 @@
       "moorage": "Anlegestelle",
       "departure": "Abfahrtszeit",
       "arrival": "Ankunftszeit",
-      "departed": "Abgereist nach",
-      "arrived": "Angekommen von",
+      "departed": "Abgereist",
+      "arrived": "Angekommen",
       "stayed_at": "Verbleib",
       "duration": "Dauer [t]",
       "note": "Notiz | Notizen"

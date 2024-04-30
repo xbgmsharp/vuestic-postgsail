@@ -41,7 +41,7 @@
       default: 0,
       required: false,
     },
-    zoom: {
+    mapZoom: {
       type: Number,
       default: 17,
     },
@@ -55,9 +55,9 @@
     },
   })
   console.log(
-    'props moorageMapId,zoom,controlLayer,mapType',
+    'props moorageMapId,mapZoom,controlLayer,mapType',
     props.moorageMapId,
-    props.zoom,
+    props.mapZoom,
     props.controlLayer,
     props.mapType,
   )
@@ -100,7 +100,7 @@
     if (props.moorageMapId != 0) {
       coord = geojson.features.filter((geog) => geog.properties.id == props.moorageMapId)[0].geometry.coordinates
     }
-    map.value = L.map(mapContainer.value).setView(coord, props.zoom)
+    map.value = L.map(mapContainer.value).setView(coord, props.mapZoom)
     //console.log(coord)
 
     const bMaps = baseMaps()
@@ -169,7 +169,7 @@
 
     map.value.fitBounds(layer.getBounds(), { maxZoom: 17 })
     if (props.moorageMapId != 0) {
-      map.value.flyTo(coord.reverse(), props.zoom)
+      map.value.flyTo(coord.reverse(), props.mapZoom)
     }
   }
 

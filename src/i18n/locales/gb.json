@@ -51,6 +51,7 @@
     "timelapse_form": "Tune",
     "grafana": "Grafana",
     "monitoring": "Monitoring",
+    "monitoring_realtime": "Real-Time",
     "explore": "Explore",
     "privacy": "Privacy",
     "faq": "FAQ",

@@ -260,7 +260,7 @@
     const oMaps = overlayMaps()
     bMaps[defaultBaseMapType()].addTo(map.value)
 
-    L.control.layers(bMaps, oMaps).addTo(this.map)
+    L.control.layers(bMaps, oMaps).addTo(map.value)
 
     const sailConfigIconImg = function (feature) {
       if (

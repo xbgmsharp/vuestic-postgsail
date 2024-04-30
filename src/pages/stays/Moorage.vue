@@ -99,6 +99,7 @@
   import { default as utils } from '../../utils/utils.js'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { getTextForStayId } from '../../components/SelectStayAt.vue'
   import { useRoute } from 'vue-router'
 
   //import staysMoorageData from '../../data/staysMoorage.json'
@@ -135,7 +136,7 @@
             arrived: row._to_time,
             departed_id: row._from_id,
             departed: row._from_time,
-            stayed_at: StayAt.getTextForId(row.stay_code),
+            stayed_at: getTextForStayId(row.stay_code),
             stayed_at_id: row.stay_code,
             duration: durationFormatDays(row.duration),
           }))

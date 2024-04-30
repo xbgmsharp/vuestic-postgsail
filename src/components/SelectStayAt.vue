@@ -18,6 +18,17 @@
 </template>
 
 <script>
+  const optionsHash = {
+    1: 'Unknown',
+    2: 'Anchor',
+    3: 'Mooring Buoy',
+    4: 'Dock',
+  }
+
+  export const getTextForStayId = (value) => {
+    return optionsHash[value]
+  }
+
   export default {
     name: 'StayAt',
     props: {
@@ -26,13 +37,6 @@
     },
     emits: ['clickFromChildComponent'],
     data(props) {
-      const optionsHash = {
-        1: 'Unknown',
-        2: 'Anchor',
-        3: 'Mooring Buoy',
-        4: 'Dock',
-      }
-
       const options = Object.entries(optionsHash).map(([value, text]) => ({
         value: parseInt(value),
         text: text,
@@ -48,9 +52,6 @@
       handleSelect: function (value, item) {
         //console.log('clickFromChildComponent', value, item)
         this.$emit('clickFromChildComponent', value, item)
-      },
-      getTextForId: function (value) {
-        return this.optionsHash[value]
       },
     },
   }

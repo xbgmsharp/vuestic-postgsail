@@ -78,24 +78,6 @@
               class="themed"
               @click="handleCSV(items)"
             ></va-icon>
-            <va-icon
-              v-if="items.length > 0"
-              name="gpx"
-              outline
-              :size="34"
-              style="grid-column-end: 12"
-              class="themed"
-              @click="handleGPX()"
-            ></va-icon>
-            <va-icon
-              v-if="items.length > 0"
-              name="geojson"
-              outline
-              :size="34"
-              style="grid-column-end: 13"
-              class="themed"
-              @click="handleGeoJSON()"
-            ></va-icon>
           </div>
         </va-card-content>
       </va-card>
@@ -240,12 +222,6 @@
 
   function handleCSV(items) {
     runBusy(handleExport, 'csv', 'moorages', items)
-  }
-  function handleGPX() {
-    runBusy(handleExport, 'gpx', 'moorages')
-  }
-  function handleGeoJSON() {
-    runBusy(handleExport, 'geojson', 'moorages')
   }
 </script>
 

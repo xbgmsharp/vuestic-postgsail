@@ -159,7 +159,6 @@
     speed_arr = ref([]),
     wind_arr = ref([]),
     labels_arr = ref([]),
-    GeoJSONlayer = ref(),
     GeoJSONfeatures = ref(),
     GeoJSONbasemapObj = ref({})
 
@@ -390,11 +389,14 @@
             }
           }
 
-          // Update GeoJSON layer on the map
-          GeoJSONlayer.value.clearLayers()
-          GeoJSONlayer.value.addData(GeoJSONfeatures.value)
-          //console.log(GeoJSONfeatures.length)
-          //console.log(GeoJSONfeatures)
+          // Update each GeoJSON layer on the map
+          Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+            GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
+            GeoJSONbasemapObj.value[GeoJSONlayer].addData(GeoJSONfeatures.value)
+            //console.log(GeoJSONfeatures.value.length)
+            //console.log(GeoJSONfeatures.value)
+          })
+
           const track_geojson = {
             type: 'FeatureCollection',
             features: GeoJSONfeatures.value,
@@ -423,10 +425,15 @@
               }
               return true
             })
-            GeoJSONlayer.value.clearLayers()
-            GeoJSONlayer.value.addData(GeoJSONfeatures.value)
-            //console.log(GeoJSONfeatures.value.length)
-            //console.log(GeoJSONfeatures.value)
+
+            // Update each GeoJSON layer on the map
+            Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+              GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
+              GeoJSONbasemapObj.value[GeoJSONlayer].addData(GeoJSONfeatures.value)
+              //console.log(GeoJSONfeatures.value.length)
+              //console.log(GeoJSONfeatures.value)
+            })
+
             const track_geojson = {
               type: 'FeatureCollection',
               features: GeoJSONfeatures.value,
@@ -484,6 +491,9 @@
     L.control.layers(GeoJSONbasemapObj.value).addTo(map.value)
     GeoJSONbasemapObj.value['Sailboat'].addTo(map.value)
     map.value.fitBounds(GeoJSONbasemapObj.value['Sailboat'].getBounds(), { maxZoom: 17, zoomControl: false })
+    // Update default layer icon
+    document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
+      "background-image: url('/favicon-32x32.png');"
 
     /*
     // Add geoJSON

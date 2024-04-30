@@ -26,24 +26,17 @@
     },
     emits: ['clickFromChildComponent'],
     data(props) {
-      const options = [
-        {
-          value: 1,
-          text: 'Unknown',
-        },
-        {
-          value: 2,
-          text: 'Anchor',
-        },
-        {
-          value: 3,
-          text: 'Mooring Buoy',
-        },
-        {
-          value: 4,
-          text: 'Dock',
-        },
-      ]
+      const optionsHash = {
+        1: 'Unknown',
+        2: 'Anchor',
+        3: 'Mooring Buoy',
+        4: 'Dock',
+      }
+
+      const options = Object.entries(optionsHash).map(([value, text]) => ({
+        value: parseInt(value),
+        text: text,
+      }))
 
       return {
         item: props.id,
@@ -56,9 +49,8 @@
         //console.log('clickFromChildComponent', value, item)
         this.$emit('clickFromChildComponent', value, item)
       },
-      getTextForValue: function (value) {
-        const option = this.options.find((option) => option.value === value)
-        return option ? option.text : null
+      getTextForId: function (value) {
+        return this.optionsHash[value]
       },
     },
   }

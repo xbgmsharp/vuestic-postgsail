@@ -135,7 +135,7 @@
             arrived: row._to_time,
             departed_id: row._from_id,
             departed: row._from_time,
-            stayed_at: StayAt.getTextForValue(row.stay_code),
+            stayed_at: StayAt.getTextForId(row.stay_code),
             stayed_at_id: row.stay_code,
             duration: durationFormatDays(row.duration),
           }))

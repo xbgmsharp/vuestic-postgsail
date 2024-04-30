@@ -1,6 +1,6 @@
 <template>
   <div>
-    <va-card v-if="!filter_moorage_id" class="mb-3">
+    <va-card class="mb-3">
       <va-card-content>
         <div class="layout gutter--md">
           <div class="py-2 grid grid-cols-12 gap-6">
@@ -186,11 +186,7 @@
             toMoorageId: row._to_moorage_id,
           }))
           .filter((row) => {
-            if (filter_moorage_id) {
-              console.log('filter on moorage id')
-              if (row.fromMoorageId == filter_moorage_id || row.toMoorageId == filter_moorage_id) {
-                return true
-              }
+            if (filter_moorage_id && row.fromMoorageId != filter_moorage_id && row.toMoorageId != filter_moorage_id) {
               return false
             } else {
               const f = filter

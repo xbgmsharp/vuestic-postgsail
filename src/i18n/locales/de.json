@@ -182,9 +182,8 @@
       "departed": "Abgereist nach",
       "arrived": "Angekommen von",
       "stayed_at": "Verbleib",
-      "duration": "Dauer",
-      "note": "Notiz | Notizen",
-      "duration_unit": "Tage"
+      "duration": "Dauer [t]",
+      "note": "Notiz | Notizen"
     },
     "moorage": {
       "arrived": "Arrived",
@@ -205,8 +204,7 @@
       "moorage": "Anlegestelle",
       "default_stay": "Standardaufenthalt",
       "total_stay": "Gesamtaufenthalt",
-      "arrivals": "Ankünfte & Abreisen",
-      "duration_unit": "Tage"
+      "arrivals": "Ankünfte & Abreisen"
     },
     "details": {
       "title": "Details der Anlegestelle"

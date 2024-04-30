@@ -94,7 +94,7 @@
             -->
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationDays(value) }}
+            {{ value }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -157,26 +157,40 @@
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
-      ? rowsData.value.filter((row) => {
-          const f = filter
-          if (Object.keys(f).every((fkey) => !f[fkey])) {
-            return true
-          }
-          return Object.keys(f).every((fkey) => {
-            if (!f[fkey]) {
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            name: row.name,
+            moorage: row.moorage,
+            moorage_id: row.moorage_id,
+            arrived: row.arrived,
+            arrived_log_id: row.arrived_log_id,
+            departed: row.departed,
+            departed_log_id: row.departed_log_id,
+            stayed_at: row.stayed_at,
+            stayed_at_id: row.stayed_at_id,
+            duration: durationFormatDays(row.duration),
+          }))
+          .filter((row) => {
+            const f = filter
+            if (Object.keys(f).every((fkey) => !f[fkey])) {
               return true
             }
-            switch (fkey) {
-              case 'name':
-                return (
-                  row.name.toLowerCase().includes(f[fkey].toLowerCase()) ||
-                  row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-                )
-              case 'dateRange':
-                return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
-            }
+            return Object.keys(f).every((fkey) => {
+              if (!f[fkey]) {
+                return true
+              }
+              switch (fkey) {
+                case 'name':
+                  return (
+                    row.name.toLowerCase().includes(f[fkey].toLowerCase()) ||
+                    row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
+                  )
+                case 'dateRange':
+                  return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+              }
+            })
           })
-        })
       : []
   })
 

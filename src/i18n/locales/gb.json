@@ -184,9 +184,8 @@
       "departed": "Departed To",
       "arrived": "Arrived From",
       "stayed_at": "Stayed at",
-      "duration": "Duration",
-      "note": "Note | Notes",
-      "duration_unit": "days"
+      "duration": "Duration [d]",
+      "note": "Note | Notes"
     },
     "moorage": {
       "arrived": "Arrived",
@@ -207,8 +206,7 @@
       "moorage": "Moorage",
       "default_stay": "Default Stay Type",
       "total_stay": "Total Stay",
-      "arrivals": "Arrivals & Departures",
-      "duration_unit": "days"
+      "arrivals": "Arrivals & Departures"
     },
     "details": {
       "title": "Moorage's details"

@@ -178,9 +178,8 @@
       "departed": "Departed To",
       "arrived": "Arrived From",
       "stayed_at": "Stayed at",
-      "duration": "Duration",
-      "note": "Note | Notes",
-      "duration_unit": "days"
+      "duration": "Duración [d]",
+      "note": "Note | Notes"
     },
     "moorage": {
       "arrived": "Llegó",
@@ -201,8 +200,7 @@
       "moorage": "Moorage",
       "default_stay": "Default Stay",
       "total_stay": "Total Stay",
-      "arrivals": "Arrivals & Departures",
-      "duration_unit": "days"
+      "arrivals": "Arrivals & Departures"
     },
     "details": {
       "title": "Moorage's details"

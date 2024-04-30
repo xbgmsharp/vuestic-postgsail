@@ -135,7 +135,7 @@
       "from_time": "Departed at",
       "to": "Arrived",
       "to_time": "Arrived at",
-      "duration": "Duration [h]",
+      "duration": "Durée [h]",
       "duration_unit": "hour | hours",
       "distance": "Distance [NM]",
       "distance_miles": "0 mile | {n} mile | {n} miles",
@@ -178,9 +178,8 @@
       "departed": "Departed To",
       "arrived": "Arrived From",
       "stayed_at": "Séjourné à",
-      "duration": "Durée",
-      "note": "Note | Notes",
-      "duration_unit": "days"
+      "duration": "Durée [j]",
+      "note": "Note | Notes"
     },
     "moorage": {
       "arrived": "Arrivé",
@@ -201,8 +200,7 @@
       "moorage": "Moorage",
       "default_stay": "Default Stay",
       "total_stay": "Total Stay",
-      "arrivals": "Arrivals & Departures",
-      "duration_unit": "days"
+      "arrivals": "Arrivals & Departures"
     },
     "details": {
       "title": "Moorage's details"

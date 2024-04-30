@@ -4,6 +4,7 @@
   import { useVModel } from '@vueuse/core'
   import { Log, Pagination } from '../types'
   import { useI18n } from 'vue-i18n'
+  import { dateFormatUTC } from '../../../utils/dateFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -89,8 +90,12 @@
           {{ value }}
         </router-link>
       </template>
-      <template #cell(fromTime)="{ value }"> dateFormatUTC({{ value }}) </template>
-      <template #cell(toTime)="{ value }"> dateFormatUTC({{ value }}) </template>
+      <template #cell(fromTime)="{ value }">
+        {{ dateFormatUTC(value) }}
+      </template>
+      <template #cell(toTime)="{ value }">
+        {{ dateFormatUTC(value) }}
+      </template>
       <template #cell(distance)="{ value }">
         {{ value }}
       </template>

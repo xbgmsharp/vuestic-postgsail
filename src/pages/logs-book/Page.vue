@@ -79,7 +79,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC, durationFormatHours, durationI18nHours, durationHours } from '../../utils/dateFormatter.js'
+  import { durationFormatHours, durationI18nHours, durationHours } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'

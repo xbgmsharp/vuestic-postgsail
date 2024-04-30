@@ -1,5 +1,5 @@
 <template>
-  <Map style="width: 100%; height: 80vh" :zoom="8" :moorage-map-id="0" />
+  <Map style="width: 100%; height: 80vh" :map-zoom="8" :moorage-map-id="0" />
 </template>
 
 <script setup>

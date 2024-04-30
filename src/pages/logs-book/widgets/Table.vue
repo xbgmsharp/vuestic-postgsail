@@ -89,12 +89,8 @@
           {{ value }}
         </router-link>
       </template>
-      <template #cell(fromTime)="{ value }">
-        {{ value }}
-      </template>
-      <template #cell(toTime)="{ value }">
-        {{ value }}
-      </template>
+      <template #cell(fromTime)="{ value }"> dateFormatUTC({{ value }}) </template>
+      <template #cell(toTime)="{ value }"> dateFormatUTC({{ value }}) </template>
       <template #cell(distance)="{ value }">
         {{ value }}
       </template>

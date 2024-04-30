@@ -7,16 +7,12 @@
   </template>
   <template v-if="!offline && apiSuccess">
     <va-card class="mb-3">
-      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md">
           <div class="py-2 grid grid-cols-12 gap-6">
             <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :label="$t('logs.list.filter.name')" placeholder="Filter by name..." />
+              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
             </div>
-            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
-              $t('logs.list.filter.reset')
-            }}</va-button>
           </div>
         </div>
       </va-card-content>

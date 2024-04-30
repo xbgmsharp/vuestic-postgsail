@@ -124,7 +124,6 @@
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
-  import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
   import StayAt from '../../components/SelectStayAt.vue'
@@ -205,10 +204,6 @@
     }
   })
 
-  function resetFilter() {
-    Object.assign(filter, { ...getDefaultFilter() })
-  }
-
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)
   }
@@ -243,68 +238,6 @@
       }
     }
   }
-  /*const handleGPX = async () => {
-    isBusy.value = true
-    apiError.value = null
-    const api = new PostgSail()
-    try {
-      const response = await api.moorages_export_gpx()
-      if (response) {
-        console.log('moorages_export_gpx success', response)
-        const blob = new Blob([response], { type: 'text/xml' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = 'PostgSailMoorages.gpx'
-        link.click()
-      } else {
-        throw { response }
-      }
-    } catch (err) {
-      const { response } = err
-      console.log('moorages_export_gpx failed', err)
-      apiError.value = response.message
-    } finally {
-      isBusy.value = false
-    }
-  }
-  const handleGeoJSON = async () => {
-    isBusy.value = true
-    apiError.value = null
-    const api = new PostgSail()
-    try {
-      const response = await api.moorages_export_geojson()
-      if (response) {
-        console.log('moorages_export_geojson success', response)
-        const blob = new Blob([response], { type: 'application/json' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = 'PostgSailMoorages.geojson'
-        link.click()
-      } else {
-        throw { response }
-      }
-    } catch (err) {
-      const { response } = err
-      console.log('moorages_export_geojson failed', err)
-      apiError.value = response.message
-    } finally {
-      isBusy.value = false
-    }
-  }
-  /*
-  const handleCSV = async () => {
-    let csv = Object.keys(items.value[0]) + '\n'
-    csv += items.value
-      .map((row) => {
-        return Object.values(row).toString()
-      })
-      .join('\n')
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = 'PostgSailMoorages.csv'
-    link.click()
-  }*/
 
   function handleCSV(items) {
     runBusy(handleExport, 'csv', 'moorages', items)

@@ -56,6 +56,10 @@
         //console.log('clickFromChildComponent', value, item)
         this.$emit('clickFromChildComponent', value, item)
       },
+      getTextForValue: function (value) {
+        const option = this.options.find((option) => option.value === value)
+        return option ? option.text : null
+      },
     },
   }
 </script>

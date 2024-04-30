@@ -54,11 +54,11 @@
               </router-link>
             </template>
             <template #cell(stayed_at)="{ rowData }">
-              <div v-if="rowData.stay_code" style="max-width: 150px">
+              <div v-if="rowData.stayed_at_id" style="max-width: 150px">
                 <StayAt
                   :id="parseInt(rowData.id)"
                   :key="rowData.id"
-                  :data="parseInt(rowData.stay_code)"
+                  :data="parseInt(rowData.stayed_at_id)"
                   @clickFromChildComponent="updateDefaultStay"
                 />
               </div>
@@ -135,7 +135,8 @@
             arrived: row._to_time,
             departed_id: row._from_id,
             departed: row._from_time,
-            stay_code: row.stay_code,
+            stayed_at: StayAt.getTextForValue(row.stay_code),
+            stayed_at_id: row.stay_code,
             duration: durationFormatDays(row.duration),
           }))
           .filter((row) => {

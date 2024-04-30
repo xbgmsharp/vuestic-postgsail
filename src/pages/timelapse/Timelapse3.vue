@@ -15,7 +15,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
   import 'leaflet.fullscreen'
-  import { fallbackBaseMapType, baseMaps } from '../../utils/leafletHelpers.js'
+  import { fallbackBaseMapType, baseMaps } from '../../components/maps/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'

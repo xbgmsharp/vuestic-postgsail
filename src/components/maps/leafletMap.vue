@@ -6,7 +6,7 @@
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
+  import { defaultBaseMapType, baseMaps, overlayMaps } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'

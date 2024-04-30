@@ -108,7 +108,7 @@
   import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css'
   import * as L from 'leaflet'
   import 'leaflet-sidebar-v2'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
+  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'

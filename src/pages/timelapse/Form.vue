@@ -191,7 +191,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
-  import { baseMaps } from '../../utils/leafletHelpers.js'
+  import { baseMaps } from '../../components/maps/leafletHelpers.js'
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'

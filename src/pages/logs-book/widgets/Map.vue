@@ -40,14 +40,16 @@
 
 <template>
   <div>
-    <lMap
-      v-if="logbook_geojson.length > 1"
-      :geo-json-features="logbook_geojson"
-      style="width: 100%; height: 80vh"
-      :map-zoom="11"
-      :geo-filter="true"
-      :multigeojson="true"
-    />
+    <VaInnerLoading :loading="isBusy">
+      <lMap
+        v-if="logbook_geojson.length > 1"
+        :geo-json-features="logbook_geojson"
+        style="width: 100%; height: 80vh"
+        :map-zoom="11"
+        :geo-filter="true"
+        :multigeojson="true"
+      />
+    </VaInnerLoading>
   </div>
 </template>
 

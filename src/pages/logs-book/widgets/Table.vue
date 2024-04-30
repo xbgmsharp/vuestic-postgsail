@@ -4,9 +4,12 @@
   import { useVModel } from '@vueuse/core'
   import { Log, Pagination } from '../types'
   import { useI18n } from 'vue-i18n'
+  import { dateFormatUTC } from '../../../utils/dateFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
+
+  const sortFloat = (a, b) => parseFloat(a) - parseFloat(b)
 
   const columns = defineVaDataTableColumns([
     { label: t('logs.log.name'), key: 'name', sortable: true },
@@ -14,8 +17,8 @@
     { label: t('logs.list.to'), key: 'to', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
-    { label: t('logs.log.distance'), key: 'distance', sortable: true },
-    { label: t('logs.log.duration'), key: 'duration', sortable: true },
+    { label: t('logs.log.distance'), key: 'distance', sortable: true, sortingFn: sortFloat, tdAlign: 'right' },
+    { label: t('logs.log.duration'), key: 'duration', sortable: true, sortingFn: sortFloat, tdAlign: 'right' },
     { label: ' ', key: 'actions' },
   ])
 
@@ -90,10 +93,10 @@
         </router-link>
       </template>
       <template #cell(fromTime)="{ value }">
-        {{ value }}
+        {{ dateFormatUTC(value) }}
       </template>
       <template #cell(toTime)="{ value }">
-        {{ value }}
+        {{ dateFormatUTC(value) }}
       </template>
       <template #cell(distance)="{ value }">
         {{ value }}

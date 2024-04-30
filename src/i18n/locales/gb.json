@@ -205,7 +205,7 @@
       },
       "moorage": "Moorage",
       "default_stay": "Default Stay Type",
-      "total_stay": "Total Stay",
+      "total_stay": "Total Stay [d]",
       "arrivals": "Arrivals & Departures"
     },
     "details": {

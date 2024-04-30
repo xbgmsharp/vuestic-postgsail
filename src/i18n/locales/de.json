@@ -203,7 +203,7 @@
       },
       "moorage": "Anlegestelle",
       "default_stay": "Standardaufenthalt",
-      "total_stay": "Gesamtaufenthalt",
+      "total_stay": "Gesamtaufenthalt [t]",
       "arrivals": "Ankünfte & Abreisen"
     },
     "details": {

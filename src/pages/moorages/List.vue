@@ -29,6 +29,8 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <va-data-table
+            v-model:sort-by="sorting.sortBy"
+            v-model:sorting-order="sorting.sortingOrder"
             :columns="columns"
             :items="items"
             :loading="isBusy"
@@ -65,7 +67,7 @@
             </template>
             <template #cell(total_stay)="{ value, rowData }">
               <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: rowData.id } }">
-                {{ $t('units.time.days', parseInt(value)) }}
+                {{ value }}
               </router-link>
             </template>
             <template #cell(arrivals_departures)="{ value, rowData }">
@@ -146,14 +148,16 @@
   const columns = ref([
     { key: 'moorage', label: t('moorages.list.moorage'), sortable: true },
     { key: 'default_stay', label: t('moorages.list.default_stay'), sortable: true },
-    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true },
-    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true },
+    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true, tdAlign: 'center' },
+    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true, tdAlign: 'center' },
   ])
+  const sorting = ref({ sortBy: 'total_stay', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
       ? rowsData.value.filter((row) => {
+          console.log('filter', row)
           const f = filter
           if (Object.keys(f).every((fkey) => !f[fkey])) {
             return true
@@ -176,7 +180,7 @@
   const pages = computed(() => {
     return Math.ceil(items.value.length / perPage.value)
   })
-  // TODO Default sort on duration
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null

@@ -159,7 +159,6 @@
               return true
             }
             return Object.keys(f).every((fkey) => {
-              console.log(row)
               if (!f[fkey]) {
                 return true
               }

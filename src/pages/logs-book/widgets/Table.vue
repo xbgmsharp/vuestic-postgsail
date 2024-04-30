@@ -9,7 +9,7 @@
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
 
-  const sortFloat = (a, b) => parseFloat(a) - parseFloat(b)
+  const sortFloat = (a: string, b: string) => parseFloat(a) - parseFloat(b)
 
   const columns = defineVaDataTableColumns([
     { label: t('logs.log.name'), key: 'name', sortable: true },

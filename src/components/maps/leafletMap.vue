@@ -10,7 +10,7 @@
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
-  import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
+  import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
   import { useGlobalStore } from '../../stores/global-store'
   const { publicVessel } = useGlobalStore()

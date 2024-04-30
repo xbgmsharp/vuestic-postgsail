@@ -23,7 +23,7 @@
             <lMap
               :geo-json-feature="mapGeoJsonFeatures"
               :map-zoom="13"
-              :map-type="Satellite"
+              map-type="Satellite"
               style="width: 100%; height: 250px"
             />
           </template>

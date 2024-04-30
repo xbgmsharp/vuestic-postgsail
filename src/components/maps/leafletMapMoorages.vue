@@ -18,7 +18,7 @@
    */
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
-  import { defaultBaseMapType, fallbackBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
+  import { defaultBaseMapType, fallbackBaseMapType, baseMaps, overlayMaps } from './leafletHelpers.js'
 
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import PostgSail from '../../services/api-client'

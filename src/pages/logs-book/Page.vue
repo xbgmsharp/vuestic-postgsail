@@ -101,9 +101,9 @@
   const { confirm } = useModal()
   const { init: notify } = useToast()
 
-  // If mobile display as card by default. ?!?
+  // If mobile display as card by default.
   if (isMobile.value) {
-    doShowAsCards.value = true
+    doShowAsCards.value = 1
   }
   watch(doShowAsCards, () => {
     console.log('doShowAsCards ref changed!')

@@ -6,7 +6,7 @@
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../utils/leafletHelpers.js'
+  import { defaultBaseMapType, baseMaps, overlayMaps } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
@@ -97,23 +97,12 @@
         L.control.layers(bMaps, oMaps).addTo(this.map)
       }
 
-      const sailBoatIconImg = function (feature) {
-        if (
-          feature.properties.status == 'sailing' &&
-          feature.properties.truewinddirection &&
-          feature.properties.courseovergroundtrue
-        ) {
-          return sailConfigImage(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
-        }
-        return '/sailboat-000.png'
-      }
-
       const sailBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
-            iconSize: [32, 32],
-            iconAnchor: [16, 16],
-            iconUrl: sailBoatIconImg(feature),
+            iconSize: [16, 32],
+            iconAnchor: [8, 10],
+            iconUrl: '/sailboaticon.png',
           }),
           rotationAngle: feature.properties.courseovergroundtrue,
         })
@@ -121,8 +110,8 @@
       const powerBoatIcon = function (feature, latlng) {
         return L.marker(latlng, {
           icon: new L.Icon({
-            iconSize: [15, 30],
-            iconAnchor: [7.5, 10],
+            iconSize: [16, 32],
+            iconAnchor: [8, 10],
             iconUrl: '/powerboaticon.png',
           }),
           rotationAngle: feature.properties.courseovergroundtrue,
@@ -217,10 +206,11 @@
       if (this.multigeojson) {
         let layers = []
         let featGroup = new L.FeatureGroup()
-        const midPoint = Math.round(geojson.length / 2)
+        let controlLayer = L.control.layers()
         //console.log(geojson.length)
         for (let i = 0; i < geojson.length; i++) {
           //console.log(geojson[i].track_geojson)
+          let color = random_rgb_dark()
           layers[i] = L.geoJSON(geojson[i].track_geojson, {
             style: { color: random_rgb_dark() },
             filter: geoMapFilter,
@@ -228,6 +218,11 @@
             onEachFeature: popup,
           }).addTo(featGroup)
           featGroup.addTo(this.map)
+          const text = `<i class="geojson-box" style="background-color:${color}">&nbsp;</i><h4>${geojson[i].track_geojson.features[0].properties.name}</h4><small>${geojson[i].track_geojson.features[0].properties._from_time}</small>`
+          controlLayer.addOverlay(layers[i], text).addTo(this.map)
+          //document.getElementsByClassName('leaflet-control-layers-toggle')[1].className = 'leaflet-control-layers-toggle pgsail-geojson'
+          document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
+            "background-image: url('/favicon-32x32.png');"
         }
         layer = featGroup
       } else {
@@ -259,5 +254,14 @@
 <style scoped>
   #mapContainer {
     z-index: 0;
+  }
+  .geojson-box {
+    float: left;
+    height: 10px;
+    width: 10px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
+    padding: 1px 1px;
   }
 </style>

@@ -66,7 +66,7 @@ export default {
       children: [
         {
           name: 'monitoring',
-          displayName: 'menu.monitoring',
+          displayName: 'menu.monitoring_realtime',
           meta: {
             icon: 'menu-monitoring',
           },

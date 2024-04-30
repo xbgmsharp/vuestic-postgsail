@@ -190,7 +190,7 @@
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
-      "duration": "Duration"
+      "duration": "Dauer [t]"
     }
   },
   "moorages": {

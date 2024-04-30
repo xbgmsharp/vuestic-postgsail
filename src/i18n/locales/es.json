@@ -186,7 +186,7 @@
       "arrived": "Llegó",
       "departed": "Partido",
       "stayed_at": "Me alojé en",
-      "duration": "Duración"
+      "duration": "Duración [d]"
     }
   },
   "moorages": {

@@ -94,7 +94,7 @@
             -->
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormatDays(value) }} {{ $t('stays.stay.duration_unit') }}
+            {{ durationDays(value) }}
           </template>
         </va-data-table>
         <template v-if="items.length > perPage">
@@ -124,6 +124,7 @@
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
+  import { default as utils } from '../../utils/utils.js'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
@@ -150,7 +151,7 @@
     { key: 'arrived', label: t('stays.stay.arrived'), sortable: true },
     { key: 'departed', label: t('stays.stay.departed'), sortable: true },
     { key: 'stayed_at', label: t('stays.stay.stayed_at'), sortable: true },
-    { key: 'duration', label: t('stays.stay.duration'), sortable: true },
+    { key: 'duration', label: t('stays.stay.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
   ])
   const filter = reactive(getDefaultFilter())
 

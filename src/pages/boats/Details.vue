@@ -11,7 +11,7 @@
             <template v-if="!isBusy && item.geoJson">
               <lMap
                 :geo-json-feature="mapGeoJsonFeatures"
-                :map-type="Satellite"
+                map-type="Satellite"
                 :map-zoom="14"
                 style="width: 100%; height: 350px"
               />

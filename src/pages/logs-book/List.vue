@@ -199,7 +199,11 @@
                 }
                 switch (fkey) {
                   case 'name':
-                    return row.name.toLowerCase().includes(f[fkey].toLowerCase())
+                    return (
+                      row.name.toLowerCase().includes(f[fkey].toLowerCase()) ||
+                      row.from.toLowerCase().includes(f[fkey].toLowerCase()) ||
+                      row.to.toLowerCase().includes(f[fkey].toLowerCase())
+                    )
                   case 'dateRange':
                     return areIntervalsOverlapping(
                       { start: new Date(row.fromTime), end: new Date(row.toTime) },

@@ -79,8 +79,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { durationFormatHours, durationI18nHours, durationHours } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { durationHours } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'
   import logsData from '../../data/logs.json'
@@ -221,10 +220,8 @@
             to: row.to,
             fromTime: row.started,
             toTime: row.ended,
-            distance_format: parseFloat(parseFloat(row.distance).toFixed(2)) + ' NM',
-            duration_format: parseInt(durationHours(row.duration)) + ' h',
-            distance: distanceFormat(row.distance),
-            duration: durationFormat(row.duration),
+            distance: row.distance.toFixed(2),
+            duration: durationHours(row.duration).toFixed(2),
             fromMoorageId: row._from_moorage_id,
             toMoorageId: row._to_moorage_id,
           }))
@@ -259,9 +256,6 @@
       : []
   })
 
-  function durationFormat(value) {
-    return durationFormatHours(value) + ' ' + durationI18nHours(value)
-  }
   const pagination = reactive({ page: 1, perPage: 10, total: items.value.length })
 
   onMounted(async () => {

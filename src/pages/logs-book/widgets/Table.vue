@@ -9,14 +9,16 @@
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
 
+  const sortFloat = (a, b) => parseFloat(a) - parseFloat(b)
+
   const columns = defineVaDataTableColumns([
     { label: t('logs.log.name'), key: 'name', sortable: true },
     { label: t('logs.list.from'), key: 'from', sortable: true },
     { label: t('logs.list.to'), key: 'to', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
-    { label: t('logs.log.distance'), key: 'distance', sortable: true },
-    { label: t('logs.log.duration'), key: 'duration', sortable: true },
+    { label: t('logs.log.distance'), key: 'distance', sortable: true, sortingFn: sortFloat, tdAlign: 'right' },
+    { label: t('logs.log.duration'), key: 'duration', sortable: true, sortingFn: sortFloat, tdAlign: 'right' },
     { label: ' ', key: 'actions' },
   ])
 

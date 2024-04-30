@@ -1,33 +1,20 @@
 <template>
   <div>
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
+    <va-card v-if="!filter_moorage_id" class="mb-3">
       <va-card-content>
         <div class="layout gutter--md">
           <div class="py-2 grid grid-cols-12 gap-6">
             <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :label="$t('logs.list.filter.name')" placeholder="Filter by name..." />
+              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
             </div>
             <div class="col-span-12 md:col-span-6 flex flex-col">
               <va-date-input
                 v-model="filter.dateRange"
-                :label="$t('logs.list.filter.date_range')"
-                :readonly="false"
+                :clearable="true"
+                placeholder="Filter by date range..."
                 mode="range"
               />
             </div>
-            <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
-              $t('logs.list.filter.reset')
-            }}</va-button>
-            <va-icon
-              v-if="items.length > 0"
-              name="csv"
-              outline
-              :size="34"
-              style="grid-column-end: 13"
-              class="themed"
-              @click="handleCSV_all(items)"
-            ></va-icon>
           </div>
         </div>
       </va-card-content>
@@ -84,10 +71,10 @@
             {{ dateFormatUTC(value) }}
           </template>
           <template #cell(distance)="{ value }">
-            {{ distanceFormat(value) }}
+            {{ value }}
           </template>
           <template #cell(duration)="{ value }">
-            {{ durationFormatHours(value) }} {{ durationI18nHours(value) }}
+            {{ value }}
           </template>
           <!--
           <template #cell(action)="{ rowData.id }">
@@ -106,6 +93,17 @@
             <va-pagination v-model="currentPage" input :pages="pages" />
           </div>
         </template>
+        <div class="flex mt-4">
+          <va-icon
+            v-if="items.length > 0"
+            name="csv"
+            outline
+            :size="34"
+            style="grid-column-end: 13"
+            class="themed"
+            @click="handleCSV_all(items)"
+          ></va-icon>
+        </div>
       </va-card-content>
     </va-card>
   </div>
@@ -116,8 +114,8 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { dateFormatUTC, durationHours } from '../../utils/dateFormatter.js'
+  import { default as utils } from '../../utils/utils.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'
   import { useGlobalStore } from '../../stores/global-store'
@@ -166,8 +164,8 @@
     { key: 'to', label: t('logs.list.to'), sortable: true },
     { key: 'fromTime', label: t('logs.list.from_time'), sortable: true },
     { key: 'toTime', label: t('logs.list.to_time'), sortable: true },
-    { key: 'distance', label: t('logs.log.distance'), sortable: true },
-    { key: 'duration', label: t('logs.log.duration'), sortable: true },
+    { key: 'distance', label: t('logs.log.distance'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { key: 'duration', label: t('logs.log.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
     //{ key: 'action', label: t('logs.log.action') },
   ])
   const filter = reactive(getDefaultFilter())
@@ -182,8 +180,8 @@
             to: row.to,
             fromTime: row.started,
             toTime: row.ended,
-            distance: row.distance,
-            duration: row.duration,
+            distance: row.distance.toFixed(2),
+            duration: durationHours(row.duration).toFixed(2),
             fromMoorageId: row._from_moorage_id,
             toMoorageId: row._to_moorage_id,
           }))
@@ -245,10 +243,6 @@
       isBusy.value = false
     }
   })
-
-  function resetFilter() {
-    Object.assign(filter, { ...getDefaultFilter() })
-  }
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)

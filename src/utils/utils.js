@@ -59,6 +59,9 @@ export default {
   round: function (float) {
     return Math.round(parseFloat(float * 10)) / 10
   },
+  sortNum: function (a, b) {
+    return parseFloat(a) - parseFloat(b)
+  },
   deriveWindDir: function (windDir) {
     var wind_directions_array = [
       { minVal: 0, maxVal: 30, direction: 'N' },

@@ -84,9 +84,13 @@
                 <tr>
                   <td>{{ $t('timelapse.overlay') }}</td>
                   <td>
-                    <div v-if="colors">
-                      <va-switch v-model="overlay" size="small" @click="handleOverlay" />
-                    </div>
+                    <va-switch v-model="overlay" size="small" @click="handleOverlay" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ $t('timelapse.instruments') }}</td>
+                  <td>
+                    <va-switch v-model="instruments" size="small" @click="handleInstruments" />
                   </td>
                 </tr>
                 <tr>
@@ -218,6 +222,7 @@
   const { logs } = storeToRefs(CacheStore)
   const choose_trips = ref(false)
   const overlay = ref(true)
+  const instruments = ref(false)
   const color = ref(0)
   const start_trip = ref(-1)
   const end_trip = ref(-1)
@@ -232,6 +237,7 @@
     zoom: 13,
     color: 'dodgerblue',
     moorage_overlay: overlay.value,
+    instruments: instruments.value,
   })
   const timelapse_link = computed(() => {
     console.log('formData', formData)
@@ -446,6 +452,10 @@
   const handleOverlay = async () => {
     console.log('handleOverlay', overlay.value)
     formData.moorage_overlay = !overlay.value
+  }
+  const handleInstruments = async () => {
+    console.log('handleInstruments', instruments.value)
+    formData.instruments = !instruments.value
   }
   const onsubmit = () => {
     console.log('onsubmit', formData)

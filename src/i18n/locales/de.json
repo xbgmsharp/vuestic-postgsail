@@ -467,6 +467,7 @@
     "boattype": "Show Boat As",
     "trackcolor": "Track Color",
     "overlay": "Show Moorage Overlays",
+    "instruments": "Show Instruments",
     "zoom": "Zoom Level",
     "anim": "Animation Speed",
     "delay": "Initial Delay",

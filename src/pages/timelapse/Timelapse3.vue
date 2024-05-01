@@ -187,7 +187,12 @@
 
   const map_track_replay = () => {
     map.value.removeLayer(polyLine.value)
-    map.value.removeLayer(dotMarker.value)
+    if (dotMarker.value) {
+      map.value.removeLayer(dotMarker.value)
+    }
+    if (boatMarker.value) {
+      map.value.removeLayer(boatMarker.value)
+    }
     stopped.value = false
     map_track_setup()
   }

@@ -14,8 +14,16 @@
 <script setup>
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
+  import 'leaflet-rotatedmarker'
   import 'leaflet.fullscreen'
-  import { fallbackBaseMapType, baseMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
+  import {
+    fallbackBaseMapType,
+    baseMaps,
+    boatMarkerTypes,
+    powerBoatIcon,
+    sailBoatIcon,
+    sailBoatConfigIcon,
+  } from '../../components/maps/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -28,7 +36,7 @@
   //import { distanceLatLng } from '../../utils/distanceFormatter.js'
   //import noDataScreen from '../../components/noDataScreen.vue'
 
-  function parseMapTypeQueryParam(value, default_value) {
+  function parseBoatTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {
       return default_value
     } else if (value in boatMarkerTypes()) {
@@ -37,7 +45,7 @@
     return default_value
   }
 
-  function parseBoatTypeQueryParam(value, default_value) {
+  function parseMapTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {
       return default_value
     } else if (value === '0') {
@@ -70,7 +78,7 @@
     mapContainer = ref(),
     map = ref(),
     polyLine = ref(),
-    dotMarker = ref(),
+    dotMarker = ref(null),
     boatMarker = ref(null),
     timelapse = ref(),
     stopped = ref(false),
@@ -88,7 +96,7 @@
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
     map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
-    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'Dot')),
+    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'SailboatConfig')),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
@@ -165,10 +173,12 @@
       opacity: 0.9,
     }).addTo(map.value)
     // Create the marker
-    dotMarker.value = L.polyline([coord_rev, coord_rev], {
-      weight: 8,
-      color: 'red',
-    }).addTo(map.value)
+    if (map_type.value === 'Dot') {
+      dotMarker.value = L.polyline([coord_rev, coord_rev], {
+        weight: 8,
+        color: 'red',
+      }).addTo(map.value)
+    }
     // Update map every x ms
     setTimeout(() => {
       map_update()
@@ -278,32 +288,33 @@
         }
         // Get the next coordinates from the geojson
         let coord_rev = geojson.features[index].geometry.coordinates.toReversed()
+
         // Add the next point to the polyLine
         polyLine.value.addLatLng(coord_rev)
+
         // Move the maker to a next point
-        dotMarker.value.setLatLngs([coord_rev, coord_rev])
-
-        if (boatMarker.value) {
-          map.value.removeLayer(boatMarker.value)
+        if (dotMarker.value) {
+          dotMarker.value.setLatLngs([coord_rev, coord_rev])
+        } else {
+          // if boatMarker, remove old one and place new one
+          if (boatMarker.value) {
+            map.value.removeLayer(boatMarker.value)
+          }
+          switch (boat_type.value) {
+            case 'Sailboat':
+              boatMarker.value = sailBoatIcon(geojson.features[index], coord_rev).addTo(map.value)
+              break
+            case 'SailboatConfig':
+              boatMarker.value = sailBoatConfigIcon(geojson.features[index], coord_rev).addTo(map.value)
+              break
+            case 'Powerboat':
+              boatMarker.value = powerBoatIcon(geojson.features[index], coord_rev).addTo(map.value)
+              break
+          }
         }
-
-        // TODO: get this from leafletHelpers.js
-        const boatMarkerFunction = function (feature, latlng) {
-          console.log('boatMarker', feature.properties.courseovergroundtrue)
-          return L.marker(latlng, {
-            icon: new L.Icon({
-              iconSize: [16, 32],
-              iconAnchor: [8, 10],
-              iconUrl: '/sailboaticon.png',
-            }),
-            rotationAngle: feature.properties.courseovergroundtrue,
-          })
-        }
-        boatMarker.value = boatMarkerFunction(geojson.features[index], coord_rev)
-        boatMarker.value.addTo(map.value)
-
         // Move map view to the next point
         map.value.panTo(coord_rev, { animate: true })
+
         // Update the distance display
         if (last) {
           // Returns the distance (in meters)

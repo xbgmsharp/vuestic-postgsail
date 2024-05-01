@@ -127,6 +127,7 @@
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { durationFormatDays } from '../../utils/dateFormatter.js'
 
   import mooragesData from '../../data/moorages.json'
 
@@ -147,32 +148,41 @@
   const columns = ref([
     { key: 'moorage', label: t('moorages.list.moorage'), sortable: true },
     { key: 'default_stay', label: t('moorages.list.default_stay'), sortable: true },
-    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true, tdAlign: 'center' },
-    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true, tdAlign: 'center' },
+    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true, tdAlign: 'right' },
+    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true, tdAlign: 'right' },
   ])
   const sorting = ref({ sortBy: 'total_stay', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
-      ? rowsData.value.filter((row) => {
-          console.log('filter', row)
-          const f = filter
-          if (Object.keys(f).every((fkey) => !f[fkey])) {
-            return true
-          }
-          return Object.keys(f).every((fkey) => {
-            if (!f[fkey]) {
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            moorage: row.moorage,
+            default_stay: row.default_stay,
+            default_stay_id: row.default_stay_id,
+            total_stay: durationFormatDays(row.total_duration),
+            arrivals_departures: row.arrivals_departures,
+          }))
+          .filter((row) => {
+            console.log('filter', row)
+            const f = filter
+            if (Object.keys(f).every((fkey) => !f[fkey])) {
               return true
             }
-            switch (fkey) {
-              case 'name':
-                return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-              case 'default_stay':
-                return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
-            }
+            return Object.keys(f).every((fkey) => {
+              if (!f[fkey]) {
+                return true
+              }
+              switch (fkey) {
+                case 'name':
+                  return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
+                case 'default_stay':
+                  return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
+              }
+            })
           })
-        })
       : []
   })
 

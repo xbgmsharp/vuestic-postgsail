@@ -3,6 +3,7 @@
   import { Log } from '../types'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -129,11 +130,11 @@
             <div class="justify-center text-center">
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.distance') }}: </span>
-                <span>{{ log.distance }}</span>
+                <span>{{ distanceFormatMiles(log.distance) }}</span>
               </p>
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.duration') }}: </span>
-                <span>{{ log.duration }}</span>
+                <span>{{ distanceFormatMiles(log.duration) }}</span>
               </p>
               <p>
                 <span class="text-[var(--va-secondary)]">{{ t('logs.log.from') }}: </span>

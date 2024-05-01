@@ -173,7 +173,7 @@
       opacity: 0.9,
     }).addTo(map.value)
     // Create the marker
-    if (map_type.value === 'Dot') {
+    if (boat_type.value === 'Dot') {
       dotMarker.value = L.polyline([coord_rev, coord_rev], {
         weight: 8,
         color: 'red',

@@ -460,6 +460,7 @@
     "start": "Démarrer le voyage",
     "end": "Fin du voyage",
     "basemap": "Carte de base",
+    "boattype": "Boat Type",
     "trackcolor": "Couleur de la piste",
     "overlay": "Les superpositions d'amarrage",
     "zoom": "Niveau de zoom",

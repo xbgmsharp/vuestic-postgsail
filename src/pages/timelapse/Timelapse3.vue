@@ -240,7 +240,7 @@
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
       const overlayView = L.DomUtil.create('div', 'overlay')
-      const topRow = L.DomUtil.create('div', 'top-row', overlayView)
+      const topRow = L.DomUtil.create('b', 'top-row', overlayView)
       L.DomUtil.create('span', 'trip', topRow)
       const bottomRow = L.DomUtil.create('div', 'bottom-row', overlayView)
       L.DomUtil.create('span', 'note', bottomRow)

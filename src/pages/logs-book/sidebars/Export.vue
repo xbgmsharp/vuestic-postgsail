@@ -4,7 +4,7 @@
   import { useI18n } from 'vue-i18n'
   import { useRoute } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
-  import { asBusy, handleExport } from '../../../utils/handleExports'
+  import { asBusy, handleExportNew } from '../../../utils/handleExports'
   import { durationFormatHours } from '../../../utils/dateFormatter.js'
   import { distanceFormat } from '../../../utils/distanceFormatter.js'
 
@@ -38,7 +38,8 @@
     handleGPX = (id: number) => handleExport_common('gpx', id),
     handleKML = (id: number) => handleExport_common('kml', id),
     handleGeoJSON = (id: number) => handleExport_common('geojson', id),
-    handleExport_common = (format: string, id: number) => runBusy(handleExport, format, 'log', { _id: id }, `log_${id}`)
+    handleExport_common = (format: string, id: number) =>
+      runBusy(handleExportNew, format, 'log', { _id: id }, `log_${id}`)
 </script>
 
 <template>
@@ -46,9 +47,9 @@
     <!-- export section -->
     <div class="">
       <div class="export-buttons flex justify-center pa-1">
-        <va-icon name="gpx" :size="48" @click="handleGPX(logbook.id)" />
-        <va-icon name="geojson" :size="48" @click="handleGeoJSON(logbook.id)" />
-        <va-icon name="kml" :size="48" @click="handleKML(logbook.id)" />
+        <va-icon name="gpx" :size="48" @click="handleGPX(props.logbook.id)" />
+        <va-icon name="geojson" :size="48" @click="handleGeoJSON(props.logbook.id)" />
+        <va-icon name="kml" :size="48" @click="handleKML(props.logbook.id)" />
       </div>
     </div>
     <!-- sharing section -->

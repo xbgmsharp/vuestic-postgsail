@@ -16,6 +16,7 @@ export async function handleExport(
   payload: undefined | JSObj,
   filePrefix: string = apiPrefix,
 ) {
+  //console.log(format)
   const endpoint = `${apiPrefix}_export_${format}`
   try {
     const response = await formatMap[format][0](endpoint, payload)
@@ -23,6 +24,39 @@ export async function handleExport(
 
     //console.log(`${endpoint} success`, response)
     downloadFile(response, formatMap[format][1], `PostgSail_${capitalize(filePrefix)}.${format}`)
+  } catch (err: any) {
+    const { response } = err
+    console.log(`${endpoint} failed`, err)
+    throw response.message
+  }
+}
+
+/*
+ * Some reason out of my knowledge, in the logbook sidebar export just send different parameters
+ */
+export async function handleExportNew(
+  format = 'gpx',
+  apiPrefix: string,
+  payload: undefined | JSObj,
+  filePrefix: string = apiPrefix,
+) {
+  //console.log(format)
+  // db: export_logbook_gpx {"_id":6658}
+  // Api log_export_gpx {"_id":6658}
+  //const endpoint = `${apiPrefix}_export_${format}`
+  const endpoint = `${format[1]}_export_${format[0]}`
+  //console.log(endpoint)
+  //console.log(`${format[1]}_export_${format[0]}`)
+
+  try {
+    //console.log(formatMap[format[0]][0])
+    //const response = await formatMap[format][0](endpoint, payload)
+    const response = await formatMap[format[0]][0](endpoint, format[2])
+
+    if (!response) throw { response }
+
+    //console.log(`${endpoint} success`, response)
+    downloadFile(response, formatMap[format[0]][1], `PostgSail_${capitalize(format[3])}.${format[0]}`)
   } catch (err: any) {
     const { response } = err
     console.log(`${endpoint} failed`, err)

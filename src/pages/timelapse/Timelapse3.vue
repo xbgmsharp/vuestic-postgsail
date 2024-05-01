@@ -15,7 +15,7 @@
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
   import 'leaflet.fullscreen'
-  import { fallbackBaseMapType, baseMaps } from '../../components/maps/leafletHelpers.js'
+  import { fallbackBaseMapType, baseMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -31,7 +31,23 @@
   function parseMapTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {
       return default_value
-    } else if (value in baseMaps()) {
+    } else if (value in boatMarkerTypes()) {
+      return value
+    }
+    return default_value
+  }
+
+  function parseBoatTypeQueryParam(value, default_value) {
+    if (value === undefined || value === null) {
+      return default_value
+    } else if (value === '0') {
+      // map_type backward compatibility: was using numerical values initially
+      value = 'OpenStreetMap'
+    } else if (value === '1') {
+      value = 'Satellite'
+    }
+
+    if (value in baseMaps()) {
       return value
     }
     return default_value
@@ -54,7 +70,8 @@
     mapContainer = ref(),
     map = ref(),
     polyLine = ref(),
-    marker = ref(),
+    dotMarker = ref(),
+    boatMarker = ref(null),
     timelapse = ref(),
     stopped = ref(false),
     play_pause = ref(true)
@@ -71,6 +88,7 @@
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
     map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
+    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'Dot')),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
@@ -84,13 +102,6 @@
   }
   if (end_date.value === null && start_date.value != null) {
     end_date.value = start_date.value
-  }
-
-  // map_type backward compatibility: was using numerical values initially
-  if (map_type.value === '0') {
-    map_type.value = 'OpenStreetMap'
-  } else if (map_type.value === '1') {
-    map_type.value = 'Satellite'
   }
 
   console.log(
@@ -154,7 +165,7 @@
       opacity: 0.9,
     }).addTo(map.value)
     // Create the marker
-    marker.value = L.polyline([coord_rev, coord_rev], {
+    dotMarker.value = L.polyline([coord_rev, coord_rev], {
       weight: 8,
       color: 'red',
     }).addTo(map.value)
@@ -166,7 +177,7 @@
 
   const map_track_replay = () => {
     map.value.removeLayer(polyLine.value)
-    map.value.removeLayer(marker.value)
+    map.value.removeLayer(dotMarker.value)
     stopped.value = false
     map_track_setup()
   }
@@ -270,7 +281,27 @@
         // Add the next point to the polyLine
         polyLine.value.addLatLng(coord_rev)
         // Move the maker to a next point
-        marker.value.setLatLngs([coord_rev, coord_rev])
+        dotMarker.value.setLatLngs([coord_rev, coord_rev])
+
+        if (boatMarker.value) {
+          map.value.removeLayer(boatMarker.value)
+        }
+
+        // TODO: get this from leafletHelpers.js
+        const boatMarkerFunction = function (feature, latlng) {
+          console.log('boatMarker', feature.properties.courseovergroundtrue)
+          return L.marker(latlng, {
+            icon: new L.Icon({
+              iconSize: [16, 32],
+              iconAnchor: [8, 10],
+              iconUrl: '/sailboaticon.png',
+            }),
+            rotationAngle: feature.properties.courseovergroundtrue,
+          })
+        }
+        boatMarker.value = boatMarkerFunction(geojson.features[index], coord_rev)
+        boatMarker.value.addTo(map.value)
+
         // Move map view to the next point
         map.value.panTo(coord_rev, { animate: true })
         // Update the distance display

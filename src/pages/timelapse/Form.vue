@@ -390,7 +390,7 @@
       formatDate = dateFormatUTC(logs.value[i].started)
       mylogs.value.push({ value: logs.value[i].id, text: `${formatDate}: ${logs.value[i].name}` })
     }
-    console.log(mylogs.value)
+    console.log('logs', mylogs.value)
   })
 
   const handleStart = async (new_value, obj) => {
@@ -451,11 +451,11 @@
   }
   const handleOverlay = async () => {
     console.log('handleOverlay', overlay.value)
-    formData.moorage_overlay = !overlay.value
+    formData.moorage_overlay = overlay.value
   }
   const handleInstruments = async () => {
     console.log('handleInstruments', instruments.value)
-    formData.instruments = !instruments.value
+    formData.instruments = instruments.value
   }
   const onsubmit = () => {
     console.log('onsubmit', formData)

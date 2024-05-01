@@ -114,14 +114,8 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import {
-    dateFormatUTC,
-    durationFormatHours,
-    durationI18nHours,
-    durationI18nDays,
-    dateFormatTime,
-  } from '../../utils/dateFormatter.js'
-  import { distanceFormat, distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours, dateFormatTime } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'

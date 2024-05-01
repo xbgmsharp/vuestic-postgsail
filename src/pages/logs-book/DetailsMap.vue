@@ -108,21 +108,16 @@
   import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css'
   import * as L from 'leaflet'
   import 'leaflet-sidebar-v2'
+  import 'leaflet-rotatedmarker'
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import {
-    dateFormatUTC,
-    durationFormatHours,
-    durationI18nHours,
-    durationI18nDays,
-    dateFormatTime,
-  } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
+  import { dateFormatUTC, durationFormatHours, durationI18nHours, dateFormatTime } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
@@ -171,13 +166,13 @@
           to: apiData.row.to,
           fromTime: dateFormatUTC(apiData.row.started),
           toTime: dateFormatUTC(apiData.row.ended),
-          distance: distanceFormat(apiData.row.distance),
+          distance: distanceFormatMiles(apiData.row.distance),
           duration: durationFormatHours(apiData.row.duration) + ' ' + durationI18nHours(apiData.row.duration),
           notes: apiData.row.notes,
           geoJson: apiData.row.geojson,
-          avg_speed: speedFormat(apiData.row.avg_speed),
-          max_speed: speedFormat(apiData.row.max_speed),
-          max_wind_speed: speedFormat(apiData.row.max_wind_speed),
+          avg_speed: speedFormatKnots(apiData.row.avg_speed),
+          max_speed: speedFormatKnots(apiData.row.max_speed),
+          max_wind_speed: speedFormatKnots(apiData.row.max_wind_speed),
           extra: apiData.row?.extra?.metrics,
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
@@ -284,10 +279,10 @@
         //console.log(`popup`, feature.properties)
         let status = feature.properties.status || ''
         let time = dateFormatUTC(feature.properties.time)
-        let speed = speedFormat(feature.properties.speedoverground) || 0
+        let speed = speedFormatKnots(feature.properties.speedoverground) || 0
         let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
         let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
-        let wind = speedFormat(feature.properties.windspeedapparent) || 0
+        let wind = speedFormatKnots(feature.properties.windspeedapparent) || 0
         let winddir = angleFormat(feature.properties.truewinddirection) || 0
         let latitude = parseFloat(feature.properties.latitude).toFixed(5)
         let longitude = parseFloat(feature.properties.longitude).toFixed(5)
@@ -403,9 +398,9 @@
         // Those value are read directly from the geojson so they are unformatted.
         // We could used the log details item ref for performance
         let time = dateFormatUTC(feature.properties._from_time)
-        let avg_speed = speedFormat(feature.properties.avg_speed)
+        let avg_speed = speedFormatKnots(feature.properties.avg_speed)
         let duration = durationFormatHours(feature.properties.duration)
-        let distance = parseFloat(feature.properties.distance).toFixed(1)
+        let distance = distanceFormatMiles(feature.properties.distance)
         let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
                 Time: ${time}<br/>
                 Average Speed: ${avg_speed}<br/>
@@ -543,7 +538,7 @@
             //console.log(layer)
             layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
                 Time: ${item.value.fromTime}<br/>
-                avg_speed: ${item.value.avg_speed}<br/>
+                Average Speed: ${item.value.avg_speed}<br/>
                 Duration: ${item.value.duration}<br/>
                 Distance: ${item.value.distance}<br/>
                 Notes: ${formData.notes}<br/>`)

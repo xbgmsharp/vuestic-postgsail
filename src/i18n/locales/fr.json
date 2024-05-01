@@ -136,14 +136,13 @@
       "from_time": "Departed at",
       "to": "Arrived",
       "to_time": "Arrived at",
-      "duration": "Duration [h]",
-      "duration_unit": "hour | hours",
-      "distance": "Distance [NM]",
-      "distance_miles": "0 mile | {n} mile | {n} miles",
+      "duration": "Durée",
+      "distance": "Distance",
+      "duration_h": "Durée [h]",
+      "distance_nm": "Distance [NM]",
       "avg": "Moyenne",
       "max": "Max",
       "speed": "Vitesse",
-      "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Vitesse du vent",
       "note": "Note | Notes",
       "remarks": "Raconte ce qui s'est passé",
@@ -176,18 +175,17 @@
       "moorage": "Moorage",
       "departure": "Departure Time",
       "arrival": "Arrival Time",
-      "departed": "Departed To",
-      "arrived": "Arrived From",
+      "departed": "Departed",
+      "arrived": "Arrived",
       "stayed_at": "Séjourné à",
-      "duration": "Durée",
-      "note": "Note | Notes",
-      "duration_unit": "days"
+      "duration_d": "Durée [j]",
+      "note": "Note | Notes"
     },
     "moorage": {
       "arrived": "Arrivé",
       "departed": "Parti",
       "stayed_at": "Séjourné à",
-      "duration": "Durée"
+      "duration_d": "Durée [j]"
     }
   },
   "moorages": {
@@ -201,9 +199,8 @@
       },
       "moorage": "Moorage",
       "default_stay": "Default Stay",
-      "total_stay": "Total Stay",
-      "arrivals": "Arrivals & Departures",
-      "duration_unit": "days"
+      "total_stay": "Total Stay [d]",
+      "arrivals": "Arrivals & Departures"
     },
     "details": {
       "title": "Moorage's details"
@@ -420,10 +417,11 @@
   },
   "units": {
     "distance": {
-      "NM": "Distance NM",
-      "KM": "Distance KM",
-      "miles": "{n} mile | {n} miles",
-      "kilometres": "{n} kilometre | {n} kilometres"
+      "miles": "NM",
+      "kilometres": "km"
+    },
+    "speed": {
+      "knots": "kts"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

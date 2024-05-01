@@ -6,10 +6,11 @@
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
+
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
   import { useGlobalStore } from '../../stores/global-store'
@@ -120,10 +121,10 @@
           //console.log(`popup`, feature.properties)
           let status = feature.properties.status || ''
           let time = dateFormatUTC(feature.properties.time)
-          let speed = speedFormat(feature.properties.speedoverground) || 0
+          let speed = speedFormatKnots(feature.properties.speedoverground) || 0
           let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
           let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
-          let wind = speedFormat(feature.properties.windspeedapparent) || 0
+          let wind = speedFormatKnots(feature.properties.windspeedapparent) || 0
           let winddir = angleFormat(feature.properties.truewinddirection) || 0
           let latitude = parseFloat(feature.properties.latitude).toFixed(5)
           let longitude = parseFloat(feature.properties.longitude).toFixed(5)
@@ -142,7 +143,7 @@
         if (feature.properties && feature.properties._from_time) {
           //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties._from_time)
-          let avg_speed = speedFormat(feature.properties.avg_speed)
+          let avg_speed = speedFormatKnots(feature.properties.avg_speed)
           let duration = durationFormatHours(feature.properties.duration) + ' H'
           let distance = parseFloat(feature.properties.distance).toFixed(5) + ' NM'
           let text = `<div class='center'><h4><a id="logLink" style="cursor: pointer;" onclick="logLink(${feature.properties.id})">${feature.properties.name}</a></h4></div><br/>

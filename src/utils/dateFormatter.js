@@ -67,9 +67,14 @@ export const durationI18nHours = (durationString, tr = 'units.time.hours') => {
   return t(tr, durationH === '1' ? 0 : parseInt(durationH))
 }
 
-export const durationFormatDays = (durationString) => {
-  return moment.duration(durationString).as('days').toFixed(2)
+export const durationDays = (durationString) => {
+  return moment.duration(durationString).as('days')
 }
+
+export const durationFormatDays = (durationString) => {
+  return durationDays(durationString).toFixed(1)
+}
+
 export const durationI18nDays = (durationString, tr = 'units.time.days') => {
   // display "day" only if exactly 1; "hours" otherwise (e.g.: 0.8, 1.2):
   //return t(tr, durationHours(durationString) === '1' ? 1 : 0)

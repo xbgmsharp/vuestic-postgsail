@@ -7,7 +7,6 @@
   </template>
   <template v-if="!offline && apiSuccess">
     <va-card class="mb-3">
-      <va-card-title>{{ $t('logs.list.filter.title') }}</va-card-title>
       <va-card-content>
         <div class="layout gutter--md self-center items-center align-center">
           <div class="py-2" style="min-width: 150px; max-width: 15%">

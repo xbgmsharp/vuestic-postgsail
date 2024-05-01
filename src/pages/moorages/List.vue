@@ -52,6 +52,8 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <va-data-table
+            v-model:sort-by="sorting.sortBy"
+            v-model:sorting-order="sorting.sortingOrder"
             :columns="columns"
             :items="items"
             :loading="isBusy"
@@ -88,7 +90,7 @@
             </template>
             <template #cell(total_stay)="{ value, rowData }">
               <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: rowData.id } }">
-                {{ $t('units.time.days', parseInt(value)) }}
+                {{ value }}
               </router-link>
             </template>
             <template #cell(arrivals_departures)="{ value, rowData }">
@@ -145,11 +147,12 @@
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
-  import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
   import StayAt from '../../components/SelectStayAt.vue'
   import { stayed_at_options } from '../../utils/PostgSail.ts'
+  import { durationFormatDays } from '../../utils/dateFormatter.js'
+
   import mooragesData from '../../data/moorages.json'
 
   const { t } = useI18n()
@@ -169,9 +172,10 @@
   const columns = ref([
     { key: 'moorage', label: t('moorages.list.moorage'), sortable: true },
     { key: 'default_stay', label: t('moorages.list.default_stay'), sortable: true },
-    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true },
-    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true },
+    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true, tdAlign: 'right' },
+    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true, tdAlign: 'right' },
   ])
+  const sorting = ref({ sortBy: 'total_stay', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
   const filterstayed_at = ref([])
   const options = computed(() => {
@@ -190,30 +194,40 @@
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
-      ? rowsData.value.filter((row) => {
-          const f = filter
-          if (Object.keys(f).every((fkey) => !f[fkey])) {
-            return true
-          }
-          return Object.keys(f).every((fkey) => {
-            if (!f[fkey]) {
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            moorage: row.moorage,
+            default_stay: row.default_stay,
+            default_stay_id: row.default_stay_id,
+            total_stay: durationFormatDays(row.total_duration),
+            arrivals_departures: row.arrivals_departures,
+          }))
+          .filter((row) => {
+            console.log('filter', row)
+            const f = filter
+            if (Object.keys(f).every((fkey) => !f[fkey])) {
               return true
             }
-            switch (fkey) {
-              case 'name':
-                return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-              case 'default_stay':
-                return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
-            }
+            return Object.keys(f).every((fkey) => {
+              if (!f[fkey]) {
+                return true
+              }
+              switch (fkey) {
+                case 'name':
+                  return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
+                case 'default_stay':
+                  return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
+              }
+            })
           })
-        })
       : []
   })
 
   const pages = computed(() => {
     return Math.ceil(items.value.length / perPage.value)
   })
-  // TODO Default sort on duration
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -237,10 +251,6 @@
       isBusy.value = false
     }
   })
-
-  function resetFilter() {
-    Object.assign(filter, { ...getDefaultFilter() })
-  }
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)
@@ -276,68 +286,6 @@
       }
     }
   }
-  /*const handleGPX = async () => {
-    isBusy.value = true
-    apiError.value = null
-    const api = new PostgSail()
-    try {
-      const response = await api.moorages_export_gpx()
-      if (response) {
-        console.log('moorages_export_gpx success', response)
-        const blob = new Blob([response], { type: 'text/xml' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = 'PostgSailMoorages.gpx'
-        link.click()
-      } else {
-        throw { response }
-      }
-    } catch (err) {
-      const { response } = err
-      console.log('moorages_export_gpx failed', err)
-      apiError.value = response.message
-    } finally {
-      isBusy.value = false
-    }
-  }
-  const handleGeoJSON = async () => {
-    isBusy.value = true
-    apiError.value = null
-    const api = new PostgSail()
-    try {
-      const response = await api.moorages_export_geojson()
-      if (response) {
-        console.log('moorages_export_geojson success', response)
-        const blob = new Blob([response], { type: 'application/json' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = 'PostgSailMoorages.geojson'
-        link.click()
-      } else {
-        throw { response }
-      }
-    } catch (err) {
-      const { response } = err
-      console.log('moorages_export_geojson failed', err)
-      apiError.value = response.message
-    } finally {
-      isBusy.value = false
-    }
-  }
-  /*
-  const handleCSV = async () => {
-    let csv = Object.keys(items.value[0]) + '\n'
-    csv += items.value
-      .map((row) => {
-        return Object.values(row).toString()
-      })
-      .join('\n')
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = 'PostgSailMoorages.csv'
-    link.click()
-  }*/
 
   function handleCSV(items) {
     runBusy(handleExport, 'csv', 'moorages', items)

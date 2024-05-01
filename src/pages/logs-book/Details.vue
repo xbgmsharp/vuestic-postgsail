@@ -122,10 +122,10 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.avg_max_speed') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  {{ speedFormat(item.avg_speed) }} / {{ speedFormat(item.max_speed) }}
+                  {{ speedFormatKnots(item.avg_speed) }} / {{ speedFormatKnots(item.max_speed) }}
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.max_wind_speed') }}</dt>
-                <dd class="flex xs12 md6 pa-2">{{ speedFormat(item.max_wind_speed) }}</dd>
+                <dd class="flex xs12 md6 pa-2">{{ speedFormatKnots(item.max_wind_speed) }}</dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('logs.log.note') }}</dt>
                 <dd class="flex xs12 md6 pa-1">
                   <template v-if="isLoggedIn">
@@ -300,7 +300,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { dateFormatUTC, durationFormatHours, durationI18nHours, durationI18nDays } from '../../utils/dateFormatter.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { seaState, visibility } from '../../utils/PostgSail'

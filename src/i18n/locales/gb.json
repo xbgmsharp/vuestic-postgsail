@@ -142,14 +142,13 @@
       "from_time": "Departed at",
       "to": "Arrived",
       "to_time": "Arrived at",
-      "duration": "Duration [h]",
-      "duration_unit": "{n} hour | {n} hours",
-      "distance": "Distance [NM]",
-      "distance_miles": "{n} mile | {n} miles",
+      "duration": "Duration",
+      "duration_h": "Duration [h]",
+      "distance": "Distance",
+      "distance_nm": "Distance [NM]",
       "avg": "Average",
       "max": "Max",
       "speed": "Speed",
-      "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Wind Speed",
       "note": "Note | Notes",
       "remarks": "Tell what happened",
@@ -182,18 +181,17 @@
       "moorage": "Moorage",
       "departure": "Departure Time",
       "arrival": "Arrival Time",
-      "departed": "Departed To",
-      "arrived": "Arrived From",
+      "departed": "Departed",
+      "arrived": "Arrived",
       "stayed_at": "Stayed at",
-      "duration": "Duration",
-      "note": "Note | Notes",
-      "duration_unit": "days"
+      "duration_d": "Duration [d]",
+      "note": "Note | Notes"
     },
     "moorage": {
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
-      "duration": "Duration"
+      "duration_d": "Duration [d]"
     }
   },
   "moorages": {
@@ -207,9 +205,8 @@
       },
       "moorage": "Moorage",
       "default_stay": "Default Stay Type",
-      "total_stay": "Total Stay",
-      "arrivals": "Arrivals & Departures",
-      "duration_unit": "days"
+      "total_stay": "Total Stay [d]",
+      "arrivals": "Arrivals & Departures"
     },
     "details": {
       "title": "Moorage's details"
@@ -432,10 +429,11 @@
   },
   "units": {
     "distance": {
-      "NM": "Distance NM",
-      "KM": "Distance KM",
-      "miles": "{n} mile | {n} miles",
-      "kilometres": "{n} kilometre | {n} kilometres"
+      "miles": "{n} NM",
+      "kilometres": "{n} km"
+    },
+    "speed": {
+      "knots": "{n} kts"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

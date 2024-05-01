@@ -6,7 +6,7 @@
   import { useGlobalStore } from '../../../stores/global-store'
   import { asBusy, handleExport } from '../../../utils/handleExports'
   import { durationFormatHours } from '../../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../../utils/distanceFormatter.js'
+  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
 
   const { publicVessel, instagram, website } = useGlobalStore()
   const { t } = useI18n()

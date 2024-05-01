@@ -72,7 +72,7 @@ export const durationDays = (durationString) => {
 }
 
 export const durationFormatDays = (durationString) => {
-  return durationDays(durationString).toFixed(2)
+  return durationDays(durationString).toFixed(1)
 }
 
 export const durationI18nDays = (durationString, tr = 'units.time.days') => {

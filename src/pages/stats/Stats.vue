@@ -247,7 +247,7 @@
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   //import { asBusy } from '../../utils/handleExports'
   import { durationFormatDays, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'

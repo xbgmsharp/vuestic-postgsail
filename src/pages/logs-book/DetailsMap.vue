@@ -121,7 +121,7 @@
     durationI18nDays,
     dateFormatTime,
   } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormat } from '../../utils/speedFormatter.js'
   import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
@@ -171,7 +171,7 @@
           to: apiData.row.to,
           fromTime: dateFormatUTC(apiData.row.started),
           toTime: dateFormatUTC(apiData.row.ended),
-          distance: distanceFormat(apiData.row.distance),
+          distance: distanceFormatMiles(apiData.row.distance),
           duration: durationFormatHours(apiData.row.duration) + ' ' + durationI18nHours(apiData.row.duration),
           notes: apiData.row.notes,
           geoJson: apiData.row.geojson,

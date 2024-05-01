@@ -10,12 +10,16 @@ export const distanceLatLng = (val, trad = 'units.distance.miles') => {
   return t(trad, n)
 }
 
-export const distanceFormat = (val, trad = 'units.distance.miles') => {
+export const distanceFormatMiles = (val, trad = 'units.distance.miles') => {
   if (!val) return null
   //const n = GlobalStore.imperialUnits ? parseFloat(val) : ((trad = 'units.distance.kilometres'), milesToKm(val))
   const n = parseFloat(val)
-  const count = { n: n % 1 ? parseFloat(n.toFixed(2)) : n }
+  const count = { n: n % 1 ? parseFloat(n.toFixed(1)) : n }
   return t(trad, count)
+}
+
+export function distanceFormat(val) {
+  return parseFloat(val).toFixed(1)
 }
 
 export function distanceKm(val, trad = 'units.distance.kilometres') {

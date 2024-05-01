@@ -20,6 +20,7 @@
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
 
   //import { useGlobalStore } from '../../stores/global-store'
@@ -278,7 +279,7 @@
           // Returns the distance (in meters)
           distance += last.distanceTo(coord_rev)
           // convert meters -> KM -> NM
-          distanceView.innerText = parseFloat(parseFloat(distance / 1000) * 0.5399568).toFixed(2) + ' NM'
+          distanceView.innerText = distanceFormat(parseFloat(parseFloat(distance / 1000) * 0.5399568)) + ' NM'
           datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
         }
         last = L.latLng(coord_rev)

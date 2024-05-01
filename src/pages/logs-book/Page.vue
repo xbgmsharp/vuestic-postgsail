@@ -79,7 +79,8 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
-  import { durationHours } from '../../utils/dateFormatter.js'
+  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { durationFormatHours } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'
   import logsData from '../../data/logs.json'
@@ -220,8 +221,8 @@
             to: row.to,
             fromTime: row.started,
             toTime: row.ended,
-            distance: row.distance.toFixed(2),
-            duration: durationHours(row.duration).toFixed(2),
+            distance: distanceFormat(row.distance),
+            duration: durationFormatHours(row.duration),
             fromMoorageId: row._from_moorage_id,
             toMoorageId: row._to_moorage_id,
           }))

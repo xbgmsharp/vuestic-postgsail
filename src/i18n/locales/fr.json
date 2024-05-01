@@ -143,7 +143,6 @@
       "avg": "Moyenne",
       "max": "Max",
       "speed": "Vitesse",
-      "speed_knots": "0 knot | {n} knot | {n} knots",
       "wind_speed": "Vitesse du vent",
       "note": "Note | Notes",
       "remarks": "Raconte ce qui s'est passé",
@@ -422,6 +421,9 @@
       "KM": "Distance KM",
       "miles": "{n} mile | {n} miles",
       "kilometres": "{n} kilometre | {n} kilometres"
+    },
+    "speed": {
+      "knots": "0 knot | {n} knot | {n} knots",
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

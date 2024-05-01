@@ -15,6 +15,8 @@ export type Log = {
   duration_format: string
   _from_moorage_id: number
   _to_moorage_id: number
+  fromMoorageId: number
+  toMoorageId: number
 }
 
 export type Trip = {

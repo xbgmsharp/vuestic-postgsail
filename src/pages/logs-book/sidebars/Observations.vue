@@ -39,7 +39,7 @@
     if (new_sea_state >= 0) {
       console.log('handleSeaState obj:', obj.value + ', text:' + obj.text)
       var result_obj: any = {}
-      result_obj.visibility = new_sea_state
+      result_obj.seaState = new_sea_state
       updateObservations(result_obj)
     }
   }

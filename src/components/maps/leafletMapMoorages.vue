@@ -25,7 +25,7 @@
   import mooragesGeoJSON from '../../data/moorages_map.json'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
-  import { distanceFormat } from '../../utils/distanceFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
 
   const isBusy = ref(false),
     apiError = ref(null),
@@ -182,7 +182,7 @@
       console.log('popup onEachLineStringFeaturePopup')
       let date = dateFormatUTC(feature.properties._from_time)
       let duration = durationFormatHours(feature.properties.duration)
-      let distance = distanceFormat(feature.properties.distance)
+      let distance = distanceFormatMiles(feature.properties.distance)
       let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">From ${feature.properties.name}</a></h6><br/>
         ${date}, ${distance} miles, ${duration} hours<br/></div>`
       // TODO should be done using i18n

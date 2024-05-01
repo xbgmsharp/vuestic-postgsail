@@ -10,47 +10,20 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('moorages.list.filter.title') }}</va-card-title>
         <va-card-content>
           <div class="layout gutter--md">
             <div class="py-2 grid grid-cols-12 gap-6">
               <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-input
-                  v-model="filter.name"
-                  :label="$t('moorages.list.filter.name')"
-                  placeholder="Filter by name..."
+                <va-date-input
+                  v-model="filter.dateRange"
+                  :clearable="true"
+                  placeholder="Filter by date range..."
+                  mode="range"
                 />
               </div>
-              <va-button icon="clear" outline style="grid-column: 1 / 3; margin-right: auto" @click="resetFilter">{{
-                $t('moorages.list.filter.reset')
-              }}</va-button>
-              <va-icon
-                v-if="items.length > 0"
-                name="csv"
-                outline
-                :size="34"
-                style="grid-column-end: 11"
-                class="themed"
-                @click="handleCSV(items)"
-              ></va-icon>
-              <va-icon
-                v-if="items.length > 0"
-                name="gpx"
-                outline
-                :size="34"
-                style="grid-column-end: 12"
-                class="themed"
-                @click="handleGPX()"
-              ></va-icon>
-              <va-icon
-                v-if="items.length > 0"
-                name="geojson"
-                outline
-                :size="34"
-                style="grid-column-end: 13"
-                class="themed"
-                @click="handleGeoJSON()"
-              ></va-icon>
+              <div class="col-span-12 md:col-span-6 flex flex-col">
+                <va-input v-model="filter.stay_type" :clearable="true" placeholder="Filter by stay type..." />
+              </div>
             </div>
           </div>
         </va-card-content>
@@ -62,6 +35,8 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <va-data-table
+            v-model:sort-by="sorting.sortBy"
+            v-model:sorting-order="sorting.sortingOrder"
             :columns="columns"
             :items="items"
             :loading="isBusy"
@@ -71,35 +46,44 @@
             hoverable
             class="datatable"
           >
-            <template #cell(arrived)="{ rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData._to_id } }">
-                {{ dateFormatUTC(rowData._to_time) }}
+            <template #cell(arrived)="{ value, rowData }">
+              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.arrived_id } }">
+                {{ dateFormatUTC(value) }}
               </router-link>
             </template>
-            <template #cell(departed)="{ rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData._from_id } }">
-                {{ dateFormatUTC(rowData._from_time) }}
+            <template #cell(departed)="{ value, rowData }">
+              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.departed_id } }">
+                {{ dateFormatUTC(value) }}
               </router-link>
             </template>
             <template #cell(stayed_at)="{ rowData }">
-              <div v-if="rowData.stay_code" style="max-width: 150px">
+              <div v-if="rowData.stayed_at_id" style="max-width: 150px">
                 <StayAt
                   :id="parseInt(rowData.id)"
                   :key="rowData.id"
-                  :data="parseInt(rowData.stay_code)"
+                  :data="parseInt(rowData.stayed_at_id)"
                   @clickFromChildComponent="updateDefaultStay"
                 />
               </div>
             </template>
-            <template #cell(duration)="{ rowData }">
-              {{ durationFormatDays(rowData.duration) }} {{ $t('stays.stay.duration_unit') }}
-            </template>
+            <template #cell(duration)="{ value }"> {{ value }} </template>
           </va-data-table>
           <template v-if="items.length > perPage">
             <div class="mt-3 row justify-center">
               <va-pagination v-model="currentPage" input :pages="pages" />
             </div>
           </template>
+          <div class="flex mt-4">
+            <va-icon
+              v-if="items.length > 0"
+              name="csv"
+              outline
+              :size="34"
+              style="grid-column-end: 11"
+              class="themed"
+              @click="handleCSV(items)"
+            ></va-icon>
+          </div>
         </va-card-content>
       </va-card>
     </div>
@@ -108,14 +92,17 @@
 
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
+  import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
+  import { default as utils } from '../../utils/utils.js'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { getTextForStayId } from '../../components/SelectStayAt.vue'
   import { useRoute } from 'vue-router'
 
   //import staysMoorageData from '../../data/staysMoorage.json'
@@ -123,7 +110,7 @@
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
-      name: null,
+      stay_type: null,
       dateRange: null,
     }
   }
@@ -139,12 +126,48 @@
     { key: 'arrived', label: t('stays.moorage.arrived'), sortable: true },
     { key: 'departed', label: t('stays.moorage.departed'), sortable: true },
     { key: 'stayed_at', label: t('stays.moorage.stayed_at'), sortable: true },
-    { key: 'duration', label: t('stays.moorage.duration'), sortable: true },
+    {
+      key: 'duration',
+      label: t('stays.moorage.duration_d'),
+      sortable: true,
+      sortingFn: utils.sortNum,
+      tdAlign: 'right',
+    },
   ])
+  const sorting = ref({ sortBy: 'departed', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
 
   const items = computed(() => {
-    return Array.isArray(rowsData.value) ? rowsData.value : []
+    return Array.isArray(rowsData.value)
+      ? rowsData.value
+          .map((row) => ({
+            id: row.id,
+            arrived_id: row._to_id,
+            arrived: row._to_time,
+            departed_id: row._from_id,
+            departed: row._from_time,
+            stayed_at: getTextForStayId(row.stay_code),
+            stayed_at_id: row.stay_code,
+            duration: durationFormatDays(row.duration),
+          }))
+          .filter((row) => {
+            const f = filter
+            if (Object.keys(f).every((fkey) => !f[fkey])) {
+              return true
+            }
+            return Object.keys(f).every((fkey) => {
+              if (!f[fkey]) {
+                return true
+              }
+              switch (fkey) {
+                case 'stay_type':
+                  return row.stayed_at.toLowerCase().includes(f[fkey].toLowerCase())
+                case 'dateRange':
+                  return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+              }
+            })
+          })
+      : []
   })
 
   const pages = computed(() => {
@@ -178,10 +201,6 @@
       isBusy.value = false
     }
   })
-
-  function resetFilter() {
-    Object.assign(filter, { ...getDefaultFilter() })
-  }
 
   function runBusy(fn, ...args) {
     asBusy(isBusy, apiError, fn, ...args)
@@ -220,12 +239,6 @@
 
   function handleCSV(items) {
     runBusy(handleExport, 'csv', 'moorages', items)
-  }
-  function handleGPX() {
-    runBusy(handleExport, 'gpx', 'moorages')
-  }
-  function handleGeoJSON() {
-    runBusy(handleExport, 'geojson', 'moorages')
   }
 </script>
 

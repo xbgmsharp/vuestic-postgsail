@@ -140,14 +140,13 @@
       "from_time": "Abgereist um",
       "to": "Angekommen",
       "to_time": "Angekommen um",
-      "duration": "Dauer [h]",
-      "duration_unit": "{n} Stunde | {n} Stunden",
-      "distance": "Entfernung [NM]",
-      "distance_miles": "{n} Meile | {n} Meilen",
+      "duration": "Dauer",
+      "duration_h": "Dauer [h]",
+      "distance": "Entfernung",
+      "distance_nm": "Entfernung [NM]",
       "avg": "Durchschnitt",
       "max": "Maximal",
       "speed": "Geschwindigkeit",
-      "speed_knots": "0 Knoten | {n} Knoten | {n} Knoten",
       "wind_speed": "Windgeschwindigkeit",
       "note": "Notiz | Notizen",
       "remarks": "Tell what happened",
@@ -180,18 +179,17 @@
       "moorage": "Anlegestelle",
       "departure": "Abfahrtszeit",
       "arrival": "Ankunftszeit",
-      "departed": "Abgereist nach",
-      "arrived": "Angekommen von",
+      "departed": "Abgereist",
+      "arrived": "Angekommen",
       "stayed_at": "Verbleib",
-      "duration": "Dauer",
-      "note": "Notiz | Notizen",
-      "duration_unit": "Tage"
+      "duration_d": "Dauer [t]",
+      "note": "Notiz | Notizen"
     },
     "moorage": {
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
-      "duration": "Duration"
+      "duration_d": "Dauer [t]"
     }
   },
   "moorages": {
@@ -205,9 +203,8 @@
       },
       "moorage": "Anlegestelle",
       "default_stay": "Standardaufenthalt",
-      "total_stay": "Gesamtaufenthalt",
-      "arrivals": "Ankünfte & Abreisen",
-      "duration_unit": "Tage"
+      "total_stay": "Gesamtaufenthalt [t]",
+      "arrivals": "Ankünfte & Abreisen"
     },
     "details": {
       "title": "Details der Anlegestelle"
@@ -426,10 +423,11 @@
   },
   "units": {
     "distance": {
-      "NM": "Entfernung NM",
-      "KM": "Entfernung KM",
-      "miles": "{n} Meile | {n} Meilen",
-      "kilometres": "{n} Kilometer | {n} Kilometer"
+      "miles": "NM",
+      "kilometres": "km"
+    },
+    "speed": {
+      "knots": "kts"
     },
     "time": {
       "days": "{n} Tage | {n} Tag | {n} Tage",

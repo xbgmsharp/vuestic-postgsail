@@ -96,7 +96,7 @@
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
     map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
-    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'SailboatConfig')),
+    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'Dot')),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),

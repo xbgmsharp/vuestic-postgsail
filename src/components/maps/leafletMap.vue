@@ -6,11 +6,11 @@
   import 'leaflet/dist/leaflet.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from './leafletHelpers.js'
+  import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
-  import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
+  import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
   import { useGlobalStore } from '../../stores/global-store'
   const { publicVessel } = useGlobalStore()
@@ -97,27 +97,6 @@
         L.control.layers(bMaps, oMaps).addTo(this.map)
       }
 
-      const sailBoatIcon = function (feature, latlng) {
-        return L.marker(latlng, {
-          icon: new L.Icon({
-            iconSize: [16, 32],
-            iconAnchor: [8, 10],
-            iconUrl: '/sailboaticon.png',
-          }),
-          rotationAngle: feature.properties.courseovergroundtrue,
-        })
-      }
-      const powerBoatIcon = function (feature, latlng) {
-        return L.marker(latlng, {
-          icon: new L.Icon({
-            iconSize: [16, 32],
-            iconAnchor: [8, 10],
-            iconUrl: '/powerboaticon.png',
-          }),
-          rotationAngle: feature.properties.courseovergroundtrue,
-        })
-      }
-
       const popup = function (feature, layer) {
         /* Boat popup
                   Boat Name
@@ -202,6 +181,9 @@
         return false
       }
 
+      // TODO: use boat type from actual boat config (sailboat/powerboat)
+      const boatIcon = boatMarkerTypes()['Sailboat']
+
       let layer = null
       if (this.multigeojson) {
         let layers = []
@@ -214,7 +196,7 @@
           layers[i] = L.geoJSON(geojson[i].track_geojson, {
             style: { color: random_rgb_dark() },
             filter: geoMapFilter,
-            pointToLayer: sailBoatIcon,
+            pointToLayer: boatIcon,
             onEachFeature: popup,
           }).addTo(featGroup)
           featGroup.addTo(this.map)
@@ -228,7 +210,7 @@
       } else {
         layer = L.geoJSON(geojson, {
           filter: geoMapFilter,
-          pointToLayer: sailBoatIcon,
+          pointToLayer: boatIcon,
           onEachFeature: popup,
         }).addTo(this.map)
       }

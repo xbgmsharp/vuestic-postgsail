@@ -108,7 +108,7 @@
   import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css'
   import * as L from 'leaflet'
   import 'leaflet-sidebar-v2'
-  import { defaultBaseMapType, baseMaps, overlayMaps } from '../../components/maps/leafletHelpers.js'
+  import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
@@ -117,7 +117,7 @@
   import { dateFormatUTC, durationFormatHours, durationI18nHours, dateFormatTime } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
-  import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
+  import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { seaState, visibility } from '../../utils/PostgSail'
@@ -254,58 +254,6 @@
     bMaps[defaultBaseMapType()].addTo(map.value)
 
     L.control.layers(bMaps, oMaps).addTo(map.value)
-
-    const sailConfigIconImg = function (feature) {
-      if (
-        feature.properties.status == 'sailing' &&
-        feature.properties.truewinddirection &&
-        feature.properties.courseovergroundtrue
-      ) {
-        return sailConfigImage(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
-      }
-      return '/sailboat-000.png'
-    }
-
-    const sailConfigIcon = function (feature, latlng) {
-      return L.marker(latlng, {
-        icon: new L.Icon({
-          iconSize: [32, 32],
-          iconAnchor: [16, 10],
-          iconUrl: sailConfigIconImg(feature),
-        }),
-        rotationAngle: feature.properties.courseovergroundtrue,
-      })
-    }
-    const sailBoatIcon = function (feature, latlng) {
-      return L.marker(latlng, {
-        icon: new L.Icon({
-          iconSize: [16, 32],
-          iconAnchor: [8, 10],
-          iconUrl: '/sailboaticon.png',
-        }),
-        rotationAngle: feature.properties.courseovergroundtrue,
-      })
-    }
-    const powerBoatIcon = function (feature, latlng) {
-      return L.marker(latlng, {
-        icon: new L.Icon({
-          iconSize: [16, 32],
-          iconAnchor: [8, 10],
-          iconUrl: '/powerboaticon.png',
-        }),
-        rotationAngle: feature.properties.courseovergroundtrue,
-      })
-    }
-    const simpleDotIcon = function (feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: 2,
-        fillColor: '#00FFFF',
-        color: '#000',
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8,
-      })
-    }
 
     const popup = function (feature, layer) {
       /* Boat popup
@@ -464,21 +412,23 @@
       }
     }
 
+    const boatTypes = boatMarkerTypes()
+
     GeoJSONbasemapObj.value = {
       Sailboat: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: sailBoatIcon,
+        pointToLayer: boatTypes['Sailboat'],
         onEachFeature: popup,
       }),
-      SailConfig: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: sailConfigIcon,
+      SailboatSails: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: boatTypes['SailboatSails'],
         onEachFeature: popup,
       }),
       Powerboat: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: powerBoatIcon,
+        pointToLayer: boatTypes['Powerboat'],
         onEachFeature: popup,
       }),
-      SimpleDots: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: simpleDotIcon,
+      Dot: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: boatTypes['Dot'],
         onEachFeature: popup,
       }),
     }

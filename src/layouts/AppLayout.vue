@@ -40,12 +40,14 @@
   import { storeToRefs } from 'pinia'
   import { onBeforeRouteUpdate, useRouter } from 'vue-router'
   import { useGlobalStore } from '../stores/global-store'
+  import { useVesselStore } from '../stores/vessel-store'
 
   import Navbar from '../components/navbar/Navbar.vue'
   import Sidebar from '../components/sidebar/Sidebar.vue'
   //import LoadingScreen from '../components/loadingScreen.vue'
 
   const GlobalStore = useGlobalStore()
+  const VesselStore = useVesselStore()
   const router = useRouter()
 
   const mobileBreakPointPX = 640
@@ -58,6 +60,7 @@
   const isTablet = ref(false)
   const { isSidebarMinimized, isMobile } = storeToRefs(GlobalStore)
   const { fetchSettings } = GlobalStore
+  const { fetchVessel } = VesselStore
 
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
   const checkIsMobile = () => window.innerWidth <= mobileBreakPointPX
@@ -92,6 +95,10 @@
       })
     }
     console.log('AppLayout onBeforeMount fetchSettings', GlobalStore.settings)
+    if (!VesselStore.name) {
+      await fetchVessel()
+    }
+    console.log('AppLayout onBeforeMount fetchVessel', VesselStore)
   })
 
   onBeforeUnmount(() => {

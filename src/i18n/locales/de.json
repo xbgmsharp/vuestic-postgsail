@@ -464,6 +464,7 @@
     "start": "Start Trip",
     "end": "End Trip",
     "basemap": "Base Map",
+    "boattype": "Boat Type",
     "trackcolor": "Track Color",
     "overlay": "Show Moorage Overlays",
     "zoom": "Zoom Level",

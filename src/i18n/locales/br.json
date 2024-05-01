@@ -417,13 +417,11 @@
   },
   "units": {
     "distance": {
-      "NM": "Distance NM",
-      "KM": "Distance KM",
-      "miles": "{n} mile | {n} miles",
-      "kilometres": "{n} kilometre | {n} kilometres"
+      "miles": "NM",
+      "kilometres": "km"
     },
     "speed": {
-      "knots": "0 knot | {n} knot | {n} knots"
+      "knots": "kts"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

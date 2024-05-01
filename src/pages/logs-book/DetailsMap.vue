@@ -638,4 +638,7 @@
     background-color: red;
     padding: 5px;
   }
+  .va-dropdown__content.va-select-dropdown__content.va-dropdown__content-wrapper {
+    z-index: 9999 !important;
+  }
 </style>

@@ -135,15 +135,6 @@
           :object="visibility"
           @clickFromChildComponent="handleVisibility"
         />
-        <VaSelect
-          v-if="visibility_value"
-          v-model="visibility_value"
-          :options="visibility"
-          :rules="[(v) => !!v || 'Payment System field is required']"
-          class="mb-4"
-          label="Visibility"
-          value-by="value"
-        />
       </template>
       <template v-else>
         {{ logbook.visibility }}

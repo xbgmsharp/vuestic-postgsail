@@ -108,6 +108,7 @@
   import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css'
   import * as L from 'leaflet'
   import 'leaflet-sidebar-v2'
+  import 'leaflet-rotatedmarker'
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'

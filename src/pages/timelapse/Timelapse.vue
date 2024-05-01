@@ -14,6 +14,7 @@
 <script setup>
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
+  import 'leaflet-rotatedmarker'
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'

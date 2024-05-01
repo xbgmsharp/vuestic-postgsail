@@ -457,7 +457,7 @@
         let time = dateFormatUTC(feature.properties._from_time)
         let avg_speed = speedFormatKnots(feature.properties.avg_speed)
         let duration = durationFormatHours(feature.properties.duration)
-        let distance = parseFloat(feature.properties.distance).toFixed(1)
+        let distance = distanceFormatMiles(feature.properties.distance)
         let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>
                 Time: ${time}<br/>
                 Average Speed: ${avg_speed}<br/>
@@ -593,7 +593,7 @@
             //console.log(layer)
             layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
                 Time: ${item.value.fromTime}<br/>
-                avg_speed: ${item.value.avg_speed}<br/>
+                Average Speed: ${item.value.avg_speed}<br/>
                 Duration: ${item.value.duration}<br/>
                 Distance: ${item.value.distance}<br/>
                 Notes: ${formData.notes}<br/>`)

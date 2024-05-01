@@ -122,7 +122,7 @@
     dateFormatTime,
   } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
-  import { speedFormat } from '../../utils/speedFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { sailConfigImage, awaFormat, angleFormat } from '../../utils/angleFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
@@ -175,9 +175,9 @@
           duration: durationFormatHours(apiData.row.duration) + ' ' + durationI18nHours(apiData.row.duration),
           notes: apiData.row.notes,
           geoJson: apiData.row.geojson,
-          avg_speed: speedFormat(apiData.row.avg_speed),
-          max_speed: speedFormat(apiData.row.max_speed),
-          max_wind_speed: speedFormat(apiData.row.max_wind_speed),
+          avg_speed: speedFormatKnots(apiData.row.avg_speed),
+          max_speed: speedFormatKnots(apiData.row.max_speed),
+          max_wind_speed: speedFormatKnots(apiData.row.max_wind_speed),
           extra: apiData.row?.extra?.metrics,
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
@@ -336,10 +336,10 @@
         //console.log(`popup`, feature.properties)
         let status = feature.properties.status || ''
         let time = dateFormatUTC(feature.properties.time)
-        let speed = speedFormat(feature.properties.speedoverground) || 0
+        let speed = speedFormatKnots(feature.properties.speedoverground) || 0
         let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
         let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
-        let wind = speedFormat(feature.properties.windspeedapparent) || 0
+        let wind = speedFormatKnots(feature.properties.windspeedapparent) || 0
         let winddir = angleFormat(feature.properties.truewinddirection) || 0
         let latitude = parseFloat(feature.properties.latitude).toFixed(5)
         let longitude = parseFloat(feature.properties.longitude).toFixed(5)
@@ -455,7 +455,7 @@
         // Those value are read directly from the geojson so they are unformatted.
         // We could used the log details item ref for performance
         let time = dateFormatUTC(feature.properties._from_time)
-        let avg_speed = speedFormat(feature.properties.avg_speed)
+        let avg_speed = speedFormatKnots(feature.properties.avg_speed)
         let duration = durationFormatHours(feature.properties.duration)
         let distance = parseFloat(feature.properties.distance).toFixed(1)
         let text = `<div class='center'><h4>${feature.properties.name}</h4></div><br/>

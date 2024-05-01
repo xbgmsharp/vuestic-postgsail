@@ -82,7 +82,7 @@
                     <td class="va-text-bold">{{ $t('stats.sum_distance') }}</td>
                     <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
-                        {{ distanceFormat(stats_logs.sum_distance) }}
+                        {{ distanceFormatMiles(stats_logs.sum_distance) }}
                       </router-link>
                     </td>
                   </tr>
@@ -102,9 +102,8 @@
                         class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_speed_id } }"
                       >
-                        {{ stats_logs.max_speed }}
+                        {{ speedFormatKnots(stats_logs.max_speed) }}
                       </router-link>
-                      knots
                     </td>
                   </tr>
 
@@ -115,9 +114,8 @@
                         class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_wind_speed_id } }"
                       >
-                        {{ stats_logs.max_wind_speed }}
+                        {{ speedFormatKnots(stats_logs.max_wind_speed) }}
                       </router-link>
-                      knots
                     </td>
                   </tr>
                   <tr>
@@ -127,7 +125,7 @@
                         class="va-link link"
                         :to="{ name: 'log-details', params: { id: stats_logs.max_distance_id } }"
                       >
-                        {{ distanceFormat(stats_logs.max_distance) }}
+                        {{ distanceFormatMiles(stats_logs.max_distance) }}
                       </router-link>
                       /
                       <router-link
@@ -248,6 +246,7 @@
   //import { asBusy } from '../../utils/handleExports'
   import { durationFormatDays, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'

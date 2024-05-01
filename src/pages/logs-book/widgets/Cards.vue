@@ -3,7 +3,6 @@
   import { Log } from '../types'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../../utils/dateFormatter.js'
-  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -85,32 +84,6 @@
                     </div>
                   </va-dropdown-content>
                 </va-dropdown>
-
-                <!--
-                <div class="">
-                    <VaButtonDropdown :offset="[13, 0]" stick-to-edges icon="menu">
-                    <va-dropdown-content class="">
-                      <div class="" style="">
-                        <VaButton
-                          preset="secondary"
-                          icon="edit"
-                          size="large"
-                          color="secondary"
-                          @click="$emit('edit', log)"
-                        />
-                        <span class="dropdown-item__text"> Edit </span>
-                        <VaButton
-                          preset="secondary"
-                          icon="delete"
-                          size="large"
-                          color="secondary"
-                          @click="$emit('delete', log)"
-                        />
-                        <span class="dropdown-item__text"> Delete </span>
-                      </div>
-                    </va-dropdown-content>
-                  </VaButtonDropdown>
-                </div> -->
               </div>
             </div>
           </div>
@@ -127,23 +100,15 @@
                 </router-link>
               </template>
             </h4>
-            <div class="justify-center text-center">
-              <p>
-                <span class="text-[var(--va-secondary)]">{{ t('logs.log.distance') }}: </span>
-                <span>{{ distanceFormatMiles(log.distance) }}</span>
-              </p>
-              <p>
-                <span class="text-[var(--va-secondary)]">{{ t('logs.log.duration') }}: </span>
-                <span>{{ distanceFormatMiles(log.duration) }}</span>
-              </p>
-              <p>
-                <span class="text-[var(--va-secondary)]">{{ t('logs.log.from') }}: </span>
-                <span>{{ log.from }}</span>
-              </p>
-              <p>
-                <span class="text-[var(--va-secondary)]">{{ t('logs.log.to') }}: </span>
-                <span>{{ log.to }}</span>
-              </p>
+            <div class="grid grid-cols-2 gap-1 items-center justify-center text-center">
+              <span class="label">{{ t('logs.log.distance') }}: </span>
+              <span class="value">{{ log.distance }} {{ t('units.distance.miles') }}</span>
+              <span class="label">{{ t('logs.log.duration') }}: </span>
+              <span class="value">{{ log.duration }} {{ t('units.time.hours') }} </span>
+              <span class="label">{{ t('logs.log.from') }}: </span>
+              <span class="value">{{ log.from }}</span>
+              <span class="label">{{ t('logs.log.to') }}: </span>
+              <span class="value">{{ log.to }}</span>
             </div>
           </div>
         </div>
@@ -152,3 +117,13 @@
   </VaInnerLoading>
   <div v-else class="p-4 flex justify-center items-center text-[var(--va-secondary)]">No trips</div>
 </template>
+
+<style lang="scss" scoped>
+  .label {
+    text-align: end;
+    color: var(--va-secondary);
+  }
+  .value {
+    text-align: start;
+  }
+</style>

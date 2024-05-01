@@ -18,6 +18,29 @@
                   placeholder="Filter by default stay type..."
                 />
               </div>
+
+              <div class="col-span-12 md:col-span-6 flex flex-col">
+                <VaSelect
+                  v-model="filterstayed_at"
+                  placeholder="Filter by default stay type..."
+                  :options="options"
+                  multiple
+                  text-by="text"
+                >
+                  <template #content="{ value }">
+                    <VaChip
+                      v-for="chip in value"
+                      :key="chip.text"
+                      size="small"
+                      class="mr-2"
+                      closeable
+                      @update:modelValue="deleteChip(chip)"
+                    >
+                      {{ chip }}
+                    </VaChip>
+                  </template>
+                </VaSelect>
+              </div>
             </div>
           </div>
         </va-card-content>
@@ -126,14 +149,14 @@
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
   import StayAt from '../../components/SelectStayAt.vue'
-
+  import { stayed_at_options } from '../../utils/PostgSail.ts'
   import mooragesData from '../../data/moorages.json'
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
       name: null,
-      dateRange: null,
+      stay: null,
     }
   }
 
@@ -150,6 +173,20 @@
     { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true },
   ])
   const filter = reactive(getDefaultFilter())
+  const filterstayed_at = ref([])
+  const options = computed(() => {
+    let arr = []
+    for (let key in stayed_at_options) {
+      //console.log(key)
+      arr.push(stayed_at_options[key].text)
+    }
+    //console.log(arr)
+    return arr
+  })
+
+  function deleteChip(chip) {
+    filterstayed_at.value = filterstayed_at.value.filter((v) => v !== chip)
+  }
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)

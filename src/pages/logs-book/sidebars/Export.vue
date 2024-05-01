@@ -34,6 +34,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   // handle Exports
+  // Weird bug workaround using handleExportNew
   const runBusy = (fn: any, ...args: any[]) => asBusy(isBusy, apiError, fn, { ...args }),
     handleGPX = (id: number) => handleExport_common('gpx', id),
     handleKML = (id: number) => handleExport_common('kml', id),

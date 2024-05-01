@@ -30,6 +30,8 @@
   import PostgSail from '../../services/api-client'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
+  import { angleFormat, awaFormat } from '../../utils/angleFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
 
   //import { useGlobalStore } from '../../stores/global-store'
   //import timelapseGeoJSON from '../../data/timelapse3.json'
@@ -103,7 +105,8 @@
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
-    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true))
+    moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true)),
+    instruments = ref(parseBooleanQueryParam(route.query.instruments, false))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {
@@ -126,6 +129,7 @@
     color.value,
     map_height.value,
     moorage_overlay.value,
+    instruments.value,
   )
 
   onMounted(async () => {
@@ -244,6 +248,31 @@
     }
     overlay.addTo(map.value)
 
+    const instOverlay = L.control({ position: 'topright' })
+    instOverlay.onAdd = function () {
+      const overlayView = L.DomUtil.create('div', 'instruments')
+      const speedView = L.DomUtil.create('div', 'speed', overlayView)
+      var label = L.DomUtil.create('span', 'label', speedView)
+      label.innerHTML = 'Speed:'
+      L.DomUtil.create('b', 'value', speedView)
+      const awaView = L.DomUtil.create('div', 'awa', overlayView)
+      label = L.DomUtil.create('span', 'label', awaView)
+      label.innerHTML = 'AWA:'
+      L.DomUtil.create('b', 'value', awaView)
+      const windView = L.DomUtil.create('div', 'wind', overlayView)
+      label = L.DomUtil.create('span', 'label', windView)
+      label.innerHTML = 'Wind:'
+      L.DomUtil.create('b', 'value', windView)
+      return overlayView
+    }
+    instOverlay.addTo(map.value)
+
+    // only show it if instruments enabled
+    if (instruments.value) {
+      let instView = map.value._container.querySelector('.instruments')
+      instView.style.display = 'flex'
+    }
+
     map_track_setup()
   }
 
@@ -255,7 +284,10 @@
       playerView = map.value._container.querySelector('.legend > .top-row > .player'),
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
-      noteView = map.value._container.querySelector('.overlay > .bottom-row > .note')
+      noteView = map.value._container.querySelector('.overlay > .bottom-row > .note'),
+      speedView = map.value._container.querySelector('.instruments > .speed > .value'),
+      awaView = map.value._container.querySelector('.instruments > .awa > .value'),
+      windView = map.value._container.querySelector('.instruments > .wind > .value')
 
     playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
     const geojson = timelapse.value,
@@ -265,13 +297,11 @@
           return
         }
 
+        var properties = geojson.features[index].properties
+
         // Display trip data
-        if (
-          geojson.features[index].properties.trip &&
-          geojson.features[index].properties.trip?.name.length != 0 &&
-          moorage_overlay.value
-        ) {
-          tripView.innerText = geojson.features[index].properties.trip.name
+        if (properties.trip && properties.trip?.name.length != 0 && moorage_overlay.value) {
+          tripView.innerText = properties.trip.name
           tripView.style.opacity = 1
           tripView.style.display = 'block'
         } else {
@@ -281,9 +311,8 @@
           }
         }
         // Display overlay notes
-        //console.debug(geojson.features[index])
-        if (geojson.features[index].properties.notes.length != 0 && moorage_overlay.value) {
-          noteView.innerText = geojson.features[index].properties.notes
+        if (properties.notes.length != 0 && moorage_overlay.value) {
+          noteView.innerText = properties.notes
           noteView.style.opacity = 1
           noteView.style.display = 'block'
         } else {
@@ -292,6 +321,35 @@
             noteView.style.display = 'none'
           }
         }
+
+        // Display instruments: SOG/COG
+        if (properties.speedoverground && instruments.value) {
+          speedView.innerText =
+            speedFormatKnots(properties.speedoverground) +
+            (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
+          speedView.parentElement.style.display = 'block'
+        } else {
+          speedView.parentElement.style.display = 'none'
+        }
+
+        // Display instruments: AWA
+        if (properties.truewinddirection && properties.courseovergroundtrue && instruments.value) {
+          awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
+          awaView.parentElement.style.display = 'block'
+        } else {
+          awaView.parentElement.style.display = 'none'
+        }
+
+        // Display instruments: SOG/COG
+        if (properties.windspeedapparent && instruments.value) {
+          windView.innerText =
+            speedFormatKnots(properties.windspeedapparent) +
+            (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
+          windView.parentElement.style.display = 'block'
+        } else {
+          windView.parentElement.style.display = 'none'
+        }
+
         // Get the next coordinates from the geojson
         let coord_rev = geojson.features[index].geometry.coordinates.toReversed()
 
@@ -327,7 +385,7 @@
           distance += last.distanceTo(coord_rev)
           // convert meters -> KM -> NM
           distanceView.innerText = distanceFormat(parseFloat(parseFloat(distance / 1000) * 0.5399568)) + ' NM'
-          datetimeView.innerText = dateFormatUTC(geojson.features[index].properties.time)
+          datetimeView.innerText = dateFormatUTC(properties.time)
         }
         last = L.latLng(coord_rev)
         // if last entry, cancel internal, show replay
@@ -455,6 +513,40 @@
       }
       .bottom-row {
         font-size: 16pt;
+      }
+    }
+    .instruments {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 200px;
+      padding: 10px;
+      background: #000;
+      opacity: 0.5;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 14px;
+
+      .speed,
+      .awa,
+      .wind {
+        display: flex;
+        justify-items: stretch;
+        width: 100%;
+        margin-bottom: 5px;
+        display: none;
+      }
+
+      .label {
+        text-align: right;
+        padding: 5px;
+        flex: 1;
+      }
+
+      .value {
+        text-align: left;
+        padding: 5px;
+        flex: 1;
       }
     }
   }

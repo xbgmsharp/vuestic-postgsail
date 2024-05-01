@@ -151,7 +151,7 @@
     { key: 'arrived', label: t('stays.stay.arrived'), sortable: true },
     { key: 'departed', label: t('stays.stay.departed'), sortable: true },
     { key: 'stayed_at', label: t('stays.stay.stayed_at'), sortable: true },
-    { key: 'duration', label: t('stays.stay.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { key: 'duration', label: t('stays.stay.duration_d'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
   ])
   const filter = reactive(getDefaultFilter())
 

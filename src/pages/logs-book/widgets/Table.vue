@@ -16,8 +16,8 @@
     { label: t('logs.list.to'), key: 'to', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
-    { label: t('logs.log.distance'), key: 'distance', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
-    { label: t('logs.log.duration'), key: 'duration', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { label: t('logs.log.distance_nm'), key: 'distance', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { label: t('logs.log.duration_h'), key: 'duration', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
     { label: ' ', key: 'actions' },
   ])
 

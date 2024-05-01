@@ -126,7 +126,13 @@
     { key: 'arrived', label: t('stays.moorage.arrived'), sortable: true },
     { key: 'departed', label: t('stays.moorage.departed'), sortable: true },
     { key: 'stayed_at', label: t('stays.moorage.stayed_at'), sortable: true },
-    { key: 'duration', label: t('stays.moorage.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    {
+      key: 'duration',
+      label: t('stays.moorage.duration_d'),
+      sortable: true,
+      sortingFn: utils.sortNum,
+      tdAlign: 'right',
+    },
   ])
   const sorting = ref({ sortBy: 'departed', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())

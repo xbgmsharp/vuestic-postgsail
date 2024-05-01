@@ -140,8 +140,10 @@
       "from_time": "Abgereist um",
       "to": "Angekommen",
       "to_time": "Angekommen um",
-      "duration": "Dauer [h]",
-      "distance": "Entfernung [NM]",
+      "duration": "Dauer",
+      "duration_h": "Dauer [h]",
+      "distance": "Entfernung",
+      "distance_nm": "Entfernung [NM]",
       "avg": "Durchschnitt",
       "max": "Maximal",
       "speed": "Geschwindigkeit",
@@ -180,14 +182,14 @@
       "departed": "Abgereist",
       "arrived": "Angekommen",
       "stayed_at": "Verbleib",
-      "duration": "Dauer [t]",
+      "duration_d": "Dauer [t]",
       "note": "Notiz | Notizen"
     },
     "moorage": {
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
-      "duration": "Dauer [t]"
+      "duration_d": "Dauer [t]"
     }
   },
   "moorages": {

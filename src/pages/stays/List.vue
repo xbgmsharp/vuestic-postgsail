@@ -4,10 +4,10 @@
       <va-card-content>
         <div class="layout gutter--md">
           <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
+            <div class="col-span-4 md:col-span-3 flex flex-col">
               <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
             </div>
-            <div class="col-span-12 md:col-span-6 flex flex-col">
+            <div class="col-span-4 md:col-span-3 flex flex-col">
               <va-date-input
                 v-model="filter.dateRange"
                 style="width: 100%"
@@ -16,6 +16,22 @@
                 placeholder="Filter by date range..."
                 mode="range"
               />
+            </div>
+            <div class="col-span-3 md:col-span-4 flex flex-col">
+              <VaSelect v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+                <template #content="{ value }">
+                  <VaChip
+                    v-for="chip in value"
+                    :key="chip.text"
+                    size="small"
+                    class="mr-2"
+                    closeable
+                    @update:modelValue="deleteChip(chip)"
+                  >
+                    {{ chip }}
+                  </VaChip>
+                </template>
+              </VaSelect>
             </div>
           </div>
         </div>
@@ -128,6 +144,7 @@
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
+  import { stayed_at_options } from '../../utils/PostgSail.ts'
 
   import staysData from '../../data/stays.json'
 
@@ -136,6 +153,7 @@
     return {
       name: null,
       dateRange: null,
+      stayed_at: [],
     }
   }
 
@@ -154,6 +172,19 @@
     { key: 'duration', label: t('stays.stay.duration_d'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
   ])
   const filter = reactive(getDefaultFilter())
+  const options = computed(() => {
+    let arr = []
+    for (let key in stayed_at_options) {
+      //console.log(key)
+      arr.push(stayed_at_options[key].text)
+    }
+    //console.log(arr)
+    return arr
+  })
+
+  function deleteChip(chip) {
+    filter.stayed_at = filter.stayed_at.filter((v) => v !== chip)
+  }
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
@@ -188,6 +219,16 @@
                   )
                 case 'dateRange':
                   return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+                case 'stayed_at':
+                  var valid = false
+                  if (f['stayed_at'].length == 0) return true
+                  for (let i = 0; i < f['stayed_at'].length; i++) {
+                    if (!f['stayed_at'][i] || valid) {
+                      continue
+                    }
+                    valid = row.stayed_at.toLowerCase().includes(f['stayed_at'][i].toLowerCase())
+                  }
+                  return valid
               }
             })
           })

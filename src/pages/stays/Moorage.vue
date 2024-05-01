@@ -22,7 +22,20 @@
                 />
               </div>
               <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-input v-model="filter.stay_type" :clearable="true" placeholder="Filter by stay type..." />
+                <VaSelect v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+                  <template #content="{ value }">
+                    <VaChip
+                      v-for="chip in value"
+                      :key="chip.text"
+                      size="small"
+                      class="mr-2"
+                      closeable
+                      @update:modelValue="deleteChip(chip)"
+                    >
+                      {{ chip }}
+                    </VaChip>
+                  </template>
+                </VaSelect>
               </div>
             </div>
           </div>
@@ -104,14 +117,15 @@
   import StayAt from '../../components/SelectStayAt.vue'
   import { getTextForStayId } from '../../components/SelectStayAt.vue'
   import { useRoute } from 'vue-router'
+  import { stayed_at_options } from '../../utils/PostgSail.ts'
 
   //import staysMoorageData from '../../data/staysMoorage.json'
 
   const { t } = useI18n()
   const getDefaultFilter = () => {
     return {
-      stay_type: null,
       dateRange: null,
+      stayed_at: [],
     }
   }
 
@@ -136,6 +150,19 @@
   ])
   const sorting = ref({ sortBy: 'departed', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
+  const options = computed(() => {
+    let arr = []
+    for (let key in stayed_at_options) {
+      //console.log(key)
+      arr.push(stayed_at_options[key].text)
+    }
+    //console.log(arr)
+    return arr
+  })
+
+  function deleteChip(chip) {
+    filter.stayed_at = filter.stayed_at.filter((v) => v !== chip)
+  }
 
   const items = computed(() => {
     return Array.isArray(rowsData.value)
@@ -160,10 +187,18 @@
                 return true
               }
               switch (fkey) {
-                case 'stay_type':
-                  return row.stayed_at.toLowerCase().includes(f[fkey].toLowerCase())
                 case 'dateRange':
                   return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
+                case 'stayed_at':
+                  var valid = false
+                  if (f['stayed_at'].length == 0) return true
+                  for (let i = 0; i < f['stayed_at'].length; i++) {
+                    if (!f['stayed_at'][i] || valid) {
+                      continue
+                    }
+                    valid = row.stayed_at.toLowerCase().includes(f['stayed_at'][i].toLowerCase())
+                  }
+                  return valid
               }
             })
           })

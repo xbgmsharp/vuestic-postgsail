@@ -151,7 +151,7 @@
   const getDefaultFilter = () => {
     return {
       name: null,
-      default_stay: null,
+      default_stay: [],
     }
   }
 
@@ -169,7 +169,6 @@
   ])
   const sorting = ref({ sortBy: 'total_stay', sortingOrder: 'desc' })
   const filter = reactive(getDefaultFilter())
-  const filterstayed_at = ref([])
   const options = computed(() => {
     let arr = []
     for (let key in stayed_at_options) {
@@ -181,7 +180,7 @@
   })
 
   function deleteChip(chip) {
-    filterstayed_at.value = filterstayed_at.value.filter((v) => v !== chip)
+    filter.default_stay = filter.default_stay.filter((v) => v !== chip)
   }
 
   const items = computed(() => {
@@ -209,6 +208,7 @@
                   return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
                 case 'default_stay':
                   var valid = false
+                  if (f['default_stay'].length == 0) return true
                   for (let i = 0; i < f['default_stay'].length; i++) {
                     if (!f['default_stay'][i] || valid) {
                       continue

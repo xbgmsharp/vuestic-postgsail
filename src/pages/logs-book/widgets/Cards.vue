@@ -103,11 +103,11 @@
           <div class="">
             <h4 class="va-h4 text-center self-stretch overflow-hidden line-clamp-2 text-ellipsis">
               <template v-if="isLoggedIn">
-                <router-link :to="{ name: 'log-details', params: { id: log.id } }">
+                <router-link :to="{ name: 'log-map', params: { id: log.id } }">
                   {{ log.name }}
                 </router-link> </template
               ><template v-else>
-                <router-link :to="{ name: 'log-details', params: { boat: publicVessel, id: log.id } }">
+                <router-link :to="{ name: 'log-map', params: { boat: publicVessel, id: log.id } }">
                   {{ log.name }}
                 </router-link>
               </template>

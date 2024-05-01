@@ -1,7 +1,7 @@
 {
   "name": "vuestic-postgsail",
   "private": false,
-  "version": "0.1.0-beta6",
+  "version": "0.1.0-beta7",
   "scripts": {
     "prepare": "chmod +x ./node_modules/husky/lib/bin.js && husky install",
     "dev": "vite",

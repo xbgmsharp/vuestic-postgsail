@@ -57,6 +57,19 @@
                   </td>
                 </tr>
                 <tr>
+                  <td>{{ $t('timelapse.boattype') }}</td>
+                  <td>
+                    <MySelect
+                      v-if="boatTypes"
+                      :id="boatIdx"
+                      key="boatTypes"
+                      :data="boatIdx"
+                      :object="boatTypes"
+                      @clickFromChildComponent="handleBoatType"
+                    />
+                  </td>
+                </tr>
+                <tr>
                   <td>{{ $t('timelapse.trackcolor') }}</td>
                   <td>
                     <MySelect
@@ -191,7 +204,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
-  import { baseMaps } from '../../components/maps/leafletHelpers.js'
+  import { baseMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'
@@ -213,6 +226,7 @@
     start_log: '',
     end_log: '',
     map_type: 'Satellite',
+    boat_type: 'SailboatSails',
     speed: 250,
     delay: 0,
     zoom: 13,
@@ -233,6 +247,13 @@
   // get list from list of all maps
   const mapIdx = 0 // Satellite
   const mapTypes = Object.keys(baseMaps()).map((key, index) => ({
+    value: index,
+    text: key,
+  }))
+
+  // get list from list of all maps
+  const boatIdx = 1 // SailboatSails
+  const boatTypes = Object.keys(boatMarkerTypes()).map((key, index) => ({
     value: index,
     text: key,
   }))
@@ -385,6 +406,13 @@
     if (new_value >= 0) {
       console.log('handleMap obj:', obj.value + ', text:' + obj.text)
       formData.map_type = obj.text
+    }
+  }
+  const handleBoatType = async (new_value, obj) => {
+    console.log('handleBoatType', new_value, obj)
+    if (new_value >= 0) {
+      console.log('handleBoatType obj:', obj.value + ', text:' + obj.text)
+      formData.boat_type = obj.text
     }
   }
   const handleSpeed = async (new_value, obj) => {

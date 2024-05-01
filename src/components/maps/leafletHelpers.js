@@ -1,5 +1,5 @@
 import * as L from 'leaflet'
-import { sailConfigImage } from '../../utils/angleFormatter.js'
+import { appWindAngle } from '../../utils/angleFormatter.js'
 
 // Basic maps providers
 export const baseMaps = function () {
@@ -83,7 +83,22 @@ export const overlayMaps = function () {
   return overlayMaps
 }
 
-export const sailBoatIconImg = function (feature) {
+export const sailConfigImage = (twd, cog) => {
+  const [awa, tack] = appWindAngle(twd, cog)
+  if (awa > 155) {
+    return `/sailboat-180${tack}.png` // running
+  } else if (awa > 110) {
+    return `/sailboat-135${tack}.png` // broad reaching
+  } else if (awa > 50) {
+    return `/sailboat-090${tack}.png` // close/beam reaching
+  } else if (awa > 25) {
+    return `/sailboat-045${tack}.png` // close-hauled, beating
+  } else {
+    return '/sailboat-000.png'
+  }
+}
+
+export const sailConfigIconImg = function (feature) {
   if (
     feature.properties.status == 'sailing' &&
     feature.properties.truewinddirection &&
@@ -94,28 +109,36 @@ export const sailBoatIconImg = function (feature) {
   return '/sailboat-000.png'
 }
 
-export const sailBoatIcon = function (feature, latlng) {
+export const sailBoatSailsIcon = function (feature, latlng) {
   return L.marker(latlng, {
     icon: new L.Icon({
       iconSize: [32, 32],
-      iconAnchor: [16, 16],
+      iconAnchor: [16, 10],
+      iconUrl: sailConfigIconImg(feature),
+    }),
+    rotationAngle: feature.properties.courseovergroundtrue,
+  })
+}
+export const sailBoatIcon = function (feature, latlng) {
+  return L.marker(latlng, {
+    icon: new L.Icon({
+      iconSize: [16, 32],
+      iconAnchor: [8, 10],
       iconUrl: '/sailboaticon.png',
     }),
     rotationAngle: feature.properties.courseovergroundtrue,
   })
 }
-
 export const powerBoatIcon = function (feature, latlng) {
   return L.marker(latlng, {
     icon: new L.Icon({
-      iconSize: [15, 30],
-      iconAnchor: [7.5, 10],
+      iconSize: [16, 32],
+      iconAnchor: [8, 10],
       iconUrl: '/powerboaticon.png',
     }),
     rotationAngle: feature.properties.courseovergroundtrue,
   })
 }
-
 export const simpleDotIcon = function (feature, latlng) {
   return L.circleMarker(latlng, {
     radius: 2,
@@ -125,4 +148,15 @@ export const simpleDotIcon = function (feature, latlng) {
     opacity: 1,
     fillOpacity: 0.8,
   })
+}
+
+export const boatMarkerTypes = function () {
+  const boatTypes = {
+    Sailboat: sailBoatIcon,
+    SailboatSails: sailBoatSailsIcon,
+    Powerboat: powerBoatIcon,
+    Dot: simpleDotIcon,
+  }
+
+  return boatTypes
 }

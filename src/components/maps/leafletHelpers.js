@@ -109,7 +109,7 @@ export const sailConfigIconImg = function (feature) {
   return '/sailboat-000.png'
 }
 
-export const sailBoatConfigIcon = function (feature, latlng) {
+export const sailBoatSailsIcon = function (feature, latlng) {
   return L.marker(latlng, {
     icon: new L.Icon({
       iconSize: [32, 32],
@@ -153,7 +153,7 @@ export const simpleDotIcon = function (feature, latlng) {
 export const boatMarkerTypes = function () {
   const boatTypes = {
     Sailboat: sailBoatIcon,
-    SailboatConfig: sailBoatConfigIcon,
+    SailboatSails: sailBoatSailsIcon,
     Powerboat: powerBoatIcon,
     Dot: simpleDotIcon,
   }

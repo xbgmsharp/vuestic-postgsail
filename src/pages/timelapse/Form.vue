@@ -226,7 +226,7 @@
     start_log: '',
     end_log: '',
     map_type: 'Satellite',
-    boat_type: 'SailboatConfig',
+    boat_type: 'SailboatSails',
     speed: 250,
     delay: 0,
     zoom: 13,
@@ -252,7 +252,7 @@
   }))
 
   // get list from list of all maps
-  const boatIdx = 1 // SailboatConfig
+  const boatIdx = 1 // SailboatSails
   const boatTypes = Object.keys(boatMarkerTypes()).map((key, index) => ({
     value: index,
     text: key,

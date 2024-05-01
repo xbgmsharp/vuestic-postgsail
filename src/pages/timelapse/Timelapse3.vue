@@ -22,7 +22,7 @@
     boatMarkerTypes,
     powerBoatIcon,
     sailBoatIcon,
-    sailBoatConfigIcon,
+    sailBoatSailsIcon,
   } from '../../components/maps/leafletHelpers.js'
 
   import { ref, onMounted } from 'vue'
@@ -309,8 +309,8 @@
             case 'Sailboat':
               boatMarker.value = sailBoatIcon(geojson.features[index], coord_rev).addTo(map.value)
               break
-            case 'SailboatConfig':
-              boatMarker.value = sailBoatConfigIcon(geojson.features[index], coord_rev).addTo(map.value)
+            case 'SailboatSails':
+              boatMarker.value = sailBoatSailsIcon(geojson.features[index], coord_rev).addTo(map.value)
               break
             case 'Powerboat':
               boatMarker.value = powerBoatIcon(geojson.features[index], coord_rev).addTo(map.value)

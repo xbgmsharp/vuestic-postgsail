@@ -425,8 +425,8 @@
         pointToLayer: boatTypes['Sailboat'],
         onEachFeature: popup,
       }),
-      SailboatConfig: L.geoJSON(mapGeoJsonFeatures.value, {
-        pointToLayer: boatTypes['SailboatConfig'],
+      SailboatSails: L.geoJSON(mapGeoJsonFeatures.value, {
+        pointToLayer: boatTypes['SailboatSails'],
         onEachFeature: popup,
       }),
       Powerboat: L.geoJSON(mapGeoJsonFeatures.value, {

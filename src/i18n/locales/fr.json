@@ -423,7 +423,7 @@
       "kilometres": "{n} kilometre | {n} kilometres"
     },
     "speed": {
-      "knots": "0 knot | {n} knot | {n} knots",
+      "knots": "0 knot | {n} knot | {n} knots"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

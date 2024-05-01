@@ -5,7 +5,7 @@ export function speedFormat(val) {
   return parseFloat(val).toFixed(1)
 }
 
-export const speedFormatKnots = (val, trad = 'unit.speed.knots') => {
+export const speedFormatKnots = (val, trad = 'units.speed.knots') => {
   if (!val) return null
   const n = parseFloat(val)
   const count = { n: n % 1 ? parseFloat(n.toFixed(1)) : n }

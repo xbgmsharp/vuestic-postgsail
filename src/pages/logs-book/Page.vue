@@ -46,6 +46,7 @@
         @edit="editTrip"
         @delete="onTripDeleted"
         @replay="replayTrip"
+        @export="exportGPX"
       />
       <LogbookTable
         v-if="doShowAsCards === 2"
@@ -177,6 +178,10 @@
   const replayTrip = async (log) => {
     router.push({ name: 'timelapse-replay', params: { id: log.id } })
     return
+  }
+
+  const exportGPX = async (log) => {
+    handleGPX({ _id: log.id })
   }
 
   const action_options = [

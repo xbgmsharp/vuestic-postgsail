@@ -12,16 +12,8 @@
                 <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
               </div>
               <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-input
-                  v-model="filter.default_stay"
-                  :clearable="true"
-                  placeholder="Filter by default stay type..."
-                />
-              </div>
-
-              <div class="col-span-12 md:col-span-6 flex flex-col">
                 <VaSelect
-                  v-model="filterstayed_at"
+                  v-model="filter.default_stay"
                   placeholder="Filter by default stay type..."
                   :options="options"
                   multiple
@@ -159,7 +151,7 @@
   const getDefaultFilter = () => {
     return {
       name: null,
-      stay: null,
+      default_stay: null,
     }
   }
 
@@ -204,7 +196,6 @@
             arrivals_departures: row.arrivals_departures,
           }))
           .filter((row) => {
-            console.log('filter', row)
             const f = filter
             if (Object.keys(f).every((fkey) => !f[fkey])) {
               return true
@@ -217,7 +208,14 @@
                 case 'name':
                   return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
                 case 'default_stay':
-                  return row.default_stay.toLowerCase().includes(f[fkey].toLowerCase())
+                  var valid = false
+                  for (let i = 0; i < f['default_stay'].length; i++) {
+                    if (!f['default_stay'][i] || valid) {
+                      continue
+                    }
+                    valid = row.default_stay.toLowerCase().includes(f['default_stay'][i].toLowerCase())
+                  }
+                  return valid
               }
             })
           })

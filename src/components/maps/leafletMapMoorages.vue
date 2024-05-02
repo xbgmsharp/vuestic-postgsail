@@ -14,7 +14,6 @@
    * TODO
    * Add boat name
    * Add motorboat icon
-   * Add Emodnet bathymetry
    */
   import 'leaflet/dist/leaflet.css'
   import * as L from 'leaflet'
@@ -26,6 +25,7 @@
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
 
   const isBusy = ref(false),
     apiError = ref(null),
@@ -149,17 +149,13 @@
       var popupContent =
         '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
       if (feature.properties && feature.properties.id) {
-        console.log('popup onEachMoorageFeaturePopup')
-        let text = `<div class='center'><h5><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h5><br/>
-        <a href="/stay/${feature.properties.id}">${feature.properties.total_stay}<a/> day(s) stay<br/></div>`
-        // Should be done using i18n
+        let text = `<div class='mpopup'>
+                        <h4><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                        <a href="/stays/moorage/${feature.properties.id}">${feature.properties.total_stay} day(s) stay</a>
+                      </div>`
         popupContent = text
       }
       layer.bindPopup(popupContent)
-      //bind click
-      layer.on({
-        click: whenClicked,
-      })
     }
 
     const layer = L.geoJSON(geojson, {
@@ -174,18 +170,26 @@
   }
 
   // TODO Zoom and fit on click
-  // TODO convert _from_time to date
-  // TODO convert _duration to hours
   const onEachLineStringFeaturePopup = function (feature, layer) {
     var popupContent = '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
-    if (feature.properties && feature.properties.id) {
-      console.log('popup onEachLineStringFeaturePopup')
-      let date = dateFormatUTC(feature.properties._from_time)
+    if (feature.properties && feature.properties._from_time) {
+      let time = dateFormatUTC(feature.properties._from_time)
       let duration = durationFormatHours(feature.properties.duration)
       let distance = distanceFormatMiles(feature.properties.distance)
-      let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">From ${feature.properties.name}</a></h6><br/>
-        ${date}, ${distance}, ${duration} hours<br/></div>`
-      // TODO should be done using i18n
+      let avg_speed = speedFormatKnots(feature.properties.avg_speed)
+      let max_speed = speedFormatKnots(feature.properties.max_speed)
+      let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+      let text = `<div class='mpopup'>
+                        <h4><a href="/logmap/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                        <table class='data'><tbody>
+                          <tr><td>Time</td><td>${time}</td></tr>
+                          <tr><td>Distance</td><td>${distance}</td></tr>
+                          <tr><td>Duration</td><td>${duration} hours</td></tr>
+                          <tr><td>Speed Ave/Max</td><td>${avg_speed} / ${max_speed}</td></tr>
+                          <tr><td>Wind Max</td><td>${max_wind}</td></tr>
+                        </tbody></table></br>
+                        <a href="/timelapse/${feature.properties.id}">Replay</a>
+                      </div>`
       popupContent = text
     }
     layer.bindPopup(popupContent)
@@ -278,4 +282,17 @@
   })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+  .mpopup {
+    td:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    td:nth-child(2) {
+      font-weight: bold;
+    }
+    a {
+      cursor: pointer;
+    }
+  }
+</style>

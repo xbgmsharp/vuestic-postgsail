@@ -119,16 +119,15 @@
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
-  import lMap from '../../components/maps/leafletMap.vue'
-  import { asBusy, handleExport } from '../../utils/handleExports'
-  import { seaState, visibility } from '../../utils/PostgSail'
-  import MySelect from '../../components/vaSelect.vue'
   import { useModal, useToast } from 'vuestic-ui'
   const { confirm } = useModal()
   const { init: initToast } = useToast()
   import logBook from '../../data/logbook.json'
   import { useGlobalStore } from '../../stores/global-store'
-  const { isLoggedIn, publicVessel, instagram, website, readOnly } = useGlobalStore()
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { readOnly } = useGlobalStore()
+  const { vesselName, vesselType } = useVesselStore()
 
   import tripSummary from './sidebars/Summary.vue'
   import tripPerformance from './sidebars/Performance.vue'
@@ -202,7 +201,7 @@
       formData.notes = apiData.row.notes || null
       formData.geojson = apiData.row.geojson || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
-      document.title = `${publicVessel}'s Trip From ${apiData.row.name}`
+      document.title = `${vesselName}'s Trip From ${apiData.row.name}`
       let geo_arr = apiData.row.geojson.features
       for (var i = 1; i < geo_arr.length; i++) {
         //console.log(geo_arr[i].properties)
@@ -257,21 +256,6 @@
     L.control.layers(bMaps, oMaps).addTo(map.value)
 
     const popup = function (feature, layer) {
-      /* Boat popup
-                    Boat Name
-            Time	13 minutes ago
-            Boat Speed	0 knots
-            Wind Speed	4 knots
-            Latitude	41.3869066667
-            Longitude	2.19916333333
-            */
-      /* Track popup
-                    Boat Name
-              Time	8/8/2022, 11:11:30 AM
-              Boat Speed	4.2 knots
-              Latitude	39.5302133333
-              Longitude	2.34970166667
-            */
       var popupContent =
         '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
       // If geo Point click
@@ -286,7 +270,7 @@
         let winddir = angleFormat(feature.properties.truewinddirection) || 0
         let latitude = parseFloat(feature.properties.latitude).toFixed(5)
         let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-        let text = `<div class='center' id='${time}'><h4>${publicVessel}: ${status}</h4></div><br/>
+        let text = `<div class='center' id='${time}'><h4>${vesselName}: ${status}</h4></div><br/>
               Time: ${time}<br/>
               Boat Speed: ${speed}<br/>
               Course Over Ground: ${cog}<br/>
@@ -434,8 +418,10 @@
       }),
     }
     L.control.layers(GeoJSONbasemapObj.value).addTo(map.value)
-    GeoJSONbasemapObj.value['Sailboat'].addTo(map.value)
-    map.value.fitBounds(GeoJSONbasemapObj.value['Sailboat'].getBounds(), { maxZoom: 17, zoomControl: false })
+    const boatLayer =
+      vesselType === 'Sailing' ? GeoJSONbasemapObj.value['Sailboat'] : GeoJSONbasemapObj.value['Powerboat']
+    boatLayer.addTo(map.value)
+    map.value.fitBounds(boatLayer.getBounds(), { maxZoom: 17, zoomControl: false })
     // Update default layer icon
     document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
       "background-image: url('/favicon-32x32.png');"

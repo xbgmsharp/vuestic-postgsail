@@ -144,8 +144,7 @@
           let max_speed = speedFormatKnots(feature.properties.max_speed)
           let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
           let text = `<div class='mpopup'>
-                        <h4><a id="logLink" onclick="logLink(${feature.properties.id})">
-                          ${feature.properties.name}</a></h4><br/>
+                        <h4><a href="/logmap/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
                         <table class='data'><tbody>
                           <tr><td>Time</td><td>${time}</td></tr>
                           <tr><td>Distance</td><td>${distance}</td></tr>
@@ -153,22 +152,9 @@
                           <tr><td>Speed Ave/Max</td><td>${avg_speed} / ${max_speed}</td></tr>
                           <tr><td>Wind Max</td><td>${max_wind}</td></tr>
                         </tbody></table></br>
-                        <a id="timelapseLink" onclick="timelapseLink(${feature.properties.id})">Replay</a>
+                        <a href="/timelapse/${feature.properties.id}">Replay</a>
                       </div>`
           popupContent = text
-
-          // Go to logbook details page
-          window.logLink = async function (log_id) {
-            let tripLink = document.getElementById('logLink')
-            tripLink.href = `/logmap/${log_id}`
-            return
-          }
-          // Go to timelapse page
-          window.timelapseLink = async function (log_id) {
-            let link = document.getElementById('timelapseLink')
-            link.href = `/timelapse/${log_id}`
-            return
-          }
         }
         layer.bindPopup(popupContent)
       }

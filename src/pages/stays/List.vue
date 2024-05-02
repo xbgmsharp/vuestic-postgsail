@@ -21,9 +21,9 @@
             />
           </div>
           <div class="flex flex-col md:flex-row">
-            <VaSelect v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+            <va-select v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
               <template #content="{ value }">
-                <VaChip
+                <va-chip
                   v-for="chip in value"
                   :key="chip.text"
                   size="small"
@@ -32,9 +32,9 @@
                   @update:modelValue="deleteChip(chip)"
                 >
                   {{ chip }}
-                </VaChip>
+                </va-chip>
               </template>
-            </VaSelect>
+            </va-select>
           </div>
         </div>
 

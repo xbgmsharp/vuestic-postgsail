@@ -150,7 +150,7 @@
                           <tr><td>Distance</td><td>${distance}</td></tr>
                           <tr><td>Duration</td><td>${duration} hours</td></tr>
                           <tr><td>Speed Ave/Max</td><td>${avg_speed} / ${max_speed}</td></tr>
-                          <tr><td>Wind Max</td><td>${max_wind}</td></tr>
+                          <tr><td>Wind Speed Max</td><td>${max_wind}</td></tr>
                         </tbody></table></br>
                         <a href="/timelapse/${feature.properties.id}">Replay</a>
                       </div>`

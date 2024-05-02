@@ -241,7 +241,7 @@
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
       const overlayView = L.DomUtil.create('div', 'overlay')
-      const topRow = L.DomUtil.create('b', 'top-row', overlayView)
+      const topRow = L.DomUtil.create('span', 'top-row', overlayView)
       L.DomUtil.create('span', 'trip', topRow)
       const bottomRow = L.DomUtil.create('div', 'bottom-row', overlayView)
       L.DomUtil.create('span', 'note', bottomRow)
@@ -255,15 +255,15 @@
       const speedView = L.DomUtil.create('div', 'speed', overlayView)
       var label = L.DomUtil.create('span', 'label', speedView)
       label.innerHTML = 'Speed:'
-      L.DomUtil.create('b', 'value', speedView)
-      const awaView = L.DomUtil.create('div', 'awa', overlayView)
-      label = L.DomUtil.create('span', 'label', awaView)
-      label.innerHTML = 'AWA:'
-      L.DomUtil.create('b', 'value', awaView)
+      L.DomUtil.create('span', 'value', speedView)
       const windView = L.DomUtil.create('div', 'wind', overlayView)
       label = L.DomUtil.create('span', 'label', windView)
       label.innerHTML = 'Wind:'
-      L.DomUtil.create('b', 'value', windView)
+      L.DomUtil.create('span', 'value', windView)
+      const awaView = L.DomUtil.create('div', 'awa', overlayView)
+      label = L.DomUtil.create('span', 'label', awaView)
+      label.innerHTML = 'AWA:'
+      L.DomUtil.create('span', 'value', awaView)
       return overlayView
     }
     instOverlay.addTo(map.value)
@@ -328,17 +328,9 @@
           speedView.innerText =
             speedFormatKnots(properties.speedoverground) +
             (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
-          speedView.parentElement.style.display = 'block'
+          speedView.parentElement.style.display = 'flex'
         } else {
           speedView.parentElement.style.display = 'none'
-        }
-
-        // Display instruments: AWA
-        if (properties.truewinddirection && properties.courseovergroundtrue && instruments.value) {
-          awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
-          awaView.parentElement.style.display = 'block'
-        } else {
-          awaView.parentElement.style.display = 'none'
         }
 
         // Display instruments: SOG/COG
@@ -346,9 +338,17 @@
           windView.innerText =
             speedFormatKnots(properties.windspeedapparent) +
             (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
-          windView.parentElement.style.display = 'block'
+          windView.parentElement.style.display = 'flex'
         } else {
           windView.parentElement.style.display = 'none'
+        }
+
+        // Display instruments: AWA
+        if (properties.truewinddirection && properties.courseovergroundtrue && instruments.value) {
+          awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
+          awaView.parentElement.style.display = 'flex'
+        } else {
+          awaView.parentElement.style.display = 'none'
         }
 
         // Get the next coordinates from the geojson
@@ -508,6 +508,7 @@
       text-align: center;
       .top-row {
         font-size: 18pt;
+        font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -540,14 +541,14 @@
 
       .label {
         text-align: right;
-        padding: 5px;
-        flex: 1;
+        padding-right: 0.5rem;
+        flex: 0 0 35%;
       }
 
       .value {
+        font-weight: bold;
         text-align: left;
-        padding: 5px;
-        flex: 1;
+        flex: 0 0 65%;
       }
     }
   }

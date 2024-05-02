@@ -178,6 +178,7 @@
       "departed": "Departed To",
       "arrived": "Arrived",
       "stayed_at": "Stayed at",
+      "duration": "Duración",
       "duration_d": "Duración [d]",
       "note": "Note | Notes"
     },
@@ -186,6 +187,7 @@
       "arrived": "Llegó",
       "departed": "Partido",
       "stayed_at": "Me alojé en",
+      "duration": "Duración",
       "duration_d": "Duración [d]"
     }
   },

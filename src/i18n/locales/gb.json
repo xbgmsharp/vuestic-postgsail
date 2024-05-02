@@ -184,6 +184,7 @@
       "departed": "Departed",
       "arrived": "Arrived",
       "stayed_at": "Stayed at",
+      "duration": "Duration",
       "duration_d": "Duration [d]",
       "note": "Note | Notes"
     },
@@ -192,6 +193,7 @@
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
+      "duration": "Duration",
       "duration_d": "Duration [d]"
     }
   },

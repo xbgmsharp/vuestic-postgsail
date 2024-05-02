@@ -178,6 +178,7 @@
       "departed": "Departed",
       "arrived": "Arrived",
       "stayed_at": "Séjourné à",
+      "duration": "Durée",
       "duration_d": "Durée [j]",
       "note": "Note | Notes"
     },
@@ -186,6 +187,7 @@
       "arrived": "Arrivé",
       "departed": "Parti",
       "stayed_at": "Séjourné à",
+      "duration": "Durée",
       "duration_d": "Durée [j]"
     }
   },

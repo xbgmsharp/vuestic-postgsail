@@ -182,6 +182,7 @@
       "departed": "Abgereist",
       "arrived": "Angekommen",
       "stayed_at": "Verbleib",
+      "duration": "Dauer",
       "duration_d": "Dauer [t]",
       "note": "Notiz | Notizen"
     },
@@ -189,6 +190,7 @@
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
+      "duration": "Dauer",
       "duration_d": "Dauer [t]"
     }
   },

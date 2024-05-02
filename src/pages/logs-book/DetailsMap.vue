@@ -4,7 +4,7 @@
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
     <va-inner-loading :loading="item && isBusy">
-      <va-card title="Leaflet Maps">
+      <va-card>
         <div id="sidebar" ref="sidebarContainer" class="leaflet-sidebar collapsed">
           <!-- Nav tabs -->
           <div class="leaflet-sidebar-tabs">
@@ -256,29 +256,38 @@
     L.control.layers(bMaps, oMaps).addTo(map.value)
 
     const popup = function (feature, layer) {
-      var popupContent =
-        '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
-      // If geo Point click
       if (feature.properties && feature.properties.time) {
-        //console.log(`popup`, feature.properties)
         let status = feature.properties.status || ''
         let time = dateFormatUTC(feature.properties.time)
-        let speed = speedFormatKnots(feature.properties.speedoverground) || 0
-        let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
-        let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
-        let wind = speedFormatKnots(feature.properties.windspeedapparent) || 0
-        let winddir = angleFormat(feature.properties.truewinddirection) || 0
-        let latitude = parseFloat(feature.properties.latitude).toFixed(5)
-        let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-        let text = `<div class='center' id='${time}'><h4>${vesselName}: ${status}</h4></div><br/>
-              Time: ${time}<br/>
-              Boat Speed: ${speed}<br/>
-              Course Over Ground: ${cog}<br/>
-              Apparent Wind Angle: ${awa}<br/>
-              Wind Speed: ${wind}<br/>
-              Wind Direction: ${winddir}<br/>
-              Latitude: ${latitude}<br/>
-              Longitude: ${longitude}<br/>`
+        let sog = speedFormatKnots(feature.properties.speedoverground)
+        let cog = angleFormat(feature.properties.courseovergroundtrue)
+        let twd = angleFormat(feature.properties.truewinddirection)
+        let aws = speedFormatKnots(feature.properties.windspeedapparent)
+        let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
+        let latitude = parseFloat(feature.properties.latitude).toFixed(3)
+        let longitude = parseFloat(feature.properties.longitude).toFixed(3)
+        let text = `<div class='popup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
+                      <table class='data'><tbody>
+                        <tr><td>Time</td><td>${time}</td></tr>
+                        <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`
+        if (feature.properties.speedoverground) {
+          text += `<tr><td>Speed</td><td>${sog}`
+          if (feature.properties.courseovergroundtrue) {
+            text += ` / ${cog}`
+          }
+          text += `</td></tr>`
+        }
+        if (feature.properties.windspeedapparent) {
+          text += `<tr><td>Wind</td><td>${aws}`
+          if (feature.properties.truewinddirection) {
+            text += ` / ${twd}`
+          }
+          text += `</td></tr>`
+        }
+        if (feature.properties.truewinddirection && feature.properties.courseovergroundtrue) {
+          text += `<tr><td>AWA</td><td>${awa}</td></tr>`
+        }
+        text += `</tbody></table></div><br/>`
         // Form content
         let content =
           text +
@@ -616,6 +625,13 @@
 </script>
 
 <style>
+  td:nth-child(1) {
+    text-align: right;
+    padding-right: 5px;
+  }
+  td:nth-child(2) {
+    font-weight: bold;
+  }
   .save {
     width: 50%;
     padding: 5px;

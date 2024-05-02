@@ -13,12 +13,10 @@
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
-  import { useGlobalStore } from '../../stores/global-store'
-  const { publicVessel } = useGlobalStore()
-  /*
-   * TODO
-   * Add motorboat icon
-   */
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
+
   export default {
     name: 'LeafletMap',
     props: {
@@ -99,21 +97,6 @@
       }
 
       const popup = function (feature, layer) {
-        /* Boat popup
-                  Boat Name
-          Time	13 minutes ago
-          Boat Speed	0 knots
-          Wind Speed	4 knots
-          Latitude	41.3869066667
-          Longitude	2.19916333333
-          */
-        /* Track popup
-                  Boat Name
-            Time	8/8/2022, 11:11:30 AM
-            Boat Speed	4.2 knots
-            Latitude	39.5302133333
-            Longitude	2.34970166667
-          */
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
         // If geo point click
@@ -128,7 +111,7 @@
           let winddir = angleFormat(feature.properties.truewinddirection) || 0
           let latitude = parseFloat(feature.properties.latitude).toFixed(5)
           let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-          let text = `<div class='center'><h4>${publicVessel}: ${status}</h4></div><br/>
+          let text = `<div class='center'><h4>${vesselName}: ${status}</h4></div><br/>
               Time: ${time}<br/>
               Boat Speed: ${speed}<br/>
               Course Over Ground: ${cog}<br/>
@@ -182,8 +165,7 @@
         return false
       }
 
-      // TODO: use boat type from actual boat config (sailboat/powerboat)
-      const boatIcon = boatMarkerTypes()['Sailboat']
+      const boatIcon = vesselType === 'Sailing' ? boatMarkerTypes()['Sailboat'] : boatMarkerTypes()['Powerboat']
 
       let layer = null
       if (this.multigeojson) {

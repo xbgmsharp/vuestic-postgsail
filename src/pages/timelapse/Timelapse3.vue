@@ -217,8 +217,8 @@
     // create a fullscreen button and add it to the map
     L.control
       .fullscreen({
-        position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
-        content: '<i class="va-icon material-icons">fullscreen</i>', // change the content of the button, can be HTML, default null
+        position: 'bottomright',
+        content: '<i class="va-icon material-icons">fullscreen</i>',
       })
       .addTo(map.value)
     // Add the note player and distance info to the map

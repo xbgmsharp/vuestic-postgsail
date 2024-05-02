@@ -5,44 +5,38 @@
   <template v-else>
     <div>
       <va-card class="mb-3">
-        <va-card-content>
-          <div class="layout gutter--md">
-            <div class="py-2 grid grid-cols-12 gap-6">
-              <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-              </div>
-              <div class="col-span-12 md:col-span-6 flex flex-col">
-                <VaSelect
-                  v-model="filter.default_stay"
-                  placeholder="Filter by default stay type..."
-                  :options="options"
-                  multiple
-                  text-by="text"
-                >
-                  <template #content="{ value }">
-                    <VaChip
-                      v-for="chip in value"
-                      :key="chip.text"
-                      size="small"
-                      class="mr-2"
-                      closeable
-                      @update:modelValue="deleteChip(chip)"
-                    >
-                      {{ chip }}
-                    </VaChip>
-                  </template>
-                </VaSelect>
-              </div>
-            </div>
-          </div>
-        </va-card-content>
-      </va-card>
-      <va-card class="mb-3">
         <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
+          <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
+            <div>
+              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+            </div>
+            <div>
+              <va-select
+                v-model="filter.default_stay"
+                placeholder="Filter by default stay type..."
+                :options="options"
+                multiple
+                text-by="text"
+              >
+                <template #content="{ value }">
+                  <va-chip
+                    v-for="chip in value"
+                    :key="chip.text"
+                    size="small"
+                    class="mr-2"
+                    closeable
+                    @update:modelValue="deleteChip(chip)"
+                  >
+                    {{ chip }}
+                  </va-chip>
+                </template>
+              </va-select>
+            </div>
+          </div>
           <va-data-table
             v-model:sort-by="sorting.sortBy"
             v-model:sorting-order="sorting.sortingOrder"

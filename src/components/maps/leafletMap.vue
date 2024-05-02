@@ -84,9 +84,7 @@
       if (centerLat == 0 && centerLng == 0) return
 
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
-      this.map = L.map('mapContainer', {
-        zoomControl: this.controlLayer,
-      }).setView([centerLat, centerLng], this.mapZoom)
+      this.map = L.map('mapContainer', { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
 
       const bMaps = baseMaps()
       const oMaps = overlayMaps()
@@ -94,6 +92,7 @@
 
       if (this.controlLayer) {
         L.control.layers(bMaps, oMaps).addTo(this.map)
+        L.control.zoom({ position: 'bottomright' }).addTo(this.map)
       }
 
       const popup = function (feature, layer) {

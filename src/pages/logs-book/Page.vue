@@ -1,41 +1,36 @@
 <template>
-  <div>
-    <va-card class="mb-3">
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-            </div>
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-date-input
-                v-model="filter.dateRange"
-                :readonly="false"
-                :clearable="true"
-                placeholder="Filter by date range..."
-                mode="range"
-              />
-            </div>
-          </div>
-        </div>
-      </va-card-content>
-    </va-card>
-  </div>
-
-  <VaCard>
-    <VaCardContent>
-      <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
+  <va-card>
+    <va-card-content>
+      <div class="flex flex-col md:flex-row gap-4 mb-2 justify-between">
         <div class="flex flex-col md:flex-row gap-2 justify-start">
-          <VaButtonToggle
+          <va-button-toggle
             v-model="doShowAsCards"
-            color="background-element"
-            border-color="background-element"
+            preset="secondary"
+            border-color="primary"
+            size="large"
             :options="[
               { label: 'Cards', value: 1 },
-              { label: 'Tables', value: 2 },
+              { label: 'Table', value: 2 },
               { label: 'Map', value: 3 },
             ]"
           />
+        </div>
+        <div v-if="doShowAsCards != 3" class="layout flex flex-col md:flex-row gap-4 justify-between">
+          <div class="flex flex-col">
+            <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+          </div>
+          <div class="flex flex-col">
+            <va-date-input
+              v-model="filter.dateRange"
+              :readonly="false"
+              :clearable="true"
+              placeholder="Filter by date range..."
+              mode="range"
+            />
+          </div>
+        </div>
+        <div v-else class="layout flex">
+          <p class="text-center">Showing only last 10 logbooks.</p>
         </div>
       </div>
 
@@ -71,8 +66,8 @@
           @click="handleCSV_all(items)"
         ></va-icon>
       </div>
-    </VaCardContent>
-  </VaCard>
+    </va-card-content>
+  </va-card>
 </template>
 
 <script setup>

@@ -420,11 +420,11 @@
   },
   "units": {
     "distance": {
-      "miles": "NM",
-      "kilometres": "km"
+      "miles": "{n} NM",
+      "kilometres": "{n} km"
     },
     "speed": {
-      "knots": "kts"
+      "knots": "{n} kts"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

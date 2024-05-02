@@ -423,11 +423,11 @@
   },
   "units": {
     "distance": {
-      "miles": "NM",
-      "kilometres": "km"
+      "miles": "{n} NM",
+      "kilometres": "{n} km"
     },
     "speed": {
-      "knots": "kts"
+      "knots": "{n} kts"
     },
     "time": {
       "days": "{n} Tage | {n} Tag | {n} Tage",

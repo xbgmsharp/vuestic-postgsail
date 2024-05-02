@@ -33,11 +33,11 @@
   import { angleFormat, awaFormat } from '../../utils/angleFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
 
-  //import { useGlobalStore } from '../../stores/global-store'
-  //import timelapseGeoJSON from '../../data/timelapse3.json'
-  //import { useI18n } from 'vue-i18n'
-  //import { distanceLatLng } from '../../utils/distanceFormatter.js'
-  //import noDataScreen from '../../components/noDataScreen.vue'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselType } = useVesselStore()
+
+  const fallbackBoatType = vesselType === 'Sailing' ? 'SailboatSails' : 'Powerboat'
 
   function parseBoatTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {
@@ -99,7 +99,7 @@
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
     map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
-    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'Dot')),
+    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, fallbackBoatType)),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),

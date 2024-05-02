@@ -16,19 +16,15 @@
             ]"
           />
         </div>
-        <div v-if="doShowAsCards != 3" class="layout flex flex-col md:flex-row gap-4 justify-between">
-          <div class="flex flex-col md:flex-row">
-            <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-          </div>
-          <div class="flex flex-col md:flex-row">
-            <va-date-input
-              v-model="filter.dateRange"
-              :readonly="false"
-              :clearable="true"
-              placeholder="Filter by date range..."
-              mode="range"
-            />
-          </div>
+        <div v-if="doShowAsCards != 3" class="layout flex flex-col lg:flex-row gap-4 justify-between">
+          <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+          <va-date-input
+            v-model="filter.dateRange"
+            style="width: 100%"
+            :clearable="true"
+            placeholder="Filter by date range..."
+            mode="range"
+          />
         </div>
         <div v-else class="layout flex">
           <p class="text-center">Showing only last 10 logbooks.</p>

@@ -16,30 +16,27 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
-            <div class="flex flex-col md:flex-row">
-              <va-date-input
-                v-model="filter.dateRange"
-                :clearable="true"
-                placeholder="Filter by date range..."
-                mode="range"
-              />
-            </div>
-            <div class="flex flex-col md:flex-row">
-              <va-select v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
-                <template #content="{ value }">
-                  <va-chip
-                    v-for="chip in value"
-                    :key="chip.text"
-                    size="small"
-                    class="mr-2"
-                    closeable
-                    @update:modelValue="deleteChip(chip)"
-                  >
-                    {{ chip }}
-                  </va-chip>
-                </template>
-              </va-select>
-            </div>
+            <va-date-input
+              v-model="filter.dateRange"
+              style="width: 100%"
+              :clearable="true"
+              placeholder="Filter by date range..."
+              mode="range"
+            />
+            <va-select v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+              <template #content="{ value }">
+                <va-chip
+                  v-for="chip in value"
+                  :key="chip.text"
+                  size="small"
+                  class="mr-2"
+                  closeable
+                  @update:modelValue="deleteChip(chip)"
+                >
+                  {{ chip }}
+                </va-chip>
+              </template>
+            </va-select>
           </div>
           <va-data-table
             v-model:sort-by="sorting.sortBy"

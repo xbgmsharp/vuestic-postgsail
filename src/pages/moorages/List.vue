@@ -11,31 +11,27 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
-            <div>
-              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-            </div>
-            <div>
-              <va-select
-                v-model="filter.default_stay"
-                placeholder="Filter by default stay type..."
-                :options="options"
-                multiple
-                text-by="text"
-              >
-                <template #content="{ value }">
-                  <va-chip
-                    v-for="chip in value"
-                    :key="chip.text"
-                    size="small"
-                    class="mr-2"
-                    closeable
-                    @update:modelValue="deleteChip(chip)"
-                  >
-                    {{ chip }}
-                  </va-chip>
-                </template>
-              </va-select>
-            </div>
+            <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+            <va-select
+              v-model="filter.default_stay"
+              placeholder="Filter by default stay type..."
+              :options="options"
+              multiple
+              text-by="text"
+            >
+              <template #content="{ value }">
+                <va-chip
+                  v-for="chip in value"
+                  :key="chip.text"
+                  size="small"
+                  class="mr-2"
+                  closeable
+                  @update:modelValue="deleteChip(chip)"
+                >
+                  {{ chip }}
+                </va-chip>
+              </template>
+            </va-select>
           </div>
           <va-data-table
             v-model:sort-by="sorting.sortBy"

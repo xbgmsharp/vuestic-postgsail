@@ -211,7 +211,7 @@
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'
-  const { instagram, website } = useGlobalStore()
+  const { publicVessel, instagram, website } = useGlobalStore()
   import { useVesselStore } from '../../stores/vessel-store'
   const { vesselName, vesselType } = useVesselStore()
   import { useToast } from 'vuestic-ui'
@@ -250,7 +250,7 @@
   const timelapse_public_link = computed(() => {
     console.log('public formData', formData)
     const searchParams = new URLSearchParams(formData)
-    return `${window.location.protocol}//${window.location.host}/${vesselName}/timelapse?${searchParams.toString()}`
+    return `${window.location.protocol}//${window.location.host}/${publicVessel}/timelapse?${searchParams.toString()}`
   })
 
   // get list from list of all maps

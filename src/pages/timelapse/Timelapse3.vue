@@ -254,15 +254,15 @@
       const overlayView = L.DomUtil.create('div', 'instruments')
       const speedView = L.DomUtil.create('div', 'speed', overlayView)
       var label = L.DomUtil.create('span', 'label', speedView)
-      label.innerHTML = 'Speed:'
+      label.innerHTML = 'Speed'
       L.DomUtil.create('span', 'value', speedView)
       const windView = L.DomUtil.create('div', 'wind', overlayView)
       label = L.DomUtil.create('span', 'label', windView)
-      label.innerHTML = 'Wind:'
+      label.innerHTML = 'Wind'
       L.DomUtil.create('span', 'value', windView)
       const awaView = L.DomUtil.create('div', 'awa', overlayView)
       label = L.DomUtil.create('span', 'label', awaView)
-      label.innerHTML = 'AWA:'
+      label.innerHTML = 'AWA'
       L.DomUtil.create('span', 'value', awaView)
       return overlayView
     }

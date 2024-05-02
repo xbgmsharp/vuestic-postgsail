@@ -228,7 +228,8 @@
   const start_trip = ref(-1)
   const end_trip = ref(-1)
   const mylogs = ref([])
-  const defaultBoatType = vesselType === 'Sailing' ? 'SailboatSails' : 'Powerboat'
+  const defaultBoatType =
+    vesselType === 'Sailing' ? 'SailboatSails' : vesselType === 'Pleasure Craft' ? 'Powerboat' : 'Dot'
   const formData = reactive({
     start_log: '',
     end_log: '',

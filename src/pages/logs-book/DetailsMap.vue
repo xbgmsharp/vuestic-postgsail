@@ -419,7 +419,11 @@
     }
     L.control.layers(GeoJSONbasemapObj.value).addTo(map.value)
     const boatLayer =
-      vesselType === 'Sailing' ? GeoJSONbasemapObj.value['SailboatSails'] : GeoJSONbasemapObj.value['Powerboat']
+      vesselType === 'Sailing'
+        ? GeoJSONbasemapObj.value['Sailboat']
+        : vesselType === 'Pleasure Craft'
+        ? GeoJSONbasemapObj.value['Powerboat']
+        : GeoJSONbasemapObj.value['Dot']
     boatLayer.addTo(map.value)
     map.value.fitBounds(boatLayer.getBounds(), { maxZoom: 17, zoomControl: false })
     // Update default layer icon

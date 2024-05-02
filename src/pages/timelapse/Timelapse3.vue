@@ -37,7 +37,8 @@
 
   const { vesselType } = useVesselStore()
 
-  const fallbackBoatType = vesselType === 'Sailing' ? 'SailboatSails' : 'Powerboat'
+  const fallbackBoatType =
+    vesselType === 'Sailing' ? 'SailboatSails' : vesselType === 'Pleasure Craft' ? 'Powerboat' : 'Dot'
 
   function parseBoatTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {

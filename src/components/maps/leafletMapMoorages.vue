@@ -156,6 +156,7 @@
         popupContent = text
       }
       layer.bindPopup(popupContent)
+      layer.on({ click: whenClicked })
     }
 
     const layer = L.geoJSON(geojson, {

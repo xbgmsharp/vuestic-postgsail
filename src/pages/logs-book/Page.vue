@@ -1,6 +1,6 @@
 <template>
   <va-card>
-    <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
+    <va-card-title>{{ $t('logs.list.title') }} {{ vesselName }}</va-card-title>
     <va-card-content>
       <div class="flex flex-col lg:flex-row gap-4 mb-2 justify-between">
         <div class="flex flex-col lg:flex-row gap-2 justify-start">
@@ -85,6 +85,10 @@
   import { useGlobalStore } from '../../stores/global-store'
   import { storeToRefs } from 'pinia'
   import PostgSail from '../../services/api-client'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
+
   const GlobalStore = useGlobalStore()
   const { isMobile, doShowAsCards, readOnly } = storeToRefs(GlobalStore)
 

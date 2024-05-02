@@ -5,7 +5,7 @@
   <template v-else>
     <div>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
+        <va-card-title>{{ $t('moorages.list.title') }} {{ vesselName }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -134,6 +134,9 @@
   import StayAt from '../../components/SelectStayAt.vue'
   import { stayed_at_options } from '../../utils/PostgSail.ts'
   import { durationFormatDays } from '../../utils/dateFormatter.js'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
 
   import mooragesData from '../../data/moorages.json'
 

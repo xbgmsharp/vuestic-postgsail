@@ -1,7 +1,7 @@
 <template>
   <div>
     <va-card>
-      <va-card-title>{{ $t('stays.list.title') }}</va-card-title>
+      <va-card-title>{{ $t('stays.list.title') }} {{ vesselName }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -133,6 +133,9 @@
   import { asBusy, handleExport } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
   import { stayed_at_options } from '../../utils/PostgSail.ts'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
 
   import staysData from '../../data/stays.json'
 

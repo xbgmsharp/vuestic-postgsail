@@ -213,6 +213,10 @@
                     row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
                   )
                 case 'dateRange':
+                  // TODO: temp fix for Vuestic date range bug
+                  if (!f[fkey].start || !f[fkey].end) {
+                    return true
+                  }
                   return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
                 case 'stayed_at':
                   var valid = false

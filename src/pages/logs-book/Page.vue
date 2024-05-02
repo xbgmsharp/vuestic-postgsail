@@ -251,6 +251,10 @@
                       row.to.toLowerCase().includes(f[fkey].toLowerCase())
                     )
                   case 'dateRange':
+                    // TODO: temp fix for Vuestic date range bug
+                    if (!f[fkey].start || !f[fkey].end) {
+                      return true
+                    }
                     return areIntervalsOverlapping(
                       { start: new Date(row.fromTime), end: new Date(row.toTime) },
                       f[fkey],

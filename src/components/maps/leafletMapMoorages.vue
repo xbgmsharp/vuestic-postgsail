@@ -184,7 +184,7 @@
       let duration = durationFormatHours(feature.properties.duration)
       let distance = distanceFormatMiles(feature.properties.distance)
       let text = `<div class='center'><h6><a href="/log/${feature.properties.id}">From ${feature.properties.name}</a></h6><br/>
-        ${date}, ${distance} miles, ${duration} hours<br/></div>`
+        ${date}, ${distance}, ${duration} hours<br/></div>`
       // TODO should be done using i18n
       popupContent = text
     }

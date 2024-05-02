@@ -4,7 +4,7 @@
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
     <va-inner-loading :loading="isBusy">
-      <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
+      <va-card class="leaflet-maps-page__widget">
         <div id="mapContainer" ref="mapContainer" class="leaflet-map h-full" />
       </va-card>
     </va-inner-loading>
@@ -33,11 +33,12 @@
   import { angleFormat, awaFormat } from '../../utils/angleFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
 
-  //import { useGlobalStore } from '../../stores/global-store'
-  //import timelapseGeoJSON from '../../data/timelapse3.json'
-  //import { useI18n } from 'vue-i18n'
-  //import { distanceLatLng } from '../../utils/distanceFormatter.js'
-  //import noDataScreen from '../../components/noDataScreen.vue'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselType } = useVesselStore()
+
+  const fallbackBoatType =
+    vesselType === 'Sailing' ? 'SailboatSails' : vesselType === 'Pleasure Craft' ? 'Powerboat' : 'Dot'
 
   function parseBoatTypeQueryParam(value, default_value) {
     if (value === undefined || value === null) {
@@ -99,14 +100,14 @@
     start_date = ref(route.query.start_date || null),
     end_date = ref(route.query.end_date || null),
     map_type = ref(parseMapTypeQueryParam(route.query.map_type, 'Satellite')),
-    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, 'Dot')),
+    boat_type = ref(parseBoatTypeQueryParam(route.query.boat_type, fallbackBoatType)),
     speed = ref(route.query.speed || 250),
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
     moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true)),
-    instruments = ref(parseBooleanQueryParam(route.query.instruments, false))
+    instruments = ref(parseBooleanQueryParam(route.query.instruments, true))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {
@@ -216,8 +217,8 @@
     // create a fullscreen button and add it to the map
     L.control
       .fullscreen({
-        position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
-        content: '<i class="va-icon material-icons">fullscreen</i>', // change the content of the button, can be HTML, default null
+        position: 'bottomright',
+        content: '<i class="va-icon material-icons">fullscreen</i>',
       })
       .addTo(map.value)
     // Add the note player and distance info to the map
@@ -240,7 +241,7 @@
     const overlay = L.control({ position: 'topcenter' })
     overlay.onAdd = function () {
       const overlayView = L.DomUtil.create('div', 'overlay')
-      const topRow = L.DomUtil.create('b', 'top-row', overlayView)
+      const topRow = L.DomUtil.create('span', 'top-row', overlayView)
       L.DomUtil.create('span', 'trip', topRow)
       const bottomRow = L.DomUtil.create('div', 'bottom-row', overlayView)
       L.DomUtil.create('span', 'note', bottomRow)
@@ -253,25 +254,19 @@
       const overlayView = L.DomUtil.create('div', 'instruments')
       const speedView = L.DomUtil.create('div', 'speed', overlayView)
       var label = L.DomUtil.create('span', 'label', speedView)
-      label.innerHTML = 'Speed:'
-      L.DomUtil.create('b', 'value', speedView)
-      const awaView = L.DomUtil.create('div', 'awa', overlayView)
-      label = L.DomUtil.create('span', 'label', awaView)
-      label.innerHTML = 'AWA:'
-      L.DomUtil.create('b', 'value', awaView)
+      label.innerHTML = 'Speed'
+      L.DomUtil.create('span', 'value', speedView)
       const windView = L.DomUtil.create('div', 'wind', overlayView)
       label = L.DomUtil.create('span', 'label', windView)
-      label.innerHTML = 'Wind:'
-      L.DomUtil.create('b', 'value', windView)
+      label.innerHTML = 'Wind'
+      L.DomUtil.create('span', 'value', windView)
+      const awaView = L.DomUtil.create('div', 'awa', overlayView)
+      label = L.DomUtil.create('span', 'label', awaView)
+      label.innerHTML = 'AWA'
+      L.DomUtil.create('span', 'value', awaView)
       return overlayView
     }
     instOverlay.addTo(map.value)
-
-    // only show it if instruments enabled
-    if (instruments.value) {
-      let instView = map.value._container.querySelector('.instruments')
-      instView.style.display = 'flex'
-    }
 
     map_track_setup()
   }
@@ -285,6 +280,7 @@
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
       noteView = map.value._container.querySelector('.overlay > .bottom-row > .note'),
+      instView = map.value._container.querySelector('.instruments'),
       speedView = map.value._container.querySelector('.instruments > .speed > .value'),
       awaView = map.value._container.querySelector('.instruments > .awa > .value'),
       windView = map.value._container.querySelector('.instruments > .wind > .value')
@@ -299,55 +295,61 @@
 
         var properties = geojson.features[index].properties
 
-        // Display trip data
-        if (properties.trip && properties.trip?.name.length != 0 && moorage_overlay.value) {
-          tripView.innerText = properties.trip.name
-          tripView.style.opacity = 1
-          tripView.style.display = 'block'
-        } else {
-          tripView.style.opacity -= 0.0125 // slower fade-out
-          if (tripView.style.opacity < 0.5) {
-            tripView.style.display = 'none'
+        // Display overlay: trip name and moorage
+        if (moorage_overlay.value) {
+          if (properties.trip && properties.trip?.name.length != 0) {
+            tripView.innerText = properties.trip.name
+            tripView.style.opacity = 1
+            tripView.style.display = 'block'
+          } else {
+            tripView.style.opacity -= 0.0125 // slower fade-out
+            if (tripView.style.opacity < 0.5) {
+              tripView.style.display = 'none'
+            }
+          }
+          // Display overlay notes
+          if (properties.notes.length != 0) {
+            noteView.innerText = properties.notes
+            noteView.style.opacity = 1
+            noteView.style.display = 'block'
+          } else {
+            noteView.style.opacity -= 0.025 // faster fade-out
+            if (noteView.style.opacity < 0.5) {
+              noteView.style.display = 'none'
+            }
           }
         }
-        // Display overlay notes
-        if (properties.notes.length != 0 && moorage_overlay.value) {
-          noteView.innerText = properties.notes
-          noteView.style.opacity = 1
-          noteView.style.display = 'block'
-        } else {
-          noteView.style.opacity -= 0.025 // faster fade-out
-          if (noteView.style.opacity < 0.5) {
-            noteView.style.display = 'none'
+
+        // Display instruments
+        if (instruments.value) {
+          instView.style.display = 'flex'
+          // SOG/COG
+          if (properties.speedoverground) {
+            speedView.innerText =
+              speedFormatKnots(properties.speedoverground) +
+              (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
+            speedView.parentElement.style.display = 'flex'
+          } else {
+            speedView.parentElement.style.display = 'none'
           }
-        }
 
-        // Display instruments: SOG/COG
-        if (properties.speedoverground && instruments.value) {
-          speedView.innerText =
-            speedFormatKnots(properties.speedoverground) +
-            (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
-          speedView.parentElement.style.display = 'block'
-        } else {
-          speedView.parentElement.style.display = 'none'
-        }
+          // Wind speed/direction
+          if (properties.windspeedapparent) {
+            windView.innerText =
+              speedFormatKnots(properties.windspeedapparent) +
+              (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
+            windView.parentElement.style.display = 'flex'
+          } else {
+            windView.parentElement.style.display = 'none'
+          }
 
-        // Display instruments: AWA
-        if (properties.truewinddirection && properties.courseovergroundtrue && instruments.value) {
-          awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
-          awaView.parentElement.style.display = 'block'
-        } else {
-          awaView.parentElement.style.display = 'none'
-        }
-
-        // Display instruments: SOG/COG
-        if (properties.windspeedapparent && instruments.value) {
-          windView.innerText =
-            speedFormatKnots(properties.windspeedapparent) +
-            (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
-          windView.parentElement.style.display = 'block'
-        } else {
-          windView.parentElement.style.display = 'none'
+          // App Wind Angle
+          if (properties.truewinddirection && properties.courseovergroundtrue) {
+            awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
+            awaView.parentElement.style.display = 'flex'
+          } else {
+            awaView.parentElement.style.display = 'none'
+          }
         }
 
         // Get the next coordinates from the geojson
@@ -396,6 +398,9 @@
           play_pause.value = true
           stopped.value = true
           playerView.innerHTML = '<i class="va-icon material-icons">replay</i>'
+          if (instruments.value) {
+            instView.style.display = 'none'
+          }
         }
         index++
       }, speed.value)
@@ -507,6 +512,7 @@
       text-align: center;
       .top-row {
         font-size: 18pt;
+        font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -539,14 +545,14 @@
 
       .label {
         text-align: right;
-        padding: 5px;
-        flex: 1;
+        padding-right: 0.5rem;
+        flex: 0 0 35%;
       }
 
       .value {
+        font-weight: bold;
         text-align: left;
-        padding: 5px;
-        flex: 1;
+        flex: 0 0 65%;
       }
     }
   }

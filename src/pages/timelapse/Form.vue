@@ -1,7 +1,7 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-title>{{ publicVessel }}'s Replay</va-card-title>
+      <va-card-title>{{ vesselName }}'s Replay</va-card-title>
       <va-card-content>
         <div>
           <div>
@@ -163,7 +163,7 @@
                     <va-icon name="link" :size="44" style="display: inline-block" @click="handleLink(formData)" />
                   </va-popover>
                   <a
-                    :href="`https://www.facebook.com/sharer/sharer.php?u=${timelapse_public_link}&t=${publicVessel}'s Replay`"
+                    :href="`https://www.facebook.com/sharer/sharer.php?u=${timelapse_public_link}&t=${vesselName}'s Replay`"
                     target="_blank"
                     ><va-icon name="facebook" :size="44"
                   /></a>
@@ -173,12 +173,12 @@
                     /></a>
                   </template>
                   <a
-                    :href="`https://twitter.com/intent/tweet?text=${publicVessel}'s Replay&url=${timelapse_public_link}`"
+                    :href="`https://twitter.com/intent/tweet?text=${vesselName}'s Replay&url=${timelapse_public_link}`"
                     target="_blank"
                   >
                     <va-icon name="x-twitter" :size="44"
                   /></a>
-                  <a :href="`mailto:?subject=${publicVessel}'s Replay&body=${timelapse_public_link}`" target="_blank"
+                  <a :href="`mailto:?subject=${vesselName}'s Replay&body=${timelapse_public_link}`" target="_blank"
                     ><va-icon name="envelope" :size="44"
                   /></a>
                   <template v-if="website">
@@ -204,7 +204,6 @@
 
 <script setup>
   import { computed, reactive, ref, onMounted } from 'vue'
-  import { useRoute } from 'vue-router'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
@@ -212,7 +211,9 @@
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'
-  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  const { instagram, website } = useGlobalStore()
+  import { useVesselStore } from '../../stores/vessel-store'
+  const { vesselName, vesselType } = useVesselStore()
   import { useToast } from 'vuestic-ui'
   const { init: initToast } = useToast()
 
@@ -227,11 +228,12 @@
   const start_trip = ref(-1)
   const end_trip = ref(-1)
   const mylogs = ref([])
+  const defaultBoatType = vesselType === 'Sailing' ? 'SailboatSails' : 'Powerboat'
   const formData = reactive({
     start_log: '',
     end_log: '',
     map_type: 'Satellite',
-    boat_type: 'SailboatSails',
+    boat_type: defaultBoatType,
     speed: 250,
     delay: 0,
     zoom: 13,
@@ -247,7 +249,7 @@
   const timelapse_public_link = computed(() => {
     console.log('public formData', formData)
     const searchParams = new URLSearchParams(formData)
-    return `${window.location.protocol}//${window.location.host}/${publicVessel}/timelapse?${searchParams.toString()}`
+    return `${window.location.protocol}//${window.location.host}/${vesselName}/timelapse?${searchParams.toString()}`
   })
 
   // get list from list of all maps

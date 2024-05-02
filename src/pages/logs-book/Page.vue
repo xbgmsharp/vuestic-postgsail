@@ -27,7 +27,7 @@
           />
         </div>
         <div v-else class="layout flex">
-          <p class="text-center">Showing only last 10 logbooks.</p>
+          <p class="text-center">Showing only last 10 logs.</p>
         </div>
       </div>
 

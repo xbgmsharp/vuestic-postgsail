@@ -110,7 +110,7 @@
           let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
           let latitude = parseFloat(feature.properties.latitude).toFixed(3)
           let longitude = parseFloat(feature.properties.longitude).toFixed(3)
-          let text = `<div class='popup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
+          let text = `<div class='mpopup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
                       <table class='data'><tbody>
                         <tr><td>Time</td><td>${time}</td></tr>
                         <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`
@@ -228,7 +228,16 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss">
+  .mpopup {
+    td:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    td:nth-child(2) {
+      font-weight: bold;
+    }
+  }
   #mapContainer {
     z-index: 0;
   }
@@ -240,14 +249,5 @@
     border: 1px solid black;
     clear: both;
     padding: 1px 1px;
-  }
-  .popup {
-    td:nth-child(1) {
-      text-align: right;
-      padding-right: 5px;
-    }
-    td:nth-child(2) {
-      font-weight: bold;
-    }
   }
 </style>

@@ -138,17 +138,20 @@
         // If geo linestring click
         if (feature.properties && feature.properties._from_time) {
           let time = dateFormatUTC(feature.properties._from_time)
-          let avg_speed = speedFormatKnots(feature.properties.avg_speed)
           let duration = durationFormatHours(feature.properties.duration)
           let distance = distanceFormatMiles(feature.properties.distance)
+          let avg_speed = speedFormatKnots(feature.properties.avg_speed)
+          let max_speed = speedFormatKnots(feature.properties.max_speed)
+          let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
           let text = `<div class='mpopup'>
                         <h4><a id="logLink" onclick="logLink(${feature.properties.id})">
                           ${feature.properties.name}</a></h4><br/>
                         <table class='data'><tbody>
                           <tr><td>Time</td><td>${time}</td></tr>
-                          <tr><td>Average Speed</td><td>${avg_speed}</td></tr>
                           <tr><td>Distance</td><td>${distance}</td></tr>
                           <tr><td>Duration</td><td>${duration} hours</td></tr>
+                          <tr><td>Speed Ave/Max</td><td>${avg_speed} / ${max_speed}</td></tr>
+                          <tr><td>Wind Max</td><td>${max_wind}</td></tr>
                         </tbody></table></br>
                         <a id="timelapseLink" onclick="timelapseLink(${feature.properties.id})">Replay</a>
                       </div>`

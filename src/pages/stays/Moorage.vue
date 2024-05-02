@@ -10,7 +10,7 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
+        <va-card-title>{{ $t('stays.moorage.title') }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>

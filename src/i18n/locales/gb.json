@@ -188,6 +188,7 @@
       "note": "Note | Notes"
     },
     "moorage": {
+      "title": "Stays at Moorage",
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
@@ -207,6 +208,9 @@
       "default_stay": "Default Stay Type",
       "total_stay": "Total Stay [d]",
       "arrivals": "Arrivals & Departures"
+    },
+    "arrivals-departures": {
+      "title": "Arrivals and Departures for Moorage"
     },
     "details": {
       "title": "Moorage's details"

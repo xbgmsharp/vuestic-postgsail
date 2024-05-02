@@ -182,6 +182,7 @@
       "note": "Note | Notes"
     },
     "moorage": {
+      "title": "Stays at Moorage",
       "arrived": "Llegó",
       "departed": "Partido",
       "stayed_at": "Me alojé en",
@@ -202,10 +203,14 @@
       "total_stay": "Total Stay [d]",
       "arrivals": "Arrivals & Departures"
     },
+    "arrivals-departures": {
+      "title": "Arrivals and Departures for Moorage"
+    },
     "details": {
       "title": "Moorage's details"
     },
     "moorage": {
+      "title": "Stays at Moorage",
       "moorage": "Preferred Name",
       "departed": "Default Stay Type",
       "home": "Home",

@@ -251,7 +251,7 @@
     },
     "boat": {
       "name": "Name | Namen",
-      "mmsi": "MMSI (fakultativ)",
+      "mmsi": "MMSI",
       "first_contact": "First Kontakt",
       "last_contact": "Letzter Kontakt",
       "created_at": "Erstellt am",

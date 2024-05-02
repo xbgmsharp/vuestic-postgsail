@@ -251,7 +251,7 @@
     },
     "boat": {
       "name": "Nom | Noms",
-      "mmsi": "MMSI (facultatif)",
+      "mmsi": "MMSI",
       "first_contact": "Premiere contact",
       "last_contact": "Dernier contact",
       "created_at": "Créé à",
@@ -259,7 +259,6 @@
         "button": "Get token",
         "title": "Boat's token",
         "token": "Token",
-        //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
         "message": "Copy paste this token into your postgsail plugin instance of signalk."
       },
       "beam": "Beam",

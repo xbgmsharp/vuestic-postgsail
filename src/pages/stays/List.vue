@@ -6,7 +6,7 @@
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
-        <div class="layout flex flex-col md:flex-row gap-4 justify-between">
+        <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
           <div class="flex flex-col md:flex-row">
             <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
           </div>

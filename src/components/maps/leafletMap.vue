@@ -10,6 +10,7 @@
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
@@ -131,22 +132,26 @@
           if (feature.properties.truewinddirection && feature.properties.courseovergroundtrue) {
             text += `<tr><td>AWA</td><td>${awa}</td></tr>`
           }
-          text += `</tbody></table></div><br/>`
+          text += `</tbody></table></div>`
           popupContent = text
         }
         // If geo linestring click
         if (feature.properties && feature.properties._from_time) {
-          //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties._from_time)
           let avg_speed = speedFormatKnots(feature.properties.avg_speed)
-          let duration = durationFormatHours(feature.properties.duration) + ' H'
-          let distance = parseFloat(feature.properties.distance).toFixed(5) + ' NM'
-          let text = `<div class='center'><h4><a id="logLink" style="cursor: pointer;" onclick="logLink(${feature.properties.id})">${feature.properties.name}</a></h4></div><br/>
-              Time: ${time}<br/>
-              Average Speed: ${avg_speed}<br/>
-              Duration: ${duration}<br/>
-              Distance: ${distance}<br/>
-              <a id="timelapseLink" style="cursor: pointer;" onclick="timelapseLink(${feature.properties.id})">Play timelapse</a>`
+          let duration = durationFormatHours(feature.properties.duration)
+          let distance = distanceFormatMiles(feature.properties.distance)
+          let text = `<div class='mpopup'>
+                        <h4><a id="logLink" onclick="logLink(${feature.properties.id})">
+                          ${feature.properties.name}</a></h4><br/>
+                        <table class='data'><tbody>
+                          <tr><td>Time</td><td>${time}</td></tr>
+                          <tr><td>Average Speed</td><td>${avg_speed}</td></tr>
+                          <tr><td>Distance</td><td>${distance}</td></tr>
+                          <tr><td>Duration</td><td>${duration} hours</td></tr>
+                        </tbody></table></br>
+                        <a id="timelapseLink" onclick="timelapseLink(${feature.properties.id})">Replay</a>
+                      </div>`
           popupContent = text
 
           // Go to logbook details page
@@ -236,6 +241,9 @@
     }
     td:nth-child(2) {
       font-weight: bold;
+    }
+    a {
+      cursor: pointer;
     }
   }
   #mapContainer {

@@ -4,7 +4,7 @@
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
     <va-inner-loading :loading="isBusy">
-      <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
+      <va-card class="leaflet-maps-page__widget">
         <div id="mapContainer" ref="mapContainer" class="leaflet-map h-full" />
       </va-card>
     </va-inner-loading>

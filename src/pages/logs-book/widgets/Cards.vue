@@ -64,6 +64,17 @@
                     <div class="grid grid-cols-1">
                       <VaButton
                         preset="secondary"
+                        icon="edit"
+                        size="medium"
+                        color="secondary"
+                        @click="$emit('edit', log)"
+                      >
+                        Edit</VaButton
+                      >
+                    </div>
+                    <div class="grid grid-cols-1">
+                      <VaButton
+                        preset="secondary"
                         icon="delete"
                         size="medium"
                         color="secondary"

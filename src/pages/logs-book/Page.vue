@@ -1,8 +1,8 @@
 <template>
   <va-card>
     <va-card-content>
-      <div class="flex flex-col md:flex-row gap-4 mb-2 justify-between">
-        <div class="flex flex-col md:flex-row gap-2 justify-start">
+      <div class="flex flex-col lg:flex-row gap-4 mb-2 justify-between">
+        <div class="flex flex-col lg:flex-row gap-2 justify-start">
           <va-button-toggle
             v-model="doShowAsCards"
             preset="secondary"
@@ -16,10 +16,10 @@
           />
         </div>
         <div v-if="doShowAsCards != 3" class="layout flex flex-col md:flex-row gap-4 justify-between">
-          <div class="flex flex-col">
+          <div class="flex flex-col md:flex-row">
             <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
           </div>
-          <div class="flex flex-col">
+          <div class="flex flex-col md:flex-row">
             <va-date-input
               v-model="filter.dateRange"
               :readonly="false"

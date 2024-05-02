@@ -10,6 +10,7 @@
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
@@ -103,51 +104,57 @@
           //console.log(`popup`, feature.properties)
           let status = feature.properties.status || ''
           let time = dateFormatUTC(feature.properties.time)
-          let speed = speedFormatKnots(feature.properties.speedoverground) || 0
-          let cog = angleFormat(feature.properties.courseovergroundtrue) || 0
-          let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue) || 0
-          let wind = speedFormatKnots(feature.properties.windspeedapparent) || 0
-          let winddir = angleFormat(feature.properties.truewinddirection) || 0
-          let latitude = parseFloat(feature.properties.latitude).toFixed(5)
-          let longitude = parseFloat(feature.properties.longitude).toFixed(5)
-          let text = `<div class='center'><h4>${vesselName}: ${status}</h4></div><br/>
-              Time: ${time}<br/>
-              Boat Speed: ${speed}<br/>
-              Course Over Ground: ${cog}<br/>
-              Apparent Wind Angle: ${awa}<br/>
-              Wind Speed: ${wind}<br/>
-              Wind Direction: ${winddir}<br/>
-              Latitude: ${latitude}<br/>
-              Longitude: ${longitude}<br/>`
+          let sog = speedFormatKnots(feature.properties.speedoverground)
+          let cog = angleFormat(feature.properties.courseovergroundtrue)
+          let twd = angleFormat(feature.properties.truewinddirection)
+          let aws = speedFormatKnots(feature.properties.windspeedapparent)
+          let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
+          let latitude = parseFloat(feature.properties.latitude).toFixed(3)
+          let longitude = parseFloat(feature.properties.longitude).toFixed(3)
+          let text = `<div class='mpopup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
+                      <table class='data'><tbody>
+                        <tr><td>Time</td><td>${time}</td></tr>
+                        <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`
+          if (feature.properties.speedoverground) {
+            text += `<tr><td>Speed</td><td>${sog}`
+            if (feature.properties.courseovergroundtrue) {
+              text += ` / ${cog}`
+            }
+            text += `</td></tr>`
+          }
+          if (feature.properties.windspeedapparent) {
+            text += `<tr><td>Wind</td><td>${aws}`
+            if (feature.properties.truewinddirection) {
+              text += ` / ${twd}`
+            }
+            text += `</td></tr>`
+          }
+          if (feature.properties.truewinddirection && feature.properties.courseovergroundtrue) {
+            text += `<tr><td>AWA</td><td>${awa}</td></tr>`
+          }
+          text += `</tbody></table></div>`
           popupContent = text
         }
         // If geo linestring click
         if (feature.properties && feature.properties._from_time) {
-          //console.log(`popup`, feature.properties)
           let time = dateFormatUTC(feature.properties._from_time)
+          let duration = durationFormatHours(feature.properties.duration)
+          let distance = distanceFormatMiles(feature.properties.distance)
           let avg_speed = speedFormatKnots(feature.properties.avg_speed)
-          let duration = durationFormatHours(feature.properties.duration) + ' H'
-          let distance = parseFloat(feature.properties.distance).toFixed(5) + ' NM'
-          let text = `<div class='center'><h4><a id="logLink" style="cursor: pointer;" onclick="logLink(${feature.properties.id})">${feature.properties.name}</a></h4></div><br/>
-              Time: ${time}<br/>
-              Average Speed: ${avg_speed}<br/>
-              Duration: ${duration}<br/>
-              Distance: ${distance}<br/>
-              <a id="timelapseLink" style="cursor: pointer;" onclick="timelapseLink(${feature.properties.id})">Play timelapse</a>`
+          let max_speed = speedFormatKnots(feature.properties.max_speed)
+          let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+          let text = `<div class='mpopup'>
+                        <h4><a href="/logmap/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                        <table class='data'><tbody>
+                          <tr><td>Time</td><td>${time}</td></tr>
+                          <tr><td>Distance</td><td>${distance}</td></tr>
+                          <tr><td>Duration</td><td>${duration} hours</td></tr>
+                          <tr><td>Speed Ave/Max</td><td>${avg_speed} / ${max_speed}</td></tr>
+                          <tr><td>Wind Speed Max</td><td>${max_wind}</td></tr>
+                        </tbody></table></br>
+                        <a href="/timelapse/${feature.properties.id}">Replay</a>
+                      </div>`
           popupContent = text
-
-          // Go to logbook details page
-          window.logLink = async function (log_id) {
-            let tripLink = document.getElementById('logLink')
-            tripLink.href = `/logmap/${log_id}`
-            return
-          }
-          // Go to timelapse page
-          window.timelapseLink = async function (log_id) {
-            let link = document.getElementById('timelapseLink')
-            link.href = `/timelapse/${log_id}`
-            return
-          }
         }
         layer.bindPopup(popupContent)
       }
@@ -215,7 +222,19 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss">
+  .mpopup {
+    td:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    td:nth-child(2) {
+      font-weight: bold;
+    }
+    a {
+      cursor: pointer;
+    }
+  }
   #mapContainer {
     z-index: 0;
   }

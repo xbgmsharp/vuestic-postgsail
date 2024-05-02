@@ -113,7 +113,7 @@
   },
   "logs": {
     "list": {
-      "title": "Logs list",
+      "title": "Logs - Log Book for",
       "filter": {
         "title": "Search for log",
         "name": "Name",
@@ -159,7 +159,7 @@
   },
   "stays": {
     "list": {
-      "title": "Stays list",
+      "title": "Stays - Moorage History of",
       "filter": {
         "title": "Search for stay",
         "name": "Name",
@@ -178,19 +178,22 @@
       "departed": "Departed",
       "arrived": "Arrived",
       "stayed_at": "Fiquei em",
+      "duration": "Duração",
       "duration_d": "Duração [d]",
       "note": "Note | Notes"
     },
     "moorage": {
+      "title": "Stays at Moorage",
       "arrived": "Chegou",
       "departed": "Partiu",
       "stayed_at": "Fiquei em",
+      "duration": "Duração",
       "duration_d": "Duração [d]"
     }
   },
   "moorages": {
     "list": {
-      "title": "Moorages list",
+      "title": "Moorages of",
       "filter": {
         "title": "Search for moorage",
         "name": "Name",
@@ -202,10 +205,14 @@
       "total_stay": "Total Stay [d]",
       "arrivals": "Arrivals & Departures"
     },
+    "arrivals-departures": {
+      "title": "Arrivals and Departures for Moorage"
+    },
     "details": {
       "title": "Moorage's details"
     },
     "moorage": {
+      "title": "Stays at Moorage",
       "moorage": "Preferred Name",
       "departed": "Default Stay Type",
       "home": "Home",
@@ -247,7 +254,7 @@
     },
     "boat": {
       "name": "Name | Names",
-      "mmsi": "MMSI (opcional)",
+      "mmsi": "MMSI",
       "first_contact": "Primeiro contato",
       "last_contact": "Último contato",
       "created_at": "Creado en",
@@ -255,7 +262,6 @@
         "button": "Get token",
         "title": "Boat's token",
         "token": "Token",
-        //"message": "WARNING, This access token will only be displayed once. It will not be stored and cannot be retrieved. Please be sure to save it now."
         "message": "Copy paste this token into your postgsail plugin instance of signalk."
       },
       "beam": "Beam",
@@ -417,11 +423,11 @@
   },
   "units": {
     "distance": {
-      "miles": "NM",
-      "kilometres": "km"
+      "miles": "{n} NM",
+      "kilometres": "{n} km"
     },
     "speed": {
-      "knots": "kts"
+      "knots": "{n} kts"
     },
     "time": {
       "days": "{n} days | {n} day | {n} days",

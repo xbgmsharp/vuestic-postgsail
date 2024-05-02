@@ -182,6 +182,7 @@
       "departed": "Abgereist",
       "arrived": "Angekommen",
       "stayed_at": "Verbleib",
+      "duration": "Dauer",
       "duration_d": "Dauer [t]",
       "note": "Notiz | Notizen"
     },
@@ -189,6 +190,7 @@
       "arrived": "Arrived",
       "departed": "Departed",
       "stayed_at": "Stayed at",
+      "duration": "Dauer",
       "duration_d": "Dauer [t]"
     }
   },
@@ -251,7 +253,7 @@
     },
     "boat": {
       "name": "Name | Namen",
-      "mmsi": "MMSI (fakultativ)",
+      "mmsi": "MMSI",
       "first_contact": "First Kontakt",
       "last_contact": "Letzter Kontakt",
       "created_at": "Erstellt am",
@@ -260,7 +262,6 @@
         "button": "Token erhalten",
         "title": "Token des Bootes",
         "token": "Token",
-        //"message": "WARNUNG, Dieser Zugriffstoken wird nur einmal angezeigt. Er wird nicht gespeichert und kann nicht wieder abgerufen werden. Bitte speichern Sie ihn jetzt.",
         "message": "Kopieren Sie diesen Token in Ihre PostgSail-Plugin-Instanz von Signalk."
       },
       "beam": "Breite",
@@ -423,11 +424,11 @@
   },
   "units": {
     "distance": {
-      "miles": "NM",
-      "kilometres": "km"
+      "miles": "{n} NM",
+      "kilometres": "{n} km"
     },
     "speed": {
-      "knots": "kts"
+      "knots": "{n} kts"
     },
     "time": {
       "days": "{n} Tage | {n} Tag | {n} Tage",

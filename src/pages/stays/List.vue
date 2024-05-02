@@ -1,48 +1,36 @@
 <template>
   <div>
-    <va-card class="mb-3">
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-4 md:col-span-3 flex flex-col">
-              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-            </div>
-            <div class="col-span-4 md:col-span-3 flex flex-col">
-              <va-date-input
-                v-model="filter.dateRange"
-                style="width: 100%"
-                :readonly="false"
-                :clearable="true"
-                placeholder="Filter by date range..."
-                mode="range"
-              />
-            </div>
-            <div class="col-span-3 md:col-span-4 flex flex-col">
-              <VaSelect v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
-                <template #content="{ value }">
-                  <VaChip
-                    v-for="chip in value"
-                    :key="chip.text"
-                    size="small"
-                    class="mr-2"
-                    closeable
-                    @update:modelValue="deleteChip(chip)"
-                  >
-                    {{ chip }}
-                  </VaChip>
-                </template>
-              </VaSelect>
-            </div>
-          </div>
-        </div>
-      </va-card-content>
-    </va-card>
     <va-card>
-      <va-card-title>{{ $t('stays.list.title') }}</va-card-title>
+      <va-card-title>{{ $t('stays.list.title') }} {{ vesselName }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
+        <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
+          <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+          <va-date-input
+            v-model="filter.dateRange"
+            style="width: 100%"
+            :clearable="true"
+            placeholder="Filter by date range..."
+            mode="range"
+          />
+          <va-select v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+            <template #content="{ value }">
+              <va-chip
+                v-for="chip in value"
+                :key="chip.text"
+                size="small"
+                class="mr-2"
+                closeable
+                @update:modelValue="deleteChip(chip)"
+              >
+                {{ chip }}
+              </va-chip>
+            </template>
+          </va-select>
+        </div>
+
         <va-data-table
           :columns="columns"
           :items="items"
@@ -145,6 +133,9 @@
   import { asBusy, handleExport } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
   import { stayed_at_options } from '../../utils/PostgSail.ts'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
 
   import staysData from '../../data/stays.json'
 
@@ -218,6 +209,10 @@
                     row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
                   )
                 case 'dateRange':
+                  // TODO: temp fix for Vuestic date range bug
+                  if (!f[fkey].start || !f[fkey].end) {
+                    return true
+                  }
                   return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
                 case 'stayed_at':
                   var valid = false

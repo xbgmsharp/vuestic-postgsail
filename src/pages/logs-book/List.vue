@@ -1,30 +1,21 @@
 <template>
   <div>
-    <va-card class="mb-3">
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-            </div>
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-date-input
-                v-model="filter.dateRange"
-                :clearable="true"
-                placeholder="Filter by date range..."
-                mode="range"
-              />
-            </div>
-          </div>
-        </div>
-      </va-card-content>
-    </va-card>
     <va-card>
-      <va-card-title>{{ $t('logs.list.title') }}</va-card-title>
+      <va-card-title>{{ $t('moorages.arrivals-departures.title') }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
+        <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
+          <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+          <va-date-input
+            v-model="filter.dateRange"
+            style="width: 100%"
+            :clearable="true"
+            placeholder="Filter by date range..."
+            mode="range"
+          />
+        </div>
         <va-data-table
           :columns="columns"
           :items="items"
@@ -206,6 +197,10 @@
                       row.to.toLowerCase().includes(f[fkey].toLowerCase())
                     )
                   case 'dateRange':
+                    // TODO: temp fix for Vuestic date range bug
+                    if (!f[fkey].start || !f[fkey].end) {
+                      return true
+                    }
                     return areIntervalsOverlapping(
                       { start: new Date(row.fromTime), end: new Date(row.toTime) },
                       f[fkey],

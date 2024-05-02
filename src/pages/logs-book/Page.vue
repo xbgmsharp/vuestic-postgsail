@@ -1,41 +1,33 @@
 <template>
-  <div>
-    <va-card class="mb-3">
-      <va-card-content>
-        <div class="layout gutter--md">
-          <div class="py-2 grid grid-cols-12 gap-6">
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
-            </div>
-            <div class="col-span-12 md:col-span-6 flex flex-col">
-              <va-date-input
-                v-model="filter.dateRange"
-                :readonly="false"
-                :clearable="true"
-                placeholder="Filter by date range..."
-                mode="range"
-              />
-            </div>
-          </div>
-        </div>
-      </va-card-content>
-    </va-card>
-  </div>
-
-  <VaCard>
-    <VaCardContent>
-      <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <div class="flex flex-col md:flex-row gap-2 justify-start">
-          <VaButtonToggle
+  <va-card>
+    <va-card-title>{{ $t('logs.list.title') }} {{ vesselName }}</va-card-title>
+    <va-card-content>
+      <div class="flex flex-col lg:flex-row gap-4 mb-2 justify-between">
+        <div class="flex flex-col lg:flex-row gap-2 justify-start">
+          <va-button-toggle
             v-model="doShowAsCards"
-            color="background-element"
-            border-color="background-element"
+            preset="secondary"
+            border-color="primary"
+            size="large"
             :options="[
               { label: 'Cards', value: 1 },
-              { label: 'Tables', value: 2 },
+              { label: 'Table', value: 2 },
               { label: 'Map', value: 3 },
             ]"
           />
+        </div>
+        <div v-if="doShowAsCards != 3" class="layout flex flex-col lg:flex-row gap-4 justify-between">
+          <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
+          <va-date-input
+            v-model="filter.dateRange"
+            style="width: 100%"
+            :clearable="true"
+            placeholder="Filter by date range..."
+            mode="range"
+          />
+        </div>
+        <div v-else class="layout flex">
+          <p class="text-center">Showing only last 10 logs.</p>
         </div>
       </div>
 
@@ -70,8 +62,8 @@
           @click="handleCSV_all(items)"
         ></va-icon>
       </div>
-    </VaCardContent>
-  </VaCard>
+    </va-card-content>
+  </va-card>
 </template>
 
 <script setup>
@@ -92,6 +84,10 @@
   import { useGlobalStore } from '../../stores/global-store'
   import { storeToRefs } from 'pinia'
   import PostgSail from '../../services/api-client'
+  import { useVesselStore } from '../../stores/vessel-store'
+
+  const { vesselName, vesselType } = useVesselStore()
+
   const GlobalStore = useGlobalStore()
   const { isMobile, doShowAsCards, readOnly } = storeToRefs(GlobalStore)
 
@@ -254,6 +250,10 @@
                       row.to.toLowerCase().includes(f[fkey].toLowerCase())
                     )
                   case 'dateRange':
+                    // TODO: temp fix for Vuestic date range bug
+                    if (!f[fkey].start || !f[fkey].end) {
+                      return true
+                    }
                     return areIntervalsOverlapping(
                       { start: new Date(row.fromTime), end: new Date(row.toTime) },
                       f[fkey],

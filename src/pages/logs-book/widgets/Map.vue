@@ -41,7 +41,6 @@
 <template>
   <div>
     <VaInnerLoading :loading="isBusy">
-      <h3>The last 10 logbooks</h3>
       <lMap
         v-if="logbook_geojson.length > 1"
         :geo-json-features="logbook_geojson"

@@ -10,43 +10,37 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-content>
-          <div class="layout gutter--md">
-            <div class="py-2 grid grid-cols-12 gap-6">
-              <div class="col-span-12 md:col-span-6 flex flex-col">
-                <va-date-input
-                  v-model="filter.dateRange"
-                  :clearable="true"
-                  placeholder="Filter by date range..."
-                  mode="range"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-6 flex flex-col">
-                <VaSelect v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
-                  <template #content="{ value }">
-                    <VaChip
-                      v-for="chip in value"
-                      :key="chip.text"
-                      size="small"
-                      class="mr-2"
-                      closeable
-                      @update:modelValue="deleteChip(chip)"
-                    >
-                      {{ chip }}
-                    </VaChip>
-                  </template>
-                </VaSelect>
-              </div>
-            </div>
-          </div>
-        </va-card-content>
-      </va-card>
-      <va-card class="mb-3">
         <va-card-title>{{ $t('moorages.list.title') }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
+          <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
+            <div class="flex flex-col md:flex-row">
+              <va-date-input
+                v-model="filter.dateRange"
+                :clearable="true"
+                placeholder="Filter by date range..."
+                mode="range"
+              />
+            </div>
+            <div class="flex flex-col md:flex-row">
+              <va-select v-model="filter.stayed_at" placeholder="Filter by stay type..." :options="options" multiple>
+                <template #content="{ value }">
+                  <va-chip
+                    v-for="chip in value"
+                    :key="chip.text"
+                    size="small"
+                    class="mr-2"
+                    closeable
+                    @update:modelValue="deleteChip(chip)"
+                  >
+                    {{ chip }}
+                  </va-chip>
+                </template>
+              </va-select>
+            </div>
+          </div>
           <va-data-table
             v-model:sort-by="sorting.sortBy"
             v-model:sorting-order="sorting.sortingOrder"

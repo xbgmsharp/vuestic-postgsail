@@ -625,12 +625,14 @@
 </script>
 
 <style>
-  td:nth-child(1) {
-    text-align: right;
-    padding-right: 5px;
-  }
-  td:nth-child(2) {
-    font-weight: bold;
+  .popup {
+    td:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    td:nth-child(2) {
+      font-weight: bold;
+    }
   }
   .save {
     width: 50%;

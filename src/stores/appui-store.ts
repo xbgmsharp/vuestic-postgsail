@@ -12,6 +12,17 @@ const defaultState = {
   unsplash: null,
   openweather: null,
   currentweather: {},
+  timelapse: {
+    map_type: null,
+    boat_type: null,
+    speed: 250,
+    delay: 0,
+    zoom: 13,
+    color: 'dodgerblue',
+    map_height: '80vh',
+    moorage_overlay: true,
+    instruments: true,
+  },
 }
 
 export const useGlobalStore = defineStore('appui', {

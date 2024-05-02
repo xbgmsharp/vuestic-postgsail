@@ -38,6 +38,21 @@
         </div>
       </template>
     </va-card-content>
+
+    <va-card-content>
+      <div
+        class="sm:min-h-[114px] p-4 rounded-lg border border-dashed border-primary flex flex-col sm:flex-row items-start sm:items-center gap-4"
+        :style="{ backgroundColor: colorToRgba(getColor('primary'), 0.07) }"
+      >
+        <div class="flex flex-col gap-2 flex-grow">
+          <div class="text-lg font-bold leading-relaxed">Important note</div>
+          <div class="text-secondary text-sm leading-tight">
+            PostgSail Cloud is free for personal use with a single vessel. If wish to manage multiple boats contact us.
+          </div>
+        </div>
+        <VaButton class="flex-none w-full sm:w-auto">Contact us</VaButton>
+      </div>
+    </va-card-content>
   </va-card>
 </template>
 
@@ -47,9 +62,11 @@
   import PostgSail from '../../services/api-client'
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormatUTC, fromNow } from '../../utils/dateFormatter.js'
+  import { useColors } from 'vuestic-ui'
 
   import vesselsData from '../../data/boats.json'
 
+  const { getColor, colorToRgba } = useColors()
   const { t, locale } = useI18n()
   const isBusy = ref(false)
   const vesselSuccess = ref(false)

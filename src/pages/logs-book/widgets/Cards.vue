@@ -22,7 +22,6 @@
     (event: 'edit', log: Log): void
     (event: 'delete', log: Log): void
     (event: 'replay', log: Log): void
-    (event: 'export', log: Log): void
   }>()
 </script>
 
@@ -81,17 +80,6 @@
                         @click="$emit('delete', log)"
                       >
                         Delete</VaButton
-                      >
-                    </div>
-                    <div class="grid grid-cols-1">
-                      <VaButton
-                        preset="secondary"
-                        icon="ios_share"
-                        size="medium"
-                        color="secondary"
-                        @click="$emit('export', log)"
-                      >
-                        Export GPX</VaButton
                       >
                     </div>
                   </va-dropdown-content>

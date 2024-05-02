@@ -46,7 +46,6 @@
         @edit="editTrip"
         @delete="onTripDeleted"
         @replay="replayTrip"
-        @export="exportGPX"
       />
       <LogbookTable
         v-if="doShowAsCards === 2"

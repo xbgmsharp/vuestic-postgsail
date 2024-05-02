@@ -223,7 +223,7 @@
   const { logs } = storeToRefs(CacheStore)
   const choose_trips = ref(false)
   const overlay = ref(true)
-  const instruments = ref(false)
+  const instruments = ref(true)
   const color = ref(0)
   const start_trip = ref(-1)
   const end_trip = ref(-1)

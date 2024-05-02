@@ -107,7 +107,7 @@
     color = ref(route.query.color || 'dodgerblue'),
     map_height = ref(route.query.height || '80vh'),
     moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true)),
-    instruments = ref(parseBooleanQueryParam(route.query.instruments, false))
+    instruments = ref(parseBooleanQueryParam(route.query.instruments, true))
 
   // Ensure we have end_ parameter if there is a start_ parameter
   if (end_log.value === null && start_log.value != null) {

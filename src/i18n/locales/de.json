@@ -260,7 +260,6 @@
         "button": "Token erhalten",
         "title": "Token des Bootes",
         "token": "Token",
-        //"message": "WARNUNG, Dieser Zugriffstoken wird nur einmal angezeigt. Er wird nicht gespeichert und kann nicht wieder abgerufen werden. Bitte speichern Sie ihn jetzt.",
         "message": "Kopieren Sie diesen Token in Ihre PostgSail-Plugin-Instanz von Signalk."
       },
       "beam": "Breite",

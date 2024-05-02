@@ -100,8 +100,7 @@
     if (props.moorageMapId != 0) {
       coord = geojson.features.filter((geog) => geog.properties.id == props.moorageMapId)[0].geometry.coordinates
     }
-    map.value = L.map(mapContainer.value).setView(coord, props.mapZoom)
-    //console.log(coord)
+    map.value = L.map(mapContainer.value, { zoomControl: false }).setView(coord, props.mapZoom)
 
     const bMaps = baseMaps()
     const oMaps = overlayMaps()
@@ -109,6 +108,7 @@
 
     if (props.controlLayer) {
       L.control.layers(bMaps, oMaps).addTo(map.value)
+      L.control.zoom({ position: 'bottomright' }).addTo(map.value)
     }
 
     let multiplier = Math.max(map.value.getZoom(), 1)

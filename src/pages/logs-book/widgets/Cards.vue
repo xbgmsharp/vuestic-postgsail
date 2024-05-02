@@ -53,6 +53,17 @@
                     <div class="grid grid-cols-1">
                       <VaButton
                         preset="secondary"
+                        icon="timelapse"
+                        size="medium"
+                        color="secondary"
+                        @click="$emit('replay', log)"
+                      >
+                        Replay</VaButton
+                      >
+                    </div>
+                    <div class="grid grid-cols-1">
+                      <VaButton
+                        preset="secondary"
                         icon="edit"
                         size="medium"
                         color="secondary"
@@ -70,17 +81,6 @@
                         @click="$emit('delete', log)"
                       >
                         Delete</VaButton
-                      >
-                    </div>
-                    <div class="grid grid-cols-1">
-                      <VaButton
-                        preset="secondary"
-                        icon="timelapse"
-                        size="medium"
-                        color="secondary"
-                        @click="$emit('replay', log)"
-                      >
-                        Replay</VaButton
                       >
                     </div>
                     <div class="grid grid-cols-1">

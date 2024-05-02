@@ -31,7 +31,6 @@ export const useVesselStore = defineStore('vessel', {
         // API return null when vessel is pending metadata
         if (response && response.vessel) {
           this.vessel = response.vessel
-          //console.log(response.vessel)
           //console.log(this.vessel)
         } else {
           throw { response }
@@ -42,6 +41,9 @@ export const useVesselStore = defineStore('vessel', {
       }
     },
   },
-  getters: {},
+  getters: {
+    vesselName: (state) => state.vessel?.name,
+    vesselType: (state) => state.vessel?.ship_type,
+  },
 })
 export default useVesselStore

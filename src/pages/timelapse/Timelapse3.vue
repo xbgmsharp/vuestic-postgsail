@@ -268,12 +268,6 @@
     }
     instOverlay.addTo(map.value)
 
-    // only show it if instruments enabled
-    if (instruments.value) {
-      let instView = map.value._container.querySelector('.instruments')
-      instView.style.display = 'flex'
-    }
-
     map_track_setup()
   }
 
@@ -286,6 +280,7 @@
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
       noteView = map.value._container.querySelector('.overlay > .bottom-row > .note'),
+      instView = map.value._container.querySelector('.instruments'),
       speedView = map.value._container.querySelector('.instruments > .speed > .value'),
       awaView = map.value._container.querySelector('.instruments > .awa > .value'),
       windView = map.value._container.querySelector('.instruments > .wind > .value')
@@ -300,55 +295,61 @@
 
         var properties = geojson.features[index].properties
 
-        // Display trip data
-        if (properties.trip && properties.trip?.name.length != 0 && moorage_overlay.value) {
-          tripView.innerText = properties.trip.name
-          tripView.style.opacity = 1
-          tripView.style.display = 'block'
-        } else {
-          tripView.style.opacity -= 0.0125 // slower fade-out
-          if (tripView.style.opacity < 0.5) {
-            tripView.style.display = 'none'
+        // Display overlay: trip name and moorage
+        if (moorage_overlay.value) {
+          if (properties.trip && properties.trip?.name.length != 0) {
+            tripView.innerText = properties.trip.name
+            tripView.style.opacity = 1
+            tripView.style.display = 'block'
+          } else {
+            tripView.style.opacity -= 0.0125 // slower fade-out
+            if (tripView.style.opacity < 0.5) {
+              tripView.style.display = 'none'
+            }
+          }
+          // Display overlay notes
+          if (properties.notes.length != 0) {
+            noteView.innerText = properties.notes
+            noteView.style.opacity = 1
+            noteView.style.display = 'block'
+          } else {
+            noteView.style.opacity -= 0.025 // faster fade-out
+            if (noteView.style.opacity < 0.5) {
+              noteView.style.display = 'none'
+            }
           }
         }
-        // Display overlay notes
-        if (properties.notes.length != 0 && moorage_overlay.value) {
-          noteView.innerText = properties.notes
-          noteView.style.opacity = 1
-          noteView.style.display = 'block'
-        } else {
-          noteView.style.opacity -= 0.025 // faster fade-out
-          if (noteView.style.opacity < 0.5) {
-            noteView.style.display = 'none'
+
+        // Display instruments
+        if (instruments.value) {
+          instView.style.display = 'flex'
+          // SOG/COG
+          if (properties.speedoverground) {
+            speedView.innerText =
+              speedFormatKnots(properties.speedoverground) +
+              (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
+            speedView.parentElement.style.display = 'flex'
+          } else {
+            speedView.parentElement.style.display = 'none'
           }
-        }
 
-        // Display instruments: SOG/COG
-        if (properties.speedoverground && instruments.value) {
-          speedView.innerText =
-            speedFormatKnots(properties.speedoverground) +
-            (properties.courseovergroundtrue ? ' / ' + angleFormat(properties.courseovergroundtrue) : '')
-          speedView.parentElement.style.display = 'flex'
-        } else {
-          speedView.parentElement.style.display = 'none'
-        }
+          // Wind speed/direction
+          if (properties.windspeedapparent) {
+            windView.innerText =
+              speedFormatKnots(properties.windspeedapparent) +
+              (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
+            windView.parentElement.style.display = 'flex'
+          } else {
+            windView.parentElement.style.display = 'none'
+          }
 
-        // Display instruments: SOG/COG
-        if (properties.windspeedapparent && instruments.value) {
-          windView.innerText =
-            speedFormatKnots(properties.windspeedapparent) +
-            (properties.truewinddirection ? ' / ' + angleFormat(properties.truewinddirection) : '')
-          windView.parentElement.style.display = 'flex'
-        } else {
-          windView.parentElement.style.display = 'none'
-        }
-
-        // Display instruments: AWA
-        if (properties.truewinddirection && properties.courseovergroundtrue && instruments.value) {
-          awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
-          awaView.parentElement.style.display = 'flex'
-        } else {
-          awaView.parentElement.style.display = 'none'
+          // App Wind Angle
+          if (properties.truewinddirection && properties.courseovergroundtrue) {
+            awaView.innerText = awaFormat(properties.truewinddirection, properties.courseovergroundtrue)
+            awaView.parentElement.style.display = 'flex'
+          } else {
+            awaView.parentElement.style.display = 'none'
+          }
         }
 
         // Get the next coordinates from the geojson
@@ -397,6 +398,9 @@
           play_pause.value = true
           stopped.value = true
           playerView.innerHTML = '<i class="va-icon material-icons">replay</i>'
+          if (instruments.value) {
+            instView.style.display = 'none'
+          }
         }
         index++
       }, speed.value)

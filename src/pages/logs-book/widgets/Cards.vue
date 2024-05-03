@@ -2,7 +2,8 @@
   import { PropType } from 'vue'
   import { Log } from '../types'
   import { useI18n } from 'vue-i18n'
-  import { dateFormatUTC } from '../../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationI18nDaysHours } from '../../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -117,14 +118,14 @@
               <span class="value">
                 <template v-if="isLoggedIn">
                   <router-link class="va-link link" :to="{ name: 'log-map', params: { id: log.id } }">
-                    {{ log.distance }} {{ t('units.distance.miles') }}
+                    {{ distanceFormatMiles(log.distance) }}
                   </router-link> </template
                 ><template v-else>
                   <router-link
                     class="va-link link"
                     :to="{ name: 'log-map', params: { boat: publicVessel, id: log.id } }"
                   >
-                    {{ log.distance }} {{ t('units.distance.miles') }}
+                    {{ distanceFormatMiles(log.distance) }}
                   </router-link>
                 </template>
               </span>
@@ -132,14 +133,14 @@
               <span class="value">
                 <template v-if="isLoggedIn">
                   <router-link class="va-link link" :to="{ name: 'log-map', params: { id: log.id } }">
-                    {{ log.duration }} {{ t('units.time.hours') }}
+                    {{ durationI18nDaysHours(log.duration) }}
                   </router-link> </template
                 ><template v-else>
                   <router-link
                     class="va-link link"
                     :to="{ name: 'log-map', params: { boat: publicVessel, id: log.id } }"
                   >
-                    {{ log.duration }} {{ t('units.time.hours') }}
+                    {{ durationI18nDaysHours(log.duration) }}
                   </router-link>
                 </template>
               </span>

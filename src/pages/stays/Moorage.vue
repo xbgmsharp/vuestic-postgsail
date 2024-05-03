@@ -125,6 +125,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
+  const moorageName = ref(null) // will be assigned from stays data
   const perPage = ref(20)
   const currentPage = ref(1)
   const columns = ref([
@@ -150,8 +151,6 @@
     //console.log(arr)
     return arr
   })
-  // will be assigned from stays data
-  const moorageName = ref(null)
 
   function deleteChip(chip) {
     filter.stayed_at = filter.stayed_at.filter((v) => v !== chip)

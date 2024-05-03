@@ -10,7 +10,7 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('stays.moorage.title') }}</va-card-title>
+        <va-card-title>{{ $t('stays.moorage.title') }} {{ moorageName }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -150,6 +150,8 @@
     //console.log(arr)
     return arr
   })
+  // will be assigned from stays data
+  const moorageName = ref(null)
 
   function deleteChip(chip) {
     filter.stayed_at = filter.stayed_at.filter((v) => v !== chip)
@@ -203,7 +205,7 @@
   const pages = computed(() => {
     return Math.ceil(items.value.length / perPage.value)
   })
-  // TODO Default sort on duration
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -215,6 +217,9 @@
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
         console.log('Moorages Stays List rowsData:', rowsData.value)
+        if (rowsData.value[0].name) {
+          moorageName.value = rowsData.value[0].name
+        }
       } else {
         throw { response }
       }

@@ -84,3 +84,14 @@ export const durationI18nDays = (durationString, tr = 'units.time.days') => {
   const durationD = durationFormatDays(durationString)
   return t(tr, durationD === '1' ? 0 : parseInt(durationD))
 }
+
+export const durationI18nDaysHours = (durationString) => {
+  let days = Math.floor(moment.duration(durationString).as('days'))
+  let hours = moment.duration(durationString).as('hours') - days * 24
+  let durationDH = ''
+  if (days > 0) {
+    durationDH += t('units.time.days', days === 1 ? 0 : days) + ', '
+  }
+  durationDH += hours.toFixed(2) + ' ' + t('units.time.hours')
+  return durationDH
+}

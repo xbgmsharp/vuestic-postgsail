@@ -73,7 +73,7 @@
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.stayed_at') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
                   <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: item.id } }">
-                    {{ durationFormatDays(item.total_duration) }} {{ durationI18nDays(item.total_duration) }}
+                    {{ durationI18nDaysHours(item.total_duration) }}
                   </router-link>
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('moorages.moorage.arrivals') }}</dt>
@@ -120,7 +120,7 @@
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'
-  import { durationFormatDays, durationI18nDays } from '../../utils/dateFormatter.js'
+  import { durationFormatDays, durationI18nDaysHours } from '../../utils/dateFormatter.js'
   import { useModal, useToast } from 'vuestic-ui'
   const { confirm } = useModal()
   const { init: initToast } = useToast()

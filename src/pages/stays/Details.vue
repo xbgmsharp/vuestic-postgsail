@@ -88,7 +88,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.arrived_log_id } }">
+                  <router-link class="link" :to="{ name: 'log-map', params: { id: item.arrived_log_id } }">
                     {{ dateFormatUTC(item.arrived) }}
                   </router-link>
                 </dd>
@@ -103,7 +103,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.departed_log_id } }">
+                  <router-link class="link" :to="{ name: 'log-map', params: { id: item.departed_log_id } }">
                     {{ dateFormatUTC(item.departed) }}
                   </router-link>
                 </dd>

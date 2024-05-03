@@ -30,13 +30,13 @@
         >
           <template #cell(name)="{ value, rowData }">
             <template v-if="isLoggedIn">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
                 {{ value }}
               </router-link> </template
             ><template v-else>
               <router-link
                 class="va-link link"
-                :to="{ name: 'log-details', params: { boat: publicVessel, id: rowData.id } }"
+                :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
               >
                 {{ value }}
               </router-link>

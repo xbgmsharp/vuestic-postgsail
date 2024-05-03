@@ -51,12 +51,12 @@
             class="datatable"
           >
             <template #cell(arrived)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.arrived_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
                 {{ dateFormatUTC(value) }}
               </router-link>
             </template>
             <template #cell(departed)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.departed_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
                 {{ dateFormatUTC(value) }}
               </router-link>
             </template>

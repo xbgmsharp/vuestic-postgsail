@@ -62,7 +62,7 @@
             <router-link
               v-if="typeof rowData.departed_log_id !== 'undefined'"
               class="va-link link"
-              :to="{ name: 'log-details', params: { id: rowData.departed_log_id || 0 } }"
+              :to="{ name: 'log-map', params: { id: rowData.departed_log_id || 0 } }"
             >
               {{ dateFormatUTC(value) }}
             </router-link>
@@ -71,7 +71,7 @@
             <router-link
               v-if="typeof rowData.arrived_log_id !== 'undefined'"
               class="va-link link"
-              :to="{ name: 'log-details', params: { id: rowData.arrived_log_id || 0 } }"
+              :to="{ name: 'log-map', params: { id: rowData.arrived_log_id || 0 } }"
             >
               {{ dateFormatUTC(value) }}
             </router-link>

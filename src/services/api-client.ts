@@ -179,7 +179,7 @@ class ApiClient extends HttpClient {
   }
 
   async logs_geojson() {
-    return this.get(`logbook?select=track_geojson&track_geojson.is.not.null&order=_from_time.desc&limit=10`)
+    return this.get(`logbook?select=track_geojson&track_geojson=not.is.null&order=_from_time.desc&limit=10`)
   }
   /*
    * Moorages API endpoint

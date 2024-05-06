@@ -100,7 +100,7 @@
                     <td>
                       <router-link
                         class="va-link link"
-                        :to="{ name: 'log-details', params: { id: stats_logs.max_speed_id } }"
+                        :to="{ name: 'log-map', params: { id: stats_logs.max_speed_id } }"
                       >
                         {{ speedFormatKnots(stats_logs.max_speed) }}
                       </router-link>
@@ -112,7 +112,7 @@
                     <td>
                       <router-link
                         class="va-link link"
-                        :to="{ name: 'log-details', params: { id: stats_logs.max_wind_speed_id } }"
+                        :to="{ name: 'log-map', params: { id: stats_logs.max_wind_speed_id } }"
                       >
                         {{ speedFormatKnots(stats_logs.max_wind_speed) }}
                       </router-link>
@@ -123,14 +123,14 @@
                     <td>
                       <router-link
                         class="va-link link"
-                        :to="{ name: 'log-details', params: { id: stats_logs.max_distance_id } }"
+                        :to="{ name: 'log-map', params: { id: stats_logs.max_distance_id } }"
                       >
                         {{ distanceFormatMiles(stats_logs.max_distance) }}
                       </router-link>
                       /
                       <router-link
                         class="va-link link"
-                        :to="{ name: 'log-details', params: { id: stats_logs.max_duration_id } }"
+                        :to="{ name: 'log-map', params: { id: stats_logs.max_duration_id } }"
                       >
                         {{ durationFormatHours(stats_logs.max_duration) }}
                         {{ durationI18nHours(stats_logs.max_duration) }}

@@ -71,15 +71,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/logs-book/Page.vue'),
         meta: { isPublic: true, type: 'public_logs_list' },
       },
-      {
-        name: 'log-details',
-        path: 'log/:id(\\d+)',
-        component: () => import('../pages/logs-book/Details.vue'),
-        meta: { isPublic: true, type: 'public_logs' },
-      },
+      // {
+      //   name: 'log-details',
+      //   path: 'log/:id(\\d+)',
+      //   component: () => import('../pages/logs-book/Details.vue'),
+      //   meta: { isPublic: true, type: 'public_logs' },
+      // },
       {
         name: 'log-map',
-        path: 'logmap/:id(\\d+)',
+        path: 'log/:id(\\d+)',
         component: () => import('../pages/logs-book/DetailsMap.vue'),
         meta: { isPublic: true, type: 'public_logs' },
       },

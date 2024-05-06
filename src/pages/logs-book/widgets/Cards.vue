@@ -2,7 +2,8 @@
   import { PropType } from 'vue'
   import { Log } from '../types'
   import { useI18n } from 'vue-i18n'
-  import { dateFormatUTC } from '../../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationI18nDaysHours } from '../../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
   import { useGlobalStore } from '../../../stores/global-store'
   const { isLoggedIn, publicVessel } = useGlobalStore()
   const { t } = useI18n()
@@ -102,13 +103,53 @@
             </h4>
             <div class="grid grid-cols-2 gap-1 items-center justify-center text-center">
               <span class="label">{{ t('logs.log.distance') }}: </span>
-              <span class="value">{{ log.distance }} {{ t('units.distance.miles') }}</span>
+              <span class="value">
+                <template v-if="isLoggedIn">
+                  <router-link class="va-link link" :to="{ name: 'log-map', params: { id: log.id } }">
+                    {{ distanceFormatMiles(log.distance) }}
+                  </router-link> </template
+                ><template v-else>
+                  <router-link
+                    class="va-link link"
+                    :to="{ name: 'log-map', params: { boat: publicVessel, id: log.id } }"
+                  >
+                    {{ distanceFormatMiles(log.distance) }}
+                  </router-link>
+                </template>
+              </span>
               <span class="label">{{ t('logs.log.duration') }}: </span>
-              <span class="value">{{ log.duration }} {{ t('units.time.hours') }} </span>
+              <span class="value">
+                <template v-if="isLoggedIn">
+                  <router-link class="va-link link" :to="{ name: 'log-map', params: { id: log.id } }">
+                    {{ durationI18nDaysHours(log.duration) }}
+                  </router-link> </template
+                ><template v-else>
+                  <router-link
+                    class="va-link link"
+                    :to="{ name: 'log-map', params: { boat: publicVessel, id: log.id } }"
+                  >
+                    {{ durationI18nDaysHours(log.duration) }}
+                  </router-link>
+                </template>
+              </span>
               <span class="label">{{ t('logs.log.from') }}: </span>
-              <span class="value">{{ log.from }}</span>
+              <span class="value">
+                <router-link
+                  class="va-link link"
+                  :to="{ name: 'moorage-details', params: { id: log.fromMoorageId || 0 } }"
+                >
+                  {{ log.from }}
+                </router-link>
+              </span>
               <span class="label">{{ t('logs.log.to') }}: </span>
-              <span class="value">{{ log.to }}</span>
+              <span class="value">
+                <router-link
+                  class="va-link link"
+                  :to="{ name: 'moorage-details', params: { id: log.toMoorageId || 0 } }"
+                >
+                  {{ log.to }}
+                </router-link>
+              </span>
             </div>
           </div>
         </div>

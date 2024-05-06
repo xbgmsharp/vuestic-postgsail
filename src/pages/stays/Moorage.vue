@@ -10,7 +10,7 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('stays.moorage.title') }}</va-card-title>
+        <va-card-title>{{ $t('stays.moorage.title') }} {{ moorageName }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -51,12 +51,12 @@
             class="datatable"
           >
             <template #cell(arrived)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.arrived_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
                 {{ dateFormatUTC(value) }}
               </router-link>
             </template>
             <template #cell(departed)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.departed_id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
                 {{ dateFormatUTC(value) }}
               </router-link>
             </template>
@@ -125,6 +125,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
+  const moorageName = ref(null) // will be assigned from stays data
   const perPage = ref(20)
   const currentPage = ref(1)
   const columns = ref([
@@ -203,7 +204,7 @@
   const pages = computed(() => {
     return Math.ceil(items.value.length / perPage.value)
   })
-  // TODO Default sort on duration
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -215,6 +216,9 @@
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
         console.log('Moorages Stays List rowsData:', rowsData.value)
+        if (rowsData.value[0].name) {
+          moorageName.value = rowsData.value[0].name
+        }
       } else {
         throw { response }
       }

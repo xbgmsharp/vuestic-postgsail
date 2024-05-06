@@ -16,8 +16,14 @@
     { label: t('logs.list.to'), key: 'to', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
-    { label: t('logs.log.distance_nm'), key: 'distance', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
-    { label: t('logs.log.duration_h'), key: 'duration', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    {
+      label: t('logs.log.distance_nm'),
+      key: 'distance_nm',
+      sortable: true,
+      sortingFn: utils.sortNum,
+      tdAlign: 'right',
+    },
+    { label: t('logs.log.duration_h'), key: 'duration_h', sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
     { label: ' ', key: 'actions' },
   ])
 
@@ -94,10 +100,10 @@
       <template #cell(toTime)="{ value }">
         {{ dateFormatUTC(value) }}
       </template>
-      <template #cell(distance)="{ value }">
+      <template #cell(distance_nm)="{ value }">
         {{ value }}
       </template>
-      <template #cell(duration)="{ value }"> {{ value }} </template>
+      <template #cell(duration_d)="{ value }"> {{ value }} </template>
       <template #cell(actions)="{ rowData: log }">
         <div class="flex gap-2 justify-end">
           <va-dropdown class="">

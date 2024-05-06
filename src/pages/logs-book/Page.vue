@@ -221,8 +221,10 @@
             to: row.to,
             fromTime: row.started,
             toTime: row.ended,
-            distance: distanceFormat(row.distance),
-            duration: durationFormatHours(row.duration),
+            distance: row.distance,
+            distance_nm: distanceFormat(row.distance),
+            duration: row.duration,
+            duration_h: durationFormatHours(row.duration),
             fromMoorageId: row._from_moorage_id,
             toMoorageId: row._to_moorage_id,
           }))

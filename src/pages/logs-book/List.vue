@@ -1,7 +1,10 @@
 <template>
   <div>
     <va-card>
-      <va-card-title>{{ $t('moorages.arrivals-departures.title') }}</va-card-title>
+      <va-card-title>
+        <template v-if="filter_moorage_id"> {{ $t('moorages.arrivals-departures.title') }} {{ moorageName }} </template>
+        <template v-else> {{ $t('logs.list.title') }} {{ vesselName }}</template>
+      </va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -27,13 +30,13 @@
         >
           <template #cell(name)="{ value, rowData }">
             <template v-if="isLoggedIn">
-              <router-link class="va-link link" :to="{ name: 'log-details', params: { id: rowData.id } }">
+              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
                 {{ value }}
               </router-link> </template
             ><template v-else>
               <router-link
                 class="va-link link"
-                :to="{ name: 'log-details', params: { boat: publicVessel, id: rowData.id } }"
+                :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
               >
                 {{ value }}
               </router-link>
@@ -112,6 +115,8 @@
   import { useRoute } from 'vue-router'
   import { useGlobalStore } from '../../stores/global-store'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  import { useVesselStore } from '../../stores/vessel-store'
+  const { vesselName, vesselType } = useVesselStore()
   import logsData from '../../data/logs.json'
 
   const CacheStore = useCacheStore()
@@ -148,6 +153,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const rowsData = ref([])
+  const moorageName = ref(null) // will be assigned from stays data
   const perPage = ref(20)
   const currentPage = ref(1)
   const columns = ref([
@@ -156,8 +162,8 @@
     { key: 'to', label: t('logs.list.to'), sortable: true },
     { key: 'fromTime', label: t('logs.list.from_time'), sortable: true },
     { key: 'toTime', label: t('logs.list.to_time'), sortable: true },
-    { key: 'distance', label: t('logs.log.distance'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
-    { key: 'duration', label: t('logs.log.duration'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { key: 'distance', label: t('logs.log.distance_nm'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+    { key: 'duration', label: t('logs.log.duration_h'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
     //{ key: 'action', label: t('logs.log.action') },
   ])
   const filter = reactive(getDefaultFilter())
@@ -225,6 +231,18 @@
         rowsData.value.splice(0, rowsData.value.length || [])
         rowsData.value.push(...response)
         console.log('Logs list', rowsData.value)
+
+        // if logs for specific moorage, get moorage name from first log
+        if (filter_moorage_id) {
+          const firstItem = items.value[0]
+          if (firstItem) {
+            if (firstItem.fromMoorageId == filter_moorage_id) {
+              moorageName.value = firstItem.from
+            } else if (firstItem.toMoorageId == filter_moorage_id) {
+              moorageName.value = firstItem.to
+            }
+          }
+        }
       } else {
         throw { response }
       }

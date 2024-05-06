@@ -55,8 +55,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.duration') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  {{ durationFormatHours(item.duration) }} {{ durationI18nHours(item.duration) }} /
-                  {{ durationI18nDays(item.duration) }}
+                  {{ durationI18nDaysHours(item.duration) }}
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.stayed_at') }}</dt>
                 <dd class="flex">
@@ -89,7 +88,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.arrival') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.arrived_log_id } }">
+                  <router-link class="link" :to="{ name: 'log-map', params: { id: item.arrived_log_id } }">
                     {{ dateFormatUTC(item.arrived) }}
                   </router-link>
                 </dd>
@@ -104,7 +103,7 @@
                 </dd>
                 <dt class="flex xs12 md6 pa-2 va-text-bold">{{ $t('stays.stay.departure') }}</dt>
                 <dd class="flex xs12 md6 pa-2">
-                  <router-link class="link" :to="{ name: 'log-details', params: { id: item.departed_log_id } }">
+                  <router-link class="link" :to="{ name: 'log-map', params: { id: item.departed_log_id } }">
                     {{ dateFormatUTC(item.departed) }}
                   </router-link>
                 </dd>
@@ -142,7 +141,7 @@
   import { useRoute } from 'vue-router'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
-  import { dateFormatUTC, durationFormatHours, durationI18nHours, durationI18nDays } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationI18nDaysHours } from '../../utils/dateFormatter.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
   import { asBusy } from '../../utils/handleExports'
   import StayAt from '../../components/SelectStayAt.vue'

@@ -1,5 +1,3 @@
-import { nextTick } from 'vue'
-
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import AuthLayout from '../layouts/AuthLayout.vue'
@@ -399,9 +397,6 @@ router.afterEach((to) => {
     console.warn('vue-router afterEach activate -> /', isLoggedIn, validEmail, to)
     router.push({ path: '/' })
   }
-  nextTick(() => {
-    document.title = (to.meta.title as string) || `${import.meta.env.VITE_APP_TITLE} PostgSail Dashboard`
-  })
 })
 
 export default router

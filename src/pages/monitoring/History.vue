@@ -91,6 +91,7 @@
 <script setup>
   // TODO update setup with lang="ts"
   import { computed, ref, reactive, onMounted, toRaw } from 'vue'
+  import { setAppTitle } from '../../utils/app.js'
   import VaChart from '../../components/va-charts/VaChart.vue'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import { kelvinToHuman } from '../../utils/temperatureFormatter.js'
@@ -459,6 +460,9 @@
   }
 
   onMounted(async () => {
+    const title = t('monitoring.history.title')
+    document.title = setAppTitle(title)
+
     await fetchHistory('24')
   })
 

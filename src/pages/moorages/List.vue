@@ -5,7 +5,7 @@
   <template v-else>
     <div>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('moorages.list.title') }} {{ vesselName }}</va-card-title>
+        <va-card-title>{{ title }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -128,6 +128,7 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import nodatayet from '../../components/noDataScreen.vue'
@@ -219,7 +220,10 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
+  const title = t('moorages.list.title') + ' ' + vesselName
+
   onMounted(async () => {
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     try {

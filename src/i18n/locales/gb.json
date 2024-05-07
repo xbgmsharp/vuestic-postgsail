@@ -133,7 +133,7 @@
       "to_time": "Ended"
     },
     "details": {
-      "title": "Log's details"
+      "title": "Log Book"
     },
     "log": {
       "name": "Name | Names",
@@ -174,7 +174,7 @@
       }
     },
     "details": {
-      "title": "Stay's details"
+      "title": "Stay"
     },
     "stay": {
       "name": "Name | Names",
@@ -214,8 +214,11 @@
     "arrivals-departures": {
       "title": "Arrivals and Departures for Moorage"
     },
+    "map": {
+      "title": "Map of Moorages"
+    },
     "details": {
-      "title": "Moorage's details"
+      "title": "Moorage"
     },
     "moorage": {
       "moorage": "Preferred Name",
@@ -252,10 +255,10 @@
   },
   "boats": {
     "list": {
-      "title": "Boats list"
+      "title": "Boats"
     },
     "details": {
-      "title": "Boat's details"
+      "title": "Boat"
     },
     "boat": {
       "name": "Boat Name | Names",
@@ -429,8 +432,16 @@
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
       "lastupdate": "We have not received any data from your boat within the last 70 minutes."
     },
-    "explore": "Explore",
-    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
+    "history": {
+      "title": "Monitoring History"
+    },
+    "explore": {
+      "title": "Explore Data",
+      "msg": "List of paths and value gather from SignalK and use to process logs, stays, moorages, maps and monitoring"
+    },
+    "windy": {
+      "title": "Windy Monitoring"
+    }
   },
   "units": {
     "distance": {
@@ -471,6 +482,8 @@
     "help_link": "the FAQ."
   },
   "timelapse": {
+    "title": "Replay",
+    "customize": "Customize Replay",
     "choosetrips": "Choose Trips",
     "start": "Start Trip",
     "end": "End Trip",

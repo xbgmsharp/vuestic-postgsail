@@ -3,7 +3,17 @@
 </template>
 
 <script setup>
+  import { onMounted } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import Map from '../../components/maps/leafletMapMoorages.vue'
+
+  const { t } = useI18n()
+
+  onMounted(async () => {
+    const title = t('moorages.map.title')
+    document.title = setAppTitle(title)
+  })
 </script>
 
 <style lang="scss"></style>

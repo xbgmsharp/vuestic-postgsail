@@ -1,10 +1,7 @@
 <template>
   <div>
     <va-card>
-      <va-card-title>
-        <template v-if="filter_moorage_id"> {{ $t('moorages.arrivals-departures.title') }} {{ moorageName }} </template>
-        <template v-else> {{ $t('logs.list.title') }} {{ vesselName }}</template>
-      </va-card-title>
+      <va-card-title>{{ title }}</va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -108,6 +105,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
+  import { setAppTitle } from '../../utils/app.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { default as utils } from '../../utils/utils.js'
@@ -222,7 +220,13 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
+  const title = filter_moorage_id
+    ? t('moorages.arrivals-departures.title') + ' ' + moorageName.value
+    : t('logs.list.title') + ' ' + vesselName
+
   onMounted(async () => {
+    document.title = setAppTitle(title)
+
     isBusy.value = true
     apiError.value = null
     try {

@@ -166,6 +166,7 @@
 <script setup>
   // TODO  lang="ts"
   import { ref, onMounted, version, computed, defineAsyncComponent } from 'vue'
+  import { setAppTitle } from '../../utils/app.js'
   import { useGlobalStore } from '../../stores/global-store'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
@@ -330,6 +331,9 @@
   })
 
   onMounted(async () => {
+    const title = t('dashboard.title')
+    document.title = setAppTitle(title)
+
     // Load version
     await fetchVersions(app_version.value)
     // Load cache

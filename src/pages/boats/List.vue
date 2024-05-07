@@ -67,6 +67,7 @@
 <script setup>
   import { computed, ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import GetBoatToken from './GetBoatToken.vue'
   import { dateFormatUTC, fromNow } from '../../utils/dateFormatter.js'
@@ -125,6 +126,8 @@
   })
 
   onMounted(async () => {
+    const title = t('boats.list.title')
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

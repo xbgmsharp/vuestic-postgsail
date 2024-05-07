@@ -230,6 +230,7 @@
 <script setup>
   import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   //import nodatayet from '../../components/noDataScreen.vue'
   //import VaChart from '../../components/va-charts/VaChart.vue'
@@ -418,6 +419,9 @@
   })
 
   onMounted(async () => {
+    const title = t('stats.stats')
+    document.title = setAppTitle(title)
+
     console.log('Stats onMounted')
     isBusy.value = true
     apiError.value = null

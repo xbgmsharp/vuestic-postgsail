@@ -18,9 +18,9 @@
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
-      <va-card-title>{{ $t('monitoring.explore') }}</va-card-title>
+      <va-card-title>{{ $t('monitoring.explore.title') }}</va-card-title>
       <va-card-content>
-        <h1 class="box layout gutter--md">{{ $t('monitoring.explore_msg') }}</h1>
+        <h1 class="box layout gutter--md">{{ $t('monitoring.explore.msg') }}</h1>
         <table class="va-table va-table--hoverable va-table--striped" style="width: 100%">
           <thead>
             <tr>
@@ -56,6 +56,7 @@
 <script setup>
   // TODO update setup with lang="ts"
   import { computed, ref, reactive, onMounted } from 'vue'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
@@ -101,6 +102,9 @@
   })
 
   onMounted(async () => {
+    const title = t('monitoring.explore.title')
+    document.title = setAppTitle(title)
+
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

@@ -29,6 +29,7 @@
 <script setup>
   import { computed, ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
 
@@ -50,6 +51,8 @@
   })
 
   onMounted(async () => {
+    const title = t('menu.eventlogs')
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

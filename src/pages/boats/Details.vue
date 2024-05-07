@@ -103,11 +103,15 @@
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import { setAppTitle } from '../../utils/app.js'
+  import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import lMap from '../../components/maps/leafletMap.vue'
 
   import vesselData from '../../data/boat.json'
+
+  const { t } = useI18n()
 
   const route = useRoute()
   const isBusy = ref(false)
@@ -141,6 +145,8 @@
   })
 
   onMounted(async () => {
+    const title = t('boats.details.title')
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -150,6 +156,9 @@
       // API return null when vessel is pending metadata
       if (response && response.vessel) {
         apiData.row = response.vessel
+        if (apiData.row.name) {
+          document.title = setAppTitle(title + ': ' + apiData.row.name)
+        }
         //console.log(`geoJson ${apiData.row.geojson}`)
       } else {
         throw { response }

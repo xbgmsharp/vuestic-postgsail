@@ -87,6 +87,7 @@
 <script setup>
   // TODO update setup with lang="ts"
   import { computed, ref, reactive, onMounted } from 'vue'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import lMap from '../../components/maps/leafletMap.vue'
   import { useI18n } from 'vue-i18n'
@@ -202,6 +203,9 @@
   }))
 
   const monitor = onMounted(async () => {
+    const title = t('monitoring.title')
+    document.title = setAppTitle(title)
+
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -217,6 +221,9 @@
         //console.log(response[0].time)
         //console.log(moment.utc(response[0].time).locale('es').fromNow())
         setTimeout(() => monitor(), 60 * 1000) // 1 min
+        if (apiData.row.name) {
+          document.title = setAppTitle(title + ': ' + apiData.row.name)
+        }
       } else {
         console.warn('monitoring', response)
         //throw { response }

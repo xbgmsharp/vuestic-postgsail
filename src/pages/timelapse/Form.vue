@@ -1,7 +1,7 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-title>{{ vesselName }}'s Replay</va-card-title>
+      <va-card-title>{{ title }}</va-card-title>
       <va-card-content>
         <div>
           <div>
@@ -204,6 +204,8 @@
 
 <script setup>
   import { computed, reactive, ref, onMounted } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
@@ -216,6 +218,7 @@
   const { vesselName, vesselType } = useVesselStore()
   import { useToast } from 'vuestic-ui'
   const { init: initToast } = useToast()
+  const { t } = useI18n()
 
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -384,8 +387,11 @@
     },
   ]
 
+  const title = t('timelapse.customize')
+
   onMounted(async () => {
     console.log('Timelapse Form onMounted')
+    document.title = setAppTitle(title)
     let formatDate = null
     mylogs.value.push({ value: 0, text: '' })
     for (let i = 0; i < logs.value.length; i++) {

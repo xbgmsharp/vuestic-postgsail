@@ -129,7 +129,7 @@
 
   const route = useRoute()
   const CacheStore = useCacheStore()
-  const { readOnly } = useGlobalStore()
+  const GlobalStore = useGlobalStore()
   const isBusy = ref(false)
   const apiError = ref(null)
   const updateError = ref(null)
@@ -295,7 +295,7 @@
     })
     if (modal_result) {
       canDelete = true
-      if (readOnly) {
+      if (GlobalStore.readOnly) {
         initToast({
           message: `Demo account readonly`,
           position: 'top-right',

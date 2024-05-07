@@ -6,6 +6,8 @@ import WeatherForecast from '../services/openweathermap'
 import moment from 'moment'
 import { userBadges } from '../utils/PostgSail'
 
+const demo_pattern = /^[A-Za-z0-9._%+-]+@openplotter.cloud$/
+
 const defaultState = {
   keepLoggedIn: false,
   isLoggedIn: false,
@@ -259,10 +261,12 @@ export const useGlobalStore = defineStore('global', {
     website: (state) => state.settings?.preferences?.website,
     windy: (state) => state.settings?.preferences?.windy,
     readOnly: (state) => {
-      if (state.settings?.email != 'demo@openplotter.cloud') {
-        return false
+      const demo_email = state.settings?.email.match(demo_pattern)
+      console.debug('readOnly', demo_email)
+      if (demo_email != null && import.meta.env.PROD) {
+        return true
       }
-      return import.meta.env.PROD ? true : false
+      return false
     },
   },
 })

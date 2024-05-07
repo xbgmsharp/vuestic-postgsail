@@ -121,7 +121,7 @@
       return
     }
 
-    if (readOnly) {
+    if (GlobalStore.readOnly) {
       notify({
         message: `Demo account readonly`,
         position: 'top-right',

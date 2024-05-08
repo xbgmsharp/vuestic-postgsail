@@ -430,7 +430,7 @@ router.afterEach((to) => {
     router.push({ path: '/' })
   }
   nextTick(() => {
-    const { t } = useI18n()
+    const { t } = useI18n() // TODO: how to call t() from router?
     if (to.meta.titleKey) {
       const titleKey = to.meta.titleKey as string
       document.title = setAppTitle(t(titleKey))

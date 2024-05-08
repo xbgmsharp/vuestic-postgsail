@@ -145,8 +145,6 @@
   })
 
   onMounted(async () => {
-    const title = t('boats.details.title')
-    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -157,7 +155,7 @@
       if (response && response.vessel) {
         apiData.row = response.vessel
         if (apiData.row.name) {
-          document.title = setAppTitle(title + ': ' + apiData.row.name)
+          document.title = setAppTitle(t('boats.details.title') + ': ' + apiData.row.name)
         }
         //console.log(`geoJson ${apiData.row.geojson}`)
       } else {

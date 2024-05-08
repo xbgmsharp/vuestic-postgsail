@@ -56,7 +56,6 @@
 <script setup>
   // TODO update setup with lang="ts"
   import { computed, ref, reactive, onMounted } from 'vue'
-  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
@@ -102,9 +101,6 @@
   })
 
   onMounted(async () => {
-    const title = t('monitoring.explore.title')
-    document.title = setAppTitle(title)
-
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

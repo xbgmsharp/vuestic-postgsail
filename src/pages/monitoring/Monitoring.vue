@@ -203,9 +203,6 @@
   }))
 
   const monitor = onMounted(async () => {
-    const title = t('monitoring.title')
-    document.title = setAppTitle(title)
-
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -222,7 +219,7 @@
         //console.log(moment.utc(response[0].time).locale('es').fromNow())
         setTimeout(() => monitor(), 60 * 1000) // 1 min
         if (apiData.row.name) {
-          document.title = setAppTitle(title + ': ' + apiData.row.name)
+          document.title = setAppTitle(t('monitoring.title') + ': ' + apiData.row.name)
         }
       } else {
         console.warn('monitoring', response)

@@ -21,7 +21,6 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { setAppTitle } from '../../utils/app.js'
   import nodatayet from '../../components/noDataScreen.vue'
 
   import useGlobalStore from '../../stores/global-store'
@@ -33,9 +32,6 @@
   const windy_pws_url = ref(`https://www.windy.com/station/pws-${GlobalStore.windy}`)
 
   onMounted(() => {
-    const title = t('monitoring.windy.title')
-    document.title = setAppTitle(title)
-
     console.log('Windy onMounted')
     /* redirect to Windy if we have a vessel and windy is enable */
     if (gotVessel.value && windy_enable.value) {

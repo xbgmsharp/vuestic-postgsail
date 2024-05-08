@@ -168,8 +168,6 @@
     return !isBusy.value && formData.isValid && isDirty
   })
   onMounted(async () => {
-    const title = t('moorages.details.title')
-    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     //const api = new PostgSail()
@@ -182,7 +180,7 @@
         formData.name = apiData.row.name || null
         formData.notes = apiData.row.notes || null
         if (formData.name) {
-          document.title = setAppTitle(title + ': ' + formData.name)
+          document.title = setAppTitle(t('moorages.details.title') + ': ' + formData.name)
         }
       } else {
         throw { response }

@@ -258,17 +258,10 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, computed } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { setAppTitle } from '../../utils/app.js'
-
   const { t } = useI18n()
   const searchValue = ref('')
-
-  onMounted(async () => {
-    const title = t('faq.title')
-    document.title = setAppTitle(title)
-  })
 </script>
 
 <style lang="scss"></style>

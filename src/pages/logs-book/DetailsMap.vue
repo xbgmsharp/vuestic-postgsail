@@ -196,8 +196,6 @@
   })
 
   onMounted(async () => {
-    const title = t('logs.details.title')
-    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const id = route.params.id
@@ -209,7 +207,7 @@
       formData.geojson = apiData.row.geojson || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
       if (formData.name) {
-        document.title = setAppTitle(title + ': ' + formData.name)
+        document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }
       let geo_arr = apiData.row.geojson.features
       for (var i = 1; i < geo_arr.length; i++) {

@@ -44,9 +44,8 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import { onMounted, defineAsyncComponent } from 'vue'
+  import { defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { setAppTitle } from '../../utils/app.js'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
   //import IconAward from '../../components/icons/IconAward.vue'
@@ -58,11 +57,6 @@
   const { userBadges } = storeToRefs(GlobalStore)
 
   const { t } = useI18n()
-
-  onMounted(async () => {
-    const title = t('menu.badges')
-    document.title = setAppTitle(title)
-  })
 </script>
 
 <style lang="scss" scoped>

@@ -141,7 +141,7 @@
     </va-card>
 -->
 
-    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-12 md:col-span-4">
+    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
       <router-link :to="info.text">
         <va-card-content>
           <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>

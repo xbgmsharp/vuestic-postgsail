@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard flex flex-wrap p-4 gap-6">
+  <div class="dashboard flex flex-wrap p-2 gap-4">
     <va-card v-if="monitoring && status" class="flex-grow w-full xl:w-1/3">
       <va-card-content>
         <table class="va-table va-table--hoverable va-text-center">
@@ -71,7 +71,7 @@
       </va-card>
     </template>
   </div>
-  <div class="dashboard grid grid-cols-12 items-start gap-6 p-4">
+  <div class="dashboard grid grid-cols-12 items-start p-2 gap-4">
     <template v-if="Monitoring2">
       <va-card v-if="Monitoring2" class="col-span-12">
         <va-card-content class="grid grid-cols-12 row row-separated">

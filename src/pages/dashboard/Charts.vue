@@ -41,7 +41,7 @@
         </va-card-content>
       </va-card>
       -->
-      <va-card v-if="HeatmapChartComputed" class="col-span-12">
+      <va-card v-if="HeatmapChartComputed" class="heatmap-widget col-span-12">
         <va-card-title>{{ t('dashboard.charts.HeatmapChart') }}</va-card-title>
         <va-card-content>
           <HeatmapChart v-if="HeatmapChartComputed" :data="HeatmapChartComputed" />
@@ -295,6 +295,11 @@
   .chart-widget {
     .va-card__content {
       height: 450px;
+    }
+  }
+  .heatmap-widget {
+    .va-card__content {
+      width: 100%;
     }
   }
 </style>

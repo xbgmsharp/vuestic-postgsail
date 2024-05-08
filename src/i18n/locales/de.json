@@ -1,5 +1,6 @@
 {
   "auth": {
+    "demo": "Demo Mode",
     "agree": "Ich stimme zu",
     "createAccount": "Konto erstellen",
     "createNewAccount": "Neues Konto erstellen",

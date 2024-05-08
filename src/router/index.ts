@@ -1,3 +1,6 @@
+import { nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { setAppTitle } from '../utils/app.js'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import AuthLayout from '../layouts/AuthLayout.vue'
@@ -5,6 +8,7 @@ import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import { useGlobalStore } from '../stores/global-store'
+
 //import { isArrayTypeNode } from 'typescript'
 //import { storeToRefs } from 'pinia'
 
@@ -18,32 +22,38 @@ const routes: Array<RouteRecordRaw> = [
         name: 'login',
         path: 'login',
         component: () => import('../pages/auth/login/Login.vue'),
+        meta: { titleKey: 'auth.login' },
       },
       {
         name: 'demo',
         path: 'demo',
         component: () => import('../pages/auth/login/Demo.vue'),
+        meta: { titleKey: 'auth.demo' },
       },
       {
         name: 'signup',
         path: 'signup',
         component: () => import('../pages/auth/signup/Signup.vue'),
+        meta: { titleKey: 'auth.sign_up' },
       },
       {
         name: 'recover-password',
         path: 'recover-password',
         component: () => import('../pages/auth/recover-password/RecoverPassword.vue'),
+        meta: { titleKey: 'auth.recover_password' },
       },
       {
         name: 'reset-password',
         path: 'reset-password',
         alias: 'reset',
         component: () => import('../pages/auth/reset-password/ResetPassword.vue'),
+        meta: { titleKey: 'auth.reset_password' },
       },
       {
         name: 'logout',
         path: 'logout',
         component: () => import('../pages/auth/login/Logout.vue'),
+        meta: { titleKey: 'auth.logout' },
       },
       {
         name: 'redirect',
@@ -61,13 +71,14 @@ const routes: Array<RouteRecordRaw> = [
         name: 'dashboard',
         path: '',
         component: () => import('../pages/dashboard/Dashboard.vue'),
+        meta: { titleKey: 'dashboard.title' },
       },
       {
         name: 'logs',
         path: 'logs',
         //component: () => import('../pages/logs-book/List.vue'),
         component: () => import('../pages/logs-book/Page.vue'),
-        meta: { isPublic: true, type: 'public_logs_list' },
+        meta: { titleKey: 'logs.list.title', isPublic: true, type: 'public_logs_list' },
       },
       // {
       //   name: 'log-details',
@@ -79,62 +90,73 @@ const routes: Array<RouteRecordRaw> = [
         name: 'log-map',
         path: 'log/:id(\\d+)',
         component: () => import('../pages/logs-book/DetailsMap.vue'),
-        meta: { isPublic: true, type: 'public_logs' },
+        meta: { titleKey: 'logs.list.title', isPublic: true, type: 'public_logs' },
       },
       {
         name: 'stays',
         path: 'stays',
         component: () => import('../pages/stays/List.vue'),
+        meta: { titleKey: 'stays.list.title' },
       },
       {
         name: 'stay-details',
         path: 'stay/:id(\\d+)',
         component: () => import('../pages/stays/Details.vue'),
+        meta: { titleKey: 'stays.details.title' },
       },
       {
         name: 'moorages',
         path: 'moorages',
         component: () => import('../pages/moorages/List.vue'),
+        meta: { titleKey: 'moorages.list.title' },
       },
       {
         name: 'map',
         path: 'moorages/map',
         component: () => import('../pages/moorages/Map.vue'),
+        meta: { titleKey: 'moorages.map.title' },
       },
       {
         name: 'moorage-details',
         path: 'moorage/:id(\\d+)',
         component: () => import('../pages/moorages/Details.vue'),
+        meta: { titleKey: 'moorages.details.title' },
       },
       {
         name: 'moorage-stays',
         path: 'stays/moorage/:id(\\d+)',
         component: () => import('../pages/stays/Moorage.vue'),
+        meta: { titleKey: 'stays.moorage.title' },
       },
       {
         name: 'moorage-arrivals-departures',
         path: 'moorage/arrivals-departures/:id',
         component: () => import('../pages/logs-book/List.vue'),
+        meta: { titleKey: 'moorages.arrivals-departures.title' },
       },
       {
         name: 'boats',
         path: 'boats',
         component: () => import('../pages/boats/List.vue'),
+        meta: { titleKey: 'boats.list.title' },
       },
       {
         name: 'boat-details',
         path: 'boat/:name',
         component: () => import('../pages/boats/Details.vue'),
+        meta: { titleKey: 'boats.details.title' },
       },
       {
         name: 'boat-new',
         path: 'boat/new',
         component: () => import('../pages/boats/Add.vue'),
+        meta: { titleKey: 'boats.details.title' },
       },
       {
         path: 'profile',
         name: 'profile',
         component: () => import('../pages/profile/Profile.vue'),
+        meta: { titleKey: 'profile.title' },
       },
       /*
       {
@@ -152,13 +174,13 @@ const routes: Array<RouteRecordRaw> = [
             path: 'privacy',
             name: 'privacy',
             component: () => import('../pages/privacy/Privacy.vue'),
-            meta: { isPublic: true },
+            meta: { titleKey: 'privacy.title', isPublic: true },
           },
           {
             path: 'faq',
             name: 'faq',
             component: () => import('../pages/faq/FAQ.vue'),
-            meta: { isPublic: true },
+            meta: { titleKey: 'faq.title', isPublic: true },
           },
         ],
       },
@@ -167,6 +189,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'grafana',
         name: 'grafana',
         component: () => import('../pages/grafana/Grafana.vue'),
+        meta: { titleKey: 'menu.grafana' },
         //beforeEnter(to, from, next) {
         //  window.open('https://app.openplotter.cloud', '_blank')
         //},
@@ -175,6 +198,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'activate',
         name: 'activate',
         component: () => import('../pages/activate/Activate.vue'),
+        meta: { titleKey: 'auth.oth' },
       },
       {
         name: 'monitoring-menu',
@@ -185,27 +209,31 @@ const routes: Array<RouteRecordRaw> = [
             name: 'monitoring',
             path: 'monitoring',
             component: () => import('../pages/monitoring/Monitoring.vue'),
-            meta: { isPublic: true, type: 'public_monitoring' },
+            meta: { titleKey: 'monitoring.title', isPublic: true, type: 'public_monitoring' },
           },
           {
             name: 'explore',
             path: 'monitoring/explore',
             component: () => import('../pages/monitoring/Explore.vue'),
+            meta: { titleKey: 'monitoring.explore.title' },
           },
           {
             name: 'history',
             path: 'monitoring/history',
             component: () => import('../pages/monitoring/History.vue'),
+            meta: { titleKey: 'monitoring.history.title' },
           },
           {
             name: 'windy',
             path: 'monitoring/windy',
             component: () => import('../pages/monitoring/Windy.vue'),
+            meta: { titleKey: 'monitoring.windy.title' },
           },
           {
             name: 'polar',
             path: 'monitoring/polar',
             component: () => import('../pages/monitoring/Polar_d3.vue'),
+            meta: { titleKey: 'monitoring.polar.title' },
           },
         ],
       },
@@ -213,7 +241,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'stats',
         path: '/:boat(\\w+)?/stats',
         component: () => import('../pages/stats/Stats.vue'),
-        meta: { isPublic: true, type: 'public_stats' },
+        meta: { titleKey: 'stats.stats', isPublic: true, type: 'public_stats' },
       },
       {
         name: 'timelapse-menu',
@@ -225,12 +253,13 @@ const routes: Array<RouteRecordRaw> = [
             name: 'timelapse-replay',
             path: 'timelapse/:id(\\d+)?',
             component: () => import('../pages/timelapse/Timelapse3.vue'),
-            meta: { isPublic: true, type: 'public_timelapse' },
+            meta: { titleKey: 'timelapse.title', isPublic: true, type: 'public_timelapse' },
           },
           {
             name: 'timelapse-form',
             path: 'timelapse/form',
             component: () => import('../pages/timelapse/Form.vue'),
+            meta: { titleKey: 'timelapse.customize' },
           },
         ],
       },
@@ -238,16 +267,19 @@ const routes: Array<RouteRecordRaw> = [
         name: 'pushover',
         path: 'pushover',
         component: () => import('../pages/activate/Pushover.vue'),
+        meta: { titleKey: 'auth.otp' },
       },
       {
         name: 'badges',
         path: 'badges',
         component: () => import('../pages/badges/Badges.vue'),
+        meta: { titleKey: 'menu.badges' },
       },
       {
         name: 'eventlogs',
         path: 'eventlogs',
         component: () => import('../pages/eventlogs/Timelines.vue'),
+        meta: { titleKey: 'menu.eventlogs' },
       },
     ],
   },
@@ -260,13 +292,13 @@ const routes: Array<RouteRecordRaw> = [
         name: 'headless-map',
         path: 'map/:id(\\d+)?',
         component: () => import('../pages/map/Map.vue'),
-        meta: { isPublic: true, type: 'public_logs' },
+        meta: { titleKey: 'logs.details.title', isPublic: true, type: 'public_logs' },
       },
       {
         name: 'headless-replay',
         path: 'maplapse/:id(\\d+)?',
         component: () => import('../pages/timelapse/Timelapse3.vue'),
-        meta: { isPublic: true, type: 'public_timelapse' },
+        meta: { titleKey: 'timelapse.title', isPublic: true, type: 'public_timelapse' },
       },
     ],
   },
@@ -274,7 +306,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/:pathMatch(.*)*',
     name: 'error-404',
     component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
-    meta: { title: 'Error 404' },
+    meta: { titleKey: '404.title' },
   },
 ]
 
@@ -397,6 +429,13 @@ router.afterEach((to) => {
     console.warn('vue-router afterEach activate -> /', isLoggedIn, validEmail, to)
     router.push({ path: '/' })
   }
+  nextTick(() => {
+    const { t } = useI18n()
+    if (to.meta.titleKey) {
+      const titleKey = to.meta.titleKey as string
+      document.title = setAppTitle(t(titleKey))
+    }
+  })
 })
 
 export default router

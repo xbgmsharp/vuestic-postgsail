@@ -258,16 +258,12 @@
   </div>
 </template>
 
-<script setup>
-  import { onMounted } from 'vue'
-  import { useI18n } from 'vue-i18n'
-  import { setAppTitle } from '../../utils/app.js'
-
-  const { t } = useI18n()
-
-  onMounted(async () => {
-    const title = t('privacy.title')
-    document.title = setAppTitle(title)
+<script>
+  import { defineComponent } from 'vue'
+  export default defineComponent({
+    data() {
+      return {}
+    },
   })
 </script>
 

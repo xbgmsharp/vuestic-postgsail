@@ -89,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'log-map',
         path: 'log/:id(\\d+)',
         component: () => import('../pages/logs-book/DetailsMap.vue'),
-        meta: { titleKey: 'logs.list.title', isPublic: true, type: 'public_logs' },
+        meta: { titleKey: 'logs.details.title', isPublic: true, type: 'public_logs' },
       },
       {
         name: 'stays',
@@ -197,7 +197,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'activate',
         name: 'activate',
         component: () => import('../pages/activate/Activate.vue'),
-        meta: { titleKey: 'auth.oth' },
+        meta: { titleKey: 'auth.otp' },
       },
       {
         name: 'monitoring-menu',

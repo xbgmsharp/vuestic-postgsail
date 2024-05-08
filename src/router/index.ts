@@ -1,5 +1,5 @@
+import i18n from '../i18n'
 import { nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { setAppTitle } from '../utils/app.js'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
@@ -430,10 +430,9 @@ router.afterEach((to) => {
     router.push({ path: '/' })
   }
   nextTick(() => {
-    const { t } = useI18n() // TODO: how to call t() from router?
     if (to.meta.titleKey) {
       const titleKey = to.meta.titleKey as string
-      document.title = setAppTitle(t(titleKey))
+      document.title = setAppTitle(i18n.global.t(titleKey))
     }
   })
 })

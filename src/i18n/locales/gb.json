@@ -11,11 +11,11 @@
     "login": "Login",
     "logout": "Logging out...",
     "password": "Password",
-    "recover_password": "Recover password",
+    "recover_password": "Recover Password",
     "sign_up": "Sign Up",
     "keep_logged_in": "Keep me logged in",
     "termsOfUse": "Terms of Use.",
-    "reset_password": "Reset password",
+    "reset_password": "Reset Password",
     "vessel_register": "Add vessel",
     "otp": "Enter the verification code",
     "otp_message": "Please enter the 6-digit verification code we sent via email",
@@ -442,6 +442,9 @@
     },
     "windy": {
       "title": "Windy Monitoring"
+    },
+    "polar": {
+      "title": "Polar Diagram"
     }
   },
   "units": {

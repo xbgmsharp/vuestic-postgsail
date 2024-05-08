@@ -431,6 +431,9 @@
     },
     "windy": {
       "title": "Windy Monitoring"
+    },
+    "polar": {
+      "title": "Polar Diagram"
     }
   },
   "units": {

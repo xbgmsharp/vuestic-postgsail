@@ -112,6 +112,17 @@
             </template>
             <va-dropdown-content class="float-left">
               <div class="grid grid-cols-1">
+                <VaButton
+                  preset="secondary"
+                  icon="timelapse"
+                  size="medium"
+                  color="secondary"
+                  @click="$emit('replay', log)"
+                >
+                  Replay</VaButton
+                >
+              </div>
+              <div class="grid grid-cols-1">
                 <VaButton preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
                   Edit</VaButton
                 >
@@ -125,17 +136,6 @@
                   @click="$emit('delete', log)"
                 >
                   Delete</VaButton
-                >
-              </div>
-              <div class="grid grid-cols-1">
-                <VaButton
-                  preset="secondary"
-                  icon="timelapse"
-                  size="medium"
-                  color="secondary"
-                  @click="$emit('replay', log)"
-                >
-                  Replay</VaButton
                 >
               </div>
             </va-dropdown-content>

@@ -1,5 +1,4 @@
 import i18n from '../i18n'
-import { nextTick } from 'vue'
 import { setAppTitle } from '../utils/app.js'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
@@ -419,6 +418,10 @@ router.beforeEach(async (to, from, next) => {
       next({ name: preferredHomepage })
       return
     }
+    if (to.meta.titleKey) {
+      const titleKey = to.meta.titleKey as string
+      document.title = setAppTitle(i18n.global.t(titleKey))
+    }
     next()
   }
 })
@@ -429,12 +432,6 @@ router.afterEach((to) => {
     console.warn('vue-router afterEach activate -> /', isLoggedIn, validEmail, to)
     router.push({ path: '/' })
   }
-  nextTick(() => {
-    if (to.meta.titleKey) {
-      const titleKey = to.meta.titleKey as string
-      document.title = setAppTitle(i18n.global.t(titleKey))
-    }
-  })
 })
 
 export default router

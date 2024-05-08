@@ -77,22 +77,22 @@
           <div v-if="stateOfCharge" class="col-span-3 flex flex-col">
             <va-icon name="icon-battery" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ stateOfCharge.value }}%</h3>
-            <p class="va-text-center">{{ stateOfCharge.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.battery') }}</p>
           </div>
           <div v-if="panelPower" class="col-span-3 flex flex-col">
             <va-icon name="icon-solar" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ panelPower.value }}W</h3>
-            <p class="va-text-center no-wrap">{{ panelPower.key }}</p>
+            <p class="va-text-center no-wrap">{{ t('dashboard.panel.solar') }}</p>
           </div>
           <div v-if="Power" class="col-span-3 flex flex-col">
             <va-icon name="icon-bolt" :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ Power.value }}W</h3>
-            <p class="va-text-center">{{ Power.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.power') }}</p>
           </div>
           <div v-if="tanksCapacity" class="col-span-3 flex flex-col">
             <va-icon name="icon-tank" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ tanksCapacity.value }}%</h3>
-            <p class="va-text-center">{{ tanksCapacity.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.tank') }}</p>
           </div>
         </va-card-content>
       </va-card>

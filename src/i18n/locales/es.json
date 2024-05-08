@@ -94,6 +94,12 @@
       "lineChart": "Log entry per year",
       "HeatmapChart": "Log entry per month per weekday"
     },
+    "panel": {
+      "battery": "Battery",
+      "solar": "Solar",
+      "power": "Power",
+      "tank": "Tank"
+    },
     "months": {
       "january": "January",
       "february": "February",

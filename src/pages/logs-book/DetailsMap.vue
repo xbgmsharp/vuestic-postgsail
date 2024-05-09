@@ -623,7 +623,10 @@
   }
   .leaflet-sidebar {
     height: 550px;
-    width: 450px;
+    width: 300px;
+  }
+  .leaflet-sidebar-pane {
+    width: 250px;
   }
   .mpopup {
     td:nth-child(1) {

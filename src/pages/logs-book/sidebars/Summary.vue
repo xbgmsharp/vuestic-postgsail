@@ -48,7 +48,7 @@
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
         width="30"
-        height="120"
+        height="130"
         viewBox="0 0 69.000000 900.000000"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -99,7 +99,7 @@
     </div>
     <div class="ps-8 gap-6">
       <div class="text-xs uppercase">{{ $t('logs.log.from') }}</div>
-      <div class="text-sm">
+      <div class="text-base">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
           class="va-text-bold va-link link"
@@ -108,10 +108,10 @@
           {{ logbook.from }}
         </router-link>
       </div>
-      <div>{{ logbook.fromTime }}</div>
+      <div class="text-sm">{{ logbook.fromTime }}</div>
       <br />
       <div class="text-xs uppercase">{{ $t('logs.log.to') }}</div>
-      <div class="text-sm">
+      <div class="text-base">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
           class="va-text-bold va-link link"
@@ -120,7 +120,7 @@
           {{ logbook.to }}
         </router-link>
       </div>
-      <div>{{ logbook.toTime }}</div>
+      <div class="text-sm">{{ logbook.toTime }}</div>
     </div>
   </div>
   <div class="mt-2 text-center text-sm">

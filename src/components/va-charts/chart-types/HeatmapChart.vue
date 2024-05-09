@@ -177,7 +177,7 @@
             },
             label(context) {
               const v = context.dataset.data[context.dataIndex]
-              return ['x: ' + v.x, 'y: ' + v.y, 'v: ' + v.v]
+              return [v.x + ', ' + v.y + ': ' + v.v]
             },
           },
         },

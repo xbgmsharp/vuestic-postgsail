@@ -39,7 +39,7 @@
   const ChartOptionsDefault = {
     plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
     },
     scales: {

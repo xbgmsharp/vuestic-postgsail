@@ -621,6 +621,10 @@
     width: 100%;
     height: calc(100vh - 4.5rem);
   }
+  .leaflet-sidebar {
+    height: 550px;
+    width: 450px;
+  }
   .mpopup {
     td:nth-child(1) {
       text-align: right;

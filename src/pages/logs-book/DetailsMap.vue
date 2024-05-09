@@ -81,10 +81,10 @@
 
 <script setup>
   import 'leaflet/dist/leaflet.css'
-  import '../../../public/leaflet-sidepanel.css'
+  import '../../components/maps/leaflet-sidepanel.css'
   import * as L from 'leaflet'
   import 'leaflet-rotatedmarker'
-  import '../../../public/leaflet-sidepanel.min.js'
+  import '../../components/maps/leaflet-sidepanel.min.js'
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'

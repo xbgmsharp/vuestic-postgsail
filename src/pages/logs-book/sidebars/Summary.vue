@@ -48,7 +48,7 @@
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
         width="30"
-        height="130"
+        height="120"
         viewBox="0 0 69.000000 900.000000"
         preserveAspectRatio="xMidYMid meet"
       >

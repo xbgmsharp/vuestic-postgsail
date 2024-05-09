@@ -97,7 +97,7 @@
           </div>
         </div>
 
-        <div id="mapContainer" ref="mapContainer" class="sidebar-map" style="height: 80vh" />
+        <div id="mapContainer" ref="mapContainer" class="sidebar-map" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -632,6 +632,9 @@
 </script>
 
 <style lang="scss">
+  .sidebar-map {
+    height: 95vh;
+  }
   .mpopup {
     td:nth-child(1) {
       text-align: right;

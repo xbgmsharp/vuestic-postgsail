@@ -148,30 +148,22 @@
   </div>
 
   <VaDivider class="my-2" />
-  <div class="text-xs">
-    DISTANCE / DURATION
-    <div class="grid grid-cols-2 gap-2">
-      <VaIcon name="route" :size="32" class="" />
-      <div class="text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
-    </div>
+  <div class="text-xs uppercase">DISTANCE / DURATION</div>
+  <div class="flex items-center">
+    <VaIcon class="flex-none" name="route" :size="32" />
+    <div class="flex-grow ml-2 text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
   </div>
 
-  <div class="text-xs">
-    SPEED AVG / MAX
-    <div class="grid grid-cols-2 gap-2">
-      <div class="">
-        <VaIcon name="speed" :size="32" class="" />
-      </div>
-      <div class="text-sm">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
-    </div>
+  <div class="text-xs uppercase">SPEED AVG / MAX</div>
+  <div class="flex items-center">
+    <VaIcon class="flex-none" name="speed" :size="32" />
+    <div class="flex-grow ml-2 text-sm">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
   </div>
 
-  <div class="text-xs">
-    WIND AVG / MAX
-    <div class="grid grid-cols-2 gap-2">
-      <VaIcon name="air" :size="32" class="" />
-      <div class="text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
-    </div>
+  <div class="text-xs uppercase">WIND AVG / MAX</div>
+  <div class="flex items-center">
+    <VaIcon class="flex-none" name="air" :size="32" />
+    <div class="flex-grow ml-2 text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
   </div>
 
   <div class="text-sm">

@@ -97,7 +97,7 @@
   <div class="p-2">
     <template v-if="winddata">
       <va-card v-if="winddata">
-        <va-card-title>Boat Speed</va-card-title>
+        <va-card-title>Wind Speed</va-card-title>
         <va-card-content>
           <VaChart :data="windChartDataComputed" type="line" :options="windChartOptionsComputed" />
         </va-card-content>
@@ -107,7 +107,7 @@
   <div class="p-2">
     <template v-if="speeddata">
       <va-card v-if="speeddata">
-        <va-card-title>Wind Speed</va-card-title>
+        <va-card-title>Boat Speed</va-card-title>
         <va-card-content>
           <VaChart :data="speedChartDataComputed" type="line" :options="speedChartOptionsComputed" />
         </va-card-content>

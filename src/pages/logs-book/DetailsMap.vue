@@ -1,5 +1,5 @@
 <template>
-  <div class="leaflet-maps" style="height: 100%">
+  <div class="leaflet-maps">
     <template v-if="apiError">
       <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
     </template>
@@ -21,13 +21,6 @@
               </li>
               <li>
                 <a href="#export" role="tab"><VaIcon name="ios_share" /></a>
-              </li>
-            </ul>
-
-            <ul role="tablist">
-              <!-- bottom aligned tabs -->
-              <li>
-                <a href="#monitoring" role="tab"><VaIcon name="stream" /></a>
               </li>
             </ul>
           </div>
@@ -85,14 +78,6 @@
               <template v-if="item">
                 <tripExport v-if="item" :logbook="item" :form-data="formData" :loading="isBusy"
               /></template>
-            </div>
-
-            <div id="monitoring" class="leaflet-sidebar-pane">
-              <h1 class="leaflet-sidebar-header">
-                Live monitoring
-                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
-              </h1>
-              <template v-if="item"> </template>
             </div>
           </div>
         </div>
@@ -635,9 +620,6 @@
   .sidebar-map {
     width: 100%;
     height: calc(100vh - 4.5rem);
-  }
-  .leaflet-sidebar {
-    width: 350px;
   }
   .mpopup {
     td:nth-child(1) {

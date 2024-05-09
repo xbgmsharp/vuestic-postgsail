@@ -138,10 +138,6 @@
       height: calc(100vh - 4rem);
       flex: 1;
 
-      @media screen and (max-width: $tabletBreakPointPX) {
-        height: calc(100vh - 6.5rem);
-      }
-
       .app-layout__sidebar-wrapper {
         position: relative;
         height: 100%;

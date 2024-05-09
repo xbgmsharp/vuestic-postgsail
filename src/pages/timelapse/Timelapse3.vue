@@ -509,7 +509,7 @@
     }
     .overlay {
       padding: 0 0.7rem;
-      top: 70px;
+      top: 110px;
       background: #000;
       opacity: 0.5;
       color: #fff;

@@ -128,7 +128,6 @@
   })
   const mapContainer = ref(),
     map = ref(),
-    sidebarContainer = ref(),
     sidepanel = ref(),
     speed_arr = ref([]),
     wind_arr = ref([]),
@@ -458,7 +457,6 @@
 
   const confirmDeleteTrackpoint = async () => {
     console.log('confirmDeleteTrackpoint')
-    sidepanel.value.close()
     document.getElementById('mapContainer').style.display = 'none'
     isBusy.value = true
     updateError.value = null
@@ -567,7 +565,6 @@
   }
 
   const handleDelete = async (log) => {
-    sidepanel.value.close()
     document.getElementById('mapContainer').style.display = 'none'
     isBusy.value = true
     updateError.value = null

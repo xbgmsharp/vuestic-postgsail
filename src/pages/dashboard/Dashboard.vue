@@ -1,6 +1,6 @@
 <template>
-  <div class="dashboard grid grid-cols-12 items-start gap-6">
-    <va-card v-if="monitoring && status" class="col-span-12 md:col-span-4 p4">
+  <div class="dashboard flex flex-wrap p-2 gap-4">
+    <va-card v-if="monitoring && status" class="flex-grow w-full xl:w-1/3">
       <va-card-content>
         <table class="va-table va-table--hoverable va-text-center">
           <tbody>
@@ -27,7 +27,7 @@
       </va-card-content>
     </va-card>
     <template v-if="monitoring.geojson">
-      <va-card v-if="currentWeather.temp" class="col-span-12 md:col-span-4">
+      <va-card v-if="currentWeather.temp" class="flex-grow w-full xl:w-1/3">
         <va-card-content class="grid grid-cols-12">
           <div class="col-span-6 flex flex-col va-text-center">
             <p style="font-size: 3rem; line-height: 54px">
@@ -59,7 +59,7 @@
           </div>
         </va-card-content>
       </va-card>
-      <va-card v-if="monitoring.geojson" class="col-span-12 md:col-span-4">
+      <va-card v-if="monitoring.geojson" class="flex-grow w-full xl:w-1/3">
         <va-card-content>
           <lMap
             :geo-json-feature="mapGeoJsonFeatures"
@@ -70,29 +70,30 @@
         </va-card-content>
       </va-card>
     </template>
-
+  </div>
+  <div class="dashboard grid grid-cols-12 items-start p-2 gap-4">
     <template v-if="Monitoring2">
       <va-card v-if="Monitoring2" class="col-span-12">
         <va-card-content class="grid grid-cols-12 row row-separated">
           <div v-if="stateOfCharge" class="col-span-3 flex flex-col">
             <va-icon name="icon-battery" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ stateOfCharge.value }}%</h3>
-            <p class="va-text-center">{{ stateOfCharge.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.battery') }}</p>
           </div>
           <div v-if="panelPower" class="col-span-3 flex flex-col">
             <va-icon name="icon-solar" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ panelPower.value }}W</h3>
-            <p class="va-text-center no-wrap">{{ panelPower.key }}</p>
+            <p class="va-text-center no-wrap">{{ t('dashboard.panel.solar') }}</p>
           </div>
           <div v-if="Power" class="col-span-3 flex flex-col">
             <va-icon name="icon-bolt" :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ Power.value }}W</h3>
-            <p class="va-text-center">{{ Power.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.power') }}</p>
           </div>
           <div v-if="tanksCapacity" class="col-span-3 flex flex-col">
             <va-icon name="icon-tank" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ tanksCapacity.value }}%</h3>
-            <p class="va-text-center">{{ tanksCapacity.key }}</p>
+            <p class="va-text-center">{{ t('dashboard.panel.tank') }}</p>
           </div>
         </va-card-content>
       </va-card>
@@ -141,7 +142,7 @@
     </va-card>
 -->
 
-    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-12 md:col-span-4">
+    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
       <router-link :to="info.text">
         <va-card-content>
           <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>

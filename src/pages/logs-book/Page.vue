@@ -1,6 +1,6 @@
 <template>
   <va-card>
-    <va-card-title>{{ $t('logs.list.title') }} {{ vesselName }}</va-card-title>
+    <va-card-title>{{ title }}</va-card-title>
     <va-card-content>
       <div class="flex flex-col lg:flex-row gap-4 mb-2 justify-between">
         <div class="flex flex-col lg:flex-row gap-2 justify-start">
@@ -71,6 +71,7 @@
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
   import { useCacheStore } from '../../stores/cache-store'
+  import { setAppTitle } from '../../utils/app.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { durationFormatHours } from '../../utils/dateFormatter.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
@@ -269,7 +270,11 @@
 
   const pagination = reactive({ page: 1, perPage: 10, total: items.value.length })
 
+  const title = t('logs.list.title') + ' ' + vesselName
+
   onMounted(async () => {
+    document.title = setAppTitle(title)
+
     isBusy.value = true
     apiError.value = null
     try {

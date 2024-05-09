@@ -10,7 +10,7 @@
         </va-card-content>
       </va-card>
       <va-card class="mb-3">
-        <va-card-title>{{ $t('stays.moorage.title') }} {{ moorageName }}</va-card-title>
+        <va-card-title>{{ title }}</va-card-title>
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -98,6 +98,7 @@
   import { computed, ref, reactive, onMounted } from 'vue'
   import { areIntervalsOverlapping } from 'date-fns'
   import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import { useCacheStore } from '../../stores/cache-store'
   import PostgSail from '../../services/api-client'
   import Map from '../../components/maps/leafletMapMoorages.vue'
@@ -205,7 +206,10 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
+  const title = t('stays.moorage.title') + ' ' + moorageName.value
+
   onMounted(async () => {
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()

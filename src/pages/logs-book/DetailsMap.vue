@@ -113,6 +113,8 @@
 
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
   import { dateFormatUTC, durationFormatHours, durationI18nHours, dateFormatTime } from '../../utils/dateFormatter.js'
@@ -125,6 +127,8 @@
   import logBook from '../../data/logbook.json'
   import { useGlobalStore } from '../../stores/global-store'
   import { useVesselStore } from '../../stores/vessel-store'
+
+  const { t } = useI18n()
 
   const { readOnly } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
@@ -190,6 +194,7 @@
     const isDirty = item.value.name !== formData.name || item.value.notes !== formData.notes
     return !isBusy.value && formData.isValid && isDirty
   })
+
   onMounted(async () => {
     isBusy.value = true
     apiError.value = null
@@ -201,7 +206,9 @@
       formData.notes = apiData.row.notes || null
       formData.geojson = apiData.row.geojson || null
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
-      document.title = `${vesselName}'s Trip From ${apiData.row.name}`
+      if (formData.name) {
+        document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
+      }
       let geo_arr = apiData.row.geojson.features
       for (var i = 1; i < geo_arr.length; i++) {
         //console.log(geo_arr[i].properties)

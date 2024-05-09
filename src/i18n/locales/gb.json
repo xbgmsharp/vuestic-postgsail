@@ -1,5 +1,6 @@
 {
   "auth": {
+    "demo": "Demo Mode",
     "agree": "I agree to",
     "createAccount": "Create account",
     "createNewAccount": "Create New Account",
@@ -10,11 +11,11 @@
     "login": "Login",
     "logout": "Logging out...",
     "password": "Password",
-    "recover_password": "Recover password",
+    "recover_password": "Recover Password",
     "sign_up": "Sign Up",
     "keep_logged_in": "Keep me logged in",
     "termsOfUse": "Terms of Use.",
-    "reset_password": "Reset password",
+    "reset_password": "Reset Password",
     "vessel_register": "Add vessel",
     "otp": "Enter the verification code",
     "otp_message": "Please enter the 6-digit verification code we sent via email",
@@ -97,6 +98,12 @@
       "lineChart": "Log entry per year",
       "HeatmapChart": "Log entry per month per weekday"
     },
+    "panel": {
+      "battery": "Battery",
+      "solar": "Solar",
+      "power": "Power",
+      "tank": "Tank"
+    },
     "months": {
       "january": "January",
       "february": "February",
@@ -133,7 +140,7 @@
       "to_time": "Ended"
     },
     "details": {
-      "title": "Log's details"
+      "title": "Log Book"
     },
     "log": {
       "name": "Name | Names",
@@ -174,7 +181,7 @@
       }
     },
     "details": {
-      "title": "Stay's details"
+      "title": "Stay"
     },
     "stay": {
       "name": "Name | Names",
@@ -214,8 +221,11 @@
     "arrivals-departures": {
       "title": "Arrivals and Departures for Moorage"
     },
+    "map": {
+      "title": "Map of Moorages"
+    },
     "details": {
-      "title": "Moorage's details"
+      "title": "Moorage"
     },
     "moorage": {
       "moorage": "Preferred Name",
@@ -252,10 +262,10 @@
   },
   "boats": {
     "list": {
-      "title": "Boats list"
+      "title": "Boats"
     },
     "details": {
-      "title": "Boat's details"
+      "title": "Boat"
     },
     "boat": {
       "name": "Boat Name | Names",
@@ -429,8 +439,19 @@
       "offline": "Your vessel is offline. Real-time monitoring requires an Internet connection.",
       "lastupdate": "We have not received any data from your boat within the last 70 minutes."
     },
-    "explore": "Explore",
-    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
+    "history": {
+      "title": "Monitoring History"
+    },
+    "explore": {
+      "title": "Explore Data",
+      "msg": "List of paths and value gather from SignalK and use to process logs, stays, moorages, maps and monitoring"
+    },
+    "windy": {
+      "title": "Windy Monitoring"
+    },
+    "polar": {
+      "title": "Polar Diagram"
+    }
   },
   "units": {
     "distance": {
@@ -471,6 +492,8 @@
     "help_link": "the FAQ."
   },
   "timelapse": {
+    "title": "Replay",
+    "customize": "Customize Replay",
     "choosetrips": "Choose Trips",
     "start": "Start Trip",
     "end": "End Trip",

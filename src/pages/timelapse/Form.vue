@@ -1,7 +1,7 @@
 <template>
   <div>
     <va-card class="mb-3">
-      <va-card-title>{{ vesselName }}'s Replay</va-card-title>
+      <va-card-title>{{ $t('timelapse.customize') }}</va-card-title>
       <va-card-content>
         <div>
           <div>

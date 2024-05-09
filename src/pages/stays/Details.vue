@@ -139,6 +139,8 @@
 <script setup>
   import { computed, ref, reactive, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { useCacheStore } from '../../stores/cache-store'
   import { dateFormatUTC, durationI18nDaysHours } from '../../utils/dateFormatter.js'
@@ -147,6 +149,7 @@
   import StayAt from '../../components/SelectStayAt.vue'
   import { useToast } from 'vuestic-ui'
   const { init: initToast } = useToast()
+  const { t } = useI18n()
 
   import stays from '../../data/stays.json'
 
@@ -205,6 +208,9 @@
         apiData.row = response[0]
         formData.name = apiData.row.name || null
         formData.notes = apiData.row.notes || null
+        if (formData.name) {
+          document.title = setAppTitle(t('stays.details.title') + ': ' + formData.name)
+        }
       } else {
         throw { response }
       }

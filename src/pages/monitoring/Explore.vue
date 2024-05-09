@@ -18,9 +18,9 @@
       </va-card-content>
     </va-card>
     <va-card class="mb-3">
-      <va-card-title>{{ $t('monitoring.explore') }}</va-card-title>
+      <va-card-title>{{ $t('monitoring.explore.title') }}</va-card-title>
       <va-card-content>
-        <h1 class="box layout gutter--md">{{ $t('monitoring.explore_msg') }}</h1>
+        <h1 class="box layout gutter--md">{{ $t('monitoring.explore.msg') }}</h1>
         <table class="va-table va-table--hoverable va-table--striped" style="width: 100%">
           <thead>
             <tr>

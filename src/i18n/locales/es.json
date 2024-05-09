@@ -1,5 +1,6 @@
 {
   "auth": {
+    "demo": "Demo Mode",
     "agree": "Acepto.",
     "createAccount": "Create cuenta",
     "createNewAccount": "Crear cuenta",
@@ -93,6 +94,12 @@
       "lineChart": "Log entry per year",
       "HeatmapChart": "Log entry per month per weekday"
     },
+    "panel": {
+      "battery": "Battery",
+      "solar": "Solar",
+      "power": "Power",
+      "tank": "Tank"
+    },
     "months": {
       "january": "January",
       "february": "February",
@@ -127,7 +134,7 @@
       "to_time": "Ended"
     },
     "details": {
-      "title": "Log's details"
+      "title": "Log Book"
     },
     "log": {
       "name": "Nombre | Nombres",
@@ -168,7 +175,7 @@
       }
     },
     "details": {
-      "title": "Stay's details"
+      "title": "Stay"
     },
     "stay": {
       "name": "Name | Names",
@@ -208,8 +215,11 @@
     "arrivals-departures": {
       "title": "Arrivals and Departures for Moorage"
     },
+    "map": {
+      "title": "Map of Moorages"
+    },
     "details": {
-      "title": "Moorage's details"
+      "title": "Moorage"
     },
     "moorage": {
       "title": "Stays at Moorage",
@@ -247,10 +257,10 @@
   },
   "boats": {
     "list": {
-      "title": "Boats list"
+      "title": "Boats"
     },
     "details": {
-      "title": "Boat's details"
+      "title": "Boat"
     },
     "boat": {
       "name": "Nombre | Nombres",
@@ -418,8 +428,19 @@
       "offline": "Su embarcación está fuera de línea. El monitoreo en tiempo real requiere una conexión a Internet.",
       "lastupdate": "No hemos recibido ningún dato de su barco en los últimos 70 minutos."
     },
-    "explore": "Explore",
-    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
+    "history": {
+      "title": "Monitoring History"
+    },
+    "explore": {
+      "title": "Explore Data",
+      "msg": "List of paths and value gather from SignalK and use to process logs, stays, moorages, maps and monitoring"
+    },
+    "windy": {
+      "title": "Windy Monitoring"
+    },
+    "polar": {
+      "title": "Polar Diagram"
+    }
   },
   "units": {
     "distance": {
@@ -460,6 +481,8 @@
     "help_link": "nuestras preguntas frecuentes."
   },
   "timelapse": {
+    "title": "Replay",
+    "customize": "Customize Replay",
     "choosetrips": "Elegir viajes",
     "start": "Iniciar viaje",
     "end": "Finalizar viaje",

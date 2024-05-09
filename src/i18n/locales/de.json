@@ -1,5 +1,6 @@
 {
   "auth": {
+    "demo": "Demo Mode",
     "agree": "Ich stimme zu",
     "createAccount": "Konto erstellen",
     "createNewAccount": "Neues Konto erstellen",
@@ -96,6 +97,12 @@
       "mixedChart": "Protokolleinträge pro Monat pro Jahr",
       "lineChart": "Protokolleinträge pro Jahr",
       "HeatmapChart": "Log entry per month per weekday"
+    },
+    "panel": {
+      "battery": "Battery",
+      "solar": "Solar",
+      "power": "Power",
+      "tank": "Tank"
     },
     "months": {
       "january": "Januar",
@@ -419,8 +426,19 @@
       "offline": "Ihr Schiff ist offline. Echtzeitüberwachung erfordert eine Internetverbindung.",
       "lastupdate": "Wir haben innerhalb der letzten 70 Minuten keine Daten von Ihrem Sammler erhalten."
     },
-    "explore": "Explore",
-    "explore_msg": "List of paths and value gather from Signalk and use to process logs, stays, moorages, maps and monitoring"
+    "history": {
+      "title": "Monitoring History"
+    },
+    "explore": {
+      "title": "Explore Data",
+      "msg": "List of paths and value gather from SignalK and use to process logs, stays, moorages, maps and monitoring"
+    },
+    "windy": {
+      "title": "Windy Monitoring"
+    },
+    "polar": {
+      "title": "Polar Diagram"
+    }
   },
   "units": {
     "distance": {
@@ -461,6 +479,8 @@
     "help_link": "FAQ durch."
   },
   "timelapse": {
+    "title": "Replay",
+    "customize": "Customize Replay",
     "choosetrips": "Choose Trips",
     "start": "Start Trip",
     "end": "End Trip",

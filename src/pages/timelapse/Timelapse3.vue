@@ -27,6 +27,8 @@
 
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
+  import { setAppTitle } from '../../utils/app.js'
   import PostgSail from '../../services/api-client'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
@@ -35,7 +37,8 @@
 
   import { useVesselStore } from '../../stores/vessel-store'
 
-  const { vesselType } = useVesselStore()
+  const { vesselName, vesselType } = useVesselStore()
+  const { t } = useI18n()
 
   const fallbackBoatType =
     vesselType === 'Sailing' ? 'SailboatSails' : vesselType === 'Pleasure Craft' ? 'Powerboat' : 'Dot'
@@ -134,6 +137,8 @@
   )
 
   onMounted(async () => {
+    const title = t('timelapse.title') + ': ' + vesselName
+    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail(),

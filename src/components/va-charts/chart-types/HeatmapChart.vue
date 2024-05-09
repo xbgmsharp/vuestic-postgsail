@@ -99,6 +99,17 @@
     { value: 30, color: '#0b232b' },
   ]
 
+  function updateChartOptions(chart) {
+    console.log('updateChartOptions', window.innerWidth)
+
+    if (window.innerWidth < 600) {
+      chart.options.scales.y.ticks.display = false
+    } else {
+      chart.options.scales.y.ticks.display = true
+    }
+    chart.update()
+  }
+
   let chart
   const chartOptions = {
     type: 'matrix',
@@ -122,7 +133,6 @@
       ],
     },
     options: {
-      aspectRatio: 5,
       scales: {
         y: {
           // y axis options
@@ -132,6 +142,7 @@
 
           labels: yLabels,
           ticks: {
+            display: true,
             autoSkip: true,
           },
           grid: {
@@ -156,6 +167,8 @@
           },
         },
       },
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         // plugins options
         legend: false,
@@ -177,6 +190,10 @@
   onMounted(() => {
     const ctx = heatmapChartCanvas.value.getContext('2d')
     chart = new ChartJS(ctx, chartOptions)
+    window.addEventListener('resize', function () {
+      updateChartOptions(chart)
+    })
+    updateChartOptions(chart)
     //console.log(ctx, 'heatmapChartCanvas onMounted heatmapChartCanvas.value')
   })
 </script>

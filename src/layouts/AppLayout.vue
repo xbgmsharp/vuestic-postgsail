@@ -26,9 +26,7 @@
           />
         </div>
         <div class="app-layout__page">
-          <div class="p-0 lg:px-6 lg:py-6">
-            <router-view />
-          </div>
+          <router-view />
         </div>
       </div>
     </div>

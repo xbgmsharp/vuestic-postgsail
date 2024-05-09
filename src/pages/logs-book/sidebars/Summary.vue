@@ -47,7 +47,7 @@
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
-        width="50"
+        width="30"
         height="130"
         viewBox="0 0 69.000000 900.000000"
         preserveAspectRatio="xMidYMid meet"
@@ -97,7 +97,7 @@
         </g>
       </svg>
     </div>
-    <div class="ps-10 gap-6">
+    <div class="ps-8 gap-6">
       <div class="text-xs uppercase">{{ $t('logs.log.from') }}</div>
       <div class="text-sm">
         <router-link

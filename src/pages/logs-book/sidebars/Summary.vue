@@ -42,7 +42,6 @@
     {{ logbook.name }}
   </template>
 
-  <VaDivider class="my-2" />
   <div class="relative">
     <div class="absolute">
       <svg
@@ -157,7 +156,6 @@
     </div>
   </div>
 
-  <VaDivider class="my-2" />
   <div class="text-xs">
     SPEED AVG / MAX
     <div class="grid grid-cols-2 gap-2">
@@ -168,7 +166,6 @@
     </div>
   </div>
 
-  <VaDivider class="my-2" />
   <div class="text-xs">
     WIND AVG / MAX
     <div class="grid grid-cols-2 gap-2">
@@ -177,7 +174,6 @@
     </div>
   </div>
 
-  <VaDivider class="my-2" />
   <div class="text-sm">
     <template v-if="isLoggedIn">
       <VaTextarea
@@ -192,7 +188,6 @@
     </template>
   </div>
 
-  <VaDivider class="my-2" />
   <template v-if="isLoggedIn">
     <!--
                 <div class="flex flex-row pa-2">

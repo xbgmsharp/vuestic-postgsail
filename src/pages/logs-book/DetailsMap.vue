@@ -633,7 +633,8 @@
 
 <style lang="scss">
   .sidebar-map {
-    height: 95vh;
+    width: 100%;
+    height: calc(100vh - 4rem);
   }
   .mpopup {
     td:nth-child(1) {

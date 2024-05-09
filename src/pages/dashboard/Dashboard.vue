@@ -5,21 +5,15 @@
         <table class="va-table va-table--hoverable va-text-center">
           <tbody>
             <tr>
-              <td>
-                <b>{{ t('dashboard.local_time') }}:</b>
-              </td>
+              <td>{{ t('dashboard.local_time') }}</td>
               <td>{{ status.local_time }}</td>
             </tr>
             <tr>
-              <td>
-                <b>{{ t('boats.boat.last_contact') }}:</b>
-              </td>
+              <td>{{ t('boats.boat.last_contact') }}</td>
               <td>{{ status.last_updated }}</td>
             </tr>
             <tr>
-              <td>
-                <b>{{ t('monitoring.title') }}:</b>
-              </td>
+              <td>{{ t('monitoring.title') }}</td>
               <td>{{ status.monitoring }}</td>
             </tr>
           </tbody>
@@ -426,6 +420,14 @@
       @media (min-width: 1024px) {
         width: calc((100% - 2rem) / 3);
       }
+    }
+
+    td:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    td:nth-child(2) {
+      font-weight: bold;
     }
   }
   .row-separated {

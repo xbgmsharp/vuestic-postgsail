@@ -301,5 +301,8 @@
     .va-card__content {
       width: 100%;
     }
+    .heatmapChartCanvas {
+      height: 250px;
+    }
   }
 </style>

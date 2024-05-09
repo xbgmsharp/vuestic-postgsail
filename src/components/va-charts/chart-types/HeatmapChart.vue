@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="heatmapChartCanvas"></canvas>
+    <canvas ref="heatmapChartCanvas" class="heatmapChartCanvas"></canvas>
   </div>
 </template>
 
@@ -100,8 +100,6 @@
   ]
 
   function updateChartOptions(chart) {
-    console.log('updateChartOptions', window.innerWidth)
-
     if (window.innerWidth < 600) {
       chart.options.scales.y.ticks.display = false
     } else {

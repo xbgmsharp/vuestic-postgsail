@@ -135,7 +135,8 @@
 
     &__content {
       display: flex;
-      height: calc(100vh - 4rem);
+      height: calc(100vh - 4.5rem);
+      margin-top: 0.5rem;
       flex: 1;
 
       .app-layout__sidebar-wrapper {

@@ -5,84 +5,75 @@
     </template>
     <va-inner-loading :loading="item && isBusy">
       <va-card>
-        <div id="sidebar" ref="sidebarContainer" class="leaflet-sidebar collapsed">
-          <!-- Nav tabs -->
-          <div class="leaflet-sidebar-tabs">
-            <ul role="tablist">
-              <!-- top aligned tabs -->
-              <li>
-                <a href="#summary" role="tab"><VaIcon name="summarize" /></a>
-              </li>
-              <li>
-                <a href="#performance" role="tab"><VaIcon name="bar_chart" /></a>
-              </li>
-              <li>
-                <a href="#observations" role="tab"><VaIcon name="settings_suggest" /></a>
-              </li>
-              <li>
-                <a href="#export" role="tab"><VaIcon name="ios_share" /></a>
-              </li>
-            </ul>
+        <div id="sidepanel" class="sidepanel" aria-label="side panel" aria-hidden="false">
+          <div class="sidepanel-inner-wrapper">
+            <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
+              <ul class="sidepanel-tabs">
+                <li class="sidepanel-tab">
+                  <a href="#summary" class="sidebar-tab-link" role="tab" data-tab-link="tab-1">
+                    <VaIcon name="summarize" />
+                  </a>
+                </li>
+                <li class="sidepanel-tab">
+                  <a href="#performance" class="sidebar-tab-link" role="tab" data-tab-link="tab-2">
+                    <VaIcon name="bar_chart" />
+                  </a>
+                </li>
+                <li class="sidepanel-tab">
+                  <a href="#observations" class="sidebar-tab-link" role="tab" data-tab-link="tab-3">
+                    <VaIcon name="settings_suggest" />
+                  </a>
+                </li>
+                <li class="sidepanel-tab">
+                  <a href="#export" class="sidebar-tab-link" role="tab" data-tab-link="tab-4">
+                    <VaIcon name="ios_share" />
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="sidepanel-content-wrapper">
+              <div class="sidepanel-content">
+                <div class="sidepanel-tab-content" data-tab-content="tab-1">
+                  <template v-if="item">
+                    <tripSummary
+                      v-if="item"
+                      :logbook="item"
+                      :form-data="formData"
+                      :loading="isBusy"
+                      @delete="handleDelete"
+                      @save="handleSubmit"
+                    />
+                  </template>
+                </div>
+                <div class="sidepanel-tab-content" data-tab-content="tab-2">
+                  <template v-if="item">
+                    <tripPerformance
+                      v-if="item"
+                      :winddata="wind_arr"
+                      :speeddata="speed_arr"
+                      :labels="labels_arr"
+                      :loading="isBusy"
+                    />
+                  </template>
+                </div>
+                <div class="sidepanel-tab-content" data-tab-content="tab-3">
+                  <template v-if="item">
+                    <tripObservations v-if="item" :logbook="item" :form-data="formData" :loading="isBusy"
+                  /></template>
+                </div>
+                <div class="sidepanel-tab-content" data-tab-content="tab-4">
+                  <template v-if="item">
+                    <tripExport v-if="item" :logbook="item" :form-data="formData" :loading="isBusy"
+                  /></template>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <!-- Tab panes -->
-          <div class="leaflet-sidebar-content">
-            <div id="summary" class="leaflet-sidebar-pane">
-              <h1 class="leaflet-sidebar-header">
-                Summary
-                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
-              </h1>
-              <template v-if="item">
-                <tripSummary
-                  v-if="item"
-                  :logbook="item"
-                  :form-data="formData"
-                  :loading="isBusy"
-                  @delete="handleDelete"
-                  @save="handleSubmit"
-                />
-              </template>
-            </div>
-
-            <div id="performance" class="leaflet-sidebar-pane">
-              <h1 class="leaflet-sidebar-header">
-                Performance
-                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
-              </h1>
-              <template v-if="item">
-                <tripPerformance
-                  v-if="item"
-                  :winddata="wind_arr"
-                  :speeddata="speed_arr"
-                  :labels="labels_arr"
-                  :loading="isBusy"
-                />
-              </template>
-            </div>
-
-            <div id="observations" class="leaflet-sidebar-pane">
-              <h1 class="leaflet-sidebar-header">
-                Observations
-                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
-              </h1>
-              <template v-if="item">
-                <tripObservations v-if="item" :logbook="item" :form-data="formData" :loading="isBusy"
-              /></template>
-            </div>
-
-            <div id="export" class="leaflet-sidebar-pane">
-              <h1 class="leaflet-sidebar-header">
-                Export / Sharing
-                <div class="leaflet-sidebar-close"><VaIcon name="close" /></div>
-              </h1>
-              <template v-if="item">
-                <tripExport v-if="item" :logbook="item" :form-data="formData" :loading="isBusy"
-              /></template>
-            </div>
+          <div class="sidepanel-toggle-container">
+            <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
           </div>
         </div>
-
-        <div id="mapContainer" ref="mapContainer" class="sidebar-map" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -90,10 +81,10 @@
 
 <script setup>
   import 'leaflet/dist/leaflet.css'
-  import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css'
+  import '../../../public/leaflet-sidepanel.css'
   import * as L from 'leaflet'
-  import 'leaflet-sidebar-v2'
   import 'leaflet-rotatedmarker'
+  import '../../../public/leaflet-sidepanel.min.js'
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from '../../components/maps/leafletHelpers.js'
 
   import { computed, ref, reactive, onMounted } from 'vue'
@@ -115,7 +106,7 @@
 
   const { t } = useI18n()
 
-  const { readOnly } = useGlobalStore()
+  const { readOnly, currentTheme } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
 
   import tripSummary from './sidebars/Summary.vue'
@@ -138,7 +129,7 @@
   const mapContainer = ref(),
     map = ref(),
     sidebarContainer = ref(),
-    sidebar = ref(),
+    sidepanel = ref(),
     speed_arr = ref([]),
     wind_arr = ref([]),
     labels_arr = ref([]),
@@ -441,13 +432,15 @@
     map.value.fitBounds(GeoJSONlayer.value.getBounds(), { maxZoom: 17, zoomControl: false })
     */
 
-    // Add sidebar
-    sidebar.value = L.control
-      .sidebar({
-        autopan: false, // whether to maintain the centered map point when opening the sidebar
-        closeButton: true, // whether to add a close button to the panes
-        container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
-        position: 'left', // left or right
+    // Add sidepanel
+    sidepanel.value = L.control
+      .sidepanel('sidepanel', {
+        panelPosition: 'left',
+        hasTabs: true,
+        tabsPosition: 'top',
+        pushControls: true,
+        darkMode: currentTheme === 'dark',
+        startTab: 'tab-1',
       })
       .addTo(map.value)
 
@@ -465,7 +458,7 @@
 
   const confirmDeleteTrackpoint = async () => {
     console.log('confirmDeleteTrackpoint')
-    sidebar.value.close()
+    sidepanel.value.close()
     document.getElementById('mapContainer').style.display = 'none'
     isBusy.value = true
     updateError.value = null
@@ -574,7 +567,7 @@
   }
 
   const handleDelete = async (log) => {
-    sidebar.value.close()
+    sidepanel.value.close()
     document.getElementById('mapContainer').style.display = 'none'
     isBusy.value = true
     updateError.value = null
@@ -617,16 +610,15 @@
 </script>
 
 <style lang="scss">
-  .sidebar-map {
+  .leaflet-map {
     width: 100%;
     height: calc(100vh - 4.5rem);
   }
-  .leaflet-sidebar {
-    height: 550px;
-    width: 300px;
-  }
-  .leaflet-sidebar-pane {
-    width: 250px;
+  .sidepanel {
+    width: 350px;
+    .sidepanel-content {
+      width: 350px;
+    }
   }
   .mpopup {
     td:nth-child(1) {

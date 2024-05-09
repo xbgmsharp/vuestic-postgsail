@@ -35,20 +35,21 @@
       v-model="$props.formData.name"
       outline
       :rules="[(value) => (value && value.length > 0) || 'Field is required']"
-      class="text-lg p-2"
+      class="text-sm py-2"
       @change="$emit('save', logbook as Trip)"
     /> </template
   ><template v-else>
     {{ logbook.name }}
   </template>
-  <VaDivider class="my-6" />
-  <div class="text-lg" style="position: relative">
-    <div style="position: absolute">
+
+  <VaDivider class="my-2" />
+  <div class="relative">
+    <div class="absolute">
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
         width="50"
-        height="150"
+        height="130"
         viewBox="0 0 69.000000 900.000000"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -98,8 +99,8 @@
       </svg>
     </div>
     <div class="ps-10 gap-6">
-      <div class="">{{ $t('logs.log.from') }}</div>
-      <div class="">
+      <div class="text-xs uppercase">{{ $t('logs.log.from') }}</div>
+      <div class="text-sm">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
           class="va-text-bold va-link link"
@@ -107,11 +108,11 @@
         >
           {{ logbook.from }}
         </router-link>
-        <br />
-        {{ logbook.fromTime }}
       </div>
-      <div class="">{{ $t('logs.log.to') }}</div>
-      <div class="">
+      <div>{{ logbook.fromTime }}</div>
+      <br />
+      <div class="text-xs uppercase">{{ $t('logs.log.to') }}</div>
+      <div class="text-sm">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
           class="va-text-bold va-link link"
@@ -119,93 +120,71 @@
         >
           {{ logbook.to }}
         </router-link>
-        <br />
-        {{ logbook.toTime }}
       </div>
+      <div>{{ logbook.toTime }}</div>
     </div>
   </div>
+  <div class="mt-2 text-center text-sm">
+    <template v-if="isLoggedIn">
+      <router-link
+        v-if="typeof logbook.id !== 'undefined'"
+        class="va-text-bold va-link link"
+        :to="{ name: 'timelapse-replay', params: { id: $props.logbook.id } }"
+      >
+        Replay
+      </router-link>
+    </template>
+    <template v-else>
+      <router-link
+        v-if="typeof logbook.id !== 'undefined'"
+        class="va-text-bold va-link link"
+        :to="{
+          name: 'timelapse-replay',
+          params: { boat: publicVessel, id: logbook.id },
+        }"
+      >
+        Replay
+      </router-link>
+    </template>
+  </div>
 
-  <VaDivider class="my-6" />
-  <div class="">
+  <VaDivider class="my-2" />
+  <div class="text-xs">
     DISTANCE / DURATION
-    <div class="grid grid-cols-3 gap-6 text-lg">
+    <div class="grid grid-cols-2 gap-2">
       <VaIcon name="route" :size="32" class="" />
-      <div class="">{{ logbook.distance }} / {{ logbook.duration }}</div>
-      <div class="">
-        <template v-if="isLoggedIn">
-          <router-link
-            v-if="typeof logbook.id !== 'undefined'"
-            class="va-text-bold va-link link"
-            :to="{ name: 'timelapse-replay', params: { id: $props.logbook.id } }"
-          >
-            timelapse
-          </router-link>
-          ,
-          <router-link
-            v-if="typeof logbook.id !== 'undefined'"
-            class="va-text-bold va-link link"
-            :to="{ name: 'headless-replay', params: { id: $props.logbook.id }, query: { height: '100vh' } }"
-            target="_blank"
-          >
-            fullscreen
-          </router-link> </template
-        ><template v-else>
-          <router-link
-            v-if="typeof logbook.id !== 'undefined'"
-            class="va-text-bold va-link link"
-            :to="{
-              name: 'timelapse-replay',
-              params: { boat: publicVessel, id: logbook.id },
-            }"
-          >
-            timelapse
-          </router-link>
-          ,
-          <router-link
-            v-if="typeof logbook.id !== 'undefined'"
-            class="va-text-bold va-link link"
-            :to="{
-              name: 'headless-replay',
-              params: { boat: publicVessel, id: logbook.id },
-              query: { height: '100vh' },
-            }"
-            target="_blank"
-          >
-            fullscreen
-          </router-link>
-        </template>
-      </div>
+      <div class="text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
     </div>
   </div>
 
-  <VaDivider class="my-6" />
-  <div class="">
+  <VaDivider class="my-2" />
+  <div class="text-xs">
     SPEED AVG / MAX
     <div class="grid grid-cols-2 gap-2">
       <div class="">
         <VaIcon name="speed" :size="32" class="" />
       </div>
-      <div class="text-lg">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
+      <div class="text-sm">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
     </div>
   </div>
 
-  <VaDivider class="my-6" />
-  <div class="">
+  <VaDivider class="my-2" />
+  <div class="text-xs">
     WIND AVG / MAX
     <div class="grid grid-cols-2 gap-2">
       <VaIcon name="air" :size="32" class="" />
-      <div class="text-lg">TODO / {{ $props.logbook.max_wind_speed }}</div>
+      <div class="text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
     </div>
   </div>
 
-  <VaDivider class="my-6" />
-  <div class="">
+  <VaDivider class="my-2" />
+  <div class="text-sm">
     <template v-if="isLoggedIn">
       <VaTextarea
         v-model="$props.formData.notes"
         outline
         :placeholder="$t('logs.log.remarks')"
-        style="width: 90%"
+        class="text-sm w-full"
         @change="$emit('save', logbook as Trip)"
       /> </template
     ><template v-else>
@@ -213,7 +192,7 @@
     </template>
   </div>
 
-  <VaDivider class="my-6" />
+  <VaDivider class="my-2" />
   <template v-if="isLoggedIn">
     <!--
                 <div class="flex flex-row pa-2">

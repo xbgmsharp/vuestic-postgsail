@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard flex flex-wrap p-2 gap-4">
-    <va-card v-if="monitoring && status" class="flex-grow w-full xl:w-1/3">
+    <va-card v-if="monitoring && status" class="flex card-width">
       <va-card-content>
         <table class="va-table va-table--hoverable va-text-center">
           <tbody>
@@ -27,7 +27,7 @@
       </va-card-content>
     </va-card>
     <template v-if="monitoring.geojson">
-      <va-card v-if="currentWeather.temp" class="flex-grow w-full xl:w-1/3">
+      <va-card v-if="currentWeather.temp" class="flex card-width">
         <va-card-content class="grid grid-cols-12">
           <div class="col-span-6 flex flex-col va-text-center">
             <p style="font-size: 3rem; line-height: 54px">
@@ -59,7 +59,7 @@
           </div>
         </va-card-content>
       </va-card>
-      <va-card v-if="monitoring.geojson" class="flex-grow w-full xl:w-1/3">
+      <va-card v-if="monitoring.geojson" class="flex card-width">
         <va-card-content>
           <lMap
             :geo-json-feature="mapGeoJsonFeatures"
@@ -416,6 +416,15 @@
       &__title {
         display: flex;
         justify-content: space-between;
+      }
+    }
+    .card-width {
+      width: 100%;
+      @media (min-width: 768px) {
+        width: calc((100% - 2rem) / 2);
+      }
+      @media (min-width: 1024px) {
+        width: calc((100% - 2rem) / 3);
       }
     }
   }

@@ -44,7 +44,9 @@
     },
     scales: {
       x: {
-        // beginAtZero: true
+        ticks: {
+          callback: null,
+        },
       },
       y: {
         ticks: {

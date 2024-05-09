@@ -294,15 +294,16 @@
 <style lang="scss">
   .chart-widget {
     .va-card__content {
-      height: 450px;
+      height: 350px;
     }
   }
   .heatmap-widget {
     .va-card__content {
+      height: 350px;
       width: 100%;
     }
     .heatmapChartCanvas {
-      height: 250px;
+      height: 330px;
     }
   }
 </style>

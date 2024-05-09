@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { PropType, computed } from 'vue'
+  import { PropType } from 'vue'
   import { useVModel } from '@vueuse/core'
   import { Trip, FormData } from '../types'
   import { useI18n } from 'vue-i18n'
@@ -21,12 +21,26 @@
       type: Object as PropType<FormData>,
       required: true,
     },
+    tags: {
+      type: Array<string>,
+      required: true,
+    },
   })
 
   const emit = defineEmits<{
     (event: 'save', log: Trip): void
     (event: 'delete', log: Trip): void
+    (event: 'newtag', chip: string): void
+    (event: 'rmtag', chip: string): void
+    (event: 'updatetag', tags: []): void
   }>()
+
+  const addNewTag = function (newTag: string) {
+    emit('newtag', newTag)
+  }
+  function updateTag(chip: []) {
+    emit('updatetag', chip)
+  }
 </script>
 
 <template>
@@ -210,6 +224,37 @@
       /> </template
     ><template v-else>
       {{ logbook.notes }}
+    </template>
+  </div>
+
+  <VaDivider class="my-6" />
+  <div class="">
+    <template v-if="isLoggedIn">
+      <VaSelect
+        v-model="$props.formData.tags"
+        label="Select or create a tag"
+        :options="$props.tags"
+        allow-create="unique"
+        multiple
+        placeholder="Select or create a tag"
+        search-placeholder-text="Search or create a tag"
+        style="width: 90%"
+        @create-new="addNewTag"
+        @update:modelValue="updateTag"
+      >
+        <template #content="{ value }">
+          <va-chip
+            v-for="chip in value"
+            :key="chip"
+            size="small"
+            class="mr-2"
+            closeable
+            @update:modelValue="$emit('rmtag', chip as string)"
+          >
+            {{ chip }}
+          </va-chip>
+        </template>
+      </VaSelect>
     </template>
   </div>
 

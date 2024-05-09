@@ -45,8 +45,12 @@
                   :logbook="item"
                   :form-data="formData"
                   :loading="isBusy"
+                  :tags="tags"
                   @delete="handleDelete"
                   @save="handleSubmit"
+                  @newtag="addTag"
+                  @rmtag="deleteTag"
+                  @updatetag="updateTags"
                 />
               </template>
             </div>
@@ -149,6 +153,7 @@
     name: null,
     notes: null,
     geojson: null,
+    tags: [],
   })
   const mapContainer = ref(),
     map = ref(),
@@ -158,7 +163,8 @@
     wind_arr = ref([]),
     labels_arr = ref([]),
     GeoJSONfeatures = ref(),
-    GeoJSONbasemapObj = ref({})
+    GeoJSONbasemapObj = ref({}),
+    tags = ref([])
 
   const item = computed(() => {
     return apiData.row
@@ -180,6 +186,7 @@
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
           visibility: apiData.row?.extra?.observations?.visibility || -1,
+          tags: apiData.row?.extra?.tags || [],
           from_moorage_id: apiData.row.from_moorage_id,
           to_moorage_id: apiData.row.to_moorage_id,
         }
@@ -205,7 +212,14 @@
       formData.name = apiData.row.name || null
       formData.notes = apiData.row.notes || null
       formData.geojson = apiData.row.geojson || null
+      formData.tags = apiData.row?.extra?.tags || []
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
+      let fromDate = new Date(apiData.row.started)
+      tags.value = [
+        apiData.row.from,
+        fromDate.toLocaleString('default', { month: 'long' }),
+        String(fromDate.getUTCFullYear()),
+      ]
       if (formData.name) {
         document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }
@@ -628,6 +642,47 @@
     } finally {
       isBusy.value = false
     }
+  }
+
+  const addTag = function (newTag) {
+    console.log('addTag', newTag)
+    tags.value = [...tags.value, newTag]
+    formData.tags = [...formData.tags, newTag]
+    updateAPITags(formData.tags)
+  }
+  const deleteTag = function (chip) {
+    console.log('deleteTag', chip)
+    formData.tags = formData.tags.filter(function (tag) {
+      return tag !== chip
+    })
+    updateAPITags(formData.tags)
+  }
+  const updateTags = function (tags) {
+    console.log('updateTags', tags)
+    formData.tags = tags
+    tags.value = tags
+    updateAPITags(tags)
+  }
+  function updateAPITags(tags) {
+    // runBusy handles isBusy & apiError
+    console.log('updateAPITags', tags)
+    const id = route.params.id
+    new PostgSail()
+      .update_observations({ _id: id, observations: { tags: tags } })
+      .then((response) => {
+        console.log('updateAPITags success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
+        CacheStore.timestamps = {}
+        CacheStore.ResetCache()
+        CacheStore.getAPI('logs')
+        return true
+      })
+      .catch((err) => {
+        console.log('updateAPITags failed', err.message ?? err)
+        //throw err.message ?? err
+      })
   }
 </script>
 

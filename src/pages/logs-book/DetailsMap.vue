@@ -704,6 +704,9 @@
     background-color: red;
     padding: 5px;
   }
+  .va-input-wrapper__field.va-input-wrapper__text.va-input__content__input {
+    z-index: 9999 !important;
+  }
   .va-dropdown__content.va-select-dropdown__content.va-dropdown__content-wrapper {
     z-index: 9999 !important;
   }

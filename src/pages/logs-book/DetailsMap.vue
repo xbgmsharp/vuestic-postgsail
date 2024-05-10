@@ -262,7 +262,7 @@
         let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
         let latitude = parseFloat(feature.properties.latitude).toFixed(3)
         let longitude = parseFloat(feature.properties.longitude).toFixed(3)
-        let text = `<div class='mpopup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
+        let text = `<div class='mpopup'><h4>${vesselName}: ${status}</h4><br/>
                       <table class='data'><tbody>
                         <tr><td>Time</td><td>${time}</td></tr>
                         <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`

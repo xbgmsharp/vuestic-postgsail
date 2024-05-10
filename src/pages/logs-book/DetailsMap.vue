@@ -617,6 +617,11 @@
       width: 350px;
     }
   }
+  .sidebar-tab-link.active,
+  .sidebar-tab-link:hover {
+    color: var(--va-primary) !important;
+    border-bottom-color: var(--va-primary) !important;
+  }
   .mpopup {
     td:nth-child(1) {
       text-align: right;

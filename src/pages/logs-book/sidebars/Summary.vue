@@ -161,29 +161,29 @@
     </template>
   </div>
 
-  <VaDivider class="my-4" />
+  <va-divider class="my-4" />
   <div class="text-xs uppercase">DISTANCE / DURATION</div>
   <div class="flex items-center">
-    <VaIcon class="flex-none" name="route" :size="32" />
+    <va-icon class="flex-none" name="route" :size="32" />
     <div class="flex-grow ml-2 text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
   </div>
 
   <div class="text-xs uppercase mt-2">SPEED AVG / MAX</div>
   <div class="flex items-center">
-    <VaIcon class="flex-none" name="speed" :size="32" />
+    <va-icon class="flex-none" name="speed" :size="32" />
     <div class="flex-grow ml-2 text-sm">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
   </div>
 
   <div class="text-xs uppercase mt-2">WIND AVG / MAX</div>
   <div class="flex items-center">
-    <VaIcon class="flex-none" name="air" :size="32" />
+    <va-icon class="flex-none" name="air" :size="32" />
     <div class="flex-grow ml-2 text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
   </div>
 
   <div class="text-xs uppercase mt-2">NOTES</div>
   <div class="text-sm">
     <template v-if="isLoggedIn">
-      <VaTextarea
+      <va-textarea
         v-model="$props.formData.notes"
         outline
         :placeholder="$t('logs.log.remarks')"
@@ -196,13 +196,14 @@
   </div>
 
   <div class="text-xs uppercase mt-2">TAGS</div>
-  <div class="">
+  <div class="text-sm">
     <template v-if="isLoggedIn">
-      <VaSelect
+      <va-select
         v-model="$props.formData.tags"
         :options="$props.tags"
         allow-create="unique"
         multiple
+        class="text-sm w-full"
         placeholder="Select or create a tag"
         search-placeholder-text="Search or create a tag"
         @create-new="addNewTag"
@@ -213,18 +214,18 @@
             v-for="chip in value"
             :key="chip"
             size="small"
-            class="mr-2"
+            class="text-sm mr-2"
             closeable
             @update:modelValue="$emit('rmtag', chip as string)"
           >
             {{ chip }}
           </va-chip>
         </template>
-      </VaSelect>
+      </va-select>
     </template>
   </div>
 
-  <VaDivider class="my-6" />
+  <va-divider class="my-6" />
   <template v-if="isLoggedIn">
     <!--
                 <div class="flex flex-row pa-2">

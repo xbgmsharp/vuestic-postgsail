@@ -457,6 +457,13 @@
       })
       .addTo(map.value)
 
+    map.value.whenReady(function () {
+      var toggleButton = document.querySelector('.sidepanel-toggle-button')
+      if (toggleButton) {
+        toggleButton.click()
+      }
+    })
+
     // Custom control for external link
     var externalLinkControl = L.control({ position: 'bottomright' })
     externalLinkControl.onAdd = function () {

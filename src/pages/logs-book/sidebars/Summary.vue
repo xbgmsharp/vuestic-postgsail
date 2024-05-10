@@ -166,6 +166,7 @@
     <div class="flex-grow ml-2 text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
   </div>
 
+  <div class="text-xs uppercase">NOTES</div>
   <div class="text-sm">
     <template v-if="isLoggedIn">
       <VaTextarea
@@ -187,7 +188,9 @@
                 </div>
                 -->
     <div class="flex flex-row pa-2">
-      <va-button :disable="readOnly" color="danger" @click="$emit('delete', logbook as Trip)">Delete</va-button>
+      <va-button :disable="readOnly" color="danger" @click="$emit('delete', logbook as Trip)"
+        >Delete Log Book</va-button
+      >
     </div>
   </template>
 </template>

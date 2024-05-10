@@ -65,7 +65,9 @@ export const useCacheStore = defineAPIStore('cache', {
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {
           if (tags) {
             tags.forEach((tag) => {
-              this.log_tags.push(tag)
+              if (this.log_tags.indexOf(tag) == -1) {
+                this.log_tags.push(tag)
+              }
             })
           }
         })

@@ -196,11 +196,11 @@
   </div>
 
   <VaDivider class="my-6" />
+  <div class="text-xs uppercase">TAGS</div>
   <div class="">
     <template v-if="isLoggedIn">
       <VaSelect
         v-model="$props.formData.tags"
-        label="Select or create a tag"
         :options="$props.tags"
         allow-create="unique"
         multiple

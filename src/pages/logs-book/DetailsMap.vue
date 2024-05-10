@@ -40,8 +40,12 @@
                       :logbook="item"
                       :form-data="formData"
                       :loading="isBusy"
+                      :tags="tags"
                       @delete="handleDelete"
                       @save="handleSubmit"
+                      @newtag="addTag"
+                      @rmtag="deleteTag"
+                      @updatetag="updateTags"
                     />
                   </template>
                 </div>

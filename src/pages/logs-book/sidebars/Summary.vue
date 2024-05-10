@@ -161,26 +161,26 @@
     </template>
   </div>
 
-  <VaDivider class="my-2" />
+  <VaDivider class="my-4" />
   <div class="text-xs uppercase">DISTANCE / DURATION</div>
   <div class="flex items-center">
     <VaIcon class="flex-none" name="route" :size="32" />
     <div class="flex-grow ml-2 text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
   </div>
 
-  <div class="text-xs uppercase">SPEED AVG / MAX</div>
+  <div class="text-xs uppercase mt-2">SPEED AVG / MAX</div>
   <div class="flex items-center">
     <VaIcon class="flex-none" name="speed" :size="32" />
     <div class="flex-grow ml-2 text-sm">{{ $props.logbook.avg_speed }} / {{ $props.logbook.max_speed }}</div>
   </div>
 
-  <div class="text-xs uppercase">WIND AVG / MAX</div>
+  <div class="text-xs uppercase mt-2">WIND AVG / MAX</div>
   <div class="flex items-center">
     <VaIcon class="flex-none" name="air" :size="32" />
     <div class="flex-grow ml-2 text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
   </div>
 
-  <div class="text-xs uppercase">NOTES</div>
+  <div class="text-xs uppercase mt-2">NOTES</div>
   <div class="text-sm">
     <template v-if="isLoggedIn">
       <VaTextarea
@@ -195,8 +195,7 @@
     </template>
   </div>
 
-  <VaDivider class="my-6" />
-  <div class="text-xs uppercase">TAGS</div>
+  <div class="text-xs uppercase mt-2">TAGS</div>
   <div class="">
     <template v-if="isLoggedIn">
       <VaSelect
@@ -206,7 +205,6 @@
         multiple
         placeholder="Select or create a tag"
         search-placeholder-text="Search or create a tag"
-        style="width: 90%"
         @create-new="addNewTag"
         @update:modelValue="updateTag"
       >

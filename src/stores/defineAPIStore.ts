@@ -52,13 +52,13 @@ export default function defineAPIStore(name: string, def: APIStoreDef): StoreDef
       cached: JSObj = cache[index]
     // Promise setup is for when a request is already pending
     if (cached instanceof Promise) return await cache[index]
-    console.log('getCached', param, this.timestamps)
+    //console.log('getCached param', param, '' ,this.timestamps)
     const now: number = new Date().getTime(),
       ts = param ? this.timestamps[endpoint] ?? (this.timestamps[endpoint] = {}) : this.timestamps
     // when ts is undefined, the resulting NaN yields false:
     if (this.store_ttl > now - ts[index]) return cached
     if (!navigator.onLine) throw new Error(t('api.errors.offlineUncached'))
-    console.log('getCached', refresh, param, ts, this.timestamps)
+    //console.log('getCached', refresh, param, ts, this.timestamps)
     return await (cache[index] = API_get(addr[0], addr[1], refresh)
       .then((res: Record<string, any>) => {
         if (!assertion[0](res)) throw new Error(assertion[1](res))

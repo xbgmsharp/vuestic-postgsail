@@ -213,9 +213,8 @@
       if (response) {
         console.log('moorage_update success', response)
         // Clean CacheStore and force refresh
-        CacheStore.moorages = []
-        CacheStore.moorages_get = []
-        CacheStore.store_ttl = null
+        CacheStore.resetCache()
+        CacheStore.getAPI('moorage_get', id)
         return true
       } else {
         throw { response }
@@ -248,6 +247,7 @@
           console.log('updateDefaultStay success', response)
           // Clean CacheStore and force refresh
           CacheStore.resetCache()
+          CacheStore.getAPI('moorage_get', id)
           return true
         })
         .catch((err) => {
@@ -275,6 +275,7 @@
         console.log('updateHome success', response)
         // Clean CacheStore and force refresh
         CacheStore.resetCache()
+        CacheStore.getAPI('moorage_get', id)
         return true
       })
       .catch((err) => {
@@ -320,6 +321,7 @@
         console.log('moorage_delete success', response)
         // Clean CacheStore and force refresh
         CacheStore.resetCache()
+        CacheStore.getAPI('moorage_get', id)
       } else {
         throw { response }
       }

@@ -44,42 +44,20 @@
           <div class="flex text-sm">
             <div class="text-[var(--va-secondary)] flow-root">
               <div class="float-left">{{ dateFormatUTC(log.fromTime) }}</div>
-              <div class="float-right">
-                <va-dropdown class="">
+              <div class="float-right flex justify-end items-center">
+                <va-dropdown class="relative">
                   <template #anchor>
-                    <va-icon name="menu" />
+                    <va-icon name="more_vert" />
                   </template>
-                  <va-dropdown-content class="float-left">
-                    <div class="grid grid-cols-1">
-                      <va-button
-                        preset="secondary"
-                        icon="timelapse"
-                        size="medium"
-                        color="secondary"
-                        @click="$emit('replay', log)"
-                      >
+                  <va-dropdown-content class="absolute right-0 origin-top-right w-40">
+                    <div class="py-1">
+                      <va-button preset="secondary" icon="timelapse" color="secondary" @click="$emit('replay', log)">
                         Replay
                       </va-button>
-                    </div>
-                    <div class="grid grid-cols-1">
-                      <va-button
-                        preset="secondary"
-                        icon="edit"
-                        size="medium"
-                        color="secondary"
-                        @click="$emit('edit', log)"
-                      >
+                      <va-button preset="secondary" icon="edit" color="secondary" @click="$emit('edit', log)">
                         Edit
                       </va-button>
-                    </div>
-                    <div class="grid grid-cols-1">
-                      <va-button
-                        preset="secondary"
-                        icon="delete"
-                        size="medium"
-                        color="secondary"
-                        @click="$emit('delete', log)"
-                      >
+                      <va-button preset="secondary" icon="delete" color="secondary" @click="$emit('delete', log)">
                         Delete
                       </va-button>
                     </div>
@@ -156,6 +134,7 @@
                 v-for="chip in log.tags.slice(0, 2)"
                 :key="chip"
                 size="small"
+                outline
                 class="flex-grow-0 flex-shrink text-sm mr-2"
               >
                 {{ chip }}

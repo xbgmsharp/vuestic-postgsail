@@ -97,7 +97,7 @@
       </template>
       <template #cell(tags)="{ rowData }">
         <template v-if="rowData.tags">
-          <va-chip v-for="chip in rowData.tags.slice(0, 2)" :key="chip" size="small" class="text-sm mr-2">
+          <va-chip v-for="chip in rowData.tags.slice(0, 2)" :key="chip" size="small" outline class="text-sm mr-2">
             {{ chip }}
           </va-chip>
           <span v-if="rowData.tags.length > 2" class="text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full">
@@ -116,13 +116,13 @@
       </template>
       <template #cell(duration_d)="{ value }"> {{ value }} </template>
       <template #cell(actions)="{ rowData: log }">
-        <div class="flex gap-2 justify-end">
-          <va-dropdown class="">
+        <div class="flex justify-end items-center">
+          <va-dropdown class="relative">
             <template #anchor>
               <va-icon name="more_vert" />
             </template>
-            <va-dropdown-content class="float-left">
-              <div class="grid grid-cols-1">
+            <va-dropdown-content class="absolute right-0 origin-top-right w-40">
+              <div class="py-1">
                 <va-button
                   preset="secondary"
                   icon="timelapse"
@@ -132,13 +132,9 @@
                 >
                   Replay
                 </va-button>
-              </div>
-              <div class="grid grid-cols-1">
                 <va-button preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
                   Edit
                 </va-button>
-              </div>
-              <div class="grid grid-cols-1">
                 <va-button
                   preset="secondary"
                   icon="delete"

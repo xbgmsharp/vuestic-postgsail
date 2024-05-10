@@ -193,10 +193,5 @@
     ::v-deep(tbody .va-data-table__table-tr) {
       border-bottom: 1px solid var(--va-background-border);
     }
-    .va-data-table__table-th {
-      white-space: normal; /* Overrides the default which might be 'nowrap' */
-      word-wrap: break-word; /* Ensures words can break and wrap onto the next line */
-      word-break: break-word; /* Uses 'break-word' to avoid overflow */
-    }
   }
 </style>

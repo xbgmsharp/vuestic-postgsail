@@ -265,10 +265,7 @@
         if (response) {
           console.log('updateDefaultStay success', response)
           // Clean CacheStore and force refresh
-          CacheStore.moorages = []
-          CacheStore.moorages_get = []
-          CacheStore.store_ttl = null
-          CacheStore.getAPI('moorages')
+          CacheStore.resetCache()
         } else {
           throw { response }
         }

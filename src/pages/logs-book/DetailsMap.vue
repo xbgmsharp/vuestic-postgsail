@@ -674,9 +674,11 @@
         // Clean CacheStore and force refresh
         CacheStore.logs_get = []
         CacheStore.store_ttl = null
-        CacheStore.timestamps = {}
+        CacheStore.timestamps = []
+        CacheStore.refresh = 'true'
         CacheStore.ResetCache()
-        CacheStore.getAPI('logs')
+        CacheStore.getAPI('log_get', id)
+        CacheStore.refresh = 'false'
         return true
       })
       .catch((err) => {

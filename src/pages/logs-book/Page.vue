@@ -140,15 +140,14 @@
         const indexToRemove = rowsData.value.findIndex((trip) => trip.id === log.id)
         rowsData.value.splice(indexToRemove, 1)
         // Clean CacheStore and force refresh
-        CacheStore.logs = []
-        CacheStore.logs_get = []
-        CacheStore.store_ttl = null
+        CacheStore.resetCache()
         const resp = await CacheStore.getAPI('logs')
         if (Array.isArray(resp)) {
           rowsData.value.splice(0, rowsData.value.length || [])
           rowsData.value.push(...resp)
           console.log('Logs list', rowsData.value)
         }
+        CacheStore.refresh = 'false' // restore network cache, default 5min form api.
       } else {
         throw { response }
       }

@@ -42,60 +42,57 @@
           class="datatable"
         >
           <template #cell(name)="{ value, rowData }">
-            <router-link
-              v-if="value"
-              class="va-link link"
-              :to="{ name: 'stay-details', params: { id: rowData.id || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                v-if="value"
+                class="va-link link"
+                :to="{ name: 'stay-details', params: { id: rowData.id || 0 } }"
+              >
+                {{ value }}
+              </router-link>
+            </div>
           </template>
           <template #cell(moorage)="{ value, rowData }">
-            <router-link
-              class="va-link link"
-              :to="{ name: 'moorage-details', params: { id: rowData.moorage_id || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                class="va-link link"
+                :to="{ name: 'moorage-details', params: { id: rowData.moorage_id || 0 } }"
+              >
+                {{ value }}
+              </router-link>
+            </div>
           </template>
           <template #cell(arrived)="{ value, rowData }">
-            <router-link
-              v-if="typeof rowData.departed_log_id !== 'undefined'"
-              class="va-link link"
-              :to="{ name: 'log-map', params: { id: rowData.departed_log_id || 0 } }"
-            >
-              {{ dateFormatUTC(value) }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                v-if="typeof rowData.departed_log_id !== 'undefined'"
+                class="va-link link"
+                :to="{ name: 'log-map', params: { id: rowData.departed_log_id || 0 } }"
+              >
+                {{ dateFormatUTC(value) }}
+              </router-link>
+            </div>
           </template>
           <template #cell(departed)="{ value, rowData }">
-            <router-link
-              v-if="typeof rowData.arrived_log_id !== 'undefined'"
-              class="va-link link"
-              :to="{ name: 'log-map', params: { id: rowData.arrived_log_id || 0 } }"
-            >
-              {{ dateFormatUTC(value) }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                v-if="typeof rowData.arrived_log_id !== 'undefined'"
+                class="va-link link"
+                :to="{ name: 'log-map', params: { id: rowData.arrived_log_id || 0 } }"
+              >
+                {{ dateFormatUTC(value) }}
+              </router-link>
+            </div>
           </template>
           <template #cell(stayed_at)="{ rowData }">
             <div v-if="rowData.stayed_at_id" style="max-width: 150px">
-              <!-- :key to enforce refresh on filter -->
-              <StayAt
+              <stay-at
                 :id="parseInt(rowData.id)"
                 :key="rowData.id"
                 :data="parseInt(rowData.stayed_at_id)"
                 @clickFromChildComponent="updateStayedAt"
               />
             </div>
-            <!--
-            <va-select
-              :v-model="getTextForStayedAt(rowData.stayed_at_id)"
-              :options="stayed_at_options"
-              :placeholder="value"
-              outline
-              style="max-width: 120px"
-              @update:modelValue="runBusy(updateStayedAt, rowData.id, $event)"
-            />
-            -->
           </template>
           <template #cell(duration)="{ value }">
             {{ value }}

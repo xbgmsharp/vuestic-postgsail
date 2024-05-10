@@ -26,40 +26,50 @@
           hoverable
         >
           <template #cell(name)="{ value, rowData }">
-            <template v-if="isLoggedIn">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
-                {{ value }}
-              </router-link> </template
-            ><template v-else>
+            <div class="whitespace-normal break-words">
+              <template v-if="isLoggedIn">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
+                  {{ value }}
+                </router-link> </template
+              ><template v-else>
+                <router-link
+                  class="va-link link"
+                  :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
+                >
+                  {{ value }}
+                </router-link>
+              </template>
+            </div>
+          </template>
+          <template #cell(from)="{ value, rowData }">
+            <div class="whitespace-normal break-words">
               <router-link
                 class="va-link link"
-                :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
+                :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
               >
                 {{ value }}
               </router-link>
-            </template>
-          </template>
-          <template #cell(from)="{ value, rowData }">
-            <router-link
-              class="va-link link"
-              :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            </div>
           </template>
           <template #cell(to)="{ value, rowData }">
-            <router-link
-              class="va-link link"
-              :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                class="va-link link"
+                :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }"
+              >
+                {{ value }}
+              </router-link>
+            </div>
           </template>
           <template #cell(fromTime)="{ value }">
-            {{ dateFormatUTC(value) }}
+            <div class="whitespace-normal break-words">
+              {{ dateFormatUTC(value) }}
+            </div>
           </template>
           <template #cell(toTime)="{ value }">
-            {{ dateFormatUTC(value) }}
+            <div class="whitespace-normal break-words">
+              {{ dateFormatUTC(value) }}
+            </div>
           </template>
           <template #cell(distance)="{ value }">
             {{ value }}

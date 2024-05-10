@@ -75,41 +75,63 @@
       hoverable
     >
       <template #cell(name)="{ value, rowData }">
-        <template v-if="isLoggedIn">
-          <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
-            {{ value }}
-          </router-link> </template
-        ><template v-else>
-          <router-link class="va-link link" :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }">
-            {{ value }}
-          </router-link>
-        </template>
+        <div class="whitespace-normal break-words">
+          <template v-if="isLoggedIn">
+            <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
+              {{ value }}
+            </router-link> </template
+          ><template v-else>
+            <router-link class="va-link link" :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }">
+              {{ value }}
+            </router-link>
+          </template>
+        </div>
       </template>
       <template #cell(from)="{ value, rowData }">
-        <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }">
-          {{ value }}
-        </router-link>
+        <div class="whitespace-normal break-words">
+          <router-link
+            class="va-link link"
+            :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
+          >
+            {{ value }}
+          </router-link>
+        </div>
       </template>
       <template #cell(to)="{ value, rowData }">
-        <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }">
-          {{ value }}
-        </router-link>
+        <div class="whitespace-normal break-words">
+          <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }">
+            {{ value }}
+          </router-link>
+        </div>
       </template>
       <template #cell(tags)="{ rowData }">
-        <template v-if="rowData.tags">
-          <va-chip v-for="chip in rowData.tags.slice(0, 2)" :key="chip" size="small" outline class="text-sm mr-2">
+        <div v-if="rowData.tags" class="flex flex-wrap items-center">
+          <va-chip
+            v-for="chip in rowData.tags.slice(0, 2)"
+            :key="chip"
+            size="small"
+            outline
+            class="flex-grow-0 flex-shrink text-sm mr-2 mb-1"
+          >
             {{ chip }}
           </va-chip>
-          <span v-if="rowData.tags.length > 2" class="text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full">
+          <span
+            v-if="rowData.tags.length > 2"
+            class="flex-grow-0 flex-shrink text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full mr-2 mb-1"
+          >
             +{{ rowData.tags.length - 2 }}
           </span>
-        </template>
+        </div>
       </template>
       <template #cell(fromTime)="{ value }">
-        {{ dateFormatUTC(value) }}
+        <div class="whitespace-normal break-words">
+          {{ dateFormatUTC(value) }}
+        </div>
       </template>
       <template #cell(toTime)="{ value }">
-        {{ dateFormatUTC(value) }}
+        <div class="whitespace-normal break-words">
+          {{ dateFormatUTC(value) }}
+        </div>
       </template>
       <template #cell(distance_nm)="{ value }">
         {{ value }}
@@ -170,6 +192,11 @@
     overflow-x: auto;
     ::v-deep(tbody .va-data-table__table-tr) {
       border-bottom: 1px solid var(--va-background-border);
+    }
+    .va-data-table__table-th {
+      white-space: normal; /* Overrides the default which might be 'nowrap' */
+      word-wrap: break-word; /* Ensures words can break and wrap onto the next line */
+      word-break: break-word; /* Uses 'break-word' to avoid overflow */
     }
   }
 </style>

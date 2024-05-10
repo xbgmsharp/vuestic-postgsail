@@ -51,18 +51,22 @@
             class="datatable"
           >
             <template #cell(arrived)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
-                {{ dateFormatUTC(value) }}
-              </router-link>
+              <div class="whitespace-normal break-words">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
+                  {{ dateFormatUTC(value) }}
+                </router-link>
+              </div>
             </template>
             <template #cell(departed)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
-                {{ dateFormatUTC(value) }}
-              </router-link>
+              <div class="whitespace-normal break-words">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
+                  {{ dateFormatUTC(value) }}
+                </router-link>
+              </div>
             </template>
             <template #cell(stayed_at)="{ rowData }">
               <div v-if="rowData.stayed_at_id" style="max-width: 150px">
-                <StayAt
+                <stay-at
                   :id="parseInt(rowData.id)"
                   :key="rowData.id"
                   :data="parseInt(rowData.stayed_at_id)"

@@ -190,7 +190,7 @@
 
   const CacheStore = useCacheStore()
   const { getInfoTiles } = storeToRefs(CacheStore)
-  const { getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+  const { getTags, getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
 
   console.log('Dashboard', __APP_VERSION__, __VITE_VERSION__, import.meta.env)
   const vite_version = ref(__VITE_VERSION__)
@@ -348,6 +348,7 @@
     }
     */
     // Load Charts Dashboard
+    getTags()
     InfoTiles()
     barChart()
     lineChartbyYear()

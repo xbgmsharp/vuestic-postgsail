@@ -27,6 +27,7 @@ export const useCacheStore = defineAPIStore('cache', {
     tiles: new Array(3).fill(0),
     lines: {},
     matrix: [],
+    log_tags: [],
     refresh: 'false',
   }),
 
@@ -58,6 +59,20 @@ export const useCacheStore = defineAPIStore('cache', {
       this.refresh = 'false'
     },
 
+    getTags(): Array<string> {
+      this.log_tags = []
+      if (this.logs) {
+        this.logs.forEach(({ tags }: { tags: Array<string> }) => {
+          if (tags) {
+            tags.forEach((tag) => {
+              this.log_tags.push(tag)
+            })
+          }
+        })
+      }
+      console.log(this.log_tags)
+      return this.log_tags
+    },
     InfoTiles(): Array<number> {
       if (this.logs && this.stays && this.moorages) {
         this.tiles = [this.logs.length, this.stays.length, this.moorages.length]

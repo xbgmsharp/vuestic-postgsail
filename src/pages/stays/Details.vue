@@ -271,9 +271,8 @@
         .then((response) => {
           console.log('updateStayedAt success', response)
           // Clean CacheStore and force refresh
-          CacheStore.stays = []
-          CacheStore.stays_get = []
-          CacheStore.store_ttl = null
+          CacheStore.resetCache()
+          CacheStore.getAPI('stay_get', id)
         })
         .catch((err) => {
           console.log('updateStayedAt failed', err.message ?? err)

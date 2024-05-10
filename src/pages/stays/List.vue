@@ -22,6 +22,7 @@
                 :key="chip.text"
                 size="small"
                 class="mr-2"
+                outline
                 closeable
                 @update:modelValue="deleteChip(chip)"
               >

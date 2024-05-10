@@ -26,9 +26,7 @@
           />
         </div>
         <div class="app-layout__page">
-          <div class="p-2 md:px-6 md:py-9">
-            <router-view />
-          </div>
+          <router-view />
         </div>
       </div>
     </div>
@@ -137,12 +135,9 @@
 
     &__content {
       display: flex;
-      height: calc(100vh - 4rem);
+      height: calc(100vh - 4.5rem);
+      margin-top: 0.5rem;
       flex: 1;
-
-      @media screen and (max-width: $tabletBreakPointPX) {
-        height: calc(100vh - 6.5rem);
-      }
 
       .app-layout__sidebar-wrapper {
         position: relative;

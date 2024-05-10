@@ -5,7 +5,7 @@
     </template>
     <va-inner-loading :loading="isBusy">
       <va-card class="leaflet-maps-page__widget">
-        <div id="mapContainer" ref="mapContainer" class="leaflet-map h-full" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -509,7 +509,7 @@
     }
     .overlay {
       padding: 0 0.7rem;
-      top: 70px;
+      top: 110px;
       background: #000;
       opacity: 0.5;
       color: #fff;
@@ -562,6 +562,7 @@
     }
   }
   #mapContainer {
-    height: v-bind(map_height);
+    width: 100%;
+    height: calc(100vh - 4.5rem);
   }
 </style>

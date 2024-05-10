@@ -27,18 +27,18 @@
 </script>
 
 <template>
-  <VaInnerLoading
+  <va-inner-loading
     v-if="logbook.length > 0 || loading"
     :loading="loading"
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[4rem]"
   >
-    <VaCard
+    <va-card
       v-for="log in logbook"
       :key="log.id"
       :style="{ '--va-card-outlined-border': '1px solid var(--va-background-element)' }"
       outlined
     >
-      <VaCardContent class="flex flex-col h-full">
+      <va-card-content class="flex flex-col h-full">
         <div class="">
           <!-- Date and Icon Menu -->
           <div class="flex text-sm">
@@ -51,37 +51,37 @@
                   </template>
                   <va-dropdown-content class="float-left">
                     <div class="grid grid-cols-1">
-                      <VaButton
+                      <va-button
                         preset="secondary"
                         icon="timelapse"
                         size="medium"
                         color="secondary"
                         @click="$emit('replay', log)"
                       >
-                        Replay</VaButton
-                      >
+                        Replay
+                      </va-button>
                     </div>
                     <div class="grid grid-cols-1">
-                      <VaButton
+                      <va-button
                         preset="secondary"
                         icon="edit"
                         size="medium"
                         color="secondary"
                         @click="$emit('edit', log)"
                       >
-                        Edit</VaButton
-                      >
+                        Edit
+                      </va-button>
                     </div>
                     <div class="grid grid-cols-1">
-                      <VaButton
+                      <va-button
                         preset="secondary"
                         icon="delete"
                         size="medium"
                         color="secondary"
                         @click="$emit('delete', log)"
                       >
-                        Delete</VaButton
-                      >
+                        Delete
+                      </va-button>
                     </div>
                   </va-dropdown-content>
                 </va-dropdown>
@@ -151,11 +151,27 @@
                 </router-link>
               </span>
             </div>
+            <div v-if="log.tags" class="flex items-center justify-center mt-2">
+              <va-chip
+                v-for="chip in log.tags.slice(0, 2)"
+                :key="chip"
+                size="small"
+                class="flex-grow-0 flex-shrink text-sm mr-2"
+              >
+                {{ chip }}
+              </va-chip>
+              <span
+                v-if="log.tags.length > 2"
+                class="flex-grow-0 flex-shrink text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full"
+              >
+                +{{ log.tags.length - 2 }}</span
+              >
+            </div>
           </div>
         </div>
-      </VaCardContent>
-    </VaCard>
-  </VaInnerLoading>
+      </va-card-content>
+    </va-card>
+  </va-inner-loading>
   <div v-else class="p-4 flex justify-center items-center text-[var(--va-secondary)]">No trips</div>
 </template>
 

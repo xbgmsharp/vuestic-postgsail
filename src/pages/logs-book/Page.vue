@@ -212,6 +212,7 @@
   const filter = reactive(getDefaultFilter())
   const filter_moorage_id = route.params.id || null
   const items = computed(() => {
+    console.log('computed', rowsData.value)
     return Array.isArray(rowsData.value)
       ? rowsData.value
           .map((row) => ({
@@ -227,6 +228,7 @@
             duration_h: durationFormatHours(row.duration),
             fromMoorageId: row._from_moorage_id,
             toMoorageId: row._to_moorage_id,
+            tags: row.tags,
           }))
           .filter((row) => {
             if (filter_moorage_id) {

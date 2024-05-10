@@ -134,6 +134,7 @@
       "action": "Aktion",
       "from": "From",
       "from_time": "Started",
+      "tags": "Tags",
       "to": "To",
       "to_time": "Ended"
     },

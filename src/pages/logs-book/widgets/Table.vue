@@ -14,6 +14,7 @@
     { label: t('logs.log.name'), key: 'name', sortable: true },
     { label: t('logs.list.from'), key: 'from', sortable: true },
     { label: t('logs.list.to'), key: 'to', sortable: true },
+    { label: t('logs.list.tags'), key: 'tags', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
     {
@@ -64,7 +65,7 @@
 
 <template>
   <div>
-    <VaDataTable
+    <va-data-table
       :columns="columns"
       :items="logbook"
       :loading="loading"
@@ -94,6 +95,16 @@
           {{ value }}
         </router-link>
       </template>
+      <template #cell(tags)="{ rowData }">
+        <template v-if="rowData.tags">
+          <va-chip v-for="chip in rowData.tags.slice(0, 2)" :key="chip" size="small" class="text-sm mr-2">
+            {{ chip }}
+          </va-chip>
+          <span v-if="rowData.tags.length > 2" class="text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full">
+            +{{ rowData.tags.length - 2 }}
+          </span>
+        </template>
+      </template>
       <template #cell(fromTime)="{ value }">
         {{ dateFormatUTC(value) }}
       </template>
@@ -112,66 +123,46 @@
             </template>
             <va-dropdown-content class="float-left">
               <div class="grid grid-cols-1">
-                <VaButton
+                <va-button
                   preset="secondary"
                   icon="timelapse"
                   size="medium"
                   color="secondary"
                   @click="$emit('replay', log)"
                 >
-                  Replay</VaButton
-                >
+                  Replay
+                </va-button>
               </div>
               <div class="grid grid-cols-1">
-                <VaButton preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
-                  Edit</VaButton
-                >
+                <va-button preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
+                  Edit
+                </va-button>
               </div>
               <div class="grid grid-cols-1">
-                <VaButton
+                <va-button
                   preset="secondary"
                   icon="delete"
                   size="medium"
                   color="secondary"
                   @click="$emit('delete', log)"
                 >
-                  Delete</VaButton
-                >
+                  Delete
+                </va-button>
               </div>
             </va-dropdown-content>
           </va-dropdown>
         </div>
-        <!--
-        <div class="flex gap-2 justify-end">
-          <VaButton
-            preset="primary"
-            size="small"
-            color="primary"
-            icon="edit"
-            aria-label="Edit trip"
-            @click="$emit('edit', log as Log)"
-          />
-          <VaButton
-            preset="primary"
-            size="small"
-            icon="delete"
-            color="danger"
-            aria-label="Delete trip"
-            @click="$emit('delete', log as Log)"
-          />
-        </div>
-        -->
       </template>
-    </VaDataTable>
+    </va-data-table>
     <template v-if="logbook.length > $props.pagination.perPage">
       <div class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2">
         <div>
           <b>{{ logbook.length }} trips.</b>
           Logs per page
-          <VaSelect v-model="$props.pagination.perPage" class="!w-20" :options="[10, 20, 50, 100]" />
+          <va-select v-model="$props.pagination.perPage" class="!w-20" :options="[10, 20, 50, 100]" />
         </div>
         <div class="mt-3 row justify-center">
-          <VaPagination v-model="$props.pagination.page" input :pages="totalPages" />
+          <va-pagination v-model="$props.pagination.page" input :pages="totalPages" />
         </div>
       </div>
     </template>

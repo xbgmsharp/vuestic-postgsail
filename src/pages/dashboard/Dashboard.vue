@@ -405,6 +405,9 @@
 
 <style lang="scss">
   .dashboard {
+    .va-icon {
+      fill: var(--va-text-primary);
+    }
     .va-card {
       margin-bottom: 0 !important;
       &__title {

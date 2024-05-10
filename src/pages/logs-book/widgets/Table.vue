@@ -171,6 +171,7 @@
 
 <style lang="scss" scoped>
   .va-data-table {
+    overflow-x: auto;
     ::v-deep(tbody .va-data-table__table-tr) {
       border-bottom: 1px solid var(--va-background-border);
     }

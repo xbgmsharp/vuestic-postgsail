@@ -281,7 +281,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .va-table {
-    width: 100%;
+  .va-data-table {
+    overflow-x: auto;
   }
 </style>

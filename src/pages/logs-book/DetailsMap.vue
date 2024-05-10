@@ -672,6 +672,11 @@
     width: 100%;
     height: calc(100vh - 4.5rem);
   }
+  @media (min-width: 1200px) {
+    .leaflet-map {
+      height: calc(100vh - 7.5rem);
+    }
+  }
   .sidepanel {
     width: 350px;
     .sidepanel-content {

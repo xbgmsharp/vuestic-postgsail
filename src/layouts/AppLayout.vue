@@ -25,7 +25,7 @@
             :animated="!isMobile"
           />
         </div>
-        <div class="app-layout__page">
+        <div class="app-layout__page p-0 xl:p-6">
           <router-view />
         </div>
       </div>

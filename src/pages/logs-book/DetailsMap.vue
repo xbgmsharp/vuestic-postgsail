@@ -40,7 +40,7 @@
                       :logbook="item"
                       :form-data="formData"
                       :loading="isBusy"
-                      :tags="tags"
+                      :tags="tagsOptions"
                       @delete="handleDelete"
                       @save="handleSubmit"
                       @newtag="addTag"
@@ -139,7 +139,7 @@
     labels_arr = ref([]),
     GeoJSONfeatures = ref(),
     GeoJSONbasemapObj = ref({}),
-    tags = ref([])
+    tagsOptions = ref([])
 
   const item = computed(() => {
     return apiData.row
@@ -190,7 +190,7 @@
       formData.tags = apiData.row?.extra?.tags || []
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
       let fromDate = new Date(apiData.row.started)
-      tags.value = [
+      tagsOptions.value = [
         apiData.row.from,
         fromDate.toLocaleString('default', { month: 'long' }),
         String(fromDate.getUTCFullYear()),
@@ -621,7 +621,7 @@
 
   const addTag = function (newTag) {
     console.log('addTag', newTag)
-    tags.value = [...tags.value, newTag]
+    tagsOptions.value = [...tagsOptions.value, newTag]
     formData.tags = [...formData.tags, newTag]
     updateAPITags(formData.tags)
   }
@@ -632,11 +632,11 @@
     })
     updateAPITags(formData.tags)
   }
-  const updateTags = function (tags) {
-    console.log('updateTags', tags)
-    formData.tags = tags
-    tags.value = tags
-    updateAPITags(tags)
+  const updateTags = function (newTags) {
+    console.log('updateTags', newTags)
+    formData.tags = newTags
+    tagsOptions.value = newTags
+    updateAPITags(newTags)
   }
   function updateAPITags(tags) {
     // runBusy handles isBusy & apiError
@@ -647,11 +647,8 @@
       .then((response) => {
         console.log('updateAPITags success', response)
         // Clean CacheStore and force refresh
-        CacheStore.logs_get = []
-        CacheStore.store_ttl = null
-        CacheStore.timestamps = []
+        CacheStore.resetCache()
         CacheStore.refresh = 'true'
-        CacheStore.ResetCache()
         CacheStore.getAPI('log_get', id)
         CacheStore.refresh = 'false'
         return true

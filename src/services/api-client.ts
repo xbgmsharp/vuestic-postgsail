@@ -181,6 +181,10 @@ class ApiClient extends HttpClient {
   async logs_geojson() {
     return this.get(`logbook?select=track_geojson&track_geojson=not.is.null&order=_from_time.desc&limit=10`)
   }
+
+  async logs_merge(payload: JSObj) {
+    return this.post(`rpc/merge_logbook_fn`, payload)
+  }
   /*
    * Moorages API endpoint
    */

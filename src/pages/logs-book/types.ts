@@ -17,6 +17,7 @@ export type Log = {
   _to_moorage_id: number
   fromMoorageId: number
   toMoorageId: number
+  tags: []
 }
 
 export type Trip = {
@@ -41,6 +42,7 @@ export type Trip = {
   seaState: number
   cloudCoverage: number
   visibility: number
+  tags: Array<string>
 }
 
 export type Pagination = {
@@ -53,4 +55,6 @@ export type FormData = {
   isValid: boolean
   name: string
   notes: string
+  geojson: JSONObject
+  tags: Array<string>
 }

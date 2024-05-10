@@ -71,10 +71,7 @@
       .then((response) => {
         console.log('updateObservations success', response)
         // Clean CacheStore and force refresh
-        CacheStore.logs = []
-        CacheStore.logs_get = []
-        CacheStore.store_ttl = null
-        CacheStore.getAPI('logs')
+        CacheStore.ResetCache()
       })
       .catch((err) => {
         console.log('updateObservations failed', err.message ?? err)

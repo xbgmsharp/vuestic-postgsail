@@ -27,6 +27,7 @@ export const useCacheStore = defineAPIStore('cache', {
     tiles: new Array(3).fill(0),
     lines: {},
     matrix: [],
+    refresh: 'false',
   }),
 
   actions: {
@@ -35,7 +36,26 @@ export const useCacheStore = defineAPIStore('cache', {
           endpoint[0].slice(-4) === '_get' ? assertions.notPopulatedArray : assertions.notArray,
         addr: string[] = [endpoint]
       param && addr.push(param)
-      return await this.getCached(addr, assertion)
+      return await this.getCached(addr, assertion, this.refresh)
+    },
+    resetCache() {
+      /* There is 2 layers of cache which can lead to confusion.
+       * - Application cache using the store
+       * - Network cache from browser cache, default 5min from api cache-control headers.
+       * Below we reset the storage cache and enforce a request refresh to get the latest content
+       */
+      this.logs = []
+      this.log_get = []
+      this.stays = []
+      this.stay_get = []
+      this.moorages = []
+      this.moorage_get = []
+      this.store_ttl = null
+      this.refresh = 'true'
+      this.getAPI('logs')
+      this.getAPI('stays')
+      this.getAPI('moorages')
+      this.refresh = 'false'
     },
 
     InfoTiles(): Array<number> {

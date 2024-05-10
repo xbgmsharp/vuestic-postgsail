@@ -247,9 +247,7 @@
         .then((response) => {
           console.log('updateDefaultStay success', response)
           // Clean CacheStore and force refresh
-          CacheStore.moorages = []
-          CacheStore.moorages_get = []
-          CacheStore.store_ttl = null
+          CacheStore.resetCache()
           return true
         })
         .catch((err) => {
@@ -276,9 +274,7 @@
       .then((response) => {
         console.log('updateHome success', response)
         // Clean CacheStore and force refresh
-        CacheStore.moorages = []
-        CacheStore.moorages_get = []
-        CacheStore.store_ttl = null
+        CacheStore.resetCache()
         return true
       })
       .catch((err) => {
@@ -322,6 +318,8 @@
       const response = await api.moorage_delete(id)
       if (response) {
         console.log('moorage_delete success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.resetCache()
       } else {
         throw { response }
       }

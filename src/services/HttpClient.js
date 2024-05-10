@@ -48,6 +48,11 @@ class HttpClient {
     return this._headers[key]
   }
 
+  delHeader(key) {
+    delete this._headers[key]
+    return this
+  }
+
   setBasicAuth(username, password) {
     this._headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`
     return this

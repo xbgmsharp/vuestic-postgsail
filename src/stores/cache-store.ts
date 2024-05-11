@@ -61,7 +61,8 @@ export const useCacheStore = defineAPIStore('cache', {
 
     getTags(): Array<string> {
       this.log_tags = []
-      if (this.logs) {
+      //console.log(this.logs)
+      if (Array.isArray(this.logs) && this.logs.length > 0) {
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {
           if (tags) {
             tags.forEach((tag) => {
@@ -72,7 +73,7 @@ export const useCacheStore = defineAPIStore('cache', {
           }
         })
       }
-      console.log(this.log_tags)
+      //console.log(this.log_tags)
       return this.log_tags
     },
     InfoTiles(): Array<number> {

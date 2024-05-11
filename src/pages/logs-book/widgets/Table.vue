@@ -111,13 +111,13 @@
             :key="chip"
             size="small"
             outline
-            class="flex-grow-0 flex-shrink text-sm mr-2 mb-1"
+            class="flex-grow-0 flex-shrink text-sm mr-1 mb-1"
           >
             {{ chip }}
           </va-chip>
           <span
             v-if="rowData.tags.length > 2"
-            class="flex-grow-0 flex-shrink text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full mr-2 mb-1"
+            class="flex-grow-0 flex-shrink text-xs bg-blue-200 text-gray-800 py-1 px-2 rounded-full mr-2 mb-1"
           >
             +{{ rowData.tags.length - 2 }}
           </span>

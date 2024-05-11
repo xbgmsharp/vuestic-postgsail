@@ -79,6 +79,23 @@
                 </router-link>
               </template>
             </h4>
+            <div v-if="log.tags" class="flex items-center justify-center mb-1">
+              <va-chip
+                v-for="chip in log.tags.slice(0, 2)"
+                :key="chip"
+                size="small"
+                outline
+                class="flex-grow-0 flex-shrink text-sm mr-1"
+              >
+                {{ chip }}
+              </va-chip>
+              <span
+                v-if="log.tags.length > 2"
+                class="flex-grow-0 flex-shrink text-xs bg-blue-200 text-gray-800 py-1 px-2 rounded-full"
+              >
+                +{{ log.tags.length - 2 }}</span
+              >
+            </div>
             <div class="grid grid-cols-2 gap-1 items-center justify-center text-center">
               <span class="label">{{ t('logs.log.distance') }}: </span>
               <span class="value">
@@ -128,23 +145,6 @@
                   {{ log.to }}
                 </router-link>
               </span>
-            </div>
-            <div v-if="log.tags" class="flex items-center justify-center mt-2">
-              <va-chip
-                v-for="chip in log.tags.slice(0, 2)"
-                :key="chip"
-                size="small"
-                outline
-                class="flex-grow-0 flex-shrink text-sm mr-2"
-              >
-                {{ chip }}
-              </va-chip>
-              <span
-                v-if="log.tags.length > 2"
-                class="flex-grow-0 flex-shrink text-sm bg-blue-200 text-gray-800 py-1 px-2 rounded-full"
-              >
-                +{{ log.tags.length - 2 }}</span
-              >
             </div>
           </div>
         </div>

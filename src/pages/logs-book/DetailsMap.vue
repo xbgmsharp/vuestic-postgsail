@@ -77,7 +77,7 @@
             <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
           </div>
         </div>
-        <div id="mapContainer" ref="mapContainer" class="leaflet-map" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map leaflet-map__full" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -671,11 +671,6 @@
   .leaflet-map {
     width: 100%;
     height: calc(100vh - 4.5rem);
-  }
-  @media (min-width: 1200px) {
-    .leaflet-map {
-      height: calc(100vh - 7.5rem);
-    }
   }
   .sidepanel {
     width: 350px;

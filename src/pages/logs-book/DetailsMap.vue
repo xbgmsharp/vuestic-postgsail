@@ -157,6 +157,7 @@
           avg_speed: speedFormatKnots(apiData.row.avg_speed),
           max_speed: speedFormatKnots(apiData.row.max_speed),
           max_wind_speed: speedFormatKnots(apiData.row.max_wind_speed),
+          avg_wind_speed: speedFormatKnots(apiData.row?.extra?.avg_wind_speed || 0),
           extra: apiData.row?.extra?.metrics,
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,

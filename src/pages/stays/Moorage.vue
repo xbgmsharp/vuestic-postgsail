@@ -211,10 +211,15 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
-  const title = t('stays.moorage.title') + ' ' + moorageName.value
+  const title = computed(() => {
+    let tStr = t('stays.moorage.title')
+    if (moorageName.value) {
+      tStr += ' ' + moorageName.value
+    }
+    return tStr
+  })
 
   onMounted(async () => {
-    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -227,6 +232,7 @@
         console.log('Moorages Stays List rowsData:', rowsData.value)
         if (rowsData.value[0].name) {
           moorageName.value = rowsData.value[0].name
+          document.title = setAppTitle(title.value)
         }
       } else {
         throw { response }

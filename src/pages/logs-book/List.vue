@@ -230,12 +230,21 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
-  const title = filter_moorage_id
-    ? t('moorages.arrivals-departures.title') + ' ' + moorageName.value
-    : t('logs.list.title') + ' ' + vesselName
+  const title = computed(() => {
+    if (filter_moorage_id) {
+      let tStr = t('moorages.arrivals-departures.title')
+      if (moorageName.value) {
+        tStr += ' ' + moorageName.value
+      }
+      return tStr
+    } else {
+      const tStr = t('logs.list.title') + ' ' + vesselName
+      return tStr
+    }
+  })
 
   onMounted(async () => {
-    document.title = setAppTitle(title)
+    document.title = setAppTitle(title.value)
 
     isBusy.value = true
     apiError.value = null
@@ -252,8 +261,10 @@
           if (firstItem) {
             if (firstItem.fromMoorageId == filter_moorage_id) {
               moorageName.value = firstItem.from
+              document.title = setAppTitle(title.value)
             } else if (firstItem.toMoorageId == filter_moorage_id) {
               moorageName.value = firstItem.to
+              document.title = setAppTitle(title.value)
             }
           }
         }

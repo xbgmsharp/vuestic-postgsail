@@ -189,12 +189,7 @@
       formData.geojson = apiData.row.geojson || null
       formData.tags = apiData.row?.extra?.tags || []
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
-      let fromDate = new Date(apiData.row.started)
-      tagsOptions.value = [
-        apiData.row.from,
-        fromDate.toLocaleString('default', { month: 'long' }),
-        String(fromDate.getUTCFullYear()),
-      ]
+      tagsOptions.value = CacheStore.getTags()
       if (formData.name) {
         document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }

@@ -38,6 +38,7 @@
   import { storeToRefs } from 'pinia'
   import { onBeforeRouteUpdate, useRouter } from 'vue-router'
   import { useGlobalStore } from '../stores/global-store'
+  import { useCacheStore } from '../stores/cache-store'
   import { useVesselStore } from '../stores/vessel-store'
 
   import Navbar from '../components/navbar/Navbar.vue'
@@ -45,6 +46,13 @@
   //import LoadingScreen from '../components/loadingScreen.vue'
 
   const GlobalStore = useGlobalStore()
+  const { userName, versions, currentWeather, Monitoring2 } = storeToRefs(GlobalStore)
+  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2 } = GlobalStore
+
+  const CacheStore = useCacheStore()
+  const { getInfoTiles } = storeToRefs(CacheStore)
+  const { getTags, getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+
   const VesselStore = useVesselStore()
   const router = useRouter()
 
@@ -89,11 +97,22 @@
 
   const isLoading = ref(true)
 
-  onMounted(() => {
+  onMounted(async () => {
     isLoading.value = false
     window.addEventListener('resize', onResize)
 
     adjustPadding()
+
+    // Load cache
+    await getAPI('logs')
+    await getAPI('stays')
+    await getAPI('moorages')
+    // Load dynamic data for graph and dashboard
+    getTags()
+    InfoTiles()
+    barChart()
+    lineChartbyYear()
+    matrixChartbyMonthDay()
   })
 
   onBeforeMount(async () => {

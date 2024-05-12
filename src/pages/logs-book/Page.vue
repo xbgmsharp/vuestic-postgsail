@@ -25,6 +25,26 @@
             placeholder="Filter by date range..."
             mode="range"
           />
+          <va-select
+            v-model="filter.tags"
+            placeholder="Filter by tags..."
+            :options="tagsOptions"
+            multiple
+            text-by="text"
+          >
+            <template #content="{ value }">
+              <va-chip
+                v-for="chip in value"
+                :key="chip.text"
+                size="small"
+                class="mr-2"
+                closeable
+                @update:modelValue="deleteChip(chip)"
+              >
+                {{ chip }}
+              </va-chip>
+            </template>
+          </va-select>
         </div>
         <div v-else class="layout flex">
           <p class="text-center">Showing only last 10 logs.</p>
@@ -202,6 +222,7 @@
     return {
       name: null,
       dateRange: null,
+      tags: [],
     }
   }
 
@@ -261,6 +282,17 @@
                       { start: new Date(row.fromTime), end: new Date(row.toTime) },
                       f[fkey],
                     )
+                  case 'tags':
+                    if (f[fkey].length == 0) return true // no filter -> return all
+                    if (!Array.isArray(row.tags) && f[fkey].length == 0) return true // no tags and no filter -> return all
+                    if (!Array.isArray(row.tags) && f[fkey].length > 0) return false // no tags and filter -> return none
+                    //console.log(row.tags, Object.values(row.tags))
+                    //console.log(f[fkey])
+                    for (let tag of Object.values(row.tags)) {
+                      //console.log(tag, f[fkey].indexOf(tag))
+                      if (f[fkey].indexOf(tag) > -1) return true
+                    }
+                    return false
                 }
               })
             }
@@ -313,5 +345,10 @@
   }
   function handleAction({ value }, id) {
     value(id)
+  }
+
+  const tagsOptions = CacheStore.getTags()
+  function deleteChip(chip) {
+    filter.tags = filter.tags.filter((v) => v !== chip)
   }
 </script>

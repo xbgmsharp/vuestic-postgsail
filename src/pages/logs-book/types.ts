@@ -36,6 +36,7 @@ export type Trip = {
   avg_speed: number
   max_speed: number
   max_wind_speed: number
+  avg_wind_speed: number
   extra: JSONObject
   from_moorage_id: number
   to_moorage_id: number

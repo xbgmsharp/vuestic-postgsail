@@ -177,7 +177,7 @@
   <div class="text-xs uppercase mt-2">WIND AVG / MAX</div>
   <div class="flex items-center">
     <va-icon class="flex-none" name="air" :size="32" />
-    <div class="flex-grow ml-2 text-sm">TODO / {{ $props.logbook.max_wind_speed }}</div>
+    <div class="flex-grow ml-2 text-sm">{{ $props.logbook.avg_wind_speed }} / {{ $props.logbook.max_wind_speed }}</div>
   </div>
 
   <div class="text-xs uppercase mt-2">NOTES</div>

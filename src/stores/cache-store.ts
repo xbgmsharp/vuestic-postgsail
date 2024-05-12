@@ -61,7 +61,7 @@ export const useCacheStore = defineAPIStore('cache', {
 
     getTags(): Array<string> {
       const tagSet = new Set<string>()
-      if (this.logs) {
+      if (Array.isArray(this.logs) && this.logs.length > 0) {
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {
           if (tags) {
             tags.forEach((tag) => {

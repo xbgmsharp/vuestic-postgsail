@@ -26,40 +26,50 @@
           hoverable
         >
           <template #cell(name)="{ value, rowData }">
-            <template v-if="isLoggedIn">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
-                {{ value }}
-              </router-link> </template
-            ><template v-else>
+            <div class="whitespace-normal break-words">
+              <template v-if="isLoggedIn">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
+                  {{ value }}
+                </router-link> </template
+              ><template v-else>
+                <router-link
+                  class="va-link link"
+                  :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
+                >
+                  {{ value }}
+                </router-link>
+              </template>
+            </div>
+          </template>
+          <template #cell(from)="{ value, rowData }">
+            <div class="whitespace-normal break-words">
               <router-link
                 class="va-link link"
-                :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }"
+                :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
               >
                 {{ value }}
               </router-link>
-            </template>
-          </template>
-          <template #cell(from)="{ value, rowData }">
-            <router-link
-              class="va-link link"
-              :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            </div>
           </template>
           <template #cell(to)="{ value, rowData }">
-            <router-link
-              class="va-link link"
-              :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }"
-            >
-              {{ value }}
-            </router-link>
+            <div class="whitespace-normal break-words">
+              <router-link
+                class="va-link link"
+                :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }"
+              >
+                {{ value }}
+              </router-link>
+            </div>
           </template>
           <template #cell(fromTime)="{ value }">
-            {{ dateFormatUTC(value) }}
+            <div class="whitespace-normal break-words">
+              {{ dateFormatUTC(value) }}
+            </div>
           </template>
           <template #cell(toTime)="{ value }">
-            {{ dateFormatUTC(value) }}
+            <div class="whitespace-normal break-words">
+              {{ dateFormatUTC(value) }}
+            </div>
           </template>
           <template #cell(distance)="{ value }">
             {{ value }}
@@ -220,12 +230,21 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
-  const title = filter_moorage_id
-    ? t('moorages.arrivals-departures.title') + ' ' + moorageName.value
-    : t('logs.list.title') + ' ' + vesselName
+  const title = computed(() => {
+    if (filter_moorage_id) {
+      let tStr = t('moorages.arrivals-departures.title')
+      if (moorageName.value) {
+        tStr += ' ' + moorageName.value
+      }
+      return tStr
+    } else {
+      const tStr = t('logs.list.title') + ' ' + vesselName
+      return tStr
+    }
+  })
 
   onMounted(async () => {
-    document.title = setAppTitle(title)
+    document.title = setAppTitle(title.value)
 
     isBusy.value = true
     apiError.value = null
@@ -242,8 +261,10 @@
           if (firstItem) {
             if (firstItem.fromMoorageId == filter_moorage_id) {
               moorageName.value = firstItem.from
+              document.title = setAppTitle(title.value)
             } else if (firstItem.toMoorageId == filter_moorage_id) {
               moorageName.value = firstItem.to
+              document.title = setAppTitle(title.value)
             }
           }
         }
@@ -281,7 +302,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .va-table {
-    width: 100%;
+  .va-data-table {
+    overflow-x: auto;
   }
 </style>

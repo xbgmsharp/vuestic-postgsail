@@ -14,6 +14,7 @@
     { label: t('logs.log.name'), key: 'name', sortable: true },
     { label: t('logs.list.from'), key: 'from', sortable: true },
     { label: t('logs.list.to'), key: 'to', sortable: true },
+    { label: t('logs.list.tags'), key: 'tags', sortable: true },
     { label: t('logs.list.from_time'), key: 'fromTime', sortable: true },
     { label: t('logs.list.to_time'), key: 'toTime', sortable: true },
     {
@@ -64,7 +65,7 @@
 
 <template>
   <div>
-    <VaDataTable
+    <va-data-table
       :columns="columns"
       :items="logbook"
       :loading="loading"
@@ -74,104 +75,112 @@
       hoverable
     >
       <template #cell(name)="{ value, rowData }">
-        <template v-if="isLoggedIn">
-          <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
-            {{ value }}
-          </router-link> </template
-        ><template v-else>
-          <router-link class="va-link link" :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }">
-            {{ value }}
-          </router-link>
-        </template>
+        <div class="whitespace-normal break-words">
+          <template v-if="isLoggedIn">
+            <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
+              {{ value }}
+            </router-link> </template
+          ><template v-else>
+            <router-link class="va-link link" :to="{ name: 'log-map', params: { boat: publicVessel, id: rowData.id } }">
+              {{ value }}
+            </router-link>
+          </template>
+        </div>
       </template>
       <template #cell(from)="{ value, rowData }">
-        <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }">
-          {{ value }}
-        </router-link>
+        <div class="whitespace-normal break-words">
+          <router-link
+            class="va-link link"
+            :to="{ name: 'moorage-details', params: { id: rowData.fromMoorageId || 0 } }"
+          >
+            {{ value }}
+          </router-link>
+        </div>
       </template>
       <template #cell(to)="{ value, rowData }">
-        <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }">
-          {{ value }}
-        </router-link>
+        <div class="whitespace-normal break-words">
+          <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.toMoorageId || 0 } }">
+            {{ value }}
+          </router-link>
+        </div>
+      </template>
+      <template #cell(tags)="{ rowData }">
+        <div v-if="rowData.tags" class="flex flex-wrap items-center">
+          <va-chip
+            v-for="chip in rowData.tags.slice(0, 2)"
+            :key="chip"
+            size="small"
+            outline
+            class="flex-grow-0 flex-shrink xs-chip mr-1 mb-1"
+          >
+            {{ chip }}
+          </va-chip>
+          <span
+            v-if="rowData.tags.length > 2"
+            class="flex-grow-0 flex-shrink xs-chip bg-blue-200 text-gray-800 py-1 px-2 rounded-full mr-2 mb-1"
+          >
+            +{{ rowData.tags.length - 2 }}
+          </span>
+        </div>
       </template>
       <template #cell(fromTime)="{ value }">
-        {{ dateFormatUTC(value) }}
+        <div class="whitespace-normal break-words">
+          {{ dateFormatUTC(value) }}
+        </div>
       </template>
       <template #cell(toTime)="{ value }">
-        {{ dateFormatUTC(value) }}
+        <div class="whitespace-normal break-words">
+          {{ dateFormatUTC(value) }}
+        </div>
       </template>
       <template #cell(distance_nm)="{ value }">
         {{ value }}
       </template>
       <template #cell(duration_d)="{ value }"> {{ value }} </template>
       <template #cell(actions)="{ rowData: log }">
-        <div class="flex gap-2 justify-end">
-          <va-dropdown class="">
+        <div class="flex justify-end items-center">
+          <va-dropdown class="relative">
             <template #anchor>
               <va-icon name="more_vert" />
             </template>
-            <va-dropdown-content class="float-left">
-              <div class="grid grid-cols-1">
-                <VaButton
+            <va-dropdown-content class="absolute right-0 origin-top-right w-40">
+              <div class="py-1">
+                <va-button
                   preset="secondary"
                   icon="timelapse"
                   size="medium"
                   color="secondary"
                   @click="$emit('replay', log)"
                 >
-                  Replay</VaButton
-                >
-              </div>
-              <div class="grid grid-cols-1">
-                <VaButton preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
-                  Edit</VaButton
-                >
-              </div>
-              <div class="grid grid-cols-1">
-                <VaButton
+                  Replay
+                </va-button>
+                <va-button preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
+                  Edit
+                </va-button>
+                <va-button
                   preset="secondary"
                   icon="delete"
                   size="medium"
                   color="secondary"
                   @click="$emit('delete', log)"
                 >
-                  Delete</VaButton
-                >
+                  Delete
+                </va-button>
               </div>
             </va-dropdown-content>
           </va-dropdown>
         </div>
-        <!--
-        <div class="flex gap-2 justify-end">
-          <VaButton
-            preset="primary"
-            size="small"
-            color="primary"
-            icon="edit"
-            aria-label="Edit trip"
-            @click="$emit('edit', log as Log)"
-          />
-          <VaButton
-            preset="primary"
-            size="small"
-            icon="delete"
-            color="danger"
-            aria-label="Delete trip"
-            @click="$emit('delete', log as Log)"
-          />
-        </div>
-        -->
       </template>
-    </VaDataTable>
+    </va-data-table>
     <template v-if="logbook.length > $props.pagination.perPage">
       <div class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2">
         <div>
           <b>{{ logbook.length }} trips.</b>
           Logs per page
-          <VaSelect v-model="$props.pagination.perPage" class="!w-20" :options="[10, 20, 50, 100]" />
+          <va-select v-model="$props.pagination.perPage" class="!w-20" :options="[10, 20, 50, 100]" />
         </div>
         <div class="mt-3 row justify-center">
-          <VaPagination v-model="$props.pagination.page" input :pages="totalPages" />
+          <va-pagination v-model="$props.pagination.page" input :pages="totalPages" />
         </div>
       </div>
     </template>
@@ -179,7 +188,14 @@
 </template>
 
 <style lang="scss" scoped>
+  .xs-chip {
+    padding: 0.25rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    height: 1.1rem;
+  }
   .va-data-table {
+    overflow-x: auto;
     ::v-deep(tbody .va-data-table__table-tr) {
       border-bottom: 1px solid var(--va-background-border);
     }

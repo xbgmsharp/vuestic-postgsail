@@ -161,4 +161,8 @@
   })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .va-data-table {
+    overflow-x: auto;
+  }
+</style>

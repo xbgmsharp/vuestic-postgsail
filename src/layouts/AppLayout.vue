@@ -25,7 +25,7 @@
             :animated="!isMobile"
           />
         </div>
-        <div class="app-layout__page">
+        <div class="app-layout__page" :style="{ padding: pagePadding }">
           <router-view />
         </div>
       </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-  import { computed, onBeforeUnmount, onBeforeMount, onMounted, ref } from 'vue'
+  import { computed, onBeforeUnmount, onBeforeMount, onMounted, ref, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
   import { onBeforeRouteUpdate, useRouter } from 'vue-router'
   import { useGlobalStore } from '../stores/global-store'
@@ -50,9 +50,12 @@
 
   const mobileBreakPointPX = 640
   const tabletBreakPointPX = 768
+  const largeBreakPointPX = 1200
 
   const sidebarWidth = ref('16rem')
   const sidebarMinimizedWidth = ref(undefined)
+  const hasFullMap = ref(false)
+  const pagePadding = ref('1.5rem')
 
   //const isMobile = ref(false)
   const isTablet = ref(false)
@@ -63,6 +66,16 @@
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
   const checkIsMobile = () => window.innerWidth <= mobileBreakPointPX
 
+  const adjustPadding = async () => {
+    await nextTick()
+    hasFullMap.value = document.querySelector('.leaflet-map__full') != null
+    pagePadding.value = hasFullMap.value || window.innerWidth < largeBreakPointPX ? '0rem' : '1.5rem'
+  }
+
+  router.afterEach(() => {
+    adjustPadding()
+  })
+
   const onResize = () => {
     isSidebarMinimized.value = checkIsTablet()
 
@@ -70,6 +83,8 @@
     isTablet.value = checkIsTablet()
     sidebarMinimizedWidth.value = isMobile.value ? '0' : '4.5rem'
     sidebarWidth.value = isTablet.value ? '100%' : '16rem'
+
+    adjustPadding()
   }
 
   const isLoading = ref(true)
@@ -77,6 +92,8 @@
   onMounted(() => {
     isLoading.value = false
     window.addEventListener('resize', onResize)
+
+    adjustPadding()
   })
 
   onBeforeMount(async () => {

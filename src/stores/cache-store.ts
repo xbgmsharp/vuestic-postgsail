@@ -60,21 +60,17 @@ export const useCacheStore = defineAPIStore('cache', {
     },
 
     getTags(): Array<string> {
-      this.log_tags = []
-      //console.log(this.logs)
-      if (Array.isArray(this.logs) && this.logs.length > 0) {
+      const tagSet = new Set<string>()
+      if (this.logs) {
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {
           if (tags) {
             tags.forEach((tag) => {
-              if (this.log_tags.indexOf(tag) == -1) {
-                this.log_tags.push(tag)
-              }
+              tagSet.add(tag)
             })
           }
         })
       }
-      //console.log(this.log_tags)
-      return this.log_tags
+      return Array.from(tagSet).sort()
     },
     InfoTiles(): Array<number> {
       if (this.logs && this.stays && this.moorages) {

@@ -25,6 +25,7 @@
                   :key="chip.text"
                   size="small"
                   class="mr-2"
+                  outline
                   closeable
                   @update:modelValue="deleteChip(chip)"
                 >
@@ -45,30 +46,21 @@
             hoverable
           >
             <template #cell(moorage)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
-                {{ value }}
-              </router-link>
+              <div class="whitespace-normal break-words">
+                <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
+                  {{ value }}
+                </router-link>
+              </div>
             </template>
             <template #cell(default_stay)="{ rowData }">
               <div v-if="rowData.default_stay_id" style="max-width: 150px">
-                <StayAt
+                <stay-at
                   :id="parseInt(rowData.id)"
                   :key="rowData.id"
                   :data="parseInt(rowData.default_stay_id)"
                   @clickFromChildComponent="updateDefaultStay"
                 />
               </div>
-              <!--
-              <va-select
-                v-if="rowData.default_stay_id"
-                v-model="stayed_at_options[rowData.default_stay_id]"
-                :options="stayed_at_options"
-                outline
-                style="max-width: 150px"
-                class="mb-6"
-                @update:modelValue="runBusy(updateDefaultStay, rowData.id, $event)"
-              />
-              -->
             </template>
             <template #cell(total_stay)="{ value, rowData }">
               <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: rowData.id } }">
@@ -291,7 +283,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .va-table {
-    width: 100%;
+  .va-data-table {
+    overflow-x: auto;
   }
 </style>

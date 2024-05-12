@@ -5,7 +5,7 @@
     </template>
     <va-inner-loading :loading="isBusy">
       <va-card class="leaflet-maps-page__widget">
-        <div id="mapContainer" ref="mapContainer" class="leaflet-map" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map leaflet-map__full" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -561,7 +561,7 @@
       }
     }
   }
-  #mapContainer {
+  .leaflet-map {
     width: 100%;
     height: calc(100vh - 4.5rem);
   }

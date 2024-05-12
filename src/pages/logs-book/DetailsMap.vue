@@ -77,7 +77,7 @@
             <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
           </div>
         </div>
-        <div id="mapContainer" ref="mapContainer" class="leaflet-map" />
+        <div id="mapContainer" ref="mapContainer" class="leaflet-map leaflet-map__full" />
       </va-card>
     </va-inner-loading>
   </div>
@@ -190,12 +190,7 @@
       formData.geojson = apiData.row.geojson || null
       formData.tags = apiData.row?.extra?.tags || []
       cloudCoverage.value = apiData.row?.extra?.observations?.cloudCoverage || -1
-      let fromDate = new Date(apiData.row.started)
-      tagsOptions.value = [
-        apiData.row.from,
-        fromDate.toLocaleString('default', { month: 'long' }),
-        String(fromDate.getUTCFullYear()),
-      ]
+      tagsOptions.value = CacheStore.getTags()
       if (formData.name) {
         document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }

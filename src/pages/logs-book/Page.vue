@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <LogbookCards
+      <logbook-cards
         v-if="doShowAsCards === 1"
         :logbook="items"
         :loading="isBusy"
@@ -59,7 +59,7 @@
         @delete="onTripDeleted"
         @replay="replayTrip"
       />
-      <LogbookTable
+      <logbook-table
         v-if="doShowAsCards === 2"
         v-model:sort-by="sorting.sortBy"
         v-model:sorting-order="sorting.sortingOrder"
@@ -70,7 +70,7 @@
         @delete="onTripDeleted"
         @replay="replayTrip"
       />
-      <LogbookMap v-if="doShowAsCards === 3" :loading="isBusy" />
+      <logbook-map v-if="doShowAsCards === 3" :loading="isBusy" />
       <div class="flex mt-4">
         <va-icon
           v-if="items.length > 0"

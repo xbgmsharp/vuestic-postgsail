@@ -30,6 +30,7 @@
                   :key="chip.text"
                   size="small"
                   class="mr-2"
+                  outline
                   closeable
                   @update:modelValue="deleteChip(chip)"
                 >
@@ -51,18 +52,22 @@
             class="datatable"
           >
             <template #cell(arrived)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
-                {{ dateFormatUTC(value) }}
-              </router-link>
+              <div class="whitespace-normal break-words">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.arrived_id } }">
+                  {{ dateFormatUTC(value) }}
+                </router-link>
+              </div>
             </template>
             <template #cell(departed)="{ value, rowData }">
-              <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
-                {{ dateFormatUTC(value) }}
-              </router-link>
+              <div class="whitespace-normal break-words">
+                <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.departed_id } }">
+                  {{ dateFormatUTC(value) }}
+                </router-link>
+              </div>
             </template>
             <template #cell(stayed_at)="{ rowData }">
               <div v-if="rowData.stayed_at_id" style="max-width: 150px">
-                <StayAt
+                <stay-at
                   :id="parseInt(rowData.id)"
                   :key="rowData.id"
                   :data="parseInt(rowData.stayed_at_id)"
@@ -206,10 +211,15 @@
     return Math.ceil(items.value.length / perPage.value)
   })
 
-  const title = t('stays.moorage.title') + ' ' + moorageName.value
+  const title = computed(() => {
+    let tStr = t('stays.moorage.title')
+    if (moorageName.value) {
+      tStr += ' ' + moorageName.value
+    }
+    return tStr
+  })
 
   onMounted(async () => {
-    document.title = setAppTitle(title)
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
@@ -222,6 +232,7 @@
         console.log('Moorages Stays List rowsData:', rowsData.value)
         if (rowsData.value[0].name) {
           moorageName.value = rowsData.value[0].name
+          document.title = setAppTitle(title.value)
         }
       } else {
         throw { response }
@@ -278,7 +289,7 @@
 </script>
 
 <style lang="scss">
-  .va-table {
-    width: 100%;
+  .va-data-table {
+    overflow-x: auto;
   }
 </style>

@@ -303,6 +303,11 @@
 
   const pagination = reactive({ page: 1, perPage: 10, total: items.value.length })
 
+  watch(filter, () => {
+    console.log('filter ref changed!')
+    pagination.page = 1
+  })
+
   const title = t('logs.list.title') + ' ' + vesselName
 
   onMounted(async () => {

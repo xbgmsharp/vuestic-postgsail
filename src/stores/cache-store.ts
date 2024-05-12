@@ -60,8 +60,8 @@ export const useCacheStore = defineAPIStore('cache', {
     },
 
     getTags(): Array<string> {
-      const tagSet = new Set<string>()
       if (Array.isArray(this.logs) && this.logs.length > 0) {
+        const tagSet = new Set<string>()
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {
           if (tags) {
             tags.forEach((tag) => {
@@ -69,8 +69,9 @@ export const useCacheStore = defineAPIStore('cache', {
             })
           }
         })
+        this.log_tags = Array.from(tagSet).sort()
       }
-      return Array.from(tagSet).sort()
+      return this.log_tags
     },
     InfoTiles(): Array<number> {
       if (this.logs && this.stays && this.moorages) {

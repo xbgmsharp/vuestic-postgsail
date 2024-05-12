@@ -214,7 +214,7 @@
             v-for="chip in value"
             :key="chip"
             size="small"
-            class="text-sm mr-2"
+            class="xs-chip mr-2"
             outline
             closeable
             @update:modelValue="$emit('rmtag', chip as string)"

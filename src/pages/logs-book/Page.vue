@@ -354,7 +354,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .xs-chip {
     padding: 0.25rem 0.25rem;
     font-size: 0.75rem;

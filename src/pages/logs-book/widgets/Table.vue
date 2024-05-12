@@ -106,7 +106,10 @@
         </div>
       </template>
       <template #cell(tags)="{ rowData }">
-        <tags-chip :tags="rowData.tags" :max-show="2" />
+        <template v-if="rowData.tags">
+          <tags-chip :key="rowData.id" :tags="rowData.tags" :max-show="2" />
+        </template>
+        <template v-else> </template>
       </template>
       <template #cell(fromTime)="{ value }">
         <div class="whitespace-normal break-words">

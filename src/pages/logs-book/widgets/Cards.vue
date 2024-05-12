@@ -81,7 +81,7 @@
               </template>
             </h4>
             <div v-if="log.tags" class="mb-2">
-              <tags-chip :tags="log.tags" :max-show="2" />
+              <tags-chip :key="log.id" :tags="log.tags" :max-show="2" />
             </div>
             <div class="grid grid-cols-2 gap-1 items-center justify-center text-center">
               <span class="label">{{ t('logs.log.distance') }}: </span>

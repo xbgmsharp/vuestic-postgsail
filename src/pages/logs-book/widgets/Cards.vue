@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
   import { Log } from '../types'
+  import TagsChip from '../../../components/TagsChip.vue'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC, durationI18nDaysHours } from '../../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
@@ -79,22 +80,8 @@
                 </router-link>
               </template>
             </h4>
-            <div v-if="log.tags" class="flex items-center justify-center mb-1">
-              <va-chip
-                v-for="chip in log.tags.slice(0, 2)"
-                :key="chip"
-                size="small"
-                outline
-                class="flex-grow-0 flex-shrink xs-chip mr-1"
-              >
-                {{ chip }}
-              </va-chip>
-              <span
-                v-if="log.tags.length > 2"
-                class="flex-grow-0 flex-shrink xs-chip bg-blue-200 text-gray-800 py-1 px-2 rounded-full"
-              >
-                +{{ log.tags.length - 2 }}</span
-              >
+            <div v-if="log.tags" class="mb-2">
+              <tags-chip :tags="log.tags" :max-show="2" />
             </div>
             <div class="grid grid-cols-2 gap-1 items-center justify-center text-center">
               <span class="label">{{ t('logs.log.distance') }}: </span>
@@ -155,12 +142,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .xs-chip {
-    padding: 0.25rem 0.25rem;
-    font-size: 0.75rem;
-    line-height: 1;
-    height: 1.1rem;
-  }
   .label {
     text-align: end;
     color: var(--va-secondary);

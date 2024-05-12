@@ -47,6 +47,7 @@ export const useCacheStore = defineAPIStore('cache', {
        */
       this.logs = []
       this.log_get = []
+      this.log_tags = []
       this.stays = []
       this.stay_get = []
       this.moorages = []
@@ -60,6 +61,7 @@ export const useCacheStore = defineAPIStore('cache', {
     },
 
     getTags(): Array<string> {
+      this.log_tags = []
       if (Array.isArray(this.logs) && this.logs.length > 0) {
         const tagSet = new Set<string>()
         this.logs.forEach(({ tags }: { tags: Array<string> }) => {

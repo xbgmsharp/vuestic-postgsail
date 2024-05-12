@@ -37,7 +37,8 @@
                 v-for="chip in value"
                 :key="chip.text"
                 size="small"
-                class="mr-2"
+                class="xs-chip mr-2"
+                outline
                 closeable
                 @update:modelValue="deleteChip(chip)"
               >
@@ -352,3 +353,12 @@
     filter.tags = filter.tags.filter((v) => v !== chip)
   }
 </script>
+
+<style lang="scss" scoped>
+  .xs-chip {
+    padding: 0.25rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    height: 1.1rem;
+  }
+</style>

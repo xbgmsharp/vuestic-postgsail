@@ -3,6 +3,7 @@
   import { defineVaDataTableColumns } from 'vuestic-ui'
   import { useVModel } from '@vueuse/core'
   import { Log, Pagination } from '../types'
+  import TagsChip from '../../../components/TagsChip.vue'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../../utils/dateFormatter.js'
   import { default as utils } from '../../../utils/utils.js'
@@ -105,23 +106,7 @@
         </div>
       </template>
       <template #cell(tags)="{ rowData }">
-        <div v-if="rowData.tags" class="flex flex-wrap items-center">
-          <va-chip
-            v-for="chip in rowData.tags.slice(0, 2)"
-            :key="chip"
-            size="small"
-            outline
-            class="flex-grow-0 flex-shrink xs-chip mr-1 mb-1"
-          >
-            {{ chip }}
-          </va-chip>
-          <span
-            v-if="rowData.tags.length > 2"
-            class="flex-grow-0 flex-shrink xs-chip bg-blue-200 text-gray-800 py-1 px-2 rounded-full mr-2 mb-1"
-          >
-            +{{ rowData.tags.length - 2 }}
-          </span>
-        </div>
+        <tags-chip :tags="rowData.tags" :max-show="2" />
       </template>
       <template #cell(fromTime)="{ value }">
         <div class="whitespace-normal break-words">
@@ -188,12 +173,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .xs-chip {
-    padding: 0.25rem 0.25rem;
-    font-size: 0.75rem;
-    line-height: 1;
-    height: 1.1rem;
-  }
   .va-data-table {
     overflow-x: auto;
     ::v-deep(tbody .va-data-table__table-tr) {

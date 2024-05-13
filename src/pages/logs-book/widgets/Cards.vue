@@ -45,20 +45,38 @@
           <div class="flex text-sm">
             <div class="text-[var(--va-secondary)] flow-root">
               <div class="float-left">{{ dateFormatUTC(log.fromTime) }}</div>
-              <div class="float-right flex justify-end items-center">
-                <va-dropdown class="relative">
+              <div class="float-right">
+                <va-dropdown class="">
                   <template #anchor>
                     <va-icon name="more_vert" />
                   </template>
-                  <va-dropdown-content class="absolute right-0 origin-top-right w-40">
+                  <va-dropdown-content class="float-left">
                     <div class="py-1">
-                      <va-button preset="secondary" icon="timelapse" color="secondary" @click="$emit('replay', log)">
+                      <va-button
+                        class="grid grid-cols-1"
+                        preset="secondary"
+                        icon="timelapse"
+                        color="secondary"
+                        @click="$emit('replay', log)"
+                      >
                         Replay
                       </va-button>
-                      <va-button preset="secondary" icon="edit" color="secondary" @click="$emit('edit', log)">
+                      <va-button
+                        class="grid grid-cols-1"
+                        preset="secondary"
+                        icon="edit"
+                        color="secondary"
+                        @click="$emit('edit', log)"
+                      >
                         Edit
                       </va-button>
-                      <va-button preset="secondary" icon="delete" color="secondary" @click="$emit('delete', log)">
+                      <va-button
+                        class="grid grid-cols-1"
+                        preset="secondary"
+                        icon="delete"
+                        color="secondary"
+                        @click="$emit('delete', log)"
+                      >
                         Delete
                       </va-button>
                     </div>

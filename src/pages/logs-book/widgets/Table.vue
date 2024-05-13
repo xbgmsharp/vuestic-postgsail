@@ -126,35 +126,42 @@
       </template>
       <template #cell(duration_d)="{ value }"> {{ value }} </template>
       <template #cell(actions)="{ rowData: log }">
-        <div class="flex justify-end items-center">
-          <va-dropdown class="relative">
+        <div class="flex gap-2 justify-end">
+          <va-dropdown class="">
             <template #anchor>
               <va-icon name="more_vert" />
             </template>
-            <va-dropdown-content class="absolute right-0 origin-top-right w-40">
-              <div class="py-1">
-                <va-button
-                  preset="secondary"
-                  icon="timelapse"
-                  size="medium"
-                  color="secondary"
-                  @click="$emit('replay', log)"
-                >
-                  Replay
-                </va-button>
-                <va-button preset="secondary" icon="edit" size="medium" color="secondary" @click="$emit('edit', log)">
-                  Edit
-                </va-button>
-                <va-button
-                  preset="secondary"
-                  icon="delete"
-                  size="medium"
-                  color="secondary"
-                  @click="$emit('delete', log)"
-                >
-                  Delete
-                </va-button>
-              </div>
+            <va-dropdown-content class="float-left">
+              <va-button
+                class="grid grid-cols-1"
+                preset="secondary"
+                icon="timelapse"
+                size="medium"
+                color="secondary"
+                @click="$emit('replay', log)"
+              >
+                Replay
+              </va-button>
+              <va-button
+                class="grid grid-cols-1"
+                preset="secondary"
+                icon="edit"
+                size="medium"
+                color="secondary"
+                @click="$emit('edit', log)"
+              >
+                Edit
+              </va-button>
+              <va-button
+                class="grid grid-cols-1"
+                preset="secondary"
+                icon="delete"
+                size="medium"
+                color="secondary"
+                @click="$emit('delete', log)"
+              >
+                Delete
+              </va-button>
             </va-dropdown-content>
           </va-dropdown>
         </div>

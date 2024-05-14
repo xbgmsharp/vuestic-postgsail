@@ -75,16 +75,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'logs',
         path: 'logs',
-        //component: () => import('../pages/logs-book/List.vue'),
         component: () => import('../pages/logs-book/Page.vue'),
         meta: { titleKey: 'logs.list.title', isPublic: true, type: 'public_logs_list' },
       },
-      // {
-      //   name: 'log-details',
-      //   path: 'log/:id(\\d+)',
-      //   component: () => import('../pages/logs-book/Details.vue'),
-      //   meta: { isPublic: true, type: 'public_logs' },
-      // },
+
       {
         name: 'log-map',
         path: 'log/:id(\\d+)',

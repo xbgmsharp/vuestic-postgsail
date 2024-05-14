@@ -125,8 +125,8 @@
     doShowAsCards.value = 1
   }
   watch(doShowAsCards, () => {
-    console.log('doShowAsCards ref changed!')
-    console.log('doShowAsCards:', doShowAsCards.value)
+    console.debug('doShowAsCards ref changed!')
+    console.debug('doShowAsCards:', doShowAsCards.value)
     GlobalStore.$state.doShowAsCards = doShowAsCards.value
   })
 
@@ -304,7 +304,7 @@
   const pagination = reactive({ page: 1, perPage: 10, total: items.value.length })
 
   watch(filter, () => {
-    console.log('filter ref changed!')
+    console.debug('filter ref changed!')
     pagination.page = 1
   })
 

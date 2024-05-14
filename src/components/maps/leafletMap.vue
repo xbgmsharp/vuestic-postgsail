@@ -160,7 +160,7 @@
       }
       const geoFilter = this.geoFilter
       const geoMapFilter = function (feature, layer) {
-        console.log(geoFilter)
+        //console.debug('geoMapFilter', geoFilter)
         if (!geoFilter) {
           return true
         }

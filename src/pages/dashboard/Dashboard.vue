@@ -55,12 +55,7 @@
       </va-card>
       <va-card v-if="monitoring.geojson" class="flex card-width">
         <va-card-content>
-          <lMap
-            :geo-json-feature="mapGeoJsonFeatures"
-            :control-layer="false"
-            :map-zoom="10"
-            style="width: 100%; height: 120px"
-          />
+          <lMap id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
         </va-card-content>
       </va-card>
     </template>
@@ -166,8 +161,6 @@
   import { storeToRefs } from 'pinia'
   import { useI18n } from 'vue-i18n'
   const Charts = defineAsyncComponent(() => import('./Charts.vue'))
-  //import Charts from './Charts.vue'
-  //import lMap from '../../components/maps/leafletMap.vue'
   const lMap = defineAsyncComponent(() => import('../../components/maps/leafletMap.vue'))
   import PostgSail from '../../services/api-client'
   import { fromNow, localTime } from '../../utils/dateFormatter.js'
@@ -405,6 +398,10 @@
 </script>
 
 <style lang="scss">
+  #dashboard-map {
+    width: 100%;
+    height: 120px;
+  }
   .dashboard {
     .va-icon {
       fill: var(--va-text-primary);

@@ -9,12 +9,7 @@
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
             <template v-if="!isBusy && item.geoJson">
-              <lMap
-                :geo-json-feature="mapGeoJsonFeatures"
-                map-type="Satellite"
-                :map-zoom="14"
-                style="width: 100%; height: 350px"
-              />
+              <lMap id="boat-map" :geo-json-feature="mapGeoJsonFeatures" map-type="Satellite" :map-zoom="14" />
             </template>
           </div>
           <div class="mb-3 my-3" style="text-align: center">
@@ -179,7 +174,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import 'flag-icons/css/flag-icons.css';
   .dl-details {
     > dt:nth-child(4n + 3) {
@@ -188,5 +183,9 @@
         background-color: var(--va-background);
       }
     }
+  }
+  #boat-map {
+    width: 100%;
+    height: 350px;
   }
 </style>

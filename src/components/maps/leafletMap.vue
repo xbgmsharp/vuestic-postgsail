@@ -1,11 +1,43 @@
 <template>
-  <div id="mapContainer"></div>
+  <template v-if="tabs">
+    <div id="sidepanel" class="sidepanel" aria-label="side panel" aria-hidden="false">
+      <div class="sidepanel-inner-wrapper">
+        <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
+          <ul class="sidepanel-tabs">
+            <li v-for="(tab, index) in tabs" :key="index" class="sidepanel-tab">
+              <a :href="'#' + tab.id" class="sidebar-tab-link" role="tab" :data-tab-link="'tab-' + (index + 1)">
+                <VaIcon :name="tab.icon" />
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="sidepanel-content-wrapper">
+          <div class="sidepanel-content">
+            <div
+              v-for="(tab, index) in tabs"
+              :key="index"
+              class="sidepanel-tab-content"
+              :data-tab-content="'tab-' + (index + 1)"
+            >
+              <component :is="tab.component" v-bind="tab.props" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidepanel-toggle-container">
+        <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
+      </div>
+    </div>
+  </template>
+  <div :id="id" class="leaflet-map"></div>
 </template>
 
 <script>
   import 'leaflet/dist/leaflet.css'
+  import './leaflet-sidepanel.css'
   import L from 'leaflet'
   import 'leaflet-rotatedmarker'
+  import './leaflet-sidepanel.min.js'
 
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
@@ -21,6 +53,10 @@
   export default {
     name: 'LeafletMap',
     props: {
+      id: {
+        type: String,
+        default: 'mapContainer',
+      },
       geoJsonFeatures: {
         type: [Array, Object],
         default: null,
@@ -50,6 +86,17 @@
         /* use to handle an array of geojson*/
         type: Boolean,
         default: false,
+      },
+      tabs: {
+        type: Array,
+        default: null,
+        // Example:
+        // [
+        // { id: 'summary', icon: 'summarize', component: 'tripSummary', props: {} },
+        // { id: 'performance', icon: 'bar_chart', component: 'tripPerformance', props: {} },
+        // { id: 'observations', icon: 'settings_suggest', component: 'tripObservations', props: {} },
+        // { id: 'export', icon: 'ios_share', component: 'tripExport', props: {} },
+        // ]
       },
     },
     data() {
@@ -85,7 +132,7 @@
       if (centerLat == 0 && centerLng == 0) return
 
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
-      this.map = L.map('mapContainer', { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
+      this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
 
       const bMaps = baseMaps()
       const oMaps = overlayMaps()
@@ -203,6 +250,26 @@
           onEachFeature: popup,
         }).addTo(this.map)
       }
+
+      if (this.tabs) {
+        L.control
+          .sidepanel('sidepanel', {
+            panelPosition: 'left',
+            hasTabs: true,
+            tabsPosition: 'top',
+            pushControls: true,
+            darkMode: false,
+            startTab: 'tab-1',
+          })
+          .addTo(this.map)
+
+        this.map.value.whenReady(function () {
+          var toggleButton = document.querySelector('.sidepanel-toggle-button')
+          if (toggleButton) {
+            toggleButton.click()
+          }
+        })
+      }
       console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
       this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
       //this.map.setZoom(this.zoom)
@@ -235,7 +302,7 @@
       cursor: pointer;
     }
   }
-  #mapContainer {
+  .leaflet-map {
     z-index: 0;
   }
   .geojson-box {

@@ -1,11 +1,11 @@
 <template>
   <template v-if="!isBusy && item">
     <lMap
+      id="log-map-full"
       :geo-json-features="mapGeoJsonFeatures"
       :map-zoom="10"
       :geo-filter="true"
       :control-layer="false"
-      style="width: 100%; height: 100vh"
     />
   </template>
 </template>
@@ -54,4 +54,9 @@
   })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  #log-map-full {
+    width: 100%;
+    height: 100vh;
+  }
+</style>

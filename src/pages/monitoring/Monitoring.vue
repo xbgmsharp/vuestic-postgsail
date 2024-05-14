@@ -20,12 +20,7 @@
         </div>
         <div class="box layout gutter--md" style="width: 100%; text-align: center">
           <template v-if="items.geojson">
-            <lMap
-              :geo-json-feature="mapGeoJsonFeatures"
-              :map-zoom="13"
-              map-type="Satellite"
-              style="width: 100%; height: 250px"
-            />
+            <lMap id="monitoring-map" :geo-json-feature="mapGeoJsonFeatures" :map-zoom="13" map-type="Satellite" />
           </template>
         </div>
 
@@ -241,7 +236,11 @@
   })
 </script>
 
-<style scoped>
+<style lang="scss">
+  #monitoring-map {
+    width: 100%;
+    height: 250px;
+  }
   .box {
     align-items: center;
     justify-content: center;

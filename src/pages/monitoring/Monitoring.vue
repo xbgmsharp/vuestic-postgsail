@@ -1,9 +1,9 @@
 <template>
-  <template v-if="apiError">
-    <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
-  </template>
-  <template v-if="!offline && apiSuccess">
-    <va-card class="leaflet-map__full">
+  <va-card class="leaflet-map__full">
+    <template v-if="apiError">
+      <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
+    </template>
+    <template v-if="!offline && apiSuccess">
       <template v-if="items.geojson">
         <lMap
           id="monitoring-map"
@@ -13,8 +13,8 @@
           map-type="Satellite"
         />
       </template>
-    </va-card>
-  </template>
+    </template>
+  </va-card>
 </template>
 
 <script setup>

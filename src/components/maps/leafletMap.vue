@@ -1,39 +1,5 @@
 <template>
-  <template v-if="tabs">
-    <div id="sidepanel" class="sidepanel" aria-label="side panel" aria-hidden="false">
-      <div class="sidepanel-inner-wrapper">
-        <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
-          <ul class="sidepanel-tabs">
-            <li v-for="(tab, index) in tabs" :key="index" class="sidepanel-tab">
-              <a :href="'#' + tab.id" class="sidebar-tab-link" role="tab" :data-tab-link="'tab-' + (index + 1)">
-                <template v-if="tab.icon">
-                  <VaIcon :name="tab.icon" />
-                </template>
-                <template v-else>
-                  {{ tab.name }}
-                </template>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <div class="sidepanel-content-wrapper">
-          <div class="sidepanel-content">
-            <div
-              v-for="(tab, index) in tabs"
-              :key="index"
-              class="sidepanel-tab-content"
-              :data-tab-content="'tab-' + (index + 1)"
-            >
-              <component :is="tab.component" v-bind="tab.props" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sidepanel-toggle-container">
-        <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
-      </div>
-    </div>
-  </template>
+  <div v-if="sidePanel" v-html="sidePanel"></div>
   <div :id="id" class="leaflet-map"></div>
 </template>
 
@@ -94,16 +60,9 @@
         type: Boolean,
         default: false,
       },
-      tabs: {
-        type: Array,
+      sidePanel: {
+        type: String,
         default: null,
-        // Example:
-        // [
-        // { id: 'summary', icon: 'summarize', component: 'tripSummary', props: {} },
-        // { id: 'performance', icon: 'bar_chart', component: 'tripPerformance', props: {} },
-        // { id: 'observations', icon: 'settings_suggest', component: 'tripObservations', props: {} },
-        // { id: 'export', icon: 'ios_share', component: 'tripExport', props: {} },
-        // ]
       },
     },
     data() {
@@ -258,7 +217,7 @@
         }).addTo(this.map)
       }
 
-      if (this.tabs) {
+      if (this.sidePanel && this.sidePanel.length > 0) {
         L.control
           .sidepanel('sidepanel', {
             panelPosition: 'left',

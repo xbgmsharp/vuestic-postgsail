@@ -108,7 +108,7 @@
     delay = ref(route.query.delay || 0),
     zoom = ref(route.query.zoom || 13),
     color = ref(route.query.color || 'dodgerblue'),
-    map_height = ref(route.query.height || '80vh'),
+    map_height = ref(route.query.height || 'calc(100vh - 4.5rem)'),
     moorage_overlay = ref(parseBooleanQueryParam(route.query.moorage_overlay, true)),
     instruments = ref(parseBooleanQueryParam(route.query.instruments, true))
 
@@ -563,6 +563,6 @@
   }
   .leaflet-map {
     width: 100%;
-    height: calc(100vh - 4.5rem);
+    height: v-bind(map_height);
   }
 </style>

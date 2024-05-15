@@ -39,6 +39,8 @@
   import 'leaflet-rotatedmarker'
   import './leaflet-sidepanel.min.js'
 
+  import { ref } from 'vue'
+
   import { defaultBaseMapType, baseMaps, overlayMaps, boatMarkerTypes } from './leafletHelpers.js'
 
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
@@ -51,6 +53,8 @@
 
   const { currentTheme } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
+
+  const GeoJSONbasemapObj = ref({})
 
   export default {
     name: 'LeafletMap',
@@ -93,6 +97,22 @@
         type: Boolean,
         default: false,
       },
+      externalLink: {
+        type: String,
+        default: null,
+      },
+      showNote: {
+        type: Boolean,
+        default: false,
+      },
+      saveNote: {
+        type: Function,
+        default: null,
+      },
+      deletePoint: {
+        type: Function,
+        default: null,
+      },
     },
     data() {
       return {
@@ -100,7 +120,7 @@
       }
     },
     mounted() {
-      console.debug('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom)
+      console.log('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom, 'showNote', this.showNote)
       let centerLat = 0
       let centerLng = 0
       let geojson = null
@@ -129,21 +149,11 @@
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
 
-      const bMaps = baseMaps()
-      const oMaps = overlayMaps()
-      bMaps[this.mapType].addTo(this.map)
-
-      if (this.controlLayer) {
-        L.control.layers(bMaps, oMaps).addTo(this.map)
-        L.control.zoom({ position: 'bottomright' }).addTo(this.map)
-      }
-
       const popup = function (feature, layer) {
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
-        // If geo point click
+
         if (feature.properties && feature.properties.time) {
-          //console.log(`popup`, feature.properties)
           let status = feature.properties.status || ''
           let time = dateFormatUTC(feature.properties.time)
           let sog = speedFormatKnots(feature.properties.speedoverground)
@@ -175,6 +185,27 @@
             text += `<tr><td>AWA</td><td>${awa}</td></tr>`
           }
           text += `</tbody></table></div>`
+
+          console.log('showNote,saveNote,deletePoint', this.showNote, this.saveNote, this.deletePoint)
+
+          if (this.showNote) {
+            text +=
+              'Notes:<br/>' +
+              "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
+              feature.properties.notes +
+              '</textarea><br>'
+            if (this.saveNote) {
+              text +=
+                "<div class='center'><button class='save' onclick='saveNote(" +
+                JSON.stringify(feature.geometry.coordinates) +
+                ")'>Save</button>"
+            }
+          }
+          if (this.deletePoint) {
+            "<button class='delete' onclick='deletePoint(" +
+              JSON.stringify(feature.geometry.coordinates) +
+              ")'>Delete</button></div>"
+          }
           popupContent = text
         }
         // If geo linestring click
@@ -200,6 +231,16 @@
         }
         layer.bindPopup(popupContent)
       }
+
+      const bMaps = baseMaps()
+      const oMaps = overlayMaps()
+      bMaps[this.mapType].addTo(this.map)
+
+      if (this.controlLayer) {
+        L.control.layers(bMaps, oMaps).addTo(this.map)
+        L.control.zoom({ position: 'bottomright' }).addTo(this.map)
+      }
+
       const geoFilter = this.geoFilter
       const geoMapFilter = function (feature, layer) {
         //console.debug('geoMapFilter', geoFilter)
@@ -238,6 +279,37 @@
             "background-image: url('/favicon-32x32.png');"
         }
         layer = featGroup
+      }
+      if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
+        const boatTypes = boatMarkerTypes()
+        GeoJSONbasemapObj.value = {
+          Sailboat: L.geoJSON(geojson, {
+            pointToLayer: boatTypes['Sailboat'],
+            onEachFeature: popup,
+          }),
+          SailboatSails: L.geoJSON(geojson, {
+            pointToLayer: boatTypes['SailboatSails'],
+            onEachFeature: popup,
+          }),
+          Powerboat: L.geoJSON(geojson, {
+            pointToLayer: boatTypes['Powerboat'],
+            onEachFeature: popup,
+          }),
+          Dot: L.geoJSON(geojson, {
+            pointToLayer: boatTypes['Dot'],
+            onEachFeature: popup,
+          }),
+        }
+        L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
+        layer =
+          vesselType === 'Sailing'
+            ? GeoJSONbasemapObj.value['Sailboat']
+            : vesselType === 'Pleasure Craft'
+            ? GeoJSONbasemapObj.value['Powerboat']
+            : GeoJSONbasemapObj.value['Dot']
+        layer.addTo(this.map)
+        document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
+          "background-image: url('/favicon-32x32.png');"
       } else {
         layer = L.geoJSON(geojson, {
           filter: geoMapFilter,
@@ -246,8 +318,20 @@
         }).addTo(this.map)
       }
 
-      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
+      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.mapZoom)
       this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
+
+      if (this.externalLink) {
+        var extLinkUrl = this.externalLink
+        var externalLinkControl = L.control({ position: 'bottomright' })
+        externalLinkControl.onAdd = function () {
+          var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
+          div.innerHTML = `<a href="${extLinkUrl}" target="_blank"><i class="va-icon fa fa-external-link" style="font-size: 14px; height: 14px; line-height: 14px;" aria-hidden="true" notranslate=""><!----></i></a>`
+          div.title = 'Extended map'
+          return div
+        }
+        externalLinkControl.addTo(this.map)
+      }
 
       if (this.tabs) {
         L.control

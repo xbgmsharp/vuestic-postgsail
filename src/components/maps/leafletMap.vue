@@ -310,6 +310,7 @@
     }
   }
   .sidepanel {
+    z-index: 10;
     width: 350px;
     .sidepanel-content {
       width: 350px;

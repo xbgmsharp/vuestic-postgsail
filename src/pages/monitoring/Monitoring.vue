@@ -12,16 +12,62 @@
           :map-zoom="13"
           map-type="Satellite"
         >
-          <template #tab-vessel>Tab Name</template>
+          <template #tab-vessel>{{ items.vessel_name }}</template>
           <template #content-vessel>
-            <h1>TabContent</h1>
-            TESTING
+            <h1 class="layout gutter--md text-center p-4">{{ msg_fromNow }}</h1>
+            <div style="font-size: 10pt; text-align: center">
+              <template v-if="sub_msg == 'Offline'">
+                <va-avatar size="small" color="warning" class="mr-6" /> Offline
+              </template>
+              <template v-else-if="sub_msg == 'Online'">
+                <va-avatar size="small" color="success" class="mr-6" /> Online
+              </template>
+            </div>
+            <div class="flex flex-col items-center p-4">
+              <div style="width: 180px; position: relative; margin: auto">
+                <div
+                  id="windDirection"
+                  style="
+                    display: true;
+                    position: absolute;
+                    left: 10px;
+                    top: 18px;
+                    height: 36px;
+                    width: 36px;
+                    z-index: 99;
+                  "
+                >
+                  <img
+                    id="windArrow"
+                    src="/wind_direction.png"
+                    style="height: 32px; width: 32px; opacity: 0.7"
+                    :style="windDirection"
+                  />
+                </div>
+                <display-lcd id="wind" :display="items.wind"></display-lcd>
+              </div>
+              <display-lcd id="temperature" :display="items.temperature"></display-lcd>
+              <display-lcd id="battery" :display="items.battery"></display-lcd>
+              <display-lcd id="humidity" :display="items.humidity"></display-lcd>
+              <display-lcd id="water" :display="items.water"></display-lcd>
+              <display-lcd id="pressure" :display="items.pressure"></display-lcd>
+            </div>
           </template>
         </lMap>
       </template>
     </template>
   </va-card>
 </template>
+
+<script>
+  import DisplayMulti from '../../components/DisplayMulti.vue'
+  export default {
+    name: 'Monitoring',
+    components: {
+      'display-lcd': DisplayMulti,
+    },
+  }
+</script>
 
 <script setup>
   // TODO update setup with lang="ts"
@@ -184,5 +230,11 @@
   #monitoring-map {
     width: 100%;
     height: calc(100vh - 4.5rem);
+  }
+  .sidepanel {
+    width: 240px;
+    .sidepanel-content {
+      width: 240px;
+    }
   }
 </style>

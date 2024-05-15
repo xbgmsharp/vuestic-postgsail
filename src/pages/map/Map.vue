@@ -1,12 +1,14 @@
 <template>
   <template v-if="!isBusy && item">
-    <lMap
-      id="log-map-full"
-      :geo-json-features="mapGeoJsonFeatures"
-      :map-zoom="10"
-      :geo-filter="true"
-      :control-layer="false"
-    />
+    <div class="leaflet-map__full">
+      <lMap
+        id="log-map-full"
+        :geo-json-features="mapGeoJsonFeatures"
+        :map-zoom="10"
+        :geo-filter="true"
+        :control-layer="false"
+      />
+    </div>
   </template>
 </template>
 

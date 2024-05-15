@@ -6,7 +6,12 @@
           <ul class="sidepanel-tabs">
             <li v-for="(tab, index) in tabs" :key="index" class="sidepanel-tab">
               <a :href="'#' + tab.id" class="sidebar-tab-link" role="tab" :data-tab-link="'tab-' + (index + 1)">
-                <VaIcon :name="tab.icon" />
+                <template v-if="tab.icon">
+                  <VaIcon :name="tab.icon" />
+                </template>
+                <template v-else>
+                  {{ tab.name }}
+                </template>
               </a>
             </li>
           </ul>
@@ -263,7 +268,7 @@
           })
           .addTo(this.map)
 
-        this.map.value.whenReady(function () {
+        this.map.whenReady(function () {
           var toggleButton = document.querySelector('.sidepanel-toggle-button')
           if (toggleButton) {
             toggleButton.click()
@@ -301,6 +306,17 @@
     a {
       cursor: pointer;
     }
+  }
+  .sidepanel {
+    width: 350px;
+    .sidepanel-content {
+      width: 350px;
+    }
+  }
+  .sidebar-tab-link.active,
+  .sidebar-tab-link:hover {
+    color: var(--va-primary) !important;
+    border-bottom-color: var(--va-primary) !important;
   }
   .leaflet-map {
     z-index: 0;

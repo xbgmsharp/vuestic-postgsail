@@ -2,82 +2,20 @@
   <template v-if="apiError">
     <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
   </template>
-  <template v-if="offline">
-    <Offline />
-  </template>
   <template v-if="!offline && apiSuccess">
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('monitoring.title') }}</va-card-title>
-      <va-card-content>
-        <h1 class="box layout gutter--md">{{ items.vessel_name }} {{ msg_fromNow }}</h1>
-        <div style="font-size: 10pt; text-align: center">
-          <template v-if="sub_msg == 'Offline'">
-            <va-avatar size="small" color="warning" class="mr-6" /> Offline
-          </template>
-          <template v-else-if="sub_msg == 'Online'">
-            <va-avatar size="small" color="success" class="mr-6" /> Online
-          </template>
-        </div>
-        <div class="box layout gutter--md" style="width: 100%; text-align: center">
-          <template v-if="items.geojson">
-            <lMap id="monitoring-map" :geo-json-feature="mapGeoJsonFeatures" :map-zoom="13" map-type="Satellite" />
-          </template>
-        </div>
-
-        <div class="box layout gutter--md">
-          <table>
-            <tr>
-              <td>
-                <div style="width: 180px; position: relative; margin: auto">
-                  <div
-                    id="windDirection"
-                    style="
-                      display: true;
-                      position: absolute;
-                      left: 10px;
-                      top: 18px;
-                      height: 36px;
-                      width: 36px;
-                      z-index: 99;
-                    "
-                  >
-                    <img
-                      id="windArrow"
-                      src="/wind_direction.png"
-                      style="height: 32px; width: 32px; opacity: 0.7"
-                      :style="windDirection"
-                    />
-                  </div>
-                  <display-lcd id="wind" :display="items.wind"></display-lcd>
-                </div>
-                <display-lcd id="temperature" :display="items.temperature"></display-lcd><br />
-                <display-lcd id="battery" :display="items.battery"></display-lcd><br />
-              </td>
-              <td>
-                <display-lcd id="humidity" :display="items.humidity"></display-lcd><br />
-                <display-lcd id="water" :display="items.water"></display-lcd><br />
-                <display-lcd id="pressure" :display="items.pressure"></display-lcd><br />
-              </td>
-            </tr>
-          </table>
-        </div>
-      </va-card-content>
+    <va-card class="leaflet-map__full">
+      <template v-if="items.geojson">
+        <lMap
+          id="monitoring-map"
+          :tabs="sidePanel"
+          :geo-json-feature="mapGeoJsonFeatures"
+          :map-zoom="13"
+          map-type="Satellite"
+        />
+      </template>
     </va-card>
   </template>
 </template>
-
-<script>
-  import DisplayMulti from '../../components/DisplayMulti.vue'
-  import Offline from '../../components/MonitoringOffline.vue'
-
-  export default {
-    name: 'Monitoring',
-    components: {
-      'display-lcd': DisplayMulti,
-      Offline,
-    },
-  }
-</script>
 
 <script setup>
   // TODO update setup with lang="ts"
@@ -95,6 +33,8 @@
   import monitoringDatas from '../../data/monitoring.json'
   import useGlobalStore from '../../stores/global-store'
 
+  import BoatSummary from './sidebars/BoatSummary.vue'
+
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
@@ -103,6 +43,8 @@
   const apiSuccess = ref(null)
   const apiData = reactive({ row: null })
   const offline = ref(true)
+
+  const sidePanel = [{ id: 'summary', name: 'VesselName', icon: null, component: BoatSummary, props: {} }]
 
   const items = computed(() => {
     return apiData.row
@@ -239,16 +181,6 @@
 <style lang="scss">
   #monitoring-map {
     width: 100%;
-    height: 250px;
-  }
-  .box {
-    align-items: center;
-    justify-content: center;
-    /*background: white;*/
-    /*border-radius: 10px;*/
-    /*border: 1px solid #ccc;*/
-    padding: 10px 10px;
-    text-align: center;
-    width: 50%;
+    height: calc(100vh - 4.5rem);
   }
 </style>

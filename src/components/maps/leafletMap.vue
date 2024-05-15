@@ -51,8 +51,10 @@
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   import { awaFormat, angleFormat } from '../../utils/angleFormatter.js'
 
+  import { useGlobalStore } from '../../stores/global-store'
   import { useVesselStore } from '../../stores/vessel-store'
 
+  const { currentTheme } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
 
   export default {
@@ -263,7 +265,7 @@
             hasTabs: true,
             tabsPosition: 'top',
             pushControls: true,
-            darkMode: false,
+            darkMode: currentTheme === 'dark',
             startTab: 'tab-1',
           })
           .addTo(this.map)

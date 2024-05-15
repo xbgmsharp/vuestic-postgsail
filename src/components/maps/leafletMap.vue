@@ -149,7 +149,19 @@
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
 
-      const popup = function (feature, layer) {
+      const saveNote = (coordinates) => {
+        if (this.saveNote) {
+          return this.saveNote(coordinates)
+        }
+      }
+
+      const deletePoint = (coordinates) => {
+        if (this.deletePoint) {
+          return this.deletePoint(coordinates)
+        }
+      }
+
+      const popup = (feature, layer) => {
         var popupContent =
           '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
 
@@ -186,8 +198,6 @@
           }
           text += `</tbody></table></div>`
 
-          console.log('showNote,saveNote,deletePoint', this.showNote, this.saveNote, this.deletePoint)
-
           if (this.showNote) {
             text +=
               'Notes:<br/>' +
@@ -202,7 +212,8 @@
             }
           }
           if (this.deletePoint) {
-            "<button class='delete' onclick='deletePoint(" +
+            text +=
+              "<button class='delete' onclick='deletePoint(" +
               JSON.stringify(feature.geometry.coordinates) +
               ")'>Delete</button></div>"
           }

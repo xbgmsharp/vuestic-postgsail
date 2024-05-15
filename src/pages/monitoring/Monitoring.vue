@@ -47,10 +47,10 @@
                 <display-lcd id="wind" :display="items.wind"></display-lcd>
               </div>
               <display-lcd id="temperature" :display="items.temperature"></display-lcd>
-              <display-lcd id="battery" :display="items.battery"></display-lcd>
               <display-lcd id="humidity" :display="items.humidity"></display-lcd>
               <display-lcd id="water" :display="items.water"></display-lcd>
               <display-lcd id="pressure" :display="items.pressure"></display-lcd>
+              <display-lcd id="battery" :display="items.battery"></display-lcd>
             </div>
           </template>
         </lMap>

@@ -7,11 +7,17 @@
       <template v-if="items.geojson">
         <lMap
           id="monitoring-map"
-          :side-panel="sidePanelTemplate"
+          :tabs="['vessel']"
           :geo-json-feature="mapGeoJsonFeatures"
           :map-zoom="13"
           map-type="Satellite"
-        />
+        >
+          <template #tab-vessel>Tab Name</template>
+          <template #content-vessel>
+            <h1>TabContent</h1>
+            TESTING
+          </template>
+        </lMap>
       </template>
     </template>
   </va-card>
@@ -42,32 +48,6 @@
   const apiData = reactive({ row: null })
   const offline = ref(true)
 
-  const sidePanelTemplate = computed(() => {
-    return `<div id="sidepanel" class="sidepanel" aria-label="side panel" aria-hidden="false">
-      <div class="sidepanel-inner-wrapper">
-        <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
-          <ul class="sidepanel-tabs">
-            <li class="sidepanel-tab">
-              <a href="#vessel" class="sidebar-tab-link" role="tab" data-tab-link="tab-1">
-                VESSEL NAME
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <div class="sidepanel-content-wrapper">
-          <div class="sidepanel-content">
-            <div class="sidepanel-tab-content" data-tab-content="tab-1">
-              <h1>TESTING</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sidepanel-toggle-container">
-        <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
-      </div>
-    </div>
-    `
-  })
   const items = computed(() => {
     return apiData.row
       ? {

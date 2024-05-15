@@ -1,5 +1,34 @@
 <template>
-  <div v-if="sidePanel" v-html="sidePanel"></div>
+  <template v-if="tabs">
+    <div id="sidepanel" class="sidepanel" aria-label="side panel" aria-hidden="false">
+      <div class="sidepanel-inner-wrapper">
+        <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
+          <ul class="sidepanel-tabs">
+            <li v-for="(tab, index) in tabs" :key="index" class="sidepanel-tab">
+              <a :href="'#' + tab" class="sidebar-tab-link" role="tab" :data-tab-link="'tab-' + (index + 1)">
+                <slot :name="'tab-' + tab"></slot>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="sidepanel-content-wrapper">
+          <div class="sidepanel-content">
+            <div
+              v-for="(tab, index) in tabs"
+              :key="index"
+              class="sidepanel-tab-content"
+              :data-tab-content="'tab-' + (index + 1)"
+            >
+              <slot :name="'content-' + tab"></slot>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidepanel-toggle-container">
+        <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
+      </div>
+    </div>
+  </template>
   <div :id="id" class="leaflet-map"></div>
 </template>
 
@@ -30,6 +59,10 @@
         type: String,
         default: 'mapContainer',
       },
+      tabs: {
+        type: Array,
+        default: null,
+      },
       geoJsonFeatures: {
         type: [Array, Object],
         default: null,
@@ -59,10 +92,6 @@
         /* use to handle an array of geojson*/
         type: Boolean,
         default: false,
-      },
-      sidePanel: {
-        type: String,
-        default: null,
       },
     },
     data() {
@@ -173,7 +202,6 @@
       }
       const geoFilter = this.geoFilter
       const geoMapFilter = function (feature, layer) {
-        console.log(geoFilter)
         if (!geoFilter) {
           return true
         }
@@ -217,7 +245,10 @@
         }).addTo(this.map)
       }
 
-      if (this.sidePanel && this.sidePanel.length > 0) {
+      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
+      this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
+
+      if (this.tabs) {
         L.control
           .sidepanel('sidepanel', {
             panelPosition: 'left',
@@ -236,9 +267,6 @@
           }
         })
       }
-      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.zoom)
-      this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
-      //this.map.setZoom(this.zoom)
     },
     onBeforeUnmount() {
       if (this.map) {

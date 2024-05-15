@@ -473,27 +473,6 @@
       width: 350px;
     }
   }
-  .mpopup {
-    td:nth-child(1) {
-      text-align: right;
-      padding-right: 5px;
-    }
-    td:nth-child(2) {
-      font-weight: bold;
-    }
-  }
-  .save {
-    width: 50%;
-    padding: 5px;
-    color: white;
-    background-color: blue;
-  }
-  .delete {
-    width: 50%;
-    color: white;
-    background-color: red;
-    padding: 5px;
-  }
   .va-input-wrapper__field.va-input-wrapper__text.va-input__content__input {
     z-index: 9999 !important;
   }

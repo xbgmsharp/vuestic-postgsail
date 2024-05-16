@@ -263,7 +263,8 @@
         return false
       }
 
-      const boatIcon = vesselType === 'Sailing' ? boatMarkerTypes()['Sailboat'] : boatMarkerTypes()['Powerboat']
+      const boatTypes = boatMarkerTypes()
+      const boatIcon = vesselType === 'Sailing' ? boatTypes['Sailboat'] : boatTypes['Powerboat']
 
       let layer = null
       if (this.multigeojson) {
@@ -289,7 +290,6 @@
         }
         layer = featGroup
       } else if (this.modelValue && this.modelValue.length > 0) {
-        const boatTypes = boatMarkerTypes()
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
             pointToLayer: boatTypes['Sailboat'],

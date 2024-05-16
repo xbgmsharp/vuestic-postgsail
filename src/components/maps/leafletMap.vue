@@ -109,15 +109,16 @@
         type: Boolean,
         default: false,
       },
-      saveNote: {
+      onSaveNote: {
         type: Function,
         default: null,
       },
-      deletePoint: {
+      onDeletePoint: {
         type: Function,
         default: null,
       },
     },
+    emits: ['update:modelValue', 'save-note', 'delete-point'],
     data() {
       return {
         map: null,
@@ -152,18 +153,6 @@
 
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
-
-      const saveNote = (coordinates) => {
-        if (this.saveNote) {
-          return this.saveNote(coordinates)
-        }
-      }
-
-      const deletePoint = (coordinates) => {
-        if (this.deletePoint) {
-          return this.deletePoint(coordinates)
-        }
-      }
 
       const popup = (feature, layer) => {
         var popupContent =
@@ -202,25 +191,18 @@
           }
           text += `</tbody></table></div>`
 
-          // console.log('popup', this.showNote, this.saveNote, this.deletePoint)
           if (this.showNote) {
             text +=
               'Notes:<br/>' +
               "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
               feature.properties.notes +
               '</textarea><br>'
-            if (this.saveNote) {
-              text +=
-                "<div class='center'><button class='save' onclick='saveNote(" +
-                JSON.stringify(feature.geometry.coordinates) +
-                ")'>Save</button>"
+            if (this.onSaveNote) {
+              text += "<div class='center'><button id='saveNoteButton'>Save</button>"
             }
           }
-          if (this.deletePoint) {
-            text +=
-              "<button class='delete' onclick='deletePoint(" +
-              JSON.stringify(feature.geometry.coordinates) +
-              ")'>Delete</button></div>"
+          if (this.onDeletePoint) {
+            text += '<button id=deletePointButton>Delete</button></div>'
           }
           popupContent = text
         }
@@ -245,7 +227,17 @@
                       </div>`
           popupContent = text
         }
-        layer.bindPopup(popupContent)
+        layer.bindPopup(popupContent).on('popupopen', () => {
+          const saveButton = document.getElementById('saveNoteButton')
+          const deleteButton = document.getElementById('deletePointButton')
+
+          if (saveButton) {
+            saveButton.addEventListener('click', () => this.saveNote(JSON.stringify(feature.geometry.coordinates)))
+          }
+          if (deleteButton) {
+            deleteButton.addEventListener('click', () => this.deletePoint(JSON.stringify(feature.geometry.coordinates)))
+          }
+        })
       }
 
       const bMaps = baseMaps()
@@ -375,6 +367,16 @@
         this.map.remove()
       }
     },
+    methods: {
+      saveNote(coordinates) {
+        console.log('saveNote:', coordinates)
+        this.$emit('save-note', coordinates)
+      },
+      deletePoint(coordinates) {
+        console.log('deletePoint:', coordinates)
+        this.$emit('delete-point', coordinates)
+      },
+    },
   }
 
   function random_rgb_dark() {
@@ -398,13 +400,13 @@
       cursor: pointer;
     }
   }
-  .save {
+  #saveNoteButton {
     width: 50%;
     padding: 5px;
     color: white;
     background-color: blue;
   }
-  .delete {
+  #deletePointButton {
     width: 50%;
     color: white;
     background-color: red;

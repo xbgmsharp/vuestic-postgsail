@@ -15,8 +15,8 @@
             :map-zoom="17"
             :external-link="externalLink"
             :show-note="true"
-            :save-note="saveNote"
-            :delete-point="deletePoint"
+            @save-note="saveNote"
+            @delete-point="deletePoint"
           >
             <template #tab-summary><va-icon name="summarize" /></template>
             <template #content-summary>

@@ -119,7 +119,7 @@
         default: null,
       },
     },
-    emits: ['update:geoJsonFeatures', 'save-note', 'delete-point'],
+    emits: ['save-note', 'delete-point'],
     data() {
       return {
         map: null,

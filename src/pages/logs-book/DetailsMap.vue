@@ -9,7 +9,7 @@
           <lMap
             id="logbook-map"
             ref="logMap"
-            v-model:geo-json-features="GeoJSONfeatures"
+            :geo-json-features="GeoJSONfeatures"
             :tabs="['summary', 'performance', 'observations', 'export']"
             :tabs-auto-open="true"
             :control-layer="true"

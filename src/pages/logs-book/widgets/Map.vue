@@ -44,7 +44,7 @@
       <lMap
         v-if="logbook_geojson.length > 1"
         id="logs-map"
-        :geo-json-features="logbook_geojson"
+        v-model="logbook_geojson"
         :map-zoom="11"
         :geo-filter="true"
         :multigeojson="true"

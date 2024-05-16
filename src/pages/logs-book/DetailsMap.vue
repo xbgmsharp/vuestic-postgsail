@@ -8,9 +8,9 @@
         <va-card>
           <lMap
             id="logbook-map"
+            v-model="GeoJSONfeatures"
             :tabs="['summary', 'performance', 'observations', 'export']"
             :tabs-auto-open="true"
-            :geo-json-features="mapGeoJsonFeatures"
             :control-layer="true"
             :map-zoom="17"
             :external-link="externalLink"
@@ -223,10 +223,8 @@
     return canDelete
   }
 
-  const saveNote = async function (coordinates) {
-    console.log('saveNote to update:', coordinates)
-    var note = document.getElementById('noteTextarea').value
-    //layer.closePopup()
+  const saveNote = async function (coordinates, note) {
+    console.log('saveNote to update:', coordinates, note)
 
     // Save the note to the GeoJSON
     for (let i = 0; i < GeoJSONfeatures.value.length; i++) {
@@ -244,14 +242,6 @@
       }
     }
 
-    // Update each GeoJSON layer on the map
-    Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-      GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-      GeoJSONbasemapObj.value[GeoJSONlayer].addData(GeoJSONfeatures.value)
-      //console.log(GeoJSONfeatures.value.length)
-      //console.log(GeoJSONfeatures.value)
-    })
-
     const track_geojson = {
       type: 'FeatureCollection',
       features: GeoJSONfeatures.value,
@@ -261,6 +251,7 @@
     if (isSaved) {
       console.log('saveNote saved')
     }
+    return Promise.resolve()
   }
 
   // Delete point from GeoJSON features
@@ -302,6 +293,7 @@
     isBusy.value = false
     document.getElementById('logbook-map').style.display = ''
     console.log('deletePoint done')
+    return Promise.resolve()
   }
 
   const handleSubmit = async (local_geojson) => {
@@ -322,12 +314,15 @@
     //console.debug(local_geojson.geoJson.features[0].properties)
     let geojson = {}
     if (local_geojson.name) {
+      console.log('handleSubmit local_geojson.name', local_geojson.name)
       // If we have a log entry object, then update the geojson name in linestring geometry
       local_geojson.geoJson.features[0].properties.name = formData.name
       geojson = local_geojson.geoJson
       // Update the corresponding geojson display on the map.
-      mapGeoJsonFeatures.value[0].properties.name = formData.name
-      mapGeoJsonFeatures.value[0].properties.notes = formData.notes
+      GeoJSONfeatures.value[0].properties.name = formData.name
+      GeoJSONfeatures.value[0].properties.notes = formData.notes
+
+      // TODO: why do we need this code and does it really work?
       // Update the corresponding leaflet layer popup on lineString click
       Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
         //GeoJSONbasemapObj.value.forEach(function (GeoJSONlayer) {
@@ -346,7 +341,7 @@
     } else {
       geojson = local_geojson
     }
-    console.debug(local_geojson)
+    console.log(geojson)
     const api = new PostgSail()
     const id = route.params.id
     const payload = {

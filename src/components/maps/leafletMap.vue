@@ -71,7 +71,8 @@
         type: Boolean,
         default: false,
       },
-      geoJsonFeatures: {
+      modelValue: {
+        // GeoJSONfeatures is passed as v-model
         type: [Array, Object],
         default: null,
       },
@@ -135,18 +136,18 @@
         geojson = this.geoJsonFeature
       }
 
-      if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
-        const midPoint = Math.round(this.geoJsonFeatures.length / 2)
-        console.log(`${this.geoJsonFeatures.length} ${midPoint}`)
-        console.log(this.geoJsonFeatures)
+      if (this.modelValue && this.modelValue.length > 0) {
+        const midPoint = Math.round(this.modelValue.length / 2)
+        console.log(`${this.modelValue.length} ${midPoint}`)
+        console.log(this.modelValue)
         if (this.multigeojson) {
-          centerLat = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[1])
-          centerLng = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[0])
+          centerLat = parseFloat(this.modelValue[midPoint].track_geojson.features[0].geometry.coordinates[1])
+          centerLng = parseFloat(this.modelValue[midPoint].track_geojson.features[0].geometry.coordinates[0])
         } else {
-          centerLat = this.geoJsonFeatures[midPoint].geometry.coordinates[1]
-          centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
+          centerLat = this.modelValue[midPoint].geometry.coordinates[1]
+          centerLng = this.modelValue[midPoint].geometry.coordinates[0]
         }
-        geojson = this.geoJsonFeatures
+        geojson = this.modelValue
       }
       console.debug(`LeafletMap`, geojson)
       if (centerLat == 0 && centerLng == 0) return
@@ -287,7 +288,7 @@
             "background-image: url('/favicon-32x32.png');"
         }
         layer = featGroup
-      } else if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
+      } else if (this.modelValue && this.modelValue.length > 0) {
         const boatTypes = boatMarkerTypes()
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
@@ -307,7 +308,9 @@
             onEachFeature: popup,
           }),
         }
-        L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
+        if (this.controlLayer) {
+          L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
+        }
         layer =
           vesselType === 'Sailing'
             ? GeoJSONbasemapObj.value['Sailboat']
@@ -368,13 +371,28 @@
       }
     },
     methods: {
-      saveNote(coordinates) {
+      async saveNote(coordinates) {
         console.log('saveNote:', coordinates)
-        this.$emit('save-note', coordinates)
+        var note = document.getElementById('noteTextarea').value
+
+        await this.$emit('save-note', coordinates, note)
+
+        // Update each GeoJSON layer on the map
+        Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+          GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
+          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.modelValue)
+        })
       },
-      deletePoint(coordinates) {
+      async deletePoint(coordinates) {
         console.log('deletePoint:', coordinates)
-        this.$emit('delete-point', coordinates)
+
+        await this.$emit('delete-point', coordinates)
+
+        // Update each GeoJSON layer on the map
+        Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+          GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
+          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.modelValue)
+        })
       },
     },
   }

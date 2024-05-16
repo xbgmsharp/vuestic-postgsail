@@ -171,7 +171,7 @@
       let geo_arr = apiData.row.geojson.features
       for (var i = 1; i < geo_arr.length; i++) {
         //console.log(geo_arr[i].properties)
-        wind_arr.value.push(geo_arr[i].properties.windspeedapparent)
+        wind_arr.value.push(geo_arr[i].properties.truewindspeed)
         speed_arr.value.push(geo_arr[i].properties.speedoverground)
         labels_arr.value.push(dateFormatTime(geo_arr[i].properties.time))
       }

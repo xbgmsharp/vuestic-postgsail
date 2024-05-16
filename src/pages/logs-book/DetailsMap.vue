@@ -154,14 +154,12 @@
     return !isBusy.value && formData.isValid && isDirty
   })
   onMounted(async () => {
-    console.log('onMounted')
     isBusy.value = true
     apiError.value = null
     const id = route.params.id
     try {
       const response = await CacheStore.getAPI('log_get', id)
       apiData.row = response[0]
-      console.log('onMounted', apiData.row)
       formData.name = apiData.row.name || null
       formData.notes = apiData.row.notes || null
       formData.geojson = apiData.row.geojson || null
@@ -186,7 +184,6 @@
         apiData.row = row
       }
     } finally {
-      console.log('onMounted finally')
       isBusy.value = false
     }
   })
@@ -305,7 +302,6 @@
     //console.debug(local_geojson.geoJson.features[0].properties)
     let geojson = {}
     if (local_geojson.name) {
-      console.log('handleSubmit local_geojson.name', local_geojson.name)
       // If we have a log entry object, then update the geojson name in linestring geometry
       local_geojson.geoJson.features[0].properties.name = formData.name
       geojson = local_geojson.geoJson
@@ -315,7 +311,7 @@
     } else {
       geojson = local_geojson
     }
-    console.log(geojson)
+    console.debug(geojson)
     const api = new PostgSail()
     const id = route.params.id
     const payload = {

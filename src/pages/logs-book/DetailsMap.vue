@@ -110,7 +110,6 @@
     wind_arr = ref([]),
     labels_arr = ref([]),
     GeoJSONfeatures = ref(),
-    GeoJSONbasemapObj = ref({}),
     tagsOptions = ref([])
 
   const item = computed(() => {
@@ -272,14 +271,6 @@
         return true
       })
 
-      // Update each GeoJSON layer on the map
-      Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-        GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-        GeoJSONbasemapObj.value[GeoJSONlayer].addData(GeoJSONfeatures.value)
-        //console.log(GeoJSONfeatures.value.length)
-        //console.log(GeoJSONfeatures.value)
-      })
-
       const track_geojson = {
         type: 'FeatureCollection',
         features: GeoJSONfeatures.value,
@@ -288,6 +279,9 @@
       const isSaved = await handleSubmit(track_geojson)
       if (isSaved) {
         console.log('deletePoint removed')
+        // Clean CacheStore and force refresh
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
       }
     }
     isBusy.value = false
@@ -323,21 +317,22 @@
       GeoJSONfeatures.value[0].properties.notes = formData.notes
 
       // TODO: why do we need this code and does it really work?
-      // Update the corresponding leaflet layer popup on lineString click
-      Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-        //GeoJSONbasemapObj.value.forEach(function (GeoJSONlayer) {
-        GeoJSONbasemapObj.value[GeoJSONlayer].eachLayer(function (layer) {
-          if (layer.LineString) {
-            //console.log(layer)
-            layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
-                Time: ${item.value.fromTime}<br/>
-                Average Speed: ${item.value.avg_speed}<br/>
-                Duration: ${item.value.duration}<br/>
-                Distance: ${item.value.distance}<br/>
-                Notes: ${formData.notes}<br/>`)
-          }
-        })
-      })
+      // Note: We cannot access this anymore here, may need to move to lMap components
+      // // Update the corresponding leaflet layer popup on lineString click
+      // Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+      //   //GeoJSONbasemapObj.value.forEach(function (GeoJSONlayer) {
+      //   GeoJSONbasemapObj.value[GeoJSONlayer].eachLayer(function (layer) {
+      //     if (layer.LineString) {
+      //       //console.log(layer)
+      //       layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
+      //           Time: ${item.value.fromTime}<br/>
+      //           Average Speed: ${item.value.avg_speed}<br/>
+      //           Duration: ${item.value.duration}<br/>
+      //           Distance: ${item.value.distance}<br/>
+      //           Notes: ${formData.notes}<br/>`)
+      //     }
+      //   })
+      //})
     } else {
       geojson = local_geojson
     }

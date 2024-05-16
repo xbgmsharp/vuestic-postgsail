@@ -126,7 +126,7 @@
       }
     },
     mounted() {
-      console.log('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom, 'showNote', this.showNote)
+      console.debug('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom, 'showNote', this.showNote)
       let centerLat = 0
       let centerLng = 0
       let geojson = null
@@ -138,8 +138,8 @@
 
       if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
         const midPoint = Math.round(this.geoJsonFeatures.length / 2)
-        console.log(`${this.geoJsonFeatures.length} ${midPoint}`)
-        console.log(this.geoJsonFeatures)
+        console.debug('leght,midPoint', `${this.geoJsonFeatures.length} ${midPoint}`)
+        console.debug('geoJsonFeatures', this.geoJsonFeatures)
         if (this.multigeojson) {
           centerLat = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[1])
           centerLng = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[0])
@@ -332,7 +332,7 @@
         }).addTo(this.map)
       }
 
-      console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.mapZoom)
+      console.debug('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.mapZoom)
       this.map.fitBounds(GeoJSONLayer.value.getBounds(), { maxZoom: 17 })
 
       if (this.externalLink) {
@@ -376,13 +376,11 @@
     },
     methods: {
       refreshLayers() {
-        console.log('refreshLayers')
+        console.debug('refreshLayers')
         Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-          console.log('clearLayer:', GeoJSONlayer)
           GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
           GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
         })
-        console.log('removeLayer')
         this.map.removeLayer(GeoJSONLayer.value)
         GeoJSONLayer.value =
           vesselType === 'Sailing'
@@ -390,18 +388,15 @@
             : vesselType === 'Pleasure Craft'
             ? GeoJSONbasemapObj.value['Powerboat']
             : GeoJSONbasemapObj.value['Dot']
-        console.log('addLayer')
         GeoJSONLayer.value.addTo(this.map)
       },
       saveNote(coordinates) {
-        console.log('saveNote:', coordinates)
+        console.debug('saveNote:', coordinates)
         var note = document.getElementById('noteTextarea').value
-
         this.$emit('save-note', coordinates, note)
       },
       deletePoint(coordinates) {
-        console.log('deletePoint:', coordinates)
-
+        console.debug('deletePoint:', coordinates)
         this.$emit('delete-point', coordinates)
       },
     },

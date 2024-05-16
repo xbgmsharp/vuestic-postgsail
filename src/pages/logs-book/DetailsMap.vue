@@ -251,10 +251,6 @@
     const isSaved = await handleSubmit(track_geojson)
     if (isSaved) {
       console.log('saveNote saved')
-      logMap.value.refreshLayers()
-      // Clean CacheStore and force refresh
-      CacheStore.logs_get = []
-      CacheStore.store_ttl = null
     }
   }
 
@@ -284,10 +280,6 @@
       const isSaved = await handleSubmit(track_geojson)
       if (isSaved) {
         console.log('deletePoint removed')
-        logMap.value.refreshLayers()
-        // Clean CacheStore and force refresh
-        CacheStore.logs_get = []
-        CacheStore.store_ttl = null
       }
     }
     isBusy.value = false
@@ -320,24 +312,6 @@
       // Update the corresponding geojson display on the map.
       GeoJSONfeatures.value[0].properties.name = formData.name
       GeoJSONfeatures.value[0].properties.notes = formData.notes
-
-      // TODO: why do we need this code and does it really work?
-      // Note: We cannot access this anymore here, may need to move to lMap components
-      // // Update the corresponding leaflet layer popup on lineString click
-      // Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-      //   //GeoJSONbasemapObj.value.forEach(function (GeoJSONlayer) {
-      //   GeoJSONbasemapObj.value[GeoJSONlayer].eachLayer(function (layer) {
-      //     if (layer.LineString) {
-      //       //console.log(layer)
-      //       layer._popup.setContent(`<div class='center'><h4>${formData.name}</h4></div><br/>
-      //           Time: ${item.value.fromTime}<br/>
-      //           Average Speed: ${item.value.avg_speed}<br/>
-      //           Duration: ${item.value.duration}<br/>
-      //           Distance: ${item.value.distance}<br/>
-      //           Notes: ${formData.notes}<br/>`)
-      //     }
-      //   })
-      //})
     } else {
       geojson = local_geojson
     }
@@ -354,6 +328,7 @@
       if (response) {
         console.log('log_update success', response)
         // Clean CacheStore and force refresh
+        logMap.value.refreshLayers()
         CacheStore.logs = []
         CacheStore.logs_get = []
         CacheStore.store_ttl = null

@@ -154,67 +154,63 @@
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
 
-      const popup = (feature, layer) => {
-        var popupContent =
-          '<p>I started out as a GeoJSON ' + feature.geometry.type + ", but now I'm a Leaflet vector!</p>"
-
-        if (feature.properties && feature.properties.time) {
-          let status = feature.properties.status || ''
-          let time = dateFormatUTC(feature.properties.time)
-          let sog = speedFormatKnots(feature.properties.speedoverground)
-          let cog = angleFormat(feature.properties.courseovergroundtrue)
-          let twd = angleFormat(feature.properties.truewinddirection)
-          let aws = speedFormatKnots(feature.properties.windspeedapparent)
-          let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
-          let latitude = parseFloat(feature.properties.latitude).toFixed(3)
-          let longitude = parseFloat(feature.properties.longitude).toFixed(3)
-          let text = `<div class='mpopup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
-                      <table class='data'><tbody>
-                        <tr><td>Time</td><td>${time}</td></tr>
-                        <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`
-          if (feature.properties.speedoverground) {
-            text += `<tr><td>Speed</td><td>${sog}`
-            if (feature.properties.courseovergroundtrue) {
-              text += ` / ${cog}`
-            }
-            text += `</td></tr>`
+      const textPopupPoint = (feature) => {
+        let status = feature.properties.status || ''
+        let time = dateFormatUTC(feature.properties.time)
+        let sog = speedFormatKnots(feature.properties.speedoverground)
+        let cog = angleFormat(feature.properties.courseovergroundtrue)
+        let twd = angleFormat(feature.properties.truewinddirection)
+        let aws = speedFormatKnots(feature.properties.windspeedapparent)
+        let awa = awaFormat(feature.properties.truewinddirection, feature.properties.courseovergroundtrue)
+        let latitude = parseFloat(feature.properties.latitude).toFixed(3)
+        let longitude = parseFloat(feature.properties.longitude).toFixed(3)
+        let text = `<div class='mpopup' id='${time}'><h4>${vesselName}: ${status}</h4><br/>
+                          <table class='data'><tbody>
+                            <tr><td>Time</td><td>${time}</td></tr>
+                            <tr><td>Position</td><td>${latitude} ${longitude}</td></tr>`
+        if (feature.properties.speedoverground) {
+          text += `<tr><td>Speed</td><td>${sog}`
+          if (feature.properties.courseovergroundtrue) {
+            text += ` / ${cog}`
           }
-          if (feature.properties.windspeedapparent) {
-            text += `<tr><td>Wind</td><td>${aws}`
-            if (feature.properties.truewinddirection) {
-              text += ` / ${twd}`
-            }
-            text += `</td></tr>`
-          }
-          if (feature.properties.truewinddirection && feature.properties.courseovergroundtrue) {
-            text += `<tr><td>AWA</td><td>${awa}</td></tr>`
-          }
-          text += `</tbody></table></div>`
-
-          if (this.showNote) {
-            text +=
-              'Notes:<br/>' +
-              "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
-              feature.properties.notes +
-              '</textarea><br>'
-            if (this.onSaveNote) {
-              text += "<div class='center'><button id='saveNoteButton'>Save</button>"
-            }
-          }
-          if (this.onDeletePoint) {
-            text += '<button id=deletePointButton>Delete</button></div>'
-          }
-          popupContent = text
+          text += `</td></tr>`
         }
-        // If geo linestring click
-        if (feature.properties && feature.properties._from_time) {
-          let time = dateFormatUTC(feature.properties._from_time)
-          let duration = durationFormatHours(feature.properties.duration)
-          let distance = distanceFormatMiles(feature.properties.distance)
-          let avg_speed = speedFormatKnots(feature.properties.avg_speed)
-          let max_speed = speedFormatKnots(feature.properties.max_speed)
-          let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
-          let text = `<div class='mpopup'>
+        if (feature.properties.windspeedapparent) {
+          text += `<tr><td>Wind</td><td>${aws}`
+          if (feature.properties.truewinddirection) {
+            text += ` / ${twd}`
+          }
+          text += `</td></tr>`
+        }
+        if (feature.properties.truewinddirection && feature.properties.courseovergroundtrue) {
+          text += `<tr><td>AWA</td><td>${awa}</td></tr>`
+        }
+        text += `</tbody></table></div>`
+
+        if (this.showNote) {
+          text +=
+            'Notes:<br/>' +
+            "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
+            feature.properties.notes +
+            '</textarea><br>'
+          if (this.onSaveNote) {
+            text += "<div class='center'><button id='saveNoteButton'>Save</button>"
+          }
+        }
+        if (this.onDeletePoint) {
+          text += '<button id=deletePointButton>Delete</button></div>'
+        }
+        return text
+      }
+
+      const textPopupLine = (feature) => {
+        let time = dateFormatUTC(feature.properties._from_time)
+        let duration = durationFormatHours(feature.properties.duration)
+        let distance = distanceFormatMiles(feature.properties.distance)
+        let avg_speed = speedFormatKnots(feature.properties.avg_speed)
+        let max_speed = speedFormatKnots(feature.properties.max_speed)
+        let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+        let text = `<div class='mpopup'>
                         <h4><a href="/logmap/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
                         <table class='data'><tbody>
                           <tr><td>Time</td><td>${time}</td></tr>
@@ -225,7 +221,16 @@
                         </tbody></table></br>
                         <a href="/timelapse/${feature.properties.id}">Replay</a>
                       </div>`
-          popupContent = text
+        return text
+      }
+
+      const popup = (feature, layer) => {
+        var popupContent = '<p>GeoJSON ' + feature.geometry.type + " now I'm a Leaflet vector!</p>"
+        if (feature.properties && feature.properties.time) {
+          popupContent = textPopupPoint(feature)
+        }
+        if (feature.properties && feature.properties._from_time) {
+          popupContent = textPopupLine(feature)
         }
         layer.bindPopup(popupContent).on('popupopen', () => {
           const saveButton = document.getElementById('saveNoteButton')

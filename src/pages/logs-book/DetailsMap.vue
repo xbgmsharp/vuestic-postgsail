@@ -235,7 +235,7 @@
         const pointCoordinates = geofeature.geometry.coordinates
         // Check if the coordinates match the target coordinates
         if (pointCoordinates[0] === coordinates[0] && pointCoordinates[1] === coordinates[1]) {
-          console.log('GeoJSONfeatures index:', i)
+          console.log('GeoJSONfeatures found index:', i)
           GeoJSONfeatures.value[i].properties.notes = note
           break // Exit loop if the point is found
         }

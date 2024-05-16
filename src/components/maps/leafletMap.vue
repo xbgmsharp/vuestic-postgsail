@@ -233,10 +233,10 @@
           const deleteButton = document.getElementById('deletePointButton')
 
           if (saveButton) {
-            saveButton.addEventListener('click', () => this.saveNote(JSON.stringify(feature.geometry.coordinates)))
+            saveButton.addEventListener('click', () => this.saveNote(feature.geometry.coordinates))
           }
           if (deleteButton) {
-            deleteButton.addEventListener('click', () => this.deletePoint(JSON.stringify(feature.geometry.coordinates)))
+            deleteButton.addEventListener('click', () => this.deletePoint(feature.geometry.coordinates))
           }
         })
       }

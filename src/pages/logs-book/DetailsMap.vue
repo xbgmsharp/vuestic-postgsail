@@ -8,6 +8,7 @@
         <va-card>
           <lMap
             id="logbook-map"
+            ref="logMap"
             v-model:geo-json-features="GeoJSONfeatures"
             :tabs="['summary', 'performance', 'observations', 'export']"
             :tabs-auto-open="true"
@@ -106,7 +107,8 @@
     geojson: null,
     tags: [],
   })
-  const speed_arr = ref([]),
+  const logMap = ref(null),
+    speed_arr = ref([]),
     wind_arr = ref([]),
     labels_arr = ref([]),
     GeoJSONfeatures = ref(),
@@ -249,8 +251,11 @@
     const isSaved = await handleSubmit(track_geojson)
     if (isSaved) {
       console.log('saveNote saved')
+      logMap.value.refreshLayers()
+      // Clean CacheStore and force refresh
+      CacheStore.logs_get = []
+      CacheStore.store_ttl = null
     }
-    return Promise.resolve()
   }
 
   // Delete point from GeoJSON features
@@ -279,6 +284,7 @@
       const isSaved = await handleSubmit(track_geojson)
       if (isSaved) {
         console.log('deletePoint removed')
+        logMap.value.refreshLayers()
         // Clean CacheStore and force refresh
         CacheStore.logs_get = []
         CacheStore.store_ttl = null
@@ -287,7 +293,6 @@
     isBusy.value = false
     document.getElementById('logbook-map').style.display = ''
     console.log('deletePoint done')
-    return Promise.resolve()
   }
 
   const handleSubmit = async (local_geojson) => {

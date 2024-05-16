@@ -55,6 +55,7 @@
   const { vesselName, vesselType } = useVesselStore()
 
   const GeoJSONbasemapObj = ref({})
+  const GeoJSONLayer = ref(null)
 
   export default {
     name: 'LeafletMap',
@@ -270,7 +271,6 @@
       const boatTypes = boatMarkerTypes()
       const boatIcon = vesselType === 'Sailing' ? boatTypes['Sailboat'] : boatTypes['Powerboat']
 
-      let layer = null
       if (this.multigeojson) {
         let layers = []
         let featGroup = new L.FeatureGroup()
@@ -292,7 +292,7 @@
           document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
             "background-image: url('/favicon-32x32.png');"
         }
-        layer = featGroup
+        GeoJSONLayer.value = featGroup
       } else if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
@@ -312,20 +312,20 @@
             onEachFeature: popup,
           }),
         }
-        layer =
+        GeoJSONLayer.value =
           vesselType === 'Sailing'
             ? GeoJSONbasemapObj.value['Sailboat']
             : vesselType === 'Pleasure Craft'
             ? GeoJSONbasemapObj.value['Powerboat']
             : GeoJSONbasemapObj.value['Dot']
-        layer.addTo(this.map)
+        GeoJSONLayer.value.addTo(this.map)
         if (this.controlLayer) {
           L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
           document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
             "background-image: url('/favicon-32x32.png');"
         }
       } else {
-        layer = L.geoJSON(geojson, {
+        GeoJSONLayer.value = L.geoJSON(geojson, {
           filter: geoMapFilter,
           pointToLayer: boatIcon,
           onEachFeature: popup,
@@ -333,7 +333,7 @@
       }
 
       console.log('LeafletMap props.controlLayer', this.controlLayer, 'props.Zoom:', this.mapZoom)
-      this.map.fitBounds(layer.getBounds(), { maxZoom: 17 })
+      this.map.fitBounds(GeoJSONLayer.value.getBounds(), { maxZoom: 17 })
 
       if (this.externalLink) {
         var extLinkUrl = this.externalLink
@@ -375,34 +375,34 @@
       }
     },
     methods: {
-      async saveNote(coordinates) {
+      refreshLayers() {
+        console.log('refreshLayers')
+        Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+          console.log('clearLayer:', GeoJSONlayer)
+          GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
+          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
+        })
+        console.log('removeLayer')
+        this.map.removeLayer(GeoJSONLayer.value)
+        GeoJSONLayer.value =
+          vesselType === 'Sailing'
+            ? GeoJSONbasemapObj.value['Sailboat']
+            : vesselType === 'Pleasure Craft'
+            ? GeoJSONbasemapObj.value['Powerboat']
+            : GeoJSONbasemapObj.value['Dot']
+        console.log('addLayer')
+        GeoJSONLayer.value.addTo(this.map)
+      },
+      saveNote(coordinates) {
         console.log('saveNote:', coordinates)
         var note = document.getElementById('noteTextarea').value
 
-        await this.$emit('save-note', coordinates, note)
-
-        // Update each GeoJSON layer on the map
-        console.log('saveNote after:', this.geoJsonFeatures)
-        Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-          console.log('clearLayer:', GeoJSONlayer)
-          GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
-        })
-        this.map.closePopup()
+        this.$emit('save-note', coordinates, note)
       },
-      async deletePoint(coordinates) {
+      deletePoint(coordinates) {
         console.log('deletePoint:', coordinates)
 
-        await this.$emit('delete-point', coordinates)
-
-        // Update each GeoJSON layer on the map
-        console.log('deletePoint after:', this.geoJsonFeatures)
-        Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
-          console.log('clearLayer:', GeoJSONlayer)
-          GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
-        })
-        this.map.closePopup()
+        this.$emit('delete-point', coordinates)
       },
     },
   }

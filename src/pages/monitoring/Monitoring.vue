@@ -5,7 +5,7 @@
     </template>
     <template v-if="!offline && apiSuccess">
       <template v-if="items.geojson">
-        <lMap
+        <l-map
           id="monitoring-map"
           :tabs="['vessel']"
           :tabs-auto-open="true"
@@ -54,7 +54,7 @@
               <display-lcd id="battery" :display="items.battery"></display-lcd>
             </div>
           </template>
-        </lMap>
+        </l-map>
       </template>
     </template>
   </va-card>

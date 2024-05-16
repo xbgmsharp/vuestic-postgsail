@@ -1,7 +1,7 @@
 <template>
   <template v-if="!isBusy && item">
     <div class="leaflet-map__full">
-      <lMap
+      <l-map
         id="log-map-full"
         :geo-json-features="mapGeoJsonFeatures"
         :map-zoom="10"

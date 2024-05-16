@@ -40,8 +40,8 @@
 
 <template>
   <div>
-    <VaInnerLoading :loading="isBusy">
-      <lMap
+    <va-inner-loading :loading="isBusy">
+      <l-map
         v-if="logbook_geojson.length > 1"
         id="logs-map"
         :geo-json-features="logbook_geojson"
@@ -49,7 +49,7 @@
         :geo-filter="true"
         :multigeojson="true"
       />
-    </VaInnerLoading>
+    </va-inner-loading>
   </div>
 </template>
 

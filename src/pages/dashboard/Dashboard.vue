@@ -55,7 +55,7 @@
       </va-card>
       <va-card v-if="monitoring.geojson" class="flex card-width">
         <va-card-content>
-          <lMap id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
+          <l-map id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
         </va-card-content>
       </va-card>
     </template>

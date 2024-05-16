@@ -6,7 +6,7 @@
     <va-inner-loading :loading="item && isBusy">
       <template v-if="item && item.geoJson">
         <va-card>
-          <lMap
+          <l-map
             id="logbook-map"
             ref="logMap"
             :geo-json-features="GeoJSONfeatures"
@@ -22,7 +22,7 @@
             <template #tab-summary><va-icon name="summarize" /></template>
             <template #content-summary>
               <template v-if="item">
-                <tripSummary
+                <trip-summary
                   v-if="item"
                   :logbook="item"
                   :form-data="formData"
@@ -39,7 +39,7 @@
             <template #tab-performance><va-icon name="bar_chart" /></template>
             <template #content-performance>
               <template v-if="item">
-                <tripPerformance
+                <trip-performance
                   v-if="item"
                   :winddata="wind_arr"
                   :speeddata="speed_arr"
@@ -51,16 +51,16 @@
             <template #tab-observations><va-icon name="settings_suggest" /></template>
             <template #content-observations>
               <template v-if="item">
-                <tripObservations v-if="item" :logbook="item" :form-data="formData" :loading="isBusy" />
+                <trip-observations v-if="item" :logbook="item" :form-data="formData" :loading="isBusy" />
               </template>
             </template>
             <template #tab-export><va-icon name="ios_share" /></template>
             <template #content-export>
               <template v-if="item">
-                <tripExport v-if="item" :logbook="item" :form-data="formData" :loading="isBusy" />
+                <trip-export v-if="item" :logbook="item" :form-data="formData" :loading="isBusy" />
               </template>
             </template>
-          </lMap>
+          </l-map>
         </va-card>
       </template>
     </va-inner-loading>

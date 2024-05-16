@@ -9,7 +9,7 @@
         <va-inner-loading :loading="isBusy">
           <div class="mb-3 my-3">
             <template v-if="!isBusy && item.geoJson">
-              <lMap id="boat-map" :geo-json-feature="mapGeoJsonFeatures" map-type="Satellite" :map-zoom="14" />
+              <l-map id="boat-map" :geo-json-feature="mapGeoJsonFeatures" map-type="Satellite" :map-zoom="14" />
             </template>
           </div>
           <div class="mb-3 my-3" style="text-align: center">

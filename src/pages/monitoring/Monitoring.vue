@@ -8,6 +8,7 @@
         <lMap
           id="monitoring-map"
           :tabs="['vessel']"
+          :tabs-auto-open="true"
           :geo-json-feature="mapGeoJsonFeatures"
           :map-zoom="13"
           map-type="Satellite"

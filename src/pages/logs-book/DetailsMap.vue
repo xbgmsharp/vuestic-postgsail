@@ -8,7 +8,7 @@
         <va-card>
           <lMap
             id="logbook-map"
-            v-model="GeoJSONfeatures"
+            v-model:geo-json-features="GeoJSONfeatures"
             :tabs="['summary', 'performance', 'observations', 'export']"
             :tabs-auto-open="true"
             :control-layer="true"

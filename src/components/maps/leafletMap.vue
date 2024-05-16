@@ -71,8 +71,7 @@
         type: Boolean,
         default: false,
       },
-      modelValue: {
-        // GeoJSONfeatures is passed as v-model
+      geoJsonFeatures: {
         type: [Array, Object],
         default: null,
       },
@@ -119,7 +118,7 @@
         default: null,
       },
     },
-    emits: ['update:modelValue', 'save-note', 'delete-point'],
+    emits: ['update:geoJsonFeatures', 'save-note', 'delete-point'],
     data() {
       return {
         map: null,
@@ -136,18 +135,18 @@
         geojson = this.geoJsonFeature
       }
 
-      if (this.modelValue && this.modelValue.length > 0) {
-        const midPoint = Math.round(this.modelValue.length / 2)
-        console.log(`${this.modelValue.length} ${midPoint}`)
-        console.log(this.modelValue)
+      if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
+        const midPoint = Math.round(this.geoJsonFeatures.length / 2)
+        console.log(`${this.geoJsonFeatures.length} ${midPoint}`)
+        console.log(this.geoJsonFeatures)
         if (this.multigeojson) {
-          centerLat = parseFloat(this.modelValue[midPoint].track_geojson.features[0].geometry.coordinates[1])
-          centerLng = parseFloat(this.modelValue[midPoint].track_geojson.features[0].geometry.coordinates[0])
+          centerLat = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[1])
+          centerLng = parseFloat(this.geoJsonFeatures[midPoint].track_geojson.features[0].geometry.coordinates[0])
         } else {
-          centerLat = this.modelValue[midPoint].geometry.coordinates[1]
-          centerLng = this.modelValue[midPoint].geometry.coordinates[0]
+          centerLat = this.geoJsonFeatures[midPoint].geometry.coordinates[1]
+          centerLng = this.geoJsonFeatures[midPoint].geometry.coordinates[0]
         }
-        geojson = this.modelValue
+        geojson = this.geoJsonFeatures
       }
       console.debug(`LeafletMap`, geojson)
       if (centerLat == 0 && centerLng == 0) return
@@ -289,7 +288,7 @@
             "background-image: url('/favicon-32x32.png');"
         }
         layer = featGroup
-      } else if (this.modelValue && this.modelValue.length > 0) {
+      } else if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
             pointToLayer: boatTypes['Sailboat'],
@@ -308,9 +307,6 @@
             onEachFeature: popup,
           }),
         }
-        if (this.controlLayer) {
-          L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
-        }
         layer =
           vesselType === 'Sailing'
             ? GeoJSONbasemapObj.value['Sailboat']
@@ -318,8 +314,11 @@
             ? GeoJSONbasemapObj.value['Powerboat']
             : GeoJSONbasemapObj.value['Dot']
         layer.addTo(this.map)
-        document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
-          "background-image: url('/favicon-32x32.png');"
+        if (this.controlLayer) {
+          L.control.layers(GeoJSONbasemapObj.value).addTo(this.map)
+          document.getElementsByClassName('leaflet-control-layers-toggle')[1].style =
+            "background-image: url('/favicon-32x32.png');"
+        }
       } else {
         layer = L.geoJSON(geojson, {
           filter: geoMapFilter,
@@ -378,10 +377,13 @@
         await this.$emit('save-note', coordinates, note)
 
         // Update each GeoJSON layer on the map
+        console.log('saveNote after:', this.geoJsonFeatures)
         Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+          console.log('clearLayer:', GeoJSONlayer)
           GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.modelValue)
+          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
         })
+        this.map.closePopup()
       },
       async deletePoint(coordinates) {
         console.log('deletePoint:', coordinates)
@@ -389,10 +391,13 @@
         await this.$emit('delete-point', coordinates)
 
         // Update each GeoJSON layer on the map
+        console.log('deletePoint after:', this.geoJsonFeatures)
         Object.keys(GeoJSONbasemapObj.value).forEach((GeoJSONlayer) => {
+          console.log('clearLayer:', GeoJSONlayer)
           GeoJSONbasemapObj.value[GeoJSONlayer].clearLayers()
-          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.modelValue)
+          GeoJSONbasemapObj.value[GeoJSONlayer].addData(this.geoJsonFeatures)
         })
+        this.map.closePopup()
       },
     },
   }

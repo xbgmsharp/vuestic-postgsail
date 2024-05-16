@@ -405,6 +405,10 @@
       const response = await api.log_delete(id)
       if (response) {
         console.log('log_delete success', response)
+        // Clean CacheStore and force refresh
+        CacheStore.logs = []
+        CacheStore.logs_get = []
+        CacheStore.store_ttl = null
       } else {
         throw { response }
       }

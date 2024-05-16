@@ -198,6 +198,7 @@
           }
           text += `</tbody></table></div>`
 
+          // console.log('popup', this.showNote, this.saveNote, this.deletePoint)
           if (this.showNote) {
             text +=
               'Notes:<br/>' +
@@ -290,8 +291,7 @@
             "background-image: url('/favicon-32x32.png');"
         }
         layer = featGroup
-      }
-      if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
+      } else if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
         const boatTypes = boatMarkerTypes()
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
@@ -391,6 +391,18 @@
     a {
       cursor: pointer;
     }
+  }
+  .save {
+    width: 50%;
+    padding: 5px;
+    color: white;
+    background-color: blue;
+  }
+  .delete {
+    width: 50%;
+    color: white;
+    background-color: red;
+    padding: 5px;
   }
   .sidepanel {
     z-index: 10;

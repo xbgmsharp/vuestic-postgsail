@@ -119,20 +119,6 @@
         map: null,
       }
     },
-    saveNoteEvent(event) {
-      const coordinates = JSON.parse(event.target.getAttribute('data-coordinates'))
-      const noteTextarea = document.getElementById('noteTextarea')
-      const note = noteTextarea ? noteTextarea.value : ''
-      if (this.saveNote) {
-        this.saveNote(coordinates, note)
-      }
-    },
-    deletePointEvent(event) {
-      const coordinates = JSON.parse(event.target.getAttribute('data-coordinates'))
-      if (this.deletePoint) {
-        this.deletePoint(coordinates)
-      }
-    },
     mounted() {
       console.log('Props mapType:', this.mapType, ' mapZoom:', this.mapZoom, 'showNote', this.showNote)
       let centerLat = 0
@@ -162,6 +148,18 @@
 
       console.debug(`LeafletMap centerLatLng: ${centerLat} ${centerLng}`)
       this.map = L.map(this.id, { zoomControl: false }).setView([centerLat, centerLng], this.mapZoom)
+
+      const saveNote = (coordinates) => {
+        if (this.saveNote) {
+          return this.saveNote(coordinates)
+        }
+      }
+
+      const deletePoint = (coordinates) => {
+        if (this.deletePoint) {
+          return this.deletePoint(coordinates)
+        }
+      }
 
       const popup = (feature, layer) => {
         var popupContent =
@@ -206,17 +204,18 @@
               "<textarea style='box-sizing: border-box;border-width: 1px;' id='noteTextarea' rows='4' cols='30'>" +
               feature.properties.notes +
               '</textarea><br>'
-
             if (this.saveNote) {
-              text += `<div class='center'><button class='save' data-coordinates='${JSON.stringify(
-                feature.geometry.coordinates,
-              )}' @click='saveNoteEvent'>Save</button>`
+              text +=
+                "<div class='center'><button class='save' onclick='saveNote(" +
+                JSON.stringify(feature.geometry.coordinates) +
+                ")'>Save</button>"
             }
           }
           if (this.deletePoint) {
-            text += `<button class='delete' data-coordinates='${JSON.stringify(
-              feature.geometry.coordinates,
-            )}' @click='deletePointEvent'>Delete</button></div>`
+            text +=
+              "<button class='delete' onclick='deletePoint(" +
+              JSON.stringify(feature.geometry.coordinates) +
+              ")'>Delete</button></div>"
           }
           popupContent = text
         }

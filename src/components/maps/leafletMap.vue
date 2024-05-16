@@ -67,6 +67,10 @@
         type: Array,
         default: null,
       },
+      tabsAutoOpen: {
+        type: Boolean,
+        default: false,
+      },
       geoJsonFeatures: {
         type: [Array, Object],
         default: null,
@@ -356,12 +360,14 @@
           })
           .addTo(this.map)
 
-        this.map.whenReady(function () {
-          var toggleButton = document.querySelector('.sidepanel-toggle-button')
-          if (toggleButton) {
-            toggleButton.click()
-          }
-        })
+        if (this.tabsAutoOpen) {
+          this.map.whenReady(function () {
+            var toggleButton = document.querySelector('.sidepanel-toggle-button')
+            if (toggleButton) {
+              toggleButton.click()
+            }
+          })
+        }
       }
     },
     onBeforeUnmount() {

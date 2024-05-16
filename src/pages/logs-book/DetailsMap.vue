@@ -9,6 +9,7 @@
           <lMap
             id="logbook-map"
             :tabs="['summary', 'performance', 'observations', 'export']"
+            :tabs-auto-open="true"
             :geo-json-features="mapGeoJsonFeatures"
             :control-layer="true"
             :map-zoom="17"

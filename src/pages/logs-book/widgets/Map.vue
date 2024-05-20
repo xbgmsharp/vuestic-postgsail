@@ -40,17 +40,22 @@
 
 <template>
   <div>
-    <VaInnerLoading :loading="isBusy">
-      <lMap
+    <va-inner-loading :loading="isBusy">
+      <l-map
         v-if="logbook_geojson.length > 1"
+        id="logs-map"
         :geo-json-features="logbook_geojson"
-        style="width: 100%; height: 80vh"
         :map-zoom="11"
         :geo-filter="true"
         :multigeojson="true"
       />
-    </VaInnerLoading>
+    </va-inner-loading>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+  #logs-map {
+    width: 100%;
+    height: 80vh;
+  }
+</style>

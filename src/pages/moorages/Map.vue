@@ -1,5 +1,7 @@
 <template>
-  <Map style="width: 100%; height: 80vh" :map-zoom="8" :moorage-map-id="0" />
+  <div class="leaflet-map__full">
+    <Map style="width: 100%; height: calc(100vh - 4.5rem)" :map-zoom="8" :moorage-map-id="0" />
+  </div>
 </template>
 
 <script setup>

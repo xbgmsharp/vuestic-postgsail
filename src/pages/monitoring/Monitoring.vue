@@ -1,85 +1,71 @@
 <template>
-  <template v-if="apiError">
-    <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
-  </template>
-  <template v-if="offline">
-    <Offline />
-  </template>
-  <template v-if="!offline && apiSuccess">
-    <va-card class="mb-3">
-      <va-card-title>{{ $t('monitoring.title') }}</va-card-title>
-      <va-card-content>
-        <h1 class="box layout gutter--md">{{ items.vessel_name }} {{ msg_fromNow }}</h1>
-        <div style="font-size: 10pt; text-align: center">
-          <template v-if="sub_msg == 'Offline'">
-            <va-avatar size="small" color="warning" class="mr-6" /> Offline
-          </template>
-          <template v-else-if="sub_msg == 'Online'">
-            <va-avatar size="small" color="success" class="mr-6" /> Online
-          </template>
-        </div>
-        <div class="box layout gutter--md" style="width: 100%; text-align: center">
-          <template v-if="items.geojson">
-            <lMap
-              :geo-json-feature="mapGeoJsonFeatures"
-              :map-zoom="13"
-              map-type="Satellite"
-              style="width: 100%; height: 250px"
-            />
-          </template>
-        </div>
-
-        <div class="box layout gutter--md">
-          <table>
-            <tr>
-              <td>
-                <div style="width: 180px; position: relative; margin: auto">
-                  <div
-                    id="windDirection"
-                    style="
-                      display: true;
-                      position: absolute;
-                      left: 10px;
-                      top: 18px;
-                      height: 36px;
-                      width: 36px;
-                      z-index: 99;
-                    "
-                  >
-                    <img
-                      id="windArrow"
-                      src="/wind_direction.png"
-                      style="height: 32px; width: 32px; opacity: 0.7"
-                      :style="windDirection"
-                    />
-                  </div>
-                  <display-lcd id="wind" :display="items.wind"></display-lcd>
+  <va-card class="leaflet-map__full">
+    <template v-if="apiError">
+      <va-alert color="danger" outline class="mb-4"> {{ $t('api.error') }}: {{ apiError }} </va-alert>
+    </template>
+    <template v-if="!offline && apiSuccess">
+      <template v-if="items.geojson">
+        <l-map
+          id="monitoring-map"
+          :tabs="['vessel']"
+          :tabs-auto-open="true"
+          :geo-json-feature="mapGeoJsonFeatures"
+          :map-zoom="13"
+          map-type="Satellite"
+        >
+          <template #tab-vessel>{{ items.vessel_name }}</template>
+          <template #content-vessel>
+            <h1 class="layout gutter--md text-center p-4">{{ msg_fromNow }}</h1>
+            <div style="font-size: 10pt; text-align: center">
+              <template v-if="sub_msg == 'Offline'">
+                <va-avatar size="small" color="warning" class="mr-6" /> Offline
+              </template>
+              <template v-else-if="sub_msg == 'Online'">
+                <va-avatar size="small" color="success" class="mr-6" /> Online
+              </template>
+            </div>
+            <div class="flex flex-col items-center p-4">
+              <div style="width: 180px; position: relative; margin: auto">
+                <div
+                  id="windDirection"
+                  style="
+                    display: true;
+                    position: absolute;
+                    left: 10px;
+                    top: 18px;
+                    height: 36px;
+                    width: 36px;
+                    z-index: 99;
+                  "
+                >
+                  <img
+                    id="windArrow"
+                    src="/wind_direction.png"
+                    style="height: 32px; width: 32px; opacity: 0.7"
+                    :style="windDirection"
+                  />
                 </div>
-                <display-lcd id="temperature" :display="items.temperature"></display-lcd><br />
-                <display-lcd id="battery" :display="items.battery"></display-lcd><br />
-              </td>
-              <td>
-                <display-lcd id="humidity" :display="items.humidity"></display-lcd><br />
-                <display-lcd id="water" :display="items.water"></display-lcd><br />
-                <display-lcd id="pressure" :display="items.pressure"></display-lcd><br />
-              </td>
-            </tr>
-          </table>
-        </div>
-      </va-card-content>
-    </va-card>
-  </template>
+                <display-lcd id="wind" :display="items.wind"></display-lcd>
+              </div>
+              <display-lcd id="temperature" :display="items.temperature"></display-lcd>
+              <display-lcd id="humidity" :display="items.humidity"></display-lcd>
+              <display-lcd id="water" :display="items.water"></display-lcd>
+              <display-lcd id="pressure" :display="items.pressure"></display-lcd>
+              <display-lcd id="battery" :display="items.battery"></display-lcd>
+            </div>
+          </template>
+        </l-map>
+      </template>
+    </template>
+  </va-card>
 </template>
 
 <script>
   import DisplayMulti from '../../components/DisplayMulti.vue'
-  import Offline from '../../components/MonitoringOffline.vue'
-
   export default {
     name: 'Monitoring',
     components: {
       'display-lcd': DisplayMulti,
-      Offline,
     },
   }
 </script>
@@ -241,15 +227,15 @@
   })
 </script>
 
-<style scoped>
-  .box {
-    align-items: center;
-    justify-content: center;
-    /*background: white;*/
-    /*border-radius: 10px;*/
-    /*border: 1px solid #ccc;*/
-    padding: 10px 10px;
-    text-align: center;
-    width: 50%;
+<style lang="scss">
+  #monitoring-map {
+    width: 100%;
+    height: calc(100vh - 4.5rem);
+  }
+  .sidepanel {
+    width: 240px;
+    .sidepanel-content {
+      width: 240px;
+    }
   }
 </style>

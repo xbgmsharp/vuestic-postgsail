@@ -11,13 +11,6 @@
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
-        <div class="mb-3 my-3">
-          <!--
-          <template v-if="!isBusy && item">
-            <lMap :geo-json-features="mapGeoJsonFeatures" style="width: 100%; height: 350px" />
-          </template>
-          -->
-        </div>
         <va-inner-loading :loading="isBusy">
           <template v-if="item">
             <va-form ref="form" @submit.prevent="handleSubmit" @validation="formData.isValid = $event">

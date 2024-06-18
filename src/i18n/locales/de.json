@@ -91,6 +91,7 @@
   "dashboard": {
     "title": "Dashboard",
     "versions": "Versionen",
+    "overview": "Logbook Overview",
     "local_time": "Ortszeit",
     "charts": {
       "verticalBarChart": "Protokolleinträge pro Monat",

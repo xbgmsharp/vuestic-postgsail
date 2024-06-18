@@ -87,6 +87,7 @@
   "dashboard": {
     "title": "Panel",
     "versions": "Versiones",
+    "overview": "Logbook Overview",
     "local_time": "Hora local",
     "charts": {
       "verticalBarChart": "Log entry per month",

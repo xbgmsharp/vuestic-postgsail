@@ -143,6 +143,18 @@
     <charts class="col-span-12" />
 
     <va-card class="col-span-12">
+      <va-card-title>{{ t('dashboard.overview') }}</va-card-title>
+      <template v-if="LogsImage">
+        <va-card-content v-if="LogsImage">
+          <img style="margin: auto" :src="LogsImage" />
+        </va-card-content>
+      </template>
+      <template v-else>
+        <va-card-content>{{ t('nodata.nodata') }}</va-card-content>
+      </template>
+    </va-card>
+
+    <va-card class="col-span-12">
       <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
       <va-card-content>
         Frontend version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
@@ -158,6 +170,7 @@
   import { ref, onMounted, version, computed, defineAsyncComponent } from 'vue'
   import { useGlobalStore } from '../../stores/global-store'
   import { useCacheStore } from '../../stores/cache-store'
+  import { useVesselStore } from '../../stores/vessel-store'
   import { storeToRefs } from 'pinia'
   import { useI18n } from 'vue-i18n'
   const Charts = defineAsyncComponent(() => import('./Charts.vue'))
@@ -182,8 +195,11 @@
   const { fetchVersions, fetchWeatherForecast, fetchMonitoring2 } = GlobalStore
 
   const CacheStore = useCacheStore()
-  const { getInfoTiles } = storeToRefs(CacheStore)
+  const { getInfoTiles, GetLastLogId } = storeToRefs(CacheStore)
   const { getTags, getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+
+  const VesselStore = useVesselStore()
+  const { vesselId } = storeToRefs(VesselStore)
 
   console.log('Dashboard', __APP_VERSION__, __VITE_VERSION__, import.meta.env)
   const vite_version = ref(__VITE_VERSION__)
@@ -315,6 +331,15 @@
     const index = moon_phases.findIndex(isPhase)
     //console.log(`/moon_phase_${index}.svg`)
     return { src: `/moon_phase_${index}.svg`, text: text.toLowerCase() }
+  })
+
+  const LogsImage = computed(() => {
+    //console.log(GetLastLogId.value)
+    //console.log(vesselId.value)
+    if (GetLastLogId.value > 1) {
+      return `https://gis.openplotter.cloud/logs_${vesselId.value}_${GetLastLogId.value}.png`
+    }
+    return null
   })
 
   onMounted(async () => {

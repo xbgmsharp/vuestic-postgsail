@@ -215,6 +215,7 @@ export const useCacheStore = defineAPIStore('cache', {
     logs_by_month: (state: JSObj) => state.stats,
     logs_by_year_by_month: (state: JSObj) => state.lines,
     logs_by_month_by_weekday: (state: JSObj) => state.matrix,
+    GetLastLogId: (state: JSObj) => (state?.logs && state.logs.length > 1 ? state.logs[0].id : -1),
   },
 })
 export default useCacheStore

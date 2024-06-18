@@ -6,6 +6,7 @@ const defaultState = {
   vessel: {
     name: '',
     mmsi: '',
+    vessel_id: '',
     created_at: '',
     first_contact: '',
     last_contact: '',
@@ -44,6 +45,7 @@ export const useVesselStore = defineStore('vessel', {
   getters: {
     vesselName: (state) => state.vessel?.name,
     vesselType: (state) => state.vessel?.ship_type,
+    vesselId: (state) => state.vessel?.vessel_id,
   },
 })
 export default useVesselStore

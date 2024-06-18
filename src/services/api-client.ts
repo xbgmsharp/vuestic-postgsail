@@ -156,6 +156,10 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/timelapse2_fn`, payload)
   }
 
+  async timelapse_record(payload: JSObj) {
+    return this.post(`rpc/maplapse_record_fn`, payload)
+  }
+
   async logs_export_gpx(payload: JSObj) {
     this.setHeader('Accept', 'text/xml')
     const data = this.post(`rpc/export_logbooks_gpx_fn`, payload)

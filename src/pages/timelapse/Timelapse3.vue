@@ -34,9 +34,13 @@
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import { angleFormat, awaFormat } from '../../utils/angleFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
-
+  import { useToast, useModal } from 'vuestic-ui'
+  const { init: initToast } = useToast()
+  const { confirm } = useModal()
   import { useVesselStore } from '../../stores/vessel-store'
+  import { useGlobalStore } from '../../stores/global-store'
 
+  const { publicVessel, publicTimelapse } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
   const { t } = useI18n()
 
@@ -233,8 +237,14 @@
       const topRow = L.DomUtil.create('div', 'top-row', legendView)
       L.DomUtil.create('span', 'distance', topRow)
       var player = L.DomUtil.create('span', 'player', topRow)
+      //player.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
       player.addEventListener('click', () => {
         playAndPause('myevent')
+      })
+      var recorder = L.DomUtil.create('span', 'recorder', topRow)
+      //recorder.innerHTML = '<i class="va-icon record">●</i>'
+      recorder.addEventListener('click', () => {
+        record('myevent')
       })
       const bottomRow = L.DomUtil.create('div', 'bottom-row', legendView)
       L.DomUtil.create('span', 'datetime', bottomRow)
@@ -282,6 +292,7 @@
       distance = 0,
       distanceView = map.value._container.querySelector('.legend > .top-row > .distance'),
       playerView = map.value._container.querySelector('.legend > .top-row > .player'),
+      recorderView = map.value._container.querySelector('.legend > .top-row > .recorder'),
       datetimeView = map.value._container.querySelector('.legend > .bottom-row > .datetime'),
       tripView = map.value._container.querySelector('.overlay > .top-row > .trip'),
       noteView = map.value._container.querySelector('.overlay > .bottom-row > .note'),
@@ -291,6 +302,7 @@
       windView = map.value._container.querySelector('.instruments > .wind > .value')
 
     playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
+    recorderView.innerHTML = '<i class="va-icon record">●</i>'
     const geojson = timelapse.value,
       //km = !GlobalStore.imperialUnits,
       interval = setInterval(function () {
@@ -427,6 +439,87 @@
     }
   }
 
+  async function record(e) {
+    console.log('record', e, play_pause.value)
+    console.log('track length', timelapse.value.features.length)
+    if (timelapse.value.features.length > 1200) {
+      initToast({
+        message:
+          'This track is too long to export in a reasonably sized video. Please choose a shorter track and try again.',
+        position: 'top-right',
+        color: 'warning',
+      })
+      return false
+    }
+    if (publicTimelapse != true) {
+      initToast({
+        message: 'To allow a video export, public timelapse must be enable.',
+        position: 'top-right',
+        color: 'warning',
+      })
+      return false
+    }
+    // Hide map and stop timelapse
+    document.getElementById('mapContainer').style.display = 'none'
+    play_pause.value = false
+    await onRecordClick()
+    // Show map and resume timelapse
+    document.getElementById('mapContainer').style.display = ''
+    play_pause.value = true
+  }
+
+  const onRecordClick = async () => {
+    const result = await confirm({
+      message:
+        'This will export the current timelapse as a video of to use on social media. This process can take a while, do you want to continue?',
+      title: 'Are you sure?',
+      okText: 'Yes generate a 45 seconds video',
+      cancelText: 'Not thanks!',
+      zIndex: -9999,
+    })
+
+    if (result) {
+      console.log('onRecordClick', window.location.search)
+      const searchParams = new URLSearchParams(window.location.search)
+      searchParams.append('height', '100vh') // enforce fullscreen
+      const maplapse_qs = `${publicVessel},?${searchParams.toString()}`
+      const api = new PostgSail(),
+        payload = {
+          maplapse: maplapse_qs,
+        }
+      try {
+        const response = await api.timelapse_record(payload)
+        if (response) {
+          initToast({
+            message: 'Operation in queue, you will get notify when completed',
+            position: 'top-right',
+            color: 'primary',
+          })
+          console.warn('recording set', response)
+        } else {
+          console.warn('error recording', response)
+          initToast({
+            message: 'error recording',
+            position: 'top-right',
+            color: 'warning',
+          })
+          play_pause.value = true
+        }
+      } catch (e) {
+        apiError.value = e
+      } finally {
+        isBusy.value = false
+      }
+    } else {
+      initToast({
+        message: 'Operation cancel',
+        position: 'top-right',
+        color: 'warning',
+      })
+      play_pause.value = true
+    }
+  }
+
   // adapted src: https://stackoverflow.com/a/60391674
   const patchLMapPositions = () =>
     L.Map.include({
@@ -559,6 +652,14 @@
         text-align: left;
         flex: 0 0 65%;
       }
+    }
+    .record {
+      text-decoration: none;
+      color: red;
+      text-align: center;
+      font-size: 24pt;
+      margin-left: 10px;
+      cursor: pointer;
     }
   }
   .leaflet-map {

@@ -244,7 +244,7 @@
       var recorder = L.DomUtil.create('span', 'recorder', topRow)
       //recorder.innerHTML = '<i class="va-icon record">●</i>'
       recorder.addEventListener('click', () => {
-        record('myevent')
+        onRecordClick('myevent')
       })
       const bottomRow = L.DomUtil.create('div', 'bottom-row', legendView)
       L.DomUtil.create('span', 'datetime', bottomRow)
@@ -441,8 +441,8 @@
     }
   }
 
-  async function record(e) {
-    console.log('record', e, play_pause.value)
+  async function onRecordClick(e) {
+    console.log('onRecordClick', e, play_pause.value)
     console.log('track length', timelapse.value.features.length)
     if (timelapse.value.features.length > 2200) {
       initToast({
@@ -472,25 +472,38 @@
     // Hide map and stop timelapse
     document.getElementById('mapContainer').style.display = 'none'
     play_pause.value = false
-    await onRecordClick()
+    await record()
     // Show map and resume timelapse
     document.getElementById('mapContainer').style.display = ''
     play_pause.value = true
   }
 
-  const onRecordClick = async () => {
+  const record = async () => {
     const result = await confirm({
       message:
         'This will export the current timelapse as a video of to use on social media. This process can take a while, do you want to continue?',
       title: 'Are you sure?',
-      okText: 'Yes generate a 45 seconds video',
-      cancelText: 'Not thanks!',
+      okText: 'Yes generate a ~45 seconds video',
+      cancelText: 'No thanks!',
       zIndex: -9999,
     })
 
     if (result) {
-      console.log('onRecordClick', window.location.search)
-      const searchParams = new URLSearchParams(window.location.search)
+      console.log('record qs:', window.location.search)
+      const searchParams = new URLSearchParams(window.location.search || '')
+      if (!window.location.search) {
+        // if no query-string, single log timelapse by route id.
+        searchParams.append('start_log', start_log.value)
+        searchParams.append('end_log', start_log.value)
+        searchParams.append('map_type', map_type.value)
+        searchParams.append('boat_type', boat_type.value)
+        searchParams.append('speed', speed.value)
+        searchParams.append('delay', delay.value)
+        searchParams.append('zoom', zoom.value)
+        searchParams.append('color', color.value)
+        searchParams.append('moorage_overlay', moorage_overlay.value)
+        searchParams.append('instruments', instruments.value)
+      }
       searchParams.append('height', '100vh') // enforce fullscreen
       if (searchParams.get('end_log') === '') {
         searchParams.set('end_log', searchParams.get('start_log'))

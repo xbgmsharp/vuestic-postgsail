@@ -40,7 +40,7 @@
   import { useVesselStore } from '../../stores/vessel-store'
   import { useGlobalStore } from '../../stores/global-store'
 
-  const { publicVessel, publicTimelapse } = useGlobalStore()
+  const { isLoggedIn, publicVessel, publicTimelapse } = useGlobalStore()
   const { vesselName, vesselType } = useVesselStore()
   const { t } = useI18n()
 
@@ -302,7 +302,9 @@
       windView = map.value._container.querySelector('.instruments > .wind > .value')
 
     playerView.innerHTML = '<i class="va-icon material-icons">play_arrow</i>'
-    recorderView.innerHTML = '<i class="va-icon record">●</i>'
+    if (isLoggedIn) {
+      recorderView.innerHTML = '<i class="va-icon record">●</i>'
+    }
     const geojson = timelapse.value,
       //km = !GlobalStore.imperialUnits,
       interval = setInterval(function () {
@@ -442,7 +444,7 @@
   async function record(e) {
     console.log('record', e, play_pause.value)
     console.log('track length', timelapse.value.features.length)
-    if (timelapse.value.features.length > 1200) {
+    if (timelapse.value.features.length > 2200) {
       initToast({
         message:
           'This track is too long to export in a reasonably sized video. Please choose a shorter track and try again.',
@@ -454,6 +456,14 @@
     if (publicTimelapse != true) {
       initToast({
         message: 'To allow a video export, public timelapse must be enable.',
+        position: 'top-right',
+        color: 'warning',
+      })
+      return false
+    }
+    if (isLoggedIn != true) {
+      initToast({
+        message: 'You must be logged in.',
         position: 'top-right',
         color: 'warning',
       })
@@ -482,6 +492,9 @@
       console.log('onRecordClick', window.location.search)
       const searchParams = new URLSearchParams(window.location.search)
       searchParams.append('height', '100vh') // enforce fullscreen
+      if (searchParams.get('end_log') === '') {
+        searchParams.set('end_log', searchParams.get('start_log'))
+      }
       const maplapse_qs = `${publicVessel},?${searchParams.toString()}`
       const api = new PostgSail(),
         payload = {

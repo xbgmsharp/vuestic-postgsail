@@ -246,7 +246,7 @@
                 >GitHub issue<va-icon name="fa-external-link" size="small" /></a
               ><br />
               -
-              <a href="https://discord.gg/cpGqA5sZ" target="_blank" class="va-text-bold va-link link"
+              <a href="https://discord.gg/uuZrwz4dCS" target="_blank" class="va-text-bold va-link link"
                 >Discord<va-icon name="fa-external-link" size="small" /></a
               ><br />
             </div>

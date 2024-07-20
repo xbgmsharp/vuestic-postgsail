@@ -22,5 +22,6 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install --include=dev
+          npm install 
           npm run build:ci
       #- run: npm test

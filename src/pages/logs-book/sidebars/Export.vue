@@ -7,7 +7,9 @@
   import { asBusy, handleExportNew } from '../../../utils/handleExports'
   import { durationFormatHours } from '../../../utils/dateFormatter.js'
   import { distanceFormat } from '../../../utils/distanceFormatter.js'
+  import { useVesselStore } from '../../../stores/vessel-store'
 
+  const { vesselId } = useVesselStore()
   const { publicVessel, instagram, website } = useGlobalStore()
   const { t } = useI18n()
   const route = useRoute()
@@ -41,6 +43,11 @@
     handleGeoJSON = (id: number) => handleExport_common('geojson', id),
     handleExport_common = (format: string, id: number) =>
       runBusy(handleExportNew, format, 'log', { _id: id }, `log_${id}`)
+
+  const handlePNG = (id: number) => {
+    console.log('handlePNG formData', id)
+    window.open(`https://gis.openplotter.cloud/log_${vesselId}_${id}.png`)
+  }
 </script>
 
 <template>
@@ -51,6 +58,7 @@
         <va-icon name="gpx" :size="48" @click="handleGPX(props.logbook.id)" />
         <va-icon name="geojson" :size="48" @click="handleGeoJSON(props.logbook.id)" />
         <va-icon name="kml" :size="48" @click="handleKML(props.logbook.id)" />
+        <va-icon name="icon-png" :size="48" @click="handlePNG(props.logbook.id)" />
       </div>
     </div>
     <!-- sharing section -->

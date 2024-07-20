@@ -16,6 +16,8 @@ import IconBolt from '../../../components/icons/IconBolt.vue'
 import IconSunrise from '../../../components/icons/IconSunrise.vue'
 import IconSunset from '../../../components/icons/IconSunset.vue'
 import IconKML from '../../../components/icons/IconKML.vue'
+import IconMP4 from '../../../components/icons/IconMP4.vue'
+import IconPNG from '../../../components/icons/IconPNG.vue'
 
 export default [
   {
@@ -303,5 +305,15 @@ export default [
   {
     name: 'help2',
     to: 'live_help',
+  },
+  {
+    name: 'icon-mp4',
+    component: IconMP4,
+    color: 'primary',
+  },
+  {
+    name: 'icon-png',
+    component: IconPNG,
+    color: 'primary',
   },
 ]

@@ -154,6 +154,20 @@
                   <va-icon name="gpx" :size="44" style="display: inline-block" @click="handleGPX(formData)" />
                   <va-icon name="geojson" :size="44" style="display: inline-block" @click="handleGeoJSON(formData)" />
                   <va-icon name="kml" :size="44" style="display: inline-block" @click="handleKML(formData)" />
+                  <!--
+                    <va-icon
+                    name="icon-mp4"
+                    :size="44"
+                    style="display: inline-block; padding: 2px"
+                    @click="handleMP4(formData)"
+                  />
+                  -->
+                  <va-icon
+                    name="icon-png"
+                    :size="44"
+                    style="display: inline-block; padding: 2px"
+                    @click="handlePNG(formData)"
+                  />
                 </dd>
               </dl>
               <dl class="row mb-3">
@@ -211,9 +225,9 @@
   import MySelect from '../../components/vaSelect.vue'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useGlobalStore } from '../../stores/global-store'
-  const { publicVessel, instagram, website } = useGlobalStore()
+  const { publicVessel, instagram, website, publicTimelapse } = useGlobalStore()
   import { useVesselStore } from '../../stores/vessel-store'
-  const { vesselName, vesselType } = useVesselStore()
+  const { vesselName, vesselType, vesselId } = useVesselStore()
   import { useToast } from 'vuestic-ui'
   const { init: initToast } = useToast()
 
@@ -478,8 +492,8 @@
     handleGPX = (id) => handleExport_common('gpx', id),
     handleKML = (id) => handleExport_common('kml', id),
     handleGeoJSON = (id) => handleExport_common('geojson', id),
-    handleExport_common = (format, id) => {
-      //console.log(formData)
+    handleExport_common = (format) => {
+      console.debug('handleExport formData:', formData)
       const payload = { start_log: null, end_log: null }
       if (formData.start_log != '') {
         payload.start_log = formData.start_log
@@ -489,6 +503,39 @@
       }
       runBusy(handleExport, format, 'logs', payload, `trip_${formData.start_log}_${formData.end_log}`)
     }
+  const handleMP4 = () => {
+    console.debug('handleMP4 formData:', formData)
+    if (publicTimelapse != true) {
+      initToast({
+        message: 'To allow a video export, public timelapse must be enable.',
+        position: 'top-right',
+        color: 'warning',
+      })
+      return false
+    }
+    const searchParams = new URLSearchParams(formData)
+    searchParams.append('height', '100vh') // enforce fullscreen
+    if (searchParams.get('end_log') === '') {
+      searchParams.set('end_log', searchParams.get('start_log'))
+    }
+    const maplapse_qs = `${publicVessel},?${searchParams.toString()}`
+    initToast({
+      message: `Video export in queued, we will notify you`,
+      position: 'top-right',
+      color: 'primary',
+    })
+  }
+  const handlePNG = () => {
+    console.debug('handlePNG formData:', formData)
+    if (formData.end_log === '') {
+      formData.end_log = formData.start_log
+    }
+    if (formData.map_type == 'Satellite') {
+      window.open(`https://gis.openplotter.cloud/trip_${vesselId}_${formData.start_log}_${formData.end_log}_sat.png`)
+    } else {
+      window.open(`https://gis.openplotter.cloud/trip_${vesselId}_${formData.start_log}_${formData.end_log}.png`)
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

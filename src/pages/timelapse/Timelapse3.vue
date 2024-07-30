@@ -444,7 +444,7 @@
   async function onRecordClick(e) {
     console.log('onRecordClick', e, play_pause.value)
     console.log('track length', timelapse.value.features.length)
-    if (timelapse.value.features.length > 2200) {
+    if (timelapse.value.features.length > 10000) {
       initToast({
         message:
           'This track is too long to export in a reasonably sized video. Please choose a shorter track and try again.',
@@ -507,6 +507,15 @@
       searchParams.append('height', '100vh') // enforce fullscreen
       if (searchParams.get('end_log') === '') {
         searchParams.set('end_log', searchParams.get('start_log'))
+      }
+      if (!publicVessel) {
+        console.warn('error recording', `publicVessel is invalid: ${publicVessel}`)
+        initToast({
+          message: `publicVessel is invalid: ${publicVessel}`,
+          position: 'top-right',
+          color: 'warning',
+        })
+        return false
       }
       const maplapse_qs = `${publicVessel},?${searchParams.toString()}`
       const api = new PostgSail(),

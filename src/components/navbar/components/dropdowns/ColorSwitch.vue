@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import { useColors } from 'vuestic-ui'
   import { ref, watchEffect, watch, computed } from 'vue'
   import { storeToRefs } from 'pinia'

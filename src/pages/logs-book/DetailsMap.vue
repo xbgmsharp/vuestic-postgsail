@@ -168,7 +168,7 @@
       if (formData.name) {
         document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }
-      let geo_arr = apiData.row.geojson.features
+      let geo_arr = apiData.row.geojson?.features || []
       for (var i = 1; i < geo_arr.length; i++) {
         //console.log(geo_arr[i].properties)
         wind_arr.value.push(geo_arr[i].properties.truewindspeed)

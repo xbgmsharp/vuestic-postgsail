@@ -23,7 +23,7 @@
     ]
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.5.2",
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "@gtm-support/vue-gtm": "^2.1.0",
     "@rollup/plugin-node-resolve": "^15.2.0",
     "@vueuse/core": "^9.6.0",
@@ -50,7 +50,7 @@
     "sass": "^1.77.6",
     "sirv": "^2.0.4",
     "steelseries": "^2.0.7",
-    "vue": "^3.4.34",
+    "vue": "^3.4.35",
     "vue-chartjs": "^5.3.1",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.4.0",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@testing-library/vue": "^6.6.1",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.14.13",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "@vitejs/plugin-vue": "^4.6.2",

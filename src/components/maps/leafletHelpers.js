@@ -32,6 +32,13 @@ export const baseMaps = function () {
     maxZoom: 18,
   })
 
+  const eniroSeamap = L.tileLayer('https://{s}.eniro.com/geowebcache/service/tms1.0.0/nautical/{z}/{x}/{y}.png', {
+    subdomains: ['map01', 'map02', 'map03', 'map04'],
+    attribution: '&copy; Kort & Matrikelstyrelsen',
+    tms: true,
+    maxZoom: 17,
+  })
+
   // European Marine Observation and Data Network https://emodnet.ec.europa.eu
   const bathymetryLayer = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
     layers: 'emodnet:mean_atlas_land',
@@ -53,6 +60,7 @@ export const baseMaps = function () {
     Satellite: sat,
     OpenStreetMap: osm,
     CARTO: cartodb,
+    'Eniro Seamap': eniroSeamap,
     'Nautical charts (USA)': noaa,
     'EMODnet Bathymetry': bathymetryGroupLayer,
   }

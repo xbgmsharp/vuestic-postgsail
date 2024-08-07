@@ -336,7 +336,7 @@
   const LogsImage = computed(() => {
     //console.log(GetLastLogId.value)
     //console.log(vesselId.value)
-    if (GetLastLogId.value > 1) {
+    if (GetLastLogId.value > 1 && vesselId.value) {
       return `https://gis.openplotter.cloud/logs_${vesselId.value}_${GetLastLogId.value}.png`
     }
     return null

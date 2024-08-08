@@ -355,8 +355,8 @@
     let arr = []
     if (Array.isArray(apiData.value) && apiData.value.length > 0) {
       arr = apiData.value.map(function (item) {
-        //return item.depth
-        return GlobalStore.imperialUnits ? (item.depth || 0) * 3.2808399 : item.depth || 0
+        let depth = GlobalStore.imperialUnits ? (item.depth || 0) * 3.2808399 : item.depth || 0
+        return parseFloat(depth).toFixed(1)
       })
     }
     console.log('depthdata arr:', arr.length)
@@ -413,7 +413,7 @@
       arr_charge = []
     if (Array.isArray(apiData.value) && apiData.value.length > 0) {
       arr_volt = apiData.value.map(function (item) {
-        return item.batteryvoltage
+        return parseFloat(item.batteryvoltage).toFixed(1)
       })
       arr_charge = apiData.value.map(function (item) {
         return floatToPercentage(item.batterycharge)

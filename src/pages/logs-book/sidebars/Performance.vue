@@ -47,11 +47,16 @@
         ticks: {
           callback: null,
         },
+        title: { display: true, text: 'Time' },
       },
       y: {
         ticks: {
           callback: null,
+          display: true,
+          stepSize: 1,
         },
+        title: { display: true, text: 'Speed in Kt' },
+        display: true,
       },
     },
   }

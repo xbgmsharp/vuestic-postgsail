@@ -85,7 +85,7 @@
 <template>
   <!-- observations section -->
   <div v-if="isLoggedIn && logbook.id > 0" class="">
-    <div class="text-xs uppercase mt-4">{{ $t('logs.log.sea_state') }}</div>
+    <div class="text-xs uppercase mt-4">{{ t('logs.log.sea_state') }}</div>
     <div class="text-sm">
       <template v-if="isLoggedIn">
         <MySelect
@@ -101,7 +101,7 @@
         {{ logbook.seaState }}
       </template>
     </div>
-    <div class="text-xs uppercase my-2">{{ $t('logs.log.cloud_coverage') }}</div>
+    <div class="text-xs uppercase my-2">{{ t('logs.log.cloud_coverage') }}</div>
     <div class="text-sm m-4">
       <template v-if="isLoggedIn">
         <va-slider
@@ -121,7 +121,7 @@
         {{ cloudCoverage }}
       </template>
     </div>
-    <div class="text-xs uppercase my-2">{{ $t('logs.log.visibility') }}</div>
+    <div class="text-xs uppercase my-2">{{ t('logs.log.visibility') }}</div>
     <div class="text-sm">
       <template v-if="isLoggedIn">
         <MySelect

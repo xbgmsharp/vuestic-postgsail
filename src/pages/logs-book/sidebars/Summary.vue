@@ -112,7 +112,7 @@
       </svg>
     </div>
     <div class="ps-8 gap-6">
-      <div class="text-xs uppercase">{{ $t('logs.log.from') }}</div>
+      <div class="text-xs uppercase">{{ t('logs.log.from') }}</div>
       <div class="text-base">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
@@ -124,7 +124,7 @@
       </div>
       <div class="text-sm">{{ logbook.fromTime }}</div>
       <br />
-      <div class="text-xs uppercase">{{ $t('logs.log.to') }}</div>
+      <div class="text-xs uppercase">{{ t('logs.log.to') }}</div>
       <div class="text-base">
         <router-link
           v-if="typeof logbook.id !== 'undefined'"
@@ -186,7 +186,7 @@
       <va-textarea
         v-model="$props.formData.notes"
         outline
-        :placeholder="$t('logs.log.remarks')"
+        :placeholder="t('logs.log.remarks')"
         class="text-sm w-full"
         @change="$emit('save', logbook as Trip)"
       /> </template

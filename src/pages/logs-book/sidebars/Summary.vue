@@ -167,7 +167,18 @@
     <va-icon class="flex-none" name="route" :size="32" />
     <div class="flex-grow ml-2 text-sm">{{ logbook.distance }} / {{ logbook.duration }}</div>
   </div>
-
+  <div v-if="logbook.engineHours && logbook.engineHours.length > 0">
+    <div class="text-xs uppercase">ENGINE</div>
+    <div class="flex items-center">
+      <va-icon class="flex-none" name="settings" :size="32" />
+      <ul>
+        <li v-for="(engine, index) in logbook.engineHours" :key="index" class="flex-grow ml-2 text-sm">
+          <div v-if="logbook.engineHours.length > 1">{{ engine.name }}:</div>
+          {{ engine.duration }}
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="text-xs uppercase mt-2">SPEED AVG / MAX</div>
   <div class="flex items-center">
     <va-icon class="flex-none" name="speed" :size="32" />

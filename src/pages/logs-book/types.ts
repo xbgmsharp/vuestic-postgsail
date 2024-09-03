@@ -20,6 +20,11 @@ export type Log = {
   tags: []
 }
 
+export type EngineRunTime = {
+  name: string
+  duration: string
+}
+
 export type Trip = {
   id: number
   name: string
@@ -31,6 +36,7 @@ export type Trip = {
   ended: string
   distance: number
   duration: string
+  engineHours: Array<EngineRunTime>
   notes: string
   geojson: JSONObject
   avg_speed: number

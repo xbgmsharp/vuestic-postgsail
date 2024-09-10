@@ -7,131 +7,132 @@
           <div>
             <va-form ref="formData" @submit.prevent="onsubmit">
               <table striped hoverable style="min-width: 90%">
-                <tr>
-                  <td class="width-30 font-weight-bold">{{ $t('timelapse.choosetrips') }}</td>
-                  <td>
-                    <div>
-                      <va-switch v-model="choose_trips" size="small" />
-                    </div>
-                  </td>
-                </tr>
-                <template v-if="choose_trips">
+                <tbody>
                   <tr>
-                    <td>{{ $t('timelapse.start') }}</td>
+                    <td class="width-30 font-weight-bold">{{ $t('timelapse.choosetrips') }}</td>
+                    <td>
+                      <div>
+                        <va-switch v-model="choose_trips" size="small" />
+                      </div>
+                    </td>
+                  </tr>
+                  <template v-if="choose_trips">
+                    <tr>
+                      <td>{{ $t('timelapse.start') }}</td>
+                      <td>
+                        <MySelect
+                          v-if="mylogs"
+                          :id="parseInt(start_trip)"
+                          key="start_trip"
+                          :data="formData.start_log"
+                          :object="mylogs"
+                          @clickFromChildComponent="handleStart"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>{{ $t('timelapse.end') }}</td>
+                      <td>
+                        <MySelect
+                          v-if="mylogs"
+                          :id="parseInt(end_trip)"
+                          key="end_trip"
+                          :data="formData.end_log"
+                          :object="mylogs"
+                          @clickFromChildComponent="handleEnd"
+                        />
+                      </td>
+                    </tr>
+                  </template>
+                  <tr>
+                    <td>{{ $t('timelapse.basemap') }}</td>
                     <td>
                       <MySelect
-                        v-if="mylogs"
-                        :id="parseInt(start_trip)"
-                        key="start_trip"
-                        :data="formData.start_log"
-                        :object="mylogs"
-                        @clickFromChildComponent="handleStart"
+                        v-if="mapTypes"
+                        :id="mapIdx"
+                        key="mapTypes"
+                        :data="mapIdx"
+                        :object="mapTypes"
+                        @clickFromChildComponent="handleMap"
                       />
                     </td>
                   </tr>
                   <tr>
-                    <td>{{ $t('timelapse.end') }}</td>
+                    <td>{{ $t('timelapse.boattype') }}</td>
                     <td>
                       <MySelect
-                        v-if="mylogs"
-                        :id="parseInt(end_trip)"
-                        key="end_trip"
-                        :data="formData.end_log"
-                        :object="mylogs"
-                        @clickFromChildComponent="handleEnd"
+                        v-if="boatTypes"
+                        :id="boatIdx"
+                        key="boatTypes"
+                        :data="boatIdx"
+                        :object="boatTypes"
+                        @clickFromChildComponent="handleBoatType"
                       />
                     </td>
                   </tr>
-                </template>
-                <tr>
-                  <td>{{ $t('timelapse.basemap') }}</td>
-                  <td>
-                    <MySelect
-                      v-if="mapTypes"
-                      :id="mapIdx"
-                      key="mapTypes"
-                      :data="mapIdx"
-                      :object="mapTypes"
-                      @clickFromChildComponent="handleMap"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.boattype') }}</td>
-                  <td>
-                    <MySelect
-                      v-if="boatTypes"
-                      :id="boatIdx"
-                      key="boatTypes"
-                      :data="boatIdx"
-                      :object="boatTypes"
-                      @clickFromChildComponent="handleBoatType"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.trackcolor') }}</td>
-                  <td>
-                    <MySelect
-                      v-if="colors"
-                      key="colors"
-                      :data="color"
-                      :object="colors"
-                      @clickFromChildComponent="handleColor"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.overlay') }}</td>
-                  <td>
-                    <va-switch v-model="overlay" size="small" @click="handleOverlay" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.instruments') }}</td>
-                  <td>
-                    <va-switch v-model="instruments" size="small" @click="handleInstruments" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.zoom') }}</td>
-                  <td>
-                    <MySelect
-                      v-if="formData"
-                      :id="formData.zoom"
-                      key="zoom"
-                      :data="formData.zoom"
-                      :object="zooms"
-                      @clickFromChildComponent="handleZoom"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.anim') }}</td>
-                  <td>
-                    <MySelect
-                      v-if="formData"
-                      :id="formData.speed"
-                      key="speeds"
-                      :data="formData.speed"
-                      :object="speeds"
-                      @clickFromChildComponent="handleSpeed"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ $t('timelapse.delay') }}</td>
-                  <td>
-                    <MySelect
-                      :id="formData.delay"
-                      key="delay"
-                      :data="formData.delay"
-                      :object="delays"
-                      @clickFromChildComponent="handleDelay"
-                    />
-                  </td>
-                </tr>
-                <!--
+                  <tr>
+                    <td>{{ $t('timelapse.trackcolor') }}</td>
+                    <td>
+                      <MySelect
+                        v-if="colors"
+                        key="colors"
+                        :data="color"
+                        :object="colors"
+                        @clickFromChildComponent="handleColor"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.overlay') }}</td>
+                    <td>
+                      <va-switch v-model="overlay" size="small" @click="handleOverlay" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.instruments') }}</td>
+                    <td>
+                      <va-switch v-model="instruments" size="small" @click="handleInstruments" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.zoom') }}</td>
+                    <td>
+                      <MySelect
+                        v-if="formData"
+                        :id="formData.zoom"
+                        key="zoom"
+                        :data="formData.zoom"
+                        :object="zooms"
+                        @clickFromChildComponent="handleZoom"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.anim') }}</td>
+                    <td>
+                      <MySelect
+                        v-if="formData"
+                        :id="formData.speed"
+                        key="speeds"
+                        :data="formData.speed"
+                        :object="speeds"
+                        @clickFromChildComponent="handleSpeed"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('timelapse.delay') }}</td>
+                    <td>
+                      <MySelect
+                        :id="formData.delay"
+                        key="delay"
+                        :data="formData.delay"
+                        :object="delays"
+                        @clickFromChildComponent="handleDelay"
+                      />
+                    </td>
+                  </tr>
+                  <!--
                 <tr>
                   <td>Granularity</td>
                   <td>
@@ -147,14 +148,19 @@
                   </td>
                 </tr>
                 -->
-              </table>
-              <dl class="row mb-3">
-                <dt class="flex xs12 md6">{{ $t('logs.log.export') }}</dt>
-                <dd class="export-buttons">
-                  <va-icon name="gpx" :size="44" style="display: inline-block" @click="handleGPX(formData)" />
-                  <va-icon name="geojson" :size="44" style="display: inline-block" @click="handleGeoJSON(formData)" />
-                  <va-icon name="kml" :size="44" style="display: inline-block" @click="handleKML(formData)" />
-                  <!--
+
+                  <tr>
+                    <td>{{ $t('logs.log.export') }}</td>
+                    <td class="export-buttons">
+                      <va-icon name="gpx" :size="44" style="display: inline-block" @click="handleGPX(formData)" />
+                      <va-icon
+                        name="geojson"
+                        :size="44"
+                        style="display: inline-block"
+                        @click="handleGeoJSON(formData)"
+                      />
+                      <va-icon name="kml" :size="44" style="display: inline-block" @click="handleKML(formData)" />
+                      <!--
                     <va-icon
                     name="icon-mp4"
                     :size="44"
@@ -162,44 +168,46 @@
                     @click="handleMP4(formData)"
                   />
                   -->
-                  <va-icon
-                    name="icon-png"
-                    :size="44"
-                    style="display: inline-block; padding: 2px"
-                    @click="handlePNG(formData)"
-                  />
-                </dd>
-              </dl>
-              <dl class="row mb-3">
-                <dt class="flex xs12 md6">{{ $t('logs.log.share') }}</dt>
-                <dd class="export-buttons">
-                  <va-popover class="mr-2 mb-2" icon="info" message="shareable timelapse link">
-                    <va-icon name="link" :size="44" style="display: inline-block" @click="handleLink(formData)" />
-                  </va-popover>
-                  <a
-                    :href="`https://www.facebook.com/sharer/sharer.php?u=${timelapse_public_link}&t=${vesselName}'s Replay`"
-                    target="_blank"
-                    ><va-icon name="facebook" :size="44"
-                  /></a>
-                  <template v-if="instagram">
-                    <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
-                      <va-icon name="instagram" :size="44"
-                    /></a>
-                  </template>
-                  <a
-                    :href="`https://twitter.com/intent/tweet?text=${vesselName}'s Replay&url=${timelapse_public_link}`"
-                    target="_blank"
-                  >
-                    <va-icon name="x-twitter" :size="44"
-                  /></a>
-                  <a :href="`mailto:?subject=${vesselName}'s Replay&body=${timelapse_public_link}`" target="_blank"
-                    ><va-icon name="envelope" :size="44"
-                  /></a>
-                  <template v-if="website">
-                    <a :href="website" target="_blank"><va-icon name="envelope" :size="44" /></a>
-                  </template>
-                </dd>
-              </dl>
+                      <va-icon
+                        name="icon-png"
+                        :size="44"
+                        style="display: inline-block; padding: 2px"
+                        @click="handlePNG(formData)"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('logs.log.share') }}</td>
+                    <td class="export-buttons">
+                      <va-popover class="mr-2 mb-2" icon="info" message="shareable timelapse link">
+                        <va-icon name="link" :size="44" style="display: inline-block" @click="handleLink(formData)" />
+                      </va-popover>
+                      <a
+                        :href="`https://www.facebook.com/sharer/sharer.php?u=${timelapse_public_link}&t=${vesselName}'s Replay`"
+                        target="_blank"
+                        ><va-icon name="facebook" :size="44"
+                      /></a>
+                      <template v-if="instagram">
+                        <a :href="`https://www.instagram.com/${instagram}/`" target="_blank">
+                          <va-icon name="instagram" :size="44"
+                        /></a>
+                      </template>
+                      <a
+                        :href="`https://twitter.com/intent/tweet?text=${vesselName}'s Replay&url=${timelapse_public_link}`"
+                        target="_blank"
+                      >
+                        <va-icon name="x-twitter" :size="44"
+                      /></a>
+                      <a :href="`mailto:?subject=${vesselName}'s Replay&body=${timelapse_public_link}`" target="_blank"
+                        ><va-icon name="envelope" :size="44"
+                      /></a>
+                      <template v-if="website">
+                        <a :href="website" target="_blank"><va-icon name="envelope" :size="44" /></a>
+                      </template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <dl class="row mb-3">
                 <dt></dt>
                 <dl style="min-width: 100%">
@@ -539,19 +547,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .dl-details {
-    > dt:nth-child(4n + 3) {
-      &,
-      & + dd {
-        background-color: var(--va-background);
-      }
-    }
-    > .export-buttons {
-      > .va-icon {
-        display: inline-block;
-      }
-    }
-  }
   .link {
     color: blue;
   }

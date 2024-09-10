@@ -21,4 +21,5 @@ export default createI18n({
   fallbackLocale: 'gb',
   globalInjection: true,
   messages,
+  silentTranslationWarn: true, // https://github.com/intlify/bundle-tools/discussions/146
 })

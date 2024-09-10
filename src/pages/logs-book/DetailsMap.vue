@@ -115,6 +115,20 @@
     tagsOptions = ref([])
 
   const item = computed(() => {
+    const extractEngineRunTimes = (metrics) => {
+      const engineRunTimes = []
+      for (const key in metrics) {
+        if (key.startsWith('propulsion.')) {
+          const parts = key.split('.')
+          if (parts.length === 3 && parts[2] === 'runTime') {
+            const engineName = parts[1]
+            const duration = durationFormatHours(metrics[key]) + ' ' + durationI18nHours(metrics[key])
+            engineRunTimes.push({ name: engineName, duration })
+          }
+        }
+      }
+      return engineRunTimes
+    }
     return apiData.row
       ? {
           id: apiData.row.id,
@@ -132,6 +146,7 @@
           max_wind_speed: speedFormatKnots(apiData.row.max_wind_speed),
           avg_wind_speed: speedFormatKnots(apiData.row?.extra?.avg_wind_speed || 0),
           extra: apiData.row?.extra?.metrics,
+          engineHours: extractEngineRunTimes(apiData.row?.extra?.metrics),
           seaState: apiData.row?.extra?.observations?.seaState || -1,
           cloudCoverage: apiData.row?.extra?.observations?.cloudCoverage || -1,
           visibility: apiData.row?.extra?.observations?.visibility || -1,

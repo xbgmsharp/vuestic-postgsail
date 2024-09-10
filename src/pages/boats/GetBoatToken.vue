@@ -17,8 +17,8 @@
               <va-alert color="danger" outline class="mb-4">{{ t('api.error') }}: {{ apiError }}</va-alert>
             </template>
             <!-- TODO use better CSS -->
-            <div style="width: 700px; max-width: 800px">
-              <va-input
+            <div style="mb-4">
+              <vaInput
                 ref="clone"
                 v-model="boatToken"
                 type="textarea"
@@ -31,7 +31,7 @@
                 <template #appendInner>
                   <va-icon name="content_copy" @click="$vaToast.init({ message: copyToClipboard, color: 'primary' })" />
                 </template>
-              </va-input>
+              </vaInput>
               <va-alert color="warning" outline class="mb-4">{{ t('boats.boat.token_modal.message') }}</va-alert>
             </div>
           </va-inner-loading>

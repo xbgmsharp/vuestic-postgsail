@@ -1,3 +1,4 @@
+import { shallowRef } from 'vue'
 import IconFuel from '../../../components/icons/IconFuel.vue'
 import IconMonitoring from '../../../components/icons/IconMonitoring.vue'
 import IconLogs from '../../../components/icons/IconLogs.vue'
@@ -132,33 +133,33 @@ export default [
   },
   {
     name: 'menu-logs',
-    component: IconLogs,
+    component: shallowRef(IconLogs),
     color: 'primary',
   },
   {
     name: 'menu-stays',
-    component: IconAnchor,
+    component: shallowRef(IconAnchor),
     color: 'primary',
     //to: 'anchor',
   },
   {
     name: 'menu-boats',
-    component: IconSailboat,
+    component: shallowRef(IconSailboat),
     color: 'primary',
   },
   {
     name: 'menu-monitoring',
-    component: IconMonitoring,
+    component: shallowRef(IconMonitoring),
     color: 'primary',
   },
   {
     name: 'menu-grafana',
-    component: IconGrafana,
+    component: shallowRef(IconGrafana),
     color: 'primary',
   },
   {
     name: 'menu-moorages',
-    component: IconHarbor,
+    component: shallowRef(IconHarbor),
     color: 'primary',
   },
   {
@@ -168,17 +169,17 @@ export default [
   },
   {
     name: 'csv',
-    component: IconCSV,
+    component: shallowRef(IconCSV),
     //color: 'primary',
   },
   {
     name: 'gpx',
-    component: IconGPX,
+    component: shallowRef(IconGPX),
     //color: 'primary',
   },
   {
     name: 'geojson',
-    component: IconGeoJSON,
+    component: shallowRef(IconGeoJSON),
     //color: 'primary',
   },
   {
@@ -211,32 +212,32 @@ export default [
   },
   {
     name: 'icon-battery',
-    component: IconBattery,
+    component: shallowRef(IconBattery),
     color: 'primary',
   },
   {
     name: 'icon-solar',
-    component: IconSolar,
+    component: shallowRef(IconSolar),
     color: 'primary',
   },
   {
     name: 'icon-solar2',
-    component: IconSolar2,
+    component: shallowRef(IconSolar2),
     color: 'primary',
   },
   {
     name: 'icon-fuel',
-    component: IconFuel,
+    component: shallowRef(IconFuel),
     color: 'primary',
   },
   {
     name: 'icon-tank',
-    component: IconTank,
+    component: shallowRef(IconTank),
     color: 'primary',
   },
   {
     name: 'icon-bolt',
-    component: IconBolt,
+    component: shallowRef(IconBolt),
     color: 'primary',
   },
   {
@@ -261,17 +262,17 @@ export default [
   },
   {
     name: 'icon-sunrise',
-    component: IconSunrise,
+    component: shallowRef(IconSunrise),
     color: 'primary',
   },
   {
     name: 'icon-sunset',
-    component: IconSunset,
+    component: shallowRef(IconSunset),
     color: 'primary',
   },
   {
     name: 'kml',
-    component: IconKML,
+    component: shallowRef(IconKML),
     color: 'primary',
   },
   {
@@ -308,12 +309,12 @@ export default [
   },
   {
     name: 'icon-mp4',
-    component: IconMP4,
+    component: shallowRef(IconMP4),
     color: 'primary',
   },
   {
     name: 'icon-png',
-    component: IconPNG,
+    component: shallowRef(IconPNG),
     color: 'primary',
   },
 ]

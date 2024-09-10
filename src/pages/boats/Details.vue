@@ -180,12 +180,35 @@
     > dt:nth-child(4n + 3) {
       &,
       & + dd {
-        background-color: var(--va-background);
+        background-color: var(--va-background-primary);
       }
     }
   }
   #boat-map {
     width: 100%;
     height: 350px;
+  }
+  dl {
+    width: 100%;
+    overflow: hidden;
+    //background: #ff0;
+    padding: 0;
+    margin: 0;
+  }
+  dt {
+    float: left;
+    width: 50%;
+    /* adjust the width; make sure the total of both is 100% */
+    //background: #cc0;
+    padding: 0;
+    margin: 0;
+  }
+  dd {
+    float: left;
+    width: 50%;
+    /* adjust the width; make sure the total of both is 100% */
+    //background: #dd0;
+    padding: 0;
+    margin: 0;
   }
 </style>

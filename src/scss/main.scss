@@ -1,28 +1,20 @@
+//@import 'vuestic-sass/index';
+@import 'vuestic-ui/styles/essential.css';
+@import 'vuestic-ui/styles/typography.css';
+@import 'icon-fonts/index';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import 'vuestic-sass/index';
-@import 'icon-fonts/index';
-
-html {
-  line-height: 1.15;
-}
-
 body {
-  line-height: 1;
-}
+  //@apply text-regularMedium;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-strong,
-b {
-  line-height: 1.2;
-  font-weight: 600;
+  // TODO Move to some other place so that it's more elegant.
+  --va-checkbox-font-size: 0.875rem;
+  --va-card-box-shadow: none; // TODO Remove after https://github.com/epicmaxco/vuestic-ui/issues/3964
+  --va-card-padding: 1rem;
+  --va-font-family: 'Inter', sans-serif;
 }
 
 code,
@@ -39,10 +31,36 @@ pre {
   white-space: nowrap;
 }
 
-.flexStatic {
-  flex: 0 0 auto;
+.page-title {
+  @apply text-[32px] md:text-5xl font-bold leading-9 md:leading-[56px] max-sm:mt-6 mb-6 md:mb-4;
 }
 
-.link:hover {
-  text-decoration: underline;
+.h1 {
+  @apply text-[32px] md:text-5xl font-bold leading-9 md:leading-[56px] max-sm:mt-6 mb-6 md:mb-4;
+}
+
+.h3,
+.page-sub-title {
+  @apply text-2xl font-bold leading-[30px];
+}
+
+.h5 {
+  @apply font-bold leading-tight;
+}
+
+.block-title {
+  @apply text-2xl font-bold mb-2;
+}
+
+.pricing-plan-card-title {
+  @apply text-[28px] md:text-[32px] leading-10 font-bold;
+}
+
+.text-regular-small {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.va-input {
+  width: 100%;
 }

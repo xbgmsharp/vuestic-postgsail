@@ -2,7 +2,7 @@
   <va-card class="mb-3">
     <va-card-title>{{ $t('auth.otp') }}</va-card-title>
     <va-card-content>
-      <div class="box layout gutter-md">
+      <div class="box layout xl:mx-auto sm:w-full">
         <strong>{{ $t('auth.otp_message') }}</strong>
         <form @submit.prevent="onsubmit()">
           <template v-if="apiError">
@@ -102,7 +102,12 @@
     border: 1px solid #ccc;
     padding: 20px 10px;
     text-align: center;
-    width: 40%;
+    @media (max-width: 576px) {
+      width: 100%;
+    }
+    @media (min-width: 1024px) {
+      width: 40%;
+    }
   }
 
   strong {

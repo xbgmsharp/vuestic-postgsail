@@ -53,9 +53,11 @@
           </div>
         </va-card-content>
       </va-card>
-      <va-card v-if="monitoring.geojson" class="flex card-width">
-        <va-card-content>
-          <l-map id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
+      <va-card v-if="monitoring.geojson && mapGeoJsonFeatures" class="flex card-width">
+        <va-card-content style="width: 100%">
+          <template v-if="monitoring.geojson && mapGeoJsonFeatures">
+            <l-map id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
+          </template>
         </va-card-content>
       </va-card>
     </template>
@@ -425,7 +427,12 @@
 <style lang="scss">
   #dashboard-map {
     width: 100%;
-    height: 120px;
+    @media (max-width: 576px) {
+      height: 126px;
+    }
+    @media (min-width: 1024px) {
+      height: 100%;
+    }
   }
   .dashboard {
     .va-icon {

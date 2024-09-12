@@ -1,0 +1,100 @@
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const props = defineProps({
+    items: {
+      type: Object,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    columnvalue: {
+      type: String,
+      required: true,
+    },
+  })
+
+  const selectedPeriod = ref('#3')
+  const periods = ['#3', '#5', '#10'].map((period) => ({ label: period, value: period }))
+
+  const data = [
+    {
+      name: 'Japan',
+      revenueToday: '4,748,454',
+      revenueWeek: '30,000,000',
+      revenueMonth: '120,000,000',
+    },
+    {
+      name: 'United Kingdom',
+      revenueToday: '405,748',
+      revenueWeek: '2,500,000',
+      revenueMonth: '10,000,000',
+    },
+    {
+      name: 'United States',
+      revenueToday: '308,536',
+      revenueWeek: '1,800,000',
+      revenueMonth: '8,000,000',
+    },
+    {
+      name: 'China',
+      revenueToday: '250,963',
+      revenueWeek: '1,600,000',
+      revenueMonth: '7,000,000',
+    },
+    {
+      name: 'Canada',
+      revenueToday: '29,415',
+      revenueWeek: '180,000',
+      revenueMonth: '800,000',
+    },
+    {
+      name: 'Australia',
+      revenueToday: '15,000',
+      revenueWeek: '100,000',
+      revenueMonth: '500,000',
+    },
+    {
+      name: 'India',
+      revenueToday: '10,000',
+      revenueWeek: '50,000',
+      revenueMonth: '200,000',
+    },
+  ]
+</script>
+
+<template>
+  <VaCard>
+    <VaCardTitle class="flex justify-between">
+      <h1 class="card-title text-secondary font-bold uppercase">{{ $props.title }}</h1>
+    </VaCardTitle>
+    <VaCardContent class="flex flex-col gap-1">
+      <div class="flex justify-between">
+        <VaButtonToggle v-model="selectedPeriod" :options="periods" color="background-element" size="small" />
+      </div>
+
+      <VaDataTable
+        class="region-revenue-table"
+        :columns="[
+          { key: 'name', label: 'Name' },
+          { key: 'revenue', label: 'Value', align: 'right' },
+        ]"
+        :items="$props.items"
+      >
+        <template #cell(:[$props.`$props.columnvalue`])="{ rowData }"> {{ $props.columnvalue }} </template>
+      </VaDataTable>
+    </VaCardContent>
+  </VaCard>
+</template>
+
+<style lang="scss" scoped>
+  .region-revenue-table {
+    ::v-deep(tbody) {
+      tr {
+        border-top: 1px solid var(--va-background-border);
+      }
+    }
+  }
+</style>

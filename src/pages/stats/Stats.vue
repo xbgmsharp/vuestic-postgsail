@@ -3,8 +3,8 @@
     <nodatayet />
   </template>
   <template v-else>
-    <div class="grid grid-cols-12 items-start gap-6 mb-3">
-      <va-card class="col-span-12 lg:col-span-6 p-4">
+    <div class="grid grid-cols-12 items-start sm:col-span-12 gap-6 mb-3">
+      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-4">
         <va-card-title>{{ t('stats.logs') }}</va-card-title>
         <!--
         <va-card-content>
@@ -55,6 +55,7 @@
                         v-model="stats_logs.first_date"
                         :label="$t('stats.first_date')"
                         :readonly="false"
+                        style="width: 200px"
                         @update:modelValue="updateStartDate"
                       />
                       &nbsp;&nbsp;
@@ -62,6 +63,7 @@
                         v-model="stats_logs.last_date"
                         :label="$t('stats.last_date')"
                         :readonly="false"
+                        style="width: 200px"
                         @update:modelValue="updateEndDate"
                       />
                     </td>
@@ -144,7 +146,7 @@
         </va-card-content>
       </va-card>
 
-      <va-card class="col-span-12 lg:col-span-6 p-4">
+      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-4">
         <va-card-title>{{ t('stats.moorages') }}</va-card-title>
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
@@ -183,6 +185,14 @@
           </table>
         </va-card-content>
       </va-card>
+
+      <div v-if="logs.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
+        <TopLogsBy class="w-full" :items="logs" />
+      </div>
+
+      <div v-if="moorages.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
+        <TopMooragesBy class="w-full" :items="moorages" />
+      </div>
 
       <va-card class="col-span-12 lg:col-span-6 p-4">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
@@ -250,12 +260,14 @@
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
+  import TopLogsBy from './Cards/TopLogsBy.vue'
+  import TopMooragesBy from './Cards/TopMooragesBy.vue'
 
   const { t } = useI18n()
   const GlobalStore = useGlobalStore()
   const { userBadges } = storeToRefs(GlobalStore)
   const CacheStore = useCacheStore()
-  const { logs, stays } = storeToRefs(CacheStore)
+  const { logs, stays, moorages } = storeToRefs(CacheStore)
 
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -442,6 +454,11 @@
         response = await CacheStore.getAPI('stays')
         console.log('Get stays', response)
       }
+      // Get moorages
+      if (moorages.value.length === 0) {
+        response = await CacheStore.getAPI('moorages')
+        console.log('Get moorages', response)
+      }
     } catch (e) {
       apiError.value = e
       if (!import.meta.env.PROD) {
@@ -514,6 +531,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .va-input .va-input-wrapper {
+    width: 200px;
+  }
   .va-table-responsive {
     overflow: auto;
   }

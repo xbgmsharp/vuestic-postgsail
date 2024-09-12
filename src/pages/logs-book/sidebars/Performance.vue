@@ -47,7 +47,7 @@
         ticks: {
           callback: null,
         },
-        title: { display: true, text: 'Time' },
+        //title: { display: true, text: 'Time' },
       },
       y: {
         ticks: {
@@ -55,7 +55,7 @@
           display: true,
           stepSize: 1,
         },
-        title: { display: true, text: 'Speed in Kt' },
+        title: { display: true, text: 'Speed in [kt]' },
         display: true,
       },
     },

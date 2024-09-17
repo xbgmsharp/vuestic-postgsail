@@ -310,6 +310,12 @@ class ApiClient extends HttpClient {
   async stats_logs(payload: JSObj) {
     return this.post(`rpc/stats_logs_fn`, payload)
   }
+  async stats_moorages(payload: JSObj) {
+    return this.post(`rpc/stats_stays_fn`, payload)
+  }
+  async stats(payload: JSObj) {
+    return this.post(`rpc/stats_fn`, payload)
+  }
 
   /*
    * Badges API endpoint

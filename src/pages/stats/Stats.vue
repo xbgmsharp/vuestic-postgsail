@@ -157,7 +157,7 @@
                 </td>
                 <td>
                   <template v-if="value[0] === 'time_spent_away'"> {{ durationFormatDays(value[1]) }} days </template>
-                  <template v-if="value[0] === 'time_spent_at_home_port(s)'">
+                  <template v-if="value[0] === 'time_spent_at_home_ports'">
                     {{ durationFormatDays(value[1]) }} days
                   </template>
                   <template v-else> {{ value[1] }} </template>
@@ -168,6 +168,12 @@
                   <b>{{ value[0] }}</b>
                 </td>
                 <td>{{ value[1].duration }} {{ value[1].percentage }}%</td>
+              </tr>
+              <tr :key="2">
+                <td><b> Countries </b></td>
+                <td class="badges-stats">
+                  <va-icon class="max-h-8 w-[fit-content] mr-1" fit="contain" :name="`flag-icon-es large`" />
+                </td>
               </tr>
               <tr :key="1">
                 <td><b> Badges </b></td>
@@ -186,10 +192,37 @@
         </va-card-content>
       </va-card>
 
+      <div v-if="logsTopByDistance.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
+        <TopBy class="w-full" :items="logsTopByDistance" title="Top Logs By Distance" columnvalue="distance" />
+        <TopBy class="w-full" :items="logsTopByDuration" title="Top Logs By Duration" columnvalue="duration" />
+        <TopBy
+          v-if="logsTopByMaxSpeed.length > 0"
+          class="w-full"
+          :items="logsTopByMaxSpeed"
+          title="Top Logs By MaxSpeed"
+          columnvalue="max_speed"
+        />
+        <TopBy
+          v-if="logsTopByAvgSpeed.length > 0"
+          class="w-full"
+          :items="logsTopByAvgSpeed"
+          title="Top Logs By AVG Speed"
+          columnvalue="avg_speed"
+        />
+        <TopBy
+          v-if="logsTopByWindSpeed.length > 0"
+          class="w-full"
+          :items="logsTopByWindSpeed"
+          title="Top Logs By Max Wind Speed"
+          columnvalue="wind_speed"
+        />
+      </div>
+
+      <!--
       <div v-if="logs.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
         <TopLogsBy class="w-full" :items="logs" />
       </div>
-
+    -->
       <div v-if="moorages.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
         <TopMooragesBy class="w-full" :items="moorages" />
       </div>
@@ -254,13 +287,14 @@
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   //import { asBusy } from '../../utils/handleExports'
-  import { durationFormatDays, durationFormatHours, durationI18nHours } from '../../utils/dateFormatter.js'
-  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { distanceFormat, distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { durationFormatHours, durationI18nHours, durationFormatDays } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
   //import stats_moorages from '../../data/stats_moorages.json'
-  import TopLogsBy from './Cards/TopLogsBy.vue'
+  import TopBy from './Cards/TopBy.vue'
+  //import TopLogsBy from './Cards/TopLogsBy.vue'
   import TopMooragesBy from './Cards/TopMooragesBy.vue'
 
   const { t } = useI18n()
@@ -272,6 +306,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
 
+  const vessel_stats = ref({})
   const stats_logs = ref({})
   const stats_moorages = ref({})
 
@@ -429,12 +464,93 @@
     return false
   })
 
+  // TopBy listing
+  const logsTopByAvgSpeed = computed(() => {
+    if (!Array.isArray(vessel_stats.value.logs_top_avg_speed) || vessel_stats.value.logs_top_avg_speed.length == 0)
+      return []
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
+    return logs.value
+      .filter((trip) => vessel_stats.value.logs_top_avg_speed.find((match) => match.id === trip.id))
+      .map((trip) => {
+        // Find the corresponding matchingId entry
+        const matchingId = vessel_stats.value.logs_top_avg_speed.find((match) => match.id === trip.id)
+        // If there's a matching entry, add the max_wind_speed to the trip
+        return {
+          ...trip, // Spread the current trip object to keep all existing fields
+          avg_speed: speedFormatKnots(matchingId.avg_speed),
+        }
+      })
+  })
+  const logsTopByMaxSpeed = computed(() => {
+    if (!Array.isArray(vessel_stats.value.logs_top_speed) || vessel_stats.value.logs_top_speed.length == 0) return []
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
+    return logs.value
+      .filter((trip) => vessel_stats.value.logs_top_speed.find((match) => match.id === trip.id))
+      .map((trip) => {
+        // Find the corresponding matchingId entry
+        const matchingId = vessel_stats.value.logs_top_speed.find((match) => match.id === trip.id)
+        // If there's a matching entry, add the max_wind_speed to the trip
+        if (matchingId) {
+          return {
+            ...trip,
+            max_speed: speedFormatKnots(matchingId.max_speed),
+          }
+        }
+      })
+  })
+  const logsTopByWindSpeed = computed(() => {
+    if (!Array.isArray(vessel_stats.value.logs_top_wind_speed) || vessel_stats.value.logs_top_wind_speed.length == 0)
+      return []
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
+    return logs.value
+      .filter((trip) => vessel_stats.value.logs_top_wind_speed.find((match) => match.id === trip.id))
+      .map((trip) => {
+        // Find the corresponding matchingId entry
+        const matchingId = vessel_stats.value.logs_top_wind_speed.find((match) => match.id === trip.id)
+        // If there's a matching entry, add the max_wind_speed to the trip
+        if (matchingId) {
+          return {
+            ...trip,
+            wind_speed: speedFormatKnots(matchingId.max_wind_speed), // Add or update max_wind_speed
+          }
+        }
+      })
+  })
+  const logsTopByDistance = computed(() => {
+    if (!Array.isArray(vessel_stats.value.logs_top_distance) || vessel_stats.value.logs_top_distance.length == 0)
+      return []
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
+    return logs.value
+      .filter((trip) => vessel_stats.value.logs_top_distance.includes(trip.id))
+      .map((trip) => {
+        return {
+          ...trip, // Spread the current trip object to keep all existing fields
+          distance: distanceFormat(trip.distance),
+        }
+      })
+  })
+  const logsTopByDuration = computed(() => {
+    if (!Array.isArray(vessel_stats.value.logs_top_duration) || vessel_stats.value.logs_top_duration.length == 0)
+      return []
+    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
+    return logs.value
+      .filter((trip) => vessel_stats.value.logs_top_duration.includes(trip.id))
+      .map((trip) => {
+        return {
+          ...trip, // Spread the current trip object to keep all existing fields
+          duration: durationFormatHours(trip.duration),
+        }
+      })
+  })
+
   onMounted(async () => {
     console.log('Stats onMounted')
     isBusy.value = true
     apiError.value = null
     const api = new PostgSail()
     try {
+      let response = null
+      /*
       let response = await api.stats_logs_view()
       if (Array.isArray(response) && response[0]) {
         stats_logs.value = response[0]
@@ -444,6 +560,7 @@
       if (Array.isArray(response) && response[0]) {
         stats_moorages.value = response[0]
       }
+      */
       // Get logs
       if (logs.value.length === 0) {
         response = await CacheStore.getAPI('logs')
@@ -471,19 +588,21 @@
       isBusy.value = false
     }
     console.log('logs', logs.value)
-    console.log('stays', stays.value)
+    console.log('moorages', moorages.value)
 
     try {
-      let response = await api.stats_logs()
+      let response = await api.stats()
       if (response.stats) {
-        console.log('stats_logs success', response)
-        stats_logs.value = response.stats
+        console.log('stats success', response)
+        vessel_stats.value = response.stats
+        stats_logs.value = response.stats.stats_logs
+        stats_moorages.value = response.stats.stats_moorages
       } else {
         throw { response }
       }
     } catch (err) {
       // If exit as we need coordinates
-      console.log('stats_logs failed', err)
+      console.log('stats failed', err)
       return
       //updateError.value = response.message
     } finally {
@@ -512,10 +631,12 @@
     }
     try {
       const api = new PostgSail()
-      let response = await api.stats_logs(payload)
+      let response = await api.stats(payload)
       if (response.stats) {
         console.log('updateStatsLogs success', response)
-        stats_logs.value = response.stats
+        vessel_stats.value = response.stats
+        stats_logs.value = response.stats.stats_logs
+        stats_moorages.value = response.stats.stats_moorages
       } else {
         throw { response }
       }

@@ -3,7 +3,7 @@
 
   const props = defineProps({
     items: {
-      type: Object,
+      type: [],
       required: true,
     },
     title: {
@@ -18,51 +18,6 @@
 
   const selectedPeriod = ref('#3')
   const periods = ['#3', '#5', '#10'].map((period) => ({ label: period, value: period }))
-
-  const data = [
-    {
-      name: 'Japan',
-      revenueToday: '4,748,454',
-      revenueWeek: '30,000,000',
-      revenueMonth: '120,000,000',
-    },
-    {
-      name: 'United Kingdom',
-      revenueToday: '405,748',
-      revenueWeek: '2,500,000',
-      revenueMonth: '10,000,000',
-    },
-    {
-      name: 'United States',
-      revenueToday: '308,536',
-      revenueWeek: '1,800,000',
-      revenueMonth: '8,000,000',
-    },
-    {
-      name: 'China',
-      revenueToday: '250,963',
-      revenueWeek: '1,600,000',
-      revenueMonth: '7,000,000',
-    },
-    {
-      name: 'Canada',
-      revenueToday: '29,415',
-      revenueWeek: '180,000',
-      revenueMonth: '800,000',
-    },
-    {
-      name: 'Australia',
-      revenueToday: '15,000',
-      revenueWeek: '100,000',
-      revenueMonth: '500,000',
-    },
-    {
-      name: 'India',
-      revenueToday: '10,000',
-      revenueWeek: '50,000',
-      revenueMonth: '200,000',
-    },
-  ]
 </script>
 
 <template>
@@ -79,11 +34,16 @@
         class="region-revenue-table"
         :columns="[
           { key: 'name', label: 'Name' },
-          { key: 'revenue', label: 'Value', align: 'right' },
+          { key: $props.columnvalue, label: $props.columnvalue, align: 'right' },
         ]"
         :items="$props.items"
       >
-        <template #cell(:[$props.`$props.columnvalue`])="{ rowData }"> {{ $props.columnvalue }} </template>
+        <template #cell(name)="{ rowData }">
+          <router-link class="va-link link" :to="{ name: 'log-map', params: { id: rowData.id } }">
+            {{ rowData.name }}
+          </router-link>
+        </template>
+        <template #[`$props.columnvalue`]="{ rowData }"> {{ rowData[`$props.columnvalue`] }} </template>
       </VaDataTable>
     </VaCardContent>
   </VaCard>

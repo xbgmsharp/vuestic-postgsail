@@ -181,10 +181,15 @@
                 </td>
               </tr>
               <tr v-for="(value, index) in Object.entries(polarChartStays)" :key="index">
-                <td class="sub-setting">
-                  <b>{{ value[0] }}</b>
-                </td>
-                <td>{{ value[1].duration }} {{ value[1].percentage }}%</td>
+                <template v-if="value[1].duration > 0">
+                  <td class="sub-setting">
+                    <b>{{ value[0] }}</b>
+                  </td>
+                  <td class="flex">
+                    <span class="text-center w-1/2">{{ value[1].duration }}</span>
+                    <span class="text-center w-1/2">{{ value[1].percentage }} %</span>
+                  </td>
+                </template>
               </tr>
               <tr :key="1">
                 <td><b> Badges </b></td>

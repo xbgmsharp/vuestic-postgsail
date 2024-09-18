@@ -1,13 +1,5 @@
 <template>
-  <svg
-    id="Award_1"
-    fill="#000000"
-    width="512px"
-    height="512px"
-    viewBox="0 0 32 32"
-    data-name="Layer 1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg id="Award_1" fill="#000000" viewBox="0 0 32 32" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg">
     <rect height="1" transform="translate(22 51) rotate(180)" width="18" x="2" y="25" />
     <rect height="1" transform="translate(27 59) rotate(180)" width="17" x="5" y="29" />
     <rect height="1" transform="translate(40 -9) rotate(90)" width="19" x="15" y="15" />

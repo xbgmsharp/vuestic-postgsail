@@ -259,11 +259,12 @@
     "sum_duration": "Total Time Underway",
     "home_ports": "Home Ports",
     "unique_moorages": "Unique Moorages",
-    "time_spent_at_home_port(s)": "Time spent at home port(s)",
-    "time_spent_away": "Time spent away",
+    "sum_stay_duration": "Total Time Away",
+    "time_at_home_ports": "Total Time at Home Port(s)",
+    "time_spent_away": "Time Spent Away",
     "country": "Country visited",
-    "top_logs_by_distance": "Top Logs By Distance",
-    "top_logs_by_duration": "Top Logs By Duration"
+    "top_logs_by_distance": "Top Logs by Distance",
+    "top_logs_by_duration": "Top Logs by Duration"
   },
   "boats": {
     "list": {

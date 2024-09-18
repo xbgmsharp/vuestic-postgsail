@@ -255,7 +255,10 @@
     "home_ports": "Home Ports",
     "unique_moorages": "Unique Moorages",
     "time_spent_at_home_port(s)": "Time spent at home port(s)",
-    "time_spent_away": "Time spent away"
+    "time_spent_away": "Time spent away",
+    "country": "País visitado",
+    "top_logs_by_distance": "Top Logs By Distance",
+    "top_logs_by_duration": "Top Logs By Duration"
   },
   "boats": {
     "list": {

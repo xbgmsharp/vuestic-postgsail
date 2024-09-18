@@ -4,7 +4,7 @@
   </template>
   <template v-else>
     <div class="grid grid-cols-12 items-start sm:col-span-12 gap-6 mb-3">
-      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-4">
+      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2">
         <va-card-title>{{ t('stats.logs') }}</va-card-title>
         <!--
         <va-card-content>
@@ -139,6 +139,20 @@
                       </router-link>
                     </td>
                   </tr>
+                  <tr>
+                    <td class="va-text-bold">{{ $t('stats.country') }}</td>
+                    <td>
+                      <div>
+                        <va-icon
+                          v-for="country in vessel_stats.moorages_top_countries"
+                          :key="country"
+                          :name="getFlagIcon(country.toLocaleLowerCase(), 'small')"
+                          class="badges-icon max-h-8 w-[fit-content] mr-1"
+                          fit="contain"
+                        />
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </template>
@@ -146,7 +160,7 @@
         </va-card-content>
       </va-card>
 
-      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-4">
+      <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2">
         <va-card-title>{{ t('stats.moorages') }}</va-card-title>
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
@@ -169,20 +183,19 @@
                 </td>
                 <td>{{ value[1].duration }} {{ value[1].percentage }}%</td>
               </tr>
-              <tr :key="2">
-                <td><b> Countries </b></td>
-                <td class="badges-stats">
-                  <va-icon class="max-h-8 w-[fit-content] mr-1" fit="contain" :name="`flag-icon-es large`" />
-                </td>
-              </tr>
               <tr :key="1">
                 <td><b> Badges </b></td>
                 <td class="badges-stats">
                   <div v-for="(item, key) in userBadges" :key="key">
                     <div v-if="!item.disabled">
-                      <img v-if="item.image" class="max-h-8 w-[fit-content] mr-1" fit="contain" :src="item.image" />
-                      <IconAward v-else-if="item.svg" class="max-h-8 w-[fit-content] mr-1" fit="contain" />
-                      <IconNavigation v-else class="max-h-8 w-[fit-content] mr-1" fit="contain" />
+                      <img
+                        v-if="item.image"
+                        class="badges-icon max-h-8 w-[fit-content] mr-1"
+                        fit="contain"
+                        :src="item.image"
+                      />
+                      <IconAward v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                      <IconNavigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
                     </div>
                   </div>
                 </td>
@@ -192,9 +205,35 @@
         </va-card-content>
       </va-card>
 
+      <va-card class="col-span-12 lg:col-span-6 p-4">
+        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-content class="h-64">
+          <va-chart :data="pieChartDataComputed" type="pie" />
+        </va-card-content>
+      </va-card>
+
+      <va-card class="col-span-12 lg:col-span-6 p-4">
+        <va-card-title>{{ t('stats.stats') }}</va-card-title>
+        <va-card-content class="h-64">
+          <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />
+        </va-card-content>
+      </va-card>
+
       <div v-if="logsTopByDistance.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
-        <TopBy class="w-full" :items="logsTopByDistance" title="Top Logs By Distance" columnvalue="distance" />
-        <TopBy class="w-full" :items="logsTopByDuration" title="Top Logs By Duration" columnvalue="duration" />
+        <TopBy
+          v-if="logsTopByDistance.length > 0"
+          class="w-full p-4"
+          :items="logsTopByDistance"
+          title="Top Logs By Distance"
+          columnvalue="distance"
+        />
+        <TopBy
+          v-if="logsTopByDuration.length > 0"
+          class="w-full p-4"
+          :items="logsTopByDuration"
+          title="Top Logs By Duration"
+          columnvalue="duration"
+        />
         <TopBy
           v-if="logsTopByMaxSpeed.length > 0"
           class="w-full"
@@ -217,30 +256,16 @@
           columnvalue="wind_speed"
         />
       </div>
-
       <!--
       <div v-if="logs.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
         <TopLogsBy class="w-full" :items="logs" />
       </div>
-    -->
+-->
       <div v-if="moorages.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
         <TopMooragesBy class="w-full" :items="moorages" />
       </div>
-
-      <va-card class="col-span-12 lg:col-span-6 p-4">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content class="h-64">
-          <va-chart :data="pieChartDataComputed" type="pie" />
-        </va-card-content>
-      </va-card>
-
-      <va-card class="col-span-12 lg:col-span-6 p-4">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content class="h-64">
-          <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />
-        </va-card-content>
-      </va-card>
     </div>
+
     <div class="box layout gutter--md" style="text-align: center">
       <a
         :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fiot.openplotter.cloud%2F${publicVessel}%2Fstats`"
@@ -309,6 +334,10 @@
   const vessel_stats = ref({})
   const stats_logs = ref({})
   const stats_moorages = ref({})
+
+  function getFlagIcon(code, size) {
+    return `flag-icon-${code} ${size}`
+  }
 
   /* TODO
    * Date formatting
@@ -480,6 +509,8 @@
           avg_speed: speedFormatKnots(matchingId.avg_speed),
         }
       })
+      .sort((a, b) => a.avg_speed - b.avg_speed)
+      .reverse()
   })
   const logsTopByMaxSpeed = computed(() => {
     if (!Array.isArray(vessel_stats.value.logs_top_speed) || vessel_stats.value.logs_top_speed.length == 0) return []
@@ -497,6 +528,8 @@
           }
         }
       })
+      .sort((a, b) => a.max_speed - b.max_speed)
+      .reverse()
   })
   const logsTopByWindSpeed = computed(() => {
     if (!Array.isArray(vessel_stats.value.logs_top_wind_speed) || vessel_stats.value.logs_top_wind_speed.length == 0)
@@ -515,6 +548,7 @@
           }
         }
       })
+      .sort((a, b) => a.wind_speed - b.wind_speed)
   })
   const logsTopByDistance = computed(() => {
     if (!Array.isArray(vessel_stats.value.logs_top_distance) || vessel_stats.value.logs_top_distance.length == 0)
@@ -528,6 +562,8 @@
           distance: distanceFormat(trip.distance),
         }
       })
+      .sort((a, b) => a.distance - b.distance)
+      .reverse()
   })
   const logsTopByDuration = computed(() => {
     if (!Array.isArray(vessel_stats.value.logs_top_duration) || vessel_stats.value.logs_top_duration.length == 0)
@@ -652,6 +688,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import 'flag-icons/css/flag-icons.css';
   .va-input .va-input-wrapper {
     width: 200px;
   }
@@ -668,5 +705,9 @@
   }
   .badges-stats {
     display: flex;
+  }
+  .badges-icon {
+    width: 32px;
+    height: 32px;
   }
 </style>

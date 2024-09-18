@@ -35,15 +35,16 @@
 </script>
 
 <template>
-  <VaCard>
+  <VaCard class="p-4">
     <VaCardTitle class="flex justify-between">
       <h1 class="card-title text-secondary font-bold uppercase">Top Moorages By total stays</h1>
     </VaCardTitle>
     <VaCardContent class="flex flex-col gap-4">
+      <!--
       <div class="flex justify-between">
         <VaButtonToggle v-model="selectedPeriod" :options="periods" color="background-element" size="small" />
       </div>
-
+      -->
       <VaDataTable
         class="region-revenue-table"
         :columns="[
@@ -62,7 +63,7 @@
     </VaCardContent>
   </VaCard>
 
-  <VaCard>
+  <VaCard class="p-4">
     <VaCardTitle class="flex justify-between">
       <h1 class="card-title text-secondary font-bold uppercase">Top Moorages By Arrivals</h1>
     </VaCardTitle>

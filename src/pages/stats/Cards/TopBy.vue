@@ -26,9 +26,11 @@
       <h1 class="card-title text-secondary font-bold uppercase">{{ $props.title }}</h1>
     </VaCardTitle>
     <VaCardContent class="flex flex-col gap-1">
+      <!--
       <div class="flex justify-between">
         <VaButtonToggle v-model="selectedPeriod" :options="periods" color="background-element" size="small" />
       </div>
+      -->
 
       <VaDataTable
         class="region-revenue-table"

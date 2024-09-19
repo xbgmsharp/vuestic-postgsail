@@ -362,7 +362,7 @@
   }
 
   const polarChartData_default = {
-    labels: ['Unclassified', 'Anchor', 'Mooring Buoys', 'Dock'],
+    labels: ['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'],
     datasets: [
       {
         data: [45, 5, 9, 20],

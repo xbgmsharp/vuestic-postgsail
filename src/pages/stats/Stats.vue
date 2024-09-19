@@ -213,14 +213,14 @@
         </va-card-content>
       </va-card>
 
-      <va-card class="col-span-12 lg:col-span-6 p-4">
+      <va-card class="col-span-12 lg:col-span-6 p-2">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
           <va-chart :data="pieChartDataComputed" type="pie" />
         </va-card-content>
       </va-card>
 
-      <va-card class="col-span-12 lg:col-span-6 p-4">
+      <va-card class="col-span-12 lg:col-span-6 p-2">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
           <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />

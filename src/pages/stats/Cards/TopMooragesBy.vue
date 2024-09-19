@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <VaCard class="col-span-12 lg:col-span-6 p-4">
+  <VaCard class="col-span-12 lg:col-span-6 p-2">
     <VaCardTitle class="flex justify-between">
       <h1 class="card-title text-secondary font-bold uppercase">{{ $props.title }}</h1>
     </VaCardTitle>

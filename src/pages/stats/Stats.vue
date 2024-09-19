@@ -3,43 +3,35 @@
     <nodatayet />
   </template>
   <template v-else>
+    <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2 mb-3">
+      <va-card-title>Date Range</va-card-title>
+      <va-card-content>
+        <template v-if="apiError">
+          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
+        </template>
+        <va-inner-loading :loading="isBusy">
+          <template v-if="stats_logs && stats_logs.count">
+            <div class="layout flex flex-row gap-4 justify-between">
+              <va-date-input
+                v-model="stats_logs.first_date"
+                :readonly="false"
+                style="width: 200px"
+                @update:modelValue="updateStartDate"
+              />
+              <va-date-input
+                v-model="stats_logs.last_date"
+                :readonly="false"
+                style="width: 200px"
+                @update:modelValue="updateEndDate"
+              />
+            </div>
+          </template>
+        </va-inner-loading>
+      </va-card-content>
+    </va-card>
     <div class="grid grid-cols-12 items-start sm:col-span-12 gap-6 mb-3">
       <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2">
         <va-card-title>{{ t('stats.logs') }}</va-card-title>
-        <!--
-        <va-card-content>
-          <table class="va-table va-table--hoverable va-table--striped">
-            <tbody>
-              <tr>
-                <td><b> Date Range </b></td>
-                <td>
-                  <div class="col-span-12 md:col-span-6 flex">
-                    <va-date-input
-                      v-model="start_date"
-                      :label="$t('logs.list.filter.start_date')"
-                      :readonly="false"
-                      @update:modelValue="updateStartDate"
-                    />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <va-date-input
-                      v-model="end_date"
-                      :label="$t('logs.list.filter.end_date')"
-                      :readonly="false"
-                      @update:modelValue="updateEndDate"
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr v-for="(value, index) in Object.entries(items_logs)" :key="index">
-                <td>
-                  <b>{{ $t(`stats.${value[0]}`) }}</b>
-                </td>
-                <td>{{ value[1] }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </va-card-content>
-        -->
         <va-card-content>
           <template v-if="apiError">
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -48,26 +40,6 @@
             <template v-if="stats_logs && stats_logs.count">
               <table class="va-table va-table--hoverable va-table--striped">
                 <tbody>
-                  <tr>
-                    <td class="va-text-bold">Date Range</td>
-                    <td>
-                      <va-date-input
-                        v-model="stats_logs.first_date"
-                        :label="$t('stats.first_date')"
-                        :readonly="false"
-                        style="width: 200px"
-                        @update:modelValue="updateStartDate"
-                      />
-                      &nbsp;&nbsp;
-                      <va-date-input
-                        v-model="stats_logs.last_date"
-                        :label="$t('stats.last_date')"
-                        :readonly="false"
-                        style="width: 200px"
-                        @update:modelValue="updateEndDate"
-                      />
-                    </td>
-                  </tr>
                   <tr>
                     <td class="va-text-bold">{{ $t('stats.name') }}</td>
                     <td>

@@ -227,43 +227,36 @@
         </va-card-content>
       </va-card>
 
-      <div v-if="logsTopByDistance.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
-        <TopBy
-          v-if="logsTopByDistance.length > 0"
-          class="w-full p-4"
-          :items="logsTopByDistance"
-          title="Top Logs by Distance"
-          columnvalue="distance"
-        />
-        <TopBy
-          v-if="logsTopByDuration.length > 0"
-          class="w-full p-4"
-          :items="logsTopByDuration"
-          title="Top Logs by Duration"
-          columnvalue="duration"
-        />
-        <TopBy
-          v-if="logsTopByAvgSpeed.length > 0"
-          class="w-full p-4"
-          :items="logsTopByAvgSpeed"
-          title="Top Logs by Average Speed"
-          columnvalue="avg_speed"
-        />
-        <TopBy
-          v-if="logsTopByMaxSpeed.length > 0"
-          class="w-full p-4"
-          :items="logsTopByMaxSpeed"
-          title="Top Logs by Max Speed"
-          columnvalue="max_speed"
-        />
-        <TopBy
-          v-if="logsTopByWindSpeed.length > 0"
-          class="w-full p-4"
-          :items="logsTopByWindSpeed"
-          title="Top Logs by Max Wind Speed"
-          columnvalue="wind_speed"
-        />
-      </div>
+      <TopBy
+        v-if="logsTopByDistance.length > 0"
+        :items="logsTopByDistance"
+        title="Top Logs by Distance"
+        columnvalue="distance"
+      />
+      <TopBy
+        v-if="logsTopByDuration.length > 0"
+        :items="logsTopByDuration"
+        title="Top Logs by Duration"
+        columnvalue="duration"
+      />
+      <TopBy
+        v-if="logsTopByAvgSpeed.length > 0"
+        :items="logsTopByAvgSpeed"
+        title="Top Logs by Average Speed"
+        columnvalue="avg_speed"
+      />
+      <TopBy
+        v-if="logsTopByMaxSpeed.length > 0"
+        :items="logsTopByMaxSpeed"
+        title="Top Logs by Max Speed"
+        columnvalue="max_speed"
+      />
+      <TopBy
+        v-if="logsTopByWindSpeed.length > 0"
+        :items="logsTopByWindSpeed"
+        title="Top Logs by Max Wind Speed"
+        columnvalue="wind_speed"
+      />
       <!--
       <div v-if="logs.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
         <TopLogsBy class="w-full" :items="logs" />

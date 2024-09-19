@@ -454,7 +454,7 @@
       "knots": "{n} kts"
     },
     "time": {
-      "days": "{n} Tage | {n} Tag | {n} Tage",
+      "days": "{n} Tag | {n} Tage",
       "hours": "Stunde | Stunden | Stunden"
     }
   },

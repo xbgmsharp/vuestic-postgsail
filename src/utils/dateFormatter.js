@@ -77,7 +77,7 @@ export const durationFormatDays = (durationString) => {
 
 export const durationI18nDays = (durationString, tr = 'units.time.days') => {
   const durationD = parseFloat(durationFormatDays(durationString))
-  return t(tr, durationD === 1 ? 1 : durationD)
+  return t(tr, durationD)
 }
 
 export const durationI18nDaysHours = (durationString) => {
@@ -85,7 +85,7 @@ export const durationI18nDaysHours = (durationString) => {
   let hours = moment.duration(durationString).as('hours') - days * 24
   let durationDH = ''
   if (days > 0) {
-    durationDH += t('units.time.days', days === 1 ? 1 : days) + ', '
+    durationDH += t('units.time.days', days) + ', '
   }
   durationDH += hours.toFixed(2) + ' ' + t('units.time.hours')
   return durationDH

@@ -449,7 +449,7 @@
       "knots": "{n} kts"
     },
     "time": {
-      "days": "{n} days | {n} day | {n} days",
+      "days": "{n} day | {n} days",
       "hours": "hour | hours | hours"
     }
   },

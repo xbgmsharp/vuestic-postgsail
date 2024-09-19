@@ -34,10 +34,8 @@
 
       <VaDataTable
         class="region-revenue-table"
-        :columns="[
-          { key: 'name', label: 'Name' },
-          { key: $props.columnvalue, label: $props.columnvalue, align: 'right' },
-        ]"
+        hide-default-header
+        :columns="[{ key: 'name' }, { key: $props.columnvalue, align: 'right' }]"
         :items="$props.items"
       >
         <template #cell(name)="{ rowData }">

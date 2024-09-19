@@ -257,14 +257,18 @@
         title="Top Logs by Max Wind Speed"
         columnvalue="wind_speed"
       />
-      <!--
-      <div v-if="logs.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
-        <TopLogsBy class="w-full" :items="logs" />
-      </div>
--->
-      <div v-if="moorages.length > 0" class="col-span-12 lg:col-span-6 sm:col-span-12">
-        <TopMooragesBy class="w-full" :items="moorages" />
-      </div>
+      <TopMooragesBy
+        v-if="mooragesTopByDuration.length > 0"
+        :items="mooragesTopByDuration"
+        title="Top Moorages by Stay Duration"
+        columnvalue="duration"
+      />
+      <TopMooragesBy
+        v-if="mooragesTopByArrivals.length > 0"
+        :items="mooragesTopByArrivals"
+        title="Top Moorages by Arrivals"
+        columnvalue="arrivals"
+      />
     </div>
 
     <div class="box layout gutter--md" style="text-align: center">
@@ -630,6 +634,52 @@
         return null
       })
       .filter((trip) => trip !== null)
+  })
+
+  // TopMooragesBy listing
+  const moorageMap = computed(() => new Map(moorages.value.map((moorage) => [moorage.id, moorage])))
+
+  const mooragesTopByDuration = computed(() => {
+    if (
+      !Array.isArray(vessel_stats.value.moorages_top_duration) ||
+      vessel_stats.value.moorages_top_duration.length === 0
+    )
+      return []
+    if (!Array.isArray(moorages.value) || moorages.value.length === 0) return []
+
+    return vessel_stats.value.moorages_top_duration
+      .map((match) => {
+        const moorage = moorageMap.value.get(match.id)
+        if (moorage) {
+          return {
+            ...moorage,
+            duration: durationI18nDaysHours(match.dur),
+          }
+        }
+        return null
+      })
+      .filter((moorage) => moorage !== null)
+  })
+  const mooragesTopByArrivals = computed(() => {
+    if (
+      !Array.isArray(vessel_stats.value.moorages_top_arrivals) ||
+      vessel_stats.value.moorages_top_arrivals.length === 0
+    )
+      return []
+    if (!Array.isArray(moorages.value) || moorages.value.length === 0) return []
+
+    return vessel_stats.value.moorages_top_arrivals
+      .map((match) => {
+        const moorage = moorageMap.value.get(match.id)
+        if (moorage) {
+          return {
+            ...moorage,
+            arrivals: match.ref_count,
+          }
+        }
+        return null
+      })
+      .filter((moorage) => moorage !== null)
   })
 
   onMounted(async () => {

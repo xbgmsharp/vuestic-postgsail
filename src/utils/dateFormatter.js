@@ -90,7 +90,7 @@ export const durationI18nDaysHours = (durationString) => {
   let hours = moment.duration(durationString).as('hours') - days * 24
   let durationDH = ''
   if (days > 0) {
-    durationDH += t('units.time.days', days === 1 ? 0 : days) + ', '
+    durationDH += t('units.time.days', days === 1 ? 1 : days) + ', '
   }
   durationDH += hours.toFixed(2) + ' ' + t('units.time.hours')
   return durationDH

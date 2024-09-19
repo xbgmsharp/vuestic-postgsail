@@ -286,27 +286,19 @@
   import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import PostgSail from '../../services/api-client'
-  //import nodatayet from '../../components/noDataScreen.vue'
-  //import VaChart from '../../components/va-charts/VaChart.vue'
   const nodatayet = defineAsyncComponent(() => import('../../components/noDataScreen.vue'))
   const VaChart = defineAsyncComponent(() => import('../../components/va-charts/VaChart.vue'))
   import { useGlobalStore } from '../../stores/global-store'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import moment from 'moment/min/moment-with-locales'
-  //import IconAward from '../../components/icons/IconAward.vue'
-  //import IconNavigation from '../../components/icons/IconNavigation.vue'
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
-  //import { asBusy } from '../../utils/handleExports'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { durationI18nDaysHours, durationI18nDays } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
-  //import stats_logs from '../../data/stats_logs.json'
-  //import stats_moorages from '../../data/stats_moorages.json'
   import TopBy from './Cards/TopBy.vue'
-  //import TopLogsBy from './Cards/TopLogsBy.vue'
   import TopMooragesBy from './Cards/TopMooragesBy.vue'
 
   const { t } = useI18n()
@@ -672,17 +664,6 @@
     const api = new PostgSail()
     try {
       let response = null
-      /*
-      let response = await api.stats_logs_view()
-      if (Array.isArray(response) && response[0]) {
-        stats_logs.value = response[0]
-        console.log(stats_logs.value, 'stats_logs')
-      }
-      response = await api.stats_moorages_view()
-      if (Array.isArray(response) && response[0]) {
-        stats_moorages.value = response[0]
-      }
-      */
       // Get logs
       if (logs.value.length === 0) {
         response = await CacheStore.getAPI('logs')

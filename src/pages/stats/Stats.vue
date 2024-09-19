@@ -31,15 +31,16 @@
               <div class="badges-stats">
                 <div v-for="(item, key) in userBadges" :key="key">
                   <div v-if="!item.disabled">
-                    <img
-                      v-if="item.image"
-                      class="badges-icon max-h-8 w-[fit-content] mr-1"
-                      fit="contain"
-                      :src="item.image"
-                      :title="item.description"
-                    />
-                    <IconAward v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
-                    <IconNavigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                    <va-popover :message="key">
+                      <va-image
+                        v-if="item.image"
+                        class="badges-icon max-h-8 w-[fit-content] mr-1"
+                        fit="contain"
+                        :src="item.image"
+                      />
+                      <icon-award v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                      <icon-navigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                    </va-popover>
                   </div>
                 </div>
               </div>
@@ -193,43 +194,43 @@
         </va-card-content>
       </va-card>
 
-      <TopBy
+      <top-by
         v-if="logsTopByDistance.length > 0"
         :items="logsTopByDistance"
         title="Top Logs by Distance"
         columnvalue="distance"
       />
-      <TopBy
+      <top-by
         v-if="logsTopByDuration.length > 0"
         :items="logsTopByDuration"
         title="Top Logs by Duration"
         columnvalue="duration"
       />
-      <TopBy
+      <top-by
         v-if="logsTopByAvgSpeed.length > 0"
         :items="logsTopByAvgSpeed"
         title="Top Logs by Average Speed"
         columnvalue="avg_speed"
       />
-      <TopBy
+      <top-by
         v-if="logsTopByMaxSpeed.length > 0"
         :items="logsTopByMaxSpeed"
         title="Top Logs by Max Speed"
         columnvalue="max_speed"
       />
-      <TopBy
+      <top-by
         v-if="logsTopByWindSpeed.length > 0"
         :items="logsTopByWindSpeed"
         title="Top Logs by Max Wind Speed"
         columnvalue="wind_speed"
       />
-      <TopMooragesBy
+      <top-moorages-by
         v-if="mooragesTopByDuration.length > 0"
         :items="mooragesTopByDuration"
         title="Top Moorages by Stay Duration"
         columnvalue="duration"
       />
-      <TopMooragesBy
+      <top-moorages-by
         v-if="mooragesTopByArrivals.length > 0"
         :items="mooragesTopByArrivals"
         title="Top Moorages by Arrivals"

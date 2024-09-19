@@ -161,7 +161,7 @@
                 <td>{{ $t('stats.time_at_home_ports') }}</td>
                 <td>
                   <router-link class="va-link link" :to="{ name: 'stays' }">
-                    {{ durationFormatDays(stats_moorages.time_at_home_ports) }} days
+                    {{ durationI18nDaysHours(stats_moorages.time_at_home_ports) }}
                   </router-link>
                 </td>
               </tr>
@@ -169,7 +169,7 @@
                 <td>{{ $t('stats.time_spent_away') }}</td>
                 <td>
                   <router-link class="va-link link" :to="{ name: 'stays' }">
-                    {{ durationFormatDays(stats_moorages.time_spent_away) }} days
+                    {{ durationI18nDaysHours(stats_moorages.time_spent_away) }}
                   </router-link>
                 </td>
               </tr>

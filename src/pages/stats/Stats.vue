@@ -4,14 +4,15 @@
   </template>
   <template v-else>
     <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2 mb-3">
-      <va-card-title>Date Range</va-card-title>
+      <va-card-title>Statistics for {{ stats_logs.name }} </va-card-title>
       <va-card-content>
         <template v-if="apiError">
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
         <va-inner-loading :loading="isBusy">
           <template v-if="stats_logs && stats_logs.count">
-            <div class="layout flex flex-row gap-4 justify-between">
+            <div class="layout flex flex-row gap-4 justify-between mb-4">
+              <div>Date Range:</div>
               <va-date-input
                 v-model="stats_logs.first_date"
                 :readonly="false"
@@ -24,6 +25,24 @@
                 style="width: 200px"
                 @update:modelValue="updateEndDate"
               />
+            </div>
+            <div>
+              <div class="mb-2">Badges Awarded</div>
+              <div class="badges-stats">
+                <div v-for="(item, key) in userBadges" :key="key">
+                  <div v-if="!item.disabled">
+                    <img
+                      v-if="item.image"
+                      class="badges-icon max-h-8 w-[fit-content] mr-1"
+                      fit="contain"
+                      :src="item.image"
+                      :title="item.description"
+                    />
+                    <IconAward v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                    <IconNavigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
+                  </div>
+                </div>
+              </div>
             </div>
           </template>
         </va-inner-loading>
@@ -41,36 +60,32 @@
               <table class="va-table va-table--hoverable va-table--striped">
                 <tbody>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.name') }}</td>
-                    <td>
-                      {{ stats_logs.name }}
+                    <td>{{ $t('stats.count') }}</td>
+                    <td class="va-text-bold">
+                      <router-link class="va-link link" :to="{ name: 'logs' }">
+                        {{ stats_logs.count }}
+                      </router-link>
                     </td>
                   </tr>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.count') }}</td>
-                    <td>
-                      {{ stats_logs.count }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="va-text-bold">{{ $t('stats.sum_distance') }}</td>
-                    <td>
+                    <td>{{ $t('stats.sum_distance') }}</td>
+                    <td class="va-text-bold">
                       <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ distanceFormatMiles(stats_logs.sum_distance) }}
                       </router-link>
                     </td>
                   </tr>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.sum_duration') }}</td>
-                    <td>
+                    <td>{{ $t('stats.sum_duration') }}</td>
+                    <td class="va-text-bold">
                       <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ durationI18nDaysHours(stats_logs.sum_duration) }}
                       </router-link>
                     </td>
                   </tr>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.max_speed') }}</td>
-                    <td>
+                    <td>{{ $t('stats.max_speed') }}</td>
+                    <td class="va-text-bold">
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_speed_id } }"
@@ -79,10 +94,9 @@
                       </router-link>
                     </td>
                   </tr>
-
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.max_wind_speed') }}</td>
-                    <td>
+                    <td>{{ $t('stats.max_wind_speed') }}</td>
+                    <td class="va-text-bold">
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_wind_speed_id } }"
@@ -92,8 +106,8 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.longest_nonstop') }}</td>
-                    <td>
+                    <td>{{ $t('stats.longest_nonstop') }}</td>
+                    <td class="va-text-bold">
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_distance_id } }"
@@ -110,8 +124,8 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="va-text-bold">{{ $t('stats.country') }}</td>
-                    <td>
+                    <td>{{ $t('stats.country') }}</td>
+                    <td class="va-text-bold">
                       <div>
                         <va-icon
                           v-for="country in vessel_stats.moorages_top_countries"
@@ -136,49 +150,29 @@
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
               <tr>
-                <td class="va-text-bold">{{ $t('stats.home_ports') }}</td>
-                <td>{{ stats_moorages.home_ports }}</td>
+                <td>{{ $t('stats.home_ports') }}</td>
+                <td class="va-text-bold">{{ stats_moorages.home_ports }}</td>
               </tr>
               <tr>
-                <td class="va-text-bold">{{ $t('stats.unique_moorages') }}</td>
-                <td>{{ stats_moorages.unique_moorages }}</td>
+                <td>{{ $t('stats.unique_moorages') }}</td>
+                <td class="va-text-bold">{{ stats_moorages.unique_moorages }}</td>
               </tr>
               <tr>
-                <td class="va-text-bold">{{ $t('stats.time_at_home_ports') }}</td>
-                <td>{{ durationFormatDays(stats_moorages.time_at_home_ports) }} days</td>
+                <td>{{ $t('stats.time_at_home_ports') }}</td>
+                <td class="va-text-bold">{{ durationFormatDays(stats_moorages.time_at_home_ports) }} days</td>
               </tr>
-              <!-- TODO: fix when api is fixed -->
-              <tr v-if="stats_moorages.time_spent_away">
-                <td class="va-text-bold">{{ $t('stats.time_spent_away') }}</td>
-                <td>{{ durationFormatDays(stats_moorages.time_spent_away) }} days</td>
+              <tr>
+                <td>{{ $t('stats.time_spent_away') }}</td>
+                <td class="va-text-bold">{{ durationFormatDays(stats_moorages.time_spent_away) }} days</td>
               </tr>
               <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
                 <template v-if="value[1].duration > 0">
-                  <td class="sub-setting">
-                    <b>{{ value[0] }}</b>
-                  </td>
+                  <td class="sub-setting">{{ value[0] }}</td>
                   <td class="flex">
-                    <span class="text-center w-1/2">{{ durationFormatDays(value[1].duration) }} days</span>
-                    <span class="text-center w-1/2">{{ value[1].percentage }} %</span>
+                    <span class="va-text-bold text-center w-1/2">{{ durationFormatDays(value[1].duration) }} days</span>
+                    <span class="va-text-bold text-center w-1/2">{{ value[1].percentage }} %</span>
                   </td>
                 </template>
-              </tr>
-              <tr :key="1">
-                <td><b> Badges </b></td>
-                <td class="badges-stats">
-                  <div v-for="(item, key) in userBadges" :key="key">
-                    <div v-if="!item.disabled">
-                      <img
-                        v-if="item.image"
-                        class="badges-icon max-h-8 w-[fit-content] mr-1"
-                        fit="contain"
-                        :src="item.image"
-                      />
-                      <IconAward v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
-                      <IconNavigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
-                    </div>
-                  </div>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -776,7 +770,6 @@
   .sub-setting {
     padding-left: 2em;
     font-size: 0.9rem;
-    font-weight: 600;
   }
   .badges-stats {
     display: flex;

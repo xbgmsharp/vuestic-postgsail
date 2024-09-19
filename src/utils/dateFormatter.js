@@ -76,13 +76,8 @@ export const durationFormatDays = (durationString) => {
 }
 
 export const durationI18nDays = (durationString, tr = 'units.time.days') => {
-  // display "day" only if exactly 1; "hours" otherwise (e.g.: 0.8, 1.2):
-  //return t(tr, durationHours(durationString) === '1' ? 1 : 0)
-  // displaying "hour" vs "hours" delegated to Vue:
-  //return t(tr, parseInt(durationHours(durationString)))
-  // display "hour" up to and including 1 with gb.json "hour hours hours"
-  const durationD = durationFormatDays(durationString)
-  return t(tr, durationD === '1' ? 0 : parseInt(durationD))
+  const durationD = parseFloat(durationFormatDays(durationString))
+  return t(tr, durationD === 1 ? 1 : durationD)
 }
 
 export const durationI18nDaysHours = (durationString) => {

@@ -179,7 +179,7 @@
                   <td class="flex">
                     <span class="text-center w-1/2">
                       <router-link class="va-link link" :to="{ name: 'stays' }">
-                        {{ durationFormatDays(value[1].duration) }} days
+                        {{ durationI18nDays(value[1].duration) }}
                       </router-link>
                     </span>
                     <span class="text-center w-1/2">
@@ -300,7 +300,7 @@
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   //import { asBusy } from '../../utils/handleExports'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
-  import { durationI18nDaysHours, durationFormatDays } from '../../utils/dateFormatter.js'
+  import { durationI18nDaysHours, durationI18nDays } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'

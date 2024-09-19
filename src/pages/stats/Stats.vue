@@ -244,21 +244,21 @@
         />
         <TopBy
           v-if="logsTopByMaxSpeed.length > 0"
-          class="w-full"
+          class="w-full p-4"
           :items="logsTopByMaxSpeed"
           title="Top Logs By MaxSpeed"
           columnvalue="max_speed"
         />
         <TopBy
           v-if="logsTopByAvgSpeed.length > 0"
-          class="w-full"
+          class="w-full p-4"
           :items="logsTopByAvgSpeed"
           title="Top Logs By AVG Speed"
           columnvalue="avg_speed"
         />
         <TopBy
           v-if="logsTopByWindSpeed.length > 0"
-          class="w-full"
+          class="w-full p-4"
           :items="logsTopByWindSpeed"
           title="Top Logs By Max Wind Speed"
           columnvalue="wind_speed"

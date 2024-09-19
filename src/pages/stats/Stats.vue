@@ -62,7 +62,7 @@
                 <tbody>
                   <tr>
                     <td>{{ $t('stats.count') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ stats_logs.count }}
                       </router-link>
@@ -70,7 +70,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.sum_distance') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ distanceFormatMiles(stats_logs.sum_distance) }}
                       </router-link>
@@ -78,7 +78,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.sum_duration') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
                         {{ durationI18nDaysHours(stats_logs.sum_duration) }}
                       </router-link>
@@ -86,7 +86,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.max_speed') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_speed_id } }"
@@ -97,7 +97,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.max_wind_speed') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_wind_speed_id } }"
@@ -108,7 +108,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.longest_nonstop') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <router-link
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_distance_id } }"
@@ -126,7 +126,7 @@
                   </tr>
                   <tr>
                     <td>{{ $t('stats.country') }}</td>
-                    <td class="va-text-bold">
+                    <td>
                       <div>
                         <va-icon
                           v-for="country in vessel_stats.moorages_top_countries"
@@ -152,26 +152,50 @@
             <tbody>
               <tr>
                 <td>{{ $t('stats.home_ports') }}</td>
-                <td class="va-text-bold">{{ stats_moorages.home_ports }}</td>
+                <td>
+                  <router-link class="va-link link" :to="{ name: 'moorages' }">
+                    {{ stats_moorages.home_ports }}
+                  </router-link>
+                </td>
               </tr>
               <tr>
                 <td>{{ $t('stats.unique_moorages') }}</td>
-                <td class="va-text-bold">{{ stats_moorages.unique_moorages }}</td>
+                <td>
+                  <router-link class="va-link link" :to="{ name: 'moorages' }">
+                    {{ stats_moorages.unique_moorages }}
+                  </router-link>
+                </td>
               </tr>
               <tr>
                 <td>{{ $t('stats.time_at_home_ports') }}</td>
-                <td class="va-text-bold">{{ durationFormatDays(stats_moorages.time_at_home_ports) }} days</td>
+                <td>
+                  <router-link class="va-link link" :to="{ name: 'stays' }">
+                    {{ durationFormatDays(stats_moorages.time_at_home_ports) }} days
+                  </router-link>
+                </td>
               </tr>
               <tr>
                 <td>{{ $t('stats.time_spent_away') }}</td>
-                <td class="va-text-bold">{{ durationFormatDays(stats_moorages.time_spent_away) }} days</td>
+                <td>
+                  <router-link class="va-link link" :to="{ name: 'stays' }">
+                    {{ durationFormatDays(stats_moorages.time_spent_away) }} days
+                  </router-link>
+                </td>
               </tr>
               <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
                 <template v-if="value[1].duration > 0">
                   <td class="sub-setting">{{ value[0] }}</td>
                   <td class="flex">
-                    <span class="va-text-bold text-center w-1/2">{{ durationFormatDays(value[1].duration) }} days</span>
-                    <span class="va-text-bold text-center w-1/2">{{ value[1].percentage }} %</span>
+                    <span class="text-center w-1/2">
+                      <router-link class="va-link link" :to="{ name: 'stays' }">
+                        {{ durationFormatDays(value[1].duration) }} days
+                      </router-link>
+                    </span>
+                    <span class="text-center w-1/2">
+                      <router-link class="va-link link" :to="{ name: 'stays' }">
+                        {{ value[1].percentage }} %
+                      </router-link>
+                    </span>
                   </td>
                 </template>
               </tr>

@@ -180,13 +180,13 @@
                   <template v-else> {{ value[1] }} </template>
                 </td>
               </tr>
-              <tr v-for="(value, index) in Object.entries(polarChartStays)" :key="index">
+              <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
                 <template v-if="value[1].duration > 0">
                   <td class="sub-setting">
                     <b>{{ value[0] }}</b>
                   </td>
                   <td class="flex">
-                    <span class="text-center w-1/2">{{ value[1].duration }}</span>
+                    <span class="text-center w-1/2">{{ durationFormatDays(value[1].duration) }}</span>
                     <span class="text-center w-1/2">{{ value[1].percentage }} %</span>
                   </td>
                 </template>
@@ -490,6 +490,50 @@
     obj.Buoy.duration = Math.trunc(moment.duration(obj.Buoy.duration).as('days'))
     obj.Dock.duration = Math.trunc(moment.duration(obj.Dock.duration).as('days'))
     console.log('pieChartStays obj', obj)
+    return obj
+  })
+
+  const timeSpentAwayByType = computed(() => {
+    if (
+      !vessel_stats.value.stats_moorages ||
+      !Array.isArray(vessel_stats.value.stats_moorages.time_spent_away_arr) ||
+      vessel_stats.value.stats_moorages.time_spent_away_arr.length == 0
+    )
+      return {}
+    let total_duration = 0
+    const obj = {
+      Unclassified: { duration: 0, percentage: 0 },
+      Anchor: { duration: 0, percentage: 0 },
+      Buoy: { duration: 0, percentage: 0 },
+      Dock: { duration: 0, percentage: 0 },
+    }
+    // Extract Sum Duration of stays by type
+    vessel_stats.value.stats_moorages.time_spent_away_arr.forEach((entry) => {
+      total_duration += moment.duration(entry.stay_duration)
+      switch (entry.stay_code) {
+        case 1:
+          obj.Unclassified.duration += moment.duration(entry.stay_duration)
+          break
+        case 2:
+          obj.Anchor.duration += moment.duration(entry.stay_duration)
+          break
+        case 3:
+          obj.Buoy.duration += moment.duration(entry.stay_duration)
+          break
+        case 4:
+          obj.Dock.duration += moment.duration(entry.stay_duration)
+          break
+        default:
+          break
+      }
+    })
+    obj.Unclassified.percentage = (
+      (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) *
+      100
+    ).toFixed(2)
+    obj.Anchor.percentage = ((moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100).toFixed(2)
+    obj.Buoy.percentage = ((moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100).toFixed(2)
+    obj.Dock.percentage = ((moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100).toFixed(2)
     return obj
   })
 

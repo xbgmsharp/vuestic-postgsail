@@ -11,23 +11,14 @@
         </template>
         <va-inner-loading :loading="isBusy">
           <template v-if="stats_logs && stats_logs.count">
-            <div class="layout flex flex-row gap-4 justify-between mb-4">
-              <div>Date Range:</div>
-              <va-date-input
-                v-model="stats_logs.first_date"
-                :readonly="false"
-                style="width: 200px"
-                @update:modelValue="updateStartDate"
-              />
-              <va-date-input
-                v-model="stats_logs.last_date"
-                :readonly="false"
-                style="width: 200px"
-                @update:modelValue="updateEndDate"
-              />
+            <div class="gap-4 mb-4">
+              <div class="mb-2">Date Range:</div>
+              <div class="w-64">
+                <va-date-input v-model="dateRange" mode="range" @update:modelValue="updateDateRange" />
+              </div>
             </div>
             <div>
-              <div class="mb-2">Badges Awarded</div>
+              <div class="mb-2">Badges Awarded:</div>
               <div class="badges-stats">
                 <div v-for="(item, key) in userBadges" :key="key">
                   <div v-if="!item.disabled">
@@ -330,6 +321,7 @@
   const vessel_stats = ref({})
   const stats_logs = ref({})
   const stats_moorages = ref({})
+  const dateRange = ref(null)
 
   function getFlagIcon(code, size) {
     return `flag-icon-${code} ${size}`
@@ -727,6 +719,7 @@
         vessel_stats.value = response.stats
         stats_logs.value = response.stats.stats_logs
         stats_moorages.value = response.stats.stats_moorages
+        dateRange.value = { start: stats_logs.value.first_date, end: stats_logs.value.last_date }
       } else {
         throw { response }
       }
@@ -742,22 +735,16 @@
     console.log('stats userBadges', userBadges.value)
   })
 
-  function updateStartDate(new_start_date) {
+  function updateDateRange(range) {
     // runBusy handles isBusy & apiError
-    console.log('updateStartDate', moment.utc(new_start_date).format('YYYY-MM-DD'))
-    updateStatsLogs(new_start_date, stats_logs.value.last_date)
-  }
-  function updateEndDate(new_end_date) {
-    // runBusy handles isBusy & apiError
-    console.log('updateEndDate', moment.utc(new_end_date).format('YYYY-MM-DD'))
-    updateStatsLogs(stats_logs.value.first_date, new_end_date)
+    console.log('updateDateRange', range)
+    updateStatsLogs()
   }
 
   async function updateStatsLogs() {
-    //moment(new_end_date.value).format('YYYY-MM-DD')
     const payload = {
-      start_date: moment(stats_logs.value.first_date).format('YYYY-MM-DD'),
-      end_date: moment(stats_logs.value.last_date).format('YYYY-MM-DD'),
+      start_date: moment(dateRange.value.start).format('YYYY-MM-DD'),
+      end_date: moment(dateRange.value.end).format('YYYY-MM-DD'),
     }
     try {
       const api = new PostgSail()

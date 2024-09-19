@@ -18,12 +18,12 @@
 </script>
 
 <template>
-  <VaCard class="col-span-12 lg:col-span-6 p-2">
-    <VaCardTitle class="flex justify-between">
+  <va-card class="col-span-12 lg:col-span-6 p-2">
+    <va-card-title class="flex justify-between">
       <h1 class="card-title text-secondary font-bold uppercase">{{ $props.title }}</h1>
-    </VaCardTitle>
-    <VaCardContent class="flex flex-col gap-1">
-      <VaDataTable
+    </va-card-title>
+    <va-card-content class="flex flex-col gap-1">
+      <va-data-table
         class="region-revenue-table"
         hide-default-header
         :columns="[{ key: 'name' }, { key: $props.columnvalue, align: 'right' }]"
@@ -35,9 +35,9 @@
           </router-link>
         </template>
         <template #[`$props.columnvalue`]="{ rowData }"> {{ rowData[`$props.columnvalue`] }} </template>
-      </VaDataTable>
-    </VaCardContent>
-  </VaCard>
+      </va-data-table>
+    </va-card-content>
+  </va-card>
 </template>
 
 <style lang="scss" scoped>

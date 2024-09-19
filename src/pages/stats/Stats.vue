@@ -165,20 +165,22 @@
         <va-card-content>
           <table class="va-table va-table--hoverable va-table--striped">
             <tbody>
-              <tr v-for="(value, index) in Object.entries(stats_moorages)" :key="index">
-                <td>
-                  <b>{{ $t('stats.' + value[0]) }}</b>
-                </td>
-                <td>
-                  <template v-if="value[0] === 'time_spent_away'"> {{ durationFormatDays(value[1]) }} days </template>
-                  <template v-else-if="value[0] === 'sum_stay_duration'">
-                    {{ durationFormatDays(value[1]) }} days
-                  </template>
-                  <template v-else-if="value[0] === 'time_at_home_ports'">
-                    {{ durationFormatDays(value[1]) }} days
-                  </template>
-                  <template v-else> {{ value[1] }} </template>
-                </td>
+              <tr>
+                <td class="va-text-bold">{{ $t('stats.home_ports') }}</td>
+                <td>{{ stats_moorages.home_ports }}</td>
+              </tr>
+              <tr>
+                <td class="va-text-bold">{{ $t('stats.unique_moorages') }}</td>
+                <td>{{ stats_moorages.unique_moorages }}</td>
+              </tr>
+              <tr>
+                <td class="va-text-bold">{{ $t('stats.time_at_home_ports') }}</td>
+                <td>{{ durationFormatDays(stats_moorages.time_at_home_ports) }} days</td>
+              </tr>
+              <!-- TODO: fix when api is fixed -->
+              <tr v-if="stats_moorages.time_spent_away">
+                <td class="va-text-bold">{{ $t('stats.time_spent_away') }}</td>
+                <td>{{ durationFormatDays(stats_moorages.time_spent_away[0].time_spent_away) }} days</td>
               </tr>
               <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
                 <template v-if="value[1].duration > 0">
@@ -186,7 +188,7 @@
                     <b>{{ value[0] }}</b>
                   </td>
                   <td class="flex">
-                    <span class="text-center w-1/2">{{ durationFormatDays(value[1].duration) }}</span>
+                    <span class="text-center w-1/2">{{ durationFormatDays(value[1].duration) }} days</span>
                     <span class="text-center w-1/2">{{ value[1].percentage }} %</span>
                   </td>
                 </template>

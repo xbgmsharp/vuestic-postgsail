@@ -497,9 +497,9 @@
 
   const timeSpentAwayByType = computed(() => {
     if (
-      !vessel_stats.value.stats_moorages ||
-      !Array.isArray(vessel_stats.value.stats_moorages.time_spent_away_arr) ||
-      vessel_stats.value.stats_moorages.time_spent_away_arr.length == 0
+      !stats_moorages.value ||
+      !Array.isArray(stats_moorages.value.time_spent_away_arr) ||
+      stats_moorages.value.time_spent_away_arr.length == 0
     )
       return {}
     let total_duration = 0
@@ -510,7 +510,7 @@
       Dock: { duration: 0, percentage: 0 },
     }
     // Extract Sum Duration of stays by type
-    vessel_stats.value.stats_moorages.time_spent_away_arr.forEach((entry) => {
+    stats_moorages.value.time_spent_away_arr.forEach((entry) => {
       total_duration += moment.duration(entry.stay_duration)
       switch (entry.stay_code) {
         case 1:

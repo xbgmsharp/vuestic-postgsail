@@ -358,14 +358,14 @@
           display: true,
           centerPointLabels: true,
           font: {
-            size: 18,
+            size: 14,
           },
         },
       },
     },
     plugins: {
       legend: {
-        position: 'bottom',
+        display: false,
       },
     },
   }

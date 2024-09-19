@@ -92,8 +92,7 @@
                     <td class="va-text-bold">{{ $t('stats.sum_duration') }}</td>
                     <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
-                        {{ durationFormatHours(stats_logs.sum_duration) }}
-                        {{ durationI18nHours(stats_logs.sum_duration) }}
+                        {{ durationI18nDaysHours(stats_logs.sum_duration) }}
                       </router-link>
                     </td>
                   </tr>
@@ -134,8 +133,7 @@
                         class="va-link link"
                         :to="{ name: 'log-map', params: { id: stats_logs.max_duration_id } }"
                       >
-                        {{ durationFormatHours(stats_logs.max_duration) }}
-                        {{ durationI18nHours(stats_logs.max_duration) }}
+                        {{ durationI18nDaysHours(stats_logs.max_duration) }}
                       </router-link>
                     </td>
                   </tr>
@@ -322,8 +320,8 @@
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   //import { asBusy } from '../../utils/handleExports'
-  import { distanceFormat, distanceFormatMiles } from '../../utils/distanceFormatter.js'
-  import { durationFormatHours, durationI18nHours, durationFormatDays } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { durationI18nDaysHours, durationFormatDays } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
   //import stats_logs from '../../data/stats_logs.json'
@@ -613,7 +611,7 @@
       .map((trip) => {
         return {
           ...trip, // Spread the current trip object to keep all existing fields
-          distance: distanceFormat(trip.distance),
+          distance: distanceFormatMiles(trip.distance),
         }
       })
       .sort((a, b) => a.distance - b.distance)
@@ -628,7 +626,7 @@
       .map((trip) => {
         return {
           ...trip, // Spread the current trip object to keep all existing fields
-          duration: durationFormatHours(trip.duration),
+          duration: durationI18nDaysHours(trip.duration),
         }
       })
   })

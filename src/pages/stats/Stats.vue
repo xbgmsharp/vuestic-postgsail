@@ -232,35 +232,35 @@
           v-if="logsTopByDistance.length > 0"
           class="w-full p-4"
           :items="logsTopByDistance"
-          title="Top Logs By Distance"
+          title="Top Logs by Distance"
           columnvalue="distance"
         />
         <TopBy
           v-if="logsTopByDuration.length > 0"
           class="w-full p-4"
           :items="logsTopByDuration"
-          title="Top Logs By Duration"
+          title="Top Logs by Duration"
           columnvalue="duration"
-        />
-        <TopBy
-          v-if="logsTopByMaxSpeed.length > 0"
-          class="w-full p-4"
-          :items="logsTopByMaxSpeed"
-          title="Top Logs By MaxSpeed"
-          columnvalue="max_speed"
         />
         <TopBy
           v-if="logsTopByAvgSpeed.length > 0"
           class="w-full p-4"
           :items="logsTopByAvgSpeed"
-          title="Top Logs By AVG Speed"
+          title="Top Logs by Average Speed"
           columnvalue="avg_speed"
+        />
+        <TopBy
+          v-if="logsTopByMaxSpeed.length > 0"
+          class="w-full p-4"
+          :items="logsTopByMaxSpeed"
+          title="Top Logs by Max Speed"
+          columnvalue="max_speed"
         />
         <TopBy
           v-if="logsTopByWindSpeed.length > 0"
           class="w-full p-4"
           :items="logsTopByWindSpeed"
-          title="Top Logs By Max Wind Speed"
+          title="Top Logs by Max Wind Speed"
           columnvalue="wind_speed"
         />
       </div>
@@ -546,89 +546,97 @@
   })
 
   // TopBy listing
+  const tripMap = computed(() => new Map(logs.value.map((trip) => [trip.id, trip])))
+
   const logsTopByAvgSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_avg_speed) || vessel_stats.value.logs_top_avg_speed.length == 0)
+    if (!Array.isArray(vessel_stats.value.logs_top_avg_speed) || vessel_stats.value.logs_top_avg_speed.length === 0)
       return []
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
-    return logs.value
-      .filter((trip) => vessel_stats.value.logs_top_avg_speed.find((match) => match.id === trip.id))
-      .map((trip) => {
-        // Find the corresponding matchingId entry
-        const matchingId = vessel_stats.value.logs_top_avg_speed.find((match) => match.id === trip.id)
-        // If there's a matching entry, add the max_wind_speed to the trip
-        return {
-          ...trip, // Spread the current trip object to keep all existing fields
-          avg_speed: speedFormatKnots(matchingId.avg_speed),
+    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
+
+    return vessel_stats.value.logs_top_avg_speed
+      .map((match) => {
+        const trip = tripMap.value.get(match.id)
+        if (trip) {
+          return {
+            ...trip,
+            avg_speed: speedFormatKnots(match.avg_speed),
+          }
         }
+        return null
       })
-      .sort((a, b) => a.avg_speed - b.avg_speed)
-      .reverse()
+      .filter((trip) => trip !== null)
   })
   const logsTopByMaxSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_speed) || vessel_stats.value.logs_top_speed.length == 0) return []
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
-    return logs.value
-      .filter((trip) => vessel_stats.value.logs_top_speed.find((match) => match.id === trip.id))
-      .map((trip) => {
-        // Find the corresponding matchingId entry
-        const matchingId = vessel_stats.value.logs_top_speed.find((match) => match.id === trip.id)
-        // If there's a matching entry, add the max_wind_speed to the trip
-        if (matchingId) {
+    if (!Array.isArray(vessel_stats.value.logs_top_speed) || vessel_stats.value.logs_top_speed.length === 0) return []
+    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
+
+    return vessel_stats.value.logs_top_speed
+      .map((match) => {
+        const trip = tripMap.value.get(match.id)
+        if (trip) {
           return {
             ...trip,
-            max_speed: speedFormatKnots(matchingId.max_speed),
+            max_speed: speedFormatKnots(match.max_speed),
           }
         }
+        return null
       })
-      .sort((a, b) => a.max_speed - b.max_speed)
-      .reverse()
+      .filter((trip) => trip !== null)
   })
   const logsTopByWindSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_wind_speed) || vessel_stats.value.logs_top_wind_speed.length == 0)
+    if (!Array.isArray(vessel_stats.value.logs_top_wind_speed) || vessel_stats.value.logs_top_wind_speed.length === 0)
       return []
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
-    return logs.value
-      .filter((trip) => vessel_stats.value.logs_top_wind_speed.find((match) => match.id === trip.id))
-      .map((trip) => {
-        // Find the corresponding matchingId entry
-        const matchingId = vessel_stats.value.logs_top_wind_speed.find((match) => match.id === trip.id)
-        // If there's a matching entry, add the max_wind_speed to the trip
-        if (matchingId) {
+    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
+
+    const tripMap = new Map(logs.value.map((trip) => [trip.id, trip]))
+    return vessel_stats.value.logs_top_wind_speed
+      .map((match) => {
+        const trip = tripMap.get(match.id)
+        if (trip) {
           return {
             ...trip,
-            wind_speed: speedFormatKnots(matchingId.max_wind_speed), // Add or update max_wind_speed
+            wind_speed: speedFormatKnots(match.max_wind_speed),
           }
         }
+        return null
       })
-      .sort((a, b) => a.wind_speed - b.wind_speed)
+      .filter((trip) => trip !== null)
   })
   const logsTopByDistance = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_distance) || vessel_stats.value.logs_top_distance.length == 0)
+    if (!Array.isArray(vessel_stats.value.logs_top_distance) || vessel_stats.value.logs_top_distance.length === 0)
       return []
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
-    return logs.value
-      .filter((trip) => vessel_stats.value.logs_top_distance.includes(trip.id))
-      .map((trip) => {
-        return {
-          ...trip, // Spread the current trip object to keep all existing fields
-          distance: distanceFormatMiles(trip.distance),
+    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
+
+    return vessel_stats.value.logs_top_distance
+      .map((id) => {
+        const trip = tripMap.value.get(id)
+        if (trip) {
+          return {
+            ...trip,
+            distance: distanceFormatMiles(trip.distance),
+          }
         }
+        return null
       })
-      .sort((a, b) => a.distance - b.distance)
-      .reverse()
+      .filter((trip) => trip !== null)
   })
   const logsTopByDuration = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_duration) || vessel_stats.value.logs_top_duration.length == 0)
+    if (!Array.isArray(vessel_stats.value.logs_top_duration) || vessel_stats.value.logs_top_duration.length === 0)
       return []
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return []
-    return logs.value
-      .filter((trip) => vessel_stats.value.logs_top_duration.includes(trip.id))
-      .map((trip) => {
-        return {
-          ...trip, // Spread the current trip object to keep all existing fields
-          duration: durationI18nDaysHours(trip.duration),
+    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
+
+    return vessel_stats.value.logs_top_duration
+      .map((id) => {
+        const trip = tripMap.value.get(id)
+        if (trip) {
+          return {
+            ...trip,
+            duration: durationI18nDaysHours(trip.duration),
+          }
         }
+        return null
       })
+      .filter((trip) => trip !== null)
   })
 
   onMounted(async () => {

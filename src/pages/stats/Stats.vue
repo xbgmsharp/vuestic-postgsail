@@ -178,7 +178,7 @@
               <!-- TODO: fix when api is fixed -->
               <tr v-if="stats_moorages.time_spent_away">
                 <td class="va-text-bold">{{ $t('stats.time_spent_away') }}</td>
-                <td>{{ durationFormatDays(stats_moorages.time_spent_away[0].time_spent_away) }} days</td>
+                <td>{{ durationFormatDays(stats_moorages.time_spent_away) }} days</td>
               </tr>
               <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
                 <template v-if="value[1].duration > 0">

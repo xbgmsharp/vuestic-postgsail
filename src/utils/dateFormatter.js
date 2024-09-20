@@ -87,6 +87,6 @@ export const durationI18nDaysHours = (durationString) => {
   if (days > 0) {
     durationDH += t('units.time.days', days) + ', '
   }
-  durationDH += hours.toFixed(2) + ' ' + t('units.time.hours')
+  durationDH += hours.toFixed(1) + ' ' + t('units.time.hours')
   return durationDH
 }

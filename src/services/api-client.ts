@@ -189,6 +189,10 @@ class ApiClient extends HttpClient {
   async logs_merge(payload: JSObj) {
     return this.post(`rpc/merge_logbook_fn`, payload)
   }
+
+  async logs_mapgl(payload: JSObj) {
+    return this.post(`rpc/mapgl_fn`, payload)
+  }
   /*
    * Moorages API endpoint
    */

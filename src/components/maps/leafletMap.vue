@@ -213,7 +213,7 @@
         let avg_wind = speedFormatKnots(feature.properties.avg_wind_speed)
         let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
         let text = `<div class='mpopup'>
-                        <h4><a href="/logmap/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                        <h4><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
                         <table class='data'><tbody>
                           <tr><td>Time</td><td>${time}</td></tr>
                           <tr><td>Distance</td><td>${distance}</td></tr>

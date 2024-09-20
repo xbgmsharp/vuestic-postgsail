@@ -131,6 +131,9 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="h-48">
+                <va-chart :data="pieChartDataComputed" type="doughnut" />
+              </div>
             </template>
           </va-inner-loading>
         </va-card-content>
@@ -190,20 +193,9 @@
               </tr>
             </tbody>
           </table>
-        </va-card-content>
-      </va-card>
-
-      <va-card class="col-span-12 lg:col-span-6 p-2">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content class="h-64">
-          <va-chart :data="pieChartDataComputed" type="pie" />
-        </va-card-content>
-      </va-card>
-
-      <va-card class="col-span-12 lg:col-span-6 p-2">
-        <va-card-title>{{ t('stats.stats') }}</va-card-title>
-        <va-card-content class="h-64">
-          <va-chart :data="pieChartStayType" type="pie" />
+          <div class="h-48">
+            <va-chart :data="pieChartStayType" type="doughnut" />
+          </div>
         </va-card-content>
       </va-card>
 

@@ -185,9 +185,6 @@
                         {{ durationI18nDays(value.duration) }}
                       </router-link>
                     </span>
-                    <span class="text-center w-1/2">
-                      <router-link class="va-link link" :to="{ name: 'stays' }"> {{ value.percentage }} % </router-link>
-                    </span>
                   </td>
                 </template>
               </tr>

@@ -180,11 +180,9 @@
                 <template v-if="value.durationMs > 0">
                   <td class="sub-setting">{{ $t('id.stay_code.' + stayCode) }}</td>
                   <td class="flex">
-                    <span class="text-center w-1/2">
-                      <router-link class="va-link link" :to="{ name: 'stays' }">
-                        {{ durationI18nDays(value.duration) }}
-                      </router-link>
-                    </span>
+                    <router-link class="va-link link" :to="{ name: 'stays' }">
+                      {{ durationI18nDaysHours(value.duration) }}
+                    </router-link>
                   </td>
                 </template>
               </tr>

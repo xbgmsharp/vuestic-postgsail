@@ -55,7 +55,7 @@ export const durationHours = (durationString) => {
   return moment.duration(durationString).as('hours')
 }
 export const durationFormatHours = (durationString) => {
-  return durationHours(durationString).toFixed(2)
+  return durationHours(durationString).toFixed(1)
 }
 export const durationI18nHours = (durationString, tr = 'units.time.hours') => {
   // display "hour" only if exactly 1; "hours" otherwise (e.g.: 0.8, 1.2):

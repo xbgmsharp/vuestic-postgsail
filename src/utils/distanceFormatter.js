@@ -26,7 +26,7 @@ export function distanceKm(val, trad = 'units.distance.kilometres') {
   if (!val) return null
   //const n = GlobalStore.imperialUnits ? ((trad = 'units.distance.miles'), kmToMiles(val)) : parseFloat(val)
   const n = parseFloat(val)
-  const count = { n: Number.isInteger(n) ? n : parseFloat(n.toFixed(2)) }
+  const count = { n: Number.isInteger(n) ? n : parseFloat(n.toFixed(1)) }
   return t(trad, count)
 }
 

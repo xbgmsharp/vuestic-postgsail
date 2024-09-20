@@ -203,7 +203,7 @@
       <va-card class="col-span-12 lg:col-span-6 p-2">
         <va-card-title>{{ t('stats.stats') }}</va-card-title>
         <va-card-content class="h-64">
-          <va-chart :data="polarChartDataComputed" type="polarArea" :options="polarChartOptions" />
+          <va-chart :data="pieChartStayType" type="pie" />
         </va-card-content>
       </va-card>
 
@@ -323,37 +323,6 @@
    * Chart.js Label percentage % or value
    * Which graph type?
    */
-  const polarChartOptions = {
-    responsive: true,
-    scales: {
-      r: {
-        pointLabels: {
-          display: true,
-          centerPointLabels: true,
-          font: {
-            size: 14,
-          },
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-  }
-
-  const polarChartData_default = {
-    labels: ['Unknown', 'Anchor', 'Mooring Buoy', 'Dock'],
-    datasets: [
-      {
-        data: [45, 5, 9, 20],
-        backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)'],
-        borderWidth: 1,
-      },
-    ],
-  }
-
   const pieChartData_default = {
     labels: ['Not Underway', 'Underway'],
     datasets: [
@@ -364,18 +333,6 @@
       },
     ],
   }
-
-  const polarChartDataComputed = computed(() => {
-    if (!Array.isArray(stays.value) || stays.value.length == 0) return polarChartData_default
-    const obj = structuredClone(polarChartData_default)
-    obj.datasets[0].data = [
-      polarChartStays.value.Unclassified.percentage,
-      polarChartStays.value.Anchor.percentage,
-      polarChartStays.value.Buoy.percentage,
-      polarChartStays.value.Dock.percentage,
-    ]
-    return obj
-  })
 
   const pieChartDataComputed = computed(() => {
     if (!Array.isArray(logs.value) || logs.value.length == 0) return pieChartData_default
@@ -419,50 +376,6 @@
     return obj
   })
 
-  const polarChartStays = computed(() => {
-    if (!Array.isArray(stays.value) || stays.value.length == 0) return {}
-    let total_duration = 0
-    const obj = {
-      Unclassified: { duration: 0, percentage: 0 },
-      Anchor: { duration: 0, percentage: 0 },
-      Buoy: { duration: 0, percentage: 0 },
-      Dock: { duration: 0, percentage: 0 },
-    }
-    // Extract Sum Duration of stays by type
-    stays.value.forEach(({ stayed_at_id, duration }) => {
-      total_duration += moment.duration(duration)
-      switch (stayed_at_id) {
-        case 1:
-          obj.Unclassified.duration += moment.duration(duration)
-          break
-        case 2:
-          obj.Anchor.duration += moment.duration(duration)
-          break
-        case 3:
-          obj.Buoy.duration += moment.duration(duration)
-          break
-        case 4:
-          obj.Dock.duration += moment.duration(duration)
-          break
-        default:
-          break
-      }
-    })
-    obj.Unclassified.percentage = (
-      (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) *
-      100
-    ).toFixed(2)
-    obj.Anchor.percentage = ((moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    obj.Buoy.percentage = ((moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    obj.Dock.percentage = ((moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    obj.Unclassified.duration = Math.trunc(moment.duration(obj.Unclassified.duration).as('days'))
-    obj.Anchor.duration = Math.trunc(moment.duration(obj.Anchor.duration).as('days'))
-    obj.Buoy.duration = Math.trunc(moment.duration(obj.Buoy.duration).as('days'))
-    obj.Dock.duration = Math.trunc(moment.duration(obj.Dock.duration).as('days'))
-    console.log('pieChartStays obj', obj)
-    return obj
-  })
-
   const timeSpentAwayByType = computed(() => {
     if (
       !stats_moorages.value ||
@@ -496,6 +409,42 @@
     })
 
     return stayMap
+  })
+
+  const pieChartStayType = computed(() => {
+    const timeData = timeSpentAwayByType.value
+
+    // Initialize arrays for labels and data
+    const labels = []
+    const data = []
+    const backgroundColor = []
+
+    const stayCodeColors = {
+      1: '#FF6384', // Unclassified
+      2: '#FF9F40', // Anchor
+      3: '#FFCD56', // Buoy
+      4: '#4BC0C0', // Dock
+    }
+
+    Object.keys(timeData).forEach((stayCode) => {
+      const value = timeData[stayCode]
+      const percentage = parseFloat(value.percentage)
+      if (percentage > 0) {
+        labels.push(t('id.stay_code.' + stayCode))
+        data.push(percentage)
+        backgroundColor.push(stayCodeColors[stayCode] || '#CCCCCC')
+      }
+    })
+
+    return {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor,
+        },
+      ],
+    }
   })
 
   const disabled = computed(() => {

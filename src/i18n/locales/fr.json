@@ -440,6 +440,14 @@
       "title": "Polar Diagram"
     }
   },
+  "id": {
+    "stay_code": {
+      "1": "Unknown",
+      "2": "Anchor",
+      "3": "Mooring Buoy",
+      "4": "Dock"
+    }
+  },
   "units": {
     "distance": {
       "miles": "{n} NM",

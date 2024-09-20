@@ -9,50 +9,36 @@
       @update:modelValue="handleSelect(value, item)"
     />
   </div>
-  <!--
-  <va-alert color="info">
-    <template #title> Value </template>
-    {{ value }}
-  </va-alert>
-  -->
 </template>
 
-<script>
+<script setup>
+  import { useI18n } from 'vue-i18n'
+  import { ref } from 'vue'
+
+  const { t } = useI18n()
+
+  const props = defineProps({
+    data: Number,
+    id: Number,
+  })
+  const emit = defineEmits(['clickFromChildComponent'])
+
   const optionsHash = {
-    1: 'Unknown',
-    2: 'Anchor',
-    3: 'Mooring Buoy',
-    4: 'Dock',
+    1: t('id.stay_code.1'),
+    2: t('id.stay_code.2'),
+    3: t('id.stay_code.3'),
+    4: t('id.stay_code.4'),
   }
 
-  export const getTextForStayId = (value) => {
-    return optionsHash[value]
-  }
+  const options = Object.entries(optionsHash).map(([value, text]) => ({
+    value: parseInt(value),
+    text: text,
+  }))
 
-  export default {
-    name: 'StayAt',
-    props: {
-      data: Number,
-      id: Number,
-    },
-    emits: ['clickFromChildComponent'],
-    data(props) {
-      const options = Object.entries(optionsHash).map(([value, text]) => ({
-        value: parseInt(value),
-        text: text,
-      }))
+  const item = ref(props.id)
+  const value = ref(props.data)
 
-      return {
-        item: props.id,
-        value: props.data,
-        options,
-      }
-    },
-    methods: {
-      handleSelect: function (value, item) {
-        //console.log('clickFromChildComponent', value, item)
-        this.$emit('clickFromChildComponent', value, item)
-      },
-    },
+  function handleSelect(value, item) {
+    emit('clickFromChildComponent', value, item)
   }
 </script>

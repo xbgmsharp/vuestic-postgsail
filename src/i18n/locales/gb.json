@@ -245,10 +245,6 @@
     "name": "Boat",
     "first": "First entry",
     "last": "Last entry",
-    "unclassified": "Unclassified",
-    "anchor": "Anchor",
-    "buoy": "Buoy",
-    "dock": "Dock",
     "count": "Log Entries",
     "first_date": "First entry",
     "last_date": "Last entry",
@@ -457,6 +453,14 @@
     },
     "polar": {
       "title": "Polar Diagram"
+    }
+  },
+  "id": {
+    "stay_code": {
+      "1": "Unknown",
+      "2": "Anchor",
+      "3": "Mooring Buoy",
+      "4": "Dock"
     }
   },
   "units": {

@@ -173,19 +173,17 @@
                   </router-link>
                 </td>
               </tr>
-              <tr v-for="(value, index) in Object.entries(timeSpentAwayByType)" :key="index">
-                <template v-if="value[1].duration > 0">
-                  <td class="sub-setting">{{ value[0] }}</td>
+              <tr v-for="(value, stayCode) in timeSpentAwayByType" :key="stayCode">
+                <template v-if="value.durationMs > 0">
+                  <td class="sub-setting">{{ $t('id.stay_code.' + stayCode) }}</td>
                   <td class="flex">
                     <span class="text-center w-1/2">
                       <router-link class="va-link link" :to="{ name: 'stays' }">
-                        {{ durationI18nDays(value[1].duration) }}
+                        {{ durationI18nDays(value.duration) }}
                       </router-link>
                     </span>
                     <span class="text-center w-1/2">
-                      <router-link class="va-link link" :to="{ name: 'stays' }">
-                        {{ value[1].percentage }} %
-                      </router-link>
+                      <router-link class="va-link link" :to="{ name: 'stays' }"> {{ value.percentage }} % </router-link>
                     </span>
                   </td>
                 </template>
@@ -469,44 +467,35 @@
     if (
       !stats_moorages.value ||
       !Array.isArray(stats_moorages.value.time_spent_away_arr) ||
-      stats_moorages.value.time_spent_away_arr.length == 0
-    )
+      stats_moorages.value.time_spent_away_arr.length === 0
+    ) {
       return {}
-    let total_duration = 0
-    const obj = {
-      Unclassified: { duration: 0, percentage: 0 },
-      Anchor: { duration: 0, percentage: 0 },
-      Buoy: { duration: 0, percentage: 0 },
-      Dock: { duration: 0, percentage: 0 },
     }
-    // Extract Sum Duration of stays by type
+
+    let totalDurationMs = 0
+    const stayMap = {}
+
     stats_moorages.value.time_spent_away_arr.forEach((entry) => {
-      total_duration += moment.duration(entry.stay_duration)
-      switch (entry.stay_code) {
-        case 1:
-          obj.Unclassified.duration += moment.duration(entry.stay_duration)
-          break
-        case 2:
-          obj.Anchor.duration += moment.duration(entry.stay_duration)
-          break
-        case 3:
-          obj.Buoy.duration += moment.duration(entry.stay_duration)
-          break
-        case 4:
-          obj.Dock.duration += moment.duration(entry.stay_duration)
-          break
-        default:
-          break
+      const stayCode = entry.stay_code
+      const durationMs = moment.duration(entry.stay_duration).asMilliseconds()
+
+      totalDurationMs += durationMs
+      if (!stayMap[stayCode]) {
+        stayMap[stayCode] = { durationMs: 0 }
       }
+      stayMap[stayCode].durationMs += durationMs
     })
-    obj.Unclassified.percentage = (
-      (moment.duration(obj.Unclassified.duration) / moment.duration(total_duration)) *
-      100
-    ).toFixed(2)
-    obj.Anchor.percentage = ((moment.duration(obj.Anchor.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    obj.Buoy.percentage = ((moment.duration(obj.Buoy.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    obj.Dock.percentage = ((moment.duration(obj.Dock.duration) / moment.duration(total_duration)) * 100).toFixed(2)
-    return obj
+
+    Object.keys(stayMap).forEach((stayCode) => {
+      const durationMs = stayMap[stayCode].durationMs
+
+      stayMap[stayCode].percentage = Math.round((durationMs / totalDurationMs) * 100)
+
+      const durationObj = moment.duration(durationMs)
+      stayMap[stayCode].duration = durationObj.toISOString()
+    })
+
+    return stayMap
   })
 
   const disabled = computed(() => {

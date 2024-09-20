@@ -112,7 +112,6 @@
   import { default as utils } from '../../utils/utils.js'
   import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
   import StayAt from '../../components/SelectStayAt.vue'
-  import { getTextForStayId } from '../../components/SelectStayAt.vue'
   import { useRoute } from 'vue-router'
   import { stayed_at_options } from '../../utils/PostgSail.ts'
 
@@ -171,7 +170,7 @@
             arrived: row._to_time,
             departed_id: row._from_id,
             departed: row._from_time,
-            stayed_at: getTextForStayId(row.stay_code),
+            stayed_at: t('id.stay_code.' + row.stay_code),
             stayed_at_id: row.stay_code,
             duration: durationFormatDays(row.duration),
           }))

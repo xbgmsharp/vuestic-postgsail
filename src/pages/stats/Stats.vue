@@ -132,7 +132,7 @@
                 </tbody>
               </table>
               <div class="h-48">
-                <va-chart :data="pieChartDataComputed" type="doughnut" />
+                <va-chart :data="pieChartUnderway" type="doughnut" />
               </div>
             </template>
           </va-inner-loading>
@@ -309,63 +309,24 @@
     return `flag-icon-${code} ${size}`
   }
 
-  /* TODO
-   * Date formatting
-   * Add i18n for all entries
-   * Chart.js Label percentage % or value
-   * Which graph type?
-   */
-  const pieChartData_default = {
-    labels: ['Not Underway', 'Underway'],
-    datasets: [
-      {
-        data: [51.5, 48.5],
-        backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)'],
-        borderWidth: 1,
-      },
-    ],
-  }
-
-  const pieChartDataComputed = computed(() => {
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return pieChartData_default
-    const obj = structuredClone(pieChartData_default)
-    obj.datasets[0].data = [100 - pieChartLogs.value.percentage, pieChartLogs.value.percentage]
-    return obj
-  })
-
-  const pieChartLogs = computed(() => {
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return {}
-    const obj = {
-      total_duration: null,
-      total_distance: 0,
-      total_count: 0,
-      max_duration_id: 0,
-      max_distance_id: 0,
-      max_duration: null,
-      max_distance: 0,
-      percentage: 0,
+  const pieChartUnderway = computed(() => {
+    if (!stats_logs.value || !stats_moorages.value) {
+      return {}
     }
-    // Extract Sum Distances,Sum Duration of logs
-    logs.value.forEach(({ id, distance, duration }) => {
-      obj.total_distance += distance
-      //obj.total_duration += moment.duration(Duration)
-      obj.total_duration = moment.duration(duration) + moment.duration(obj.total_duration)
-      if (Math.max(distance, obj.max_distance)) {
-        obj.max_distance_id = id
-        obj.max_distance = Math.max(distance, obj.max_distance)
-      }
-      if (moment.duration(duration) > moment.duration(obj.max_duration)) {
-        obj.max_duration_id = id
-        obj.max_duration = moment.duration(duration)
-      }
-    })
-    //obj.total_duration = moment.duration(obj.total_duration).humanize()
-    const start = logs.value[0].started
-    const end = logs.value[logs.value.length - 1].Ended
-    obj.percentage = (moment.duration(obj.total_duration) / moment.duration(moment(start) - moment(end))) * 100
-    obj.total_count = logs.value.length
-    console.log('pieChartLogs obj', obj)
-    return obj
+
+    return {
+      labels: ['Underway', 'Away', 'Home'],
+      datasets: [
+        {
+          data: [
+            moment.duration(stats_logs.value.sum_duration).as('days'),
+            moment.duration(stats_moorages.value.time_spent_away).as('days'),
+            moment.duration(stats_moorages.value.time_at_home_ports).as('days'),
+          ],
+          backgroundColor: ['#004B95', '#73C5C5', '#F9E0A2'],
+        },
+      ],
+    }
   })
 
   const timeSpentAwayByType = computed(() => {
@@ -406,16 +367,15 @@
   const pieChartStayType = computed(() => {
     const timeData = timeSpentAwayByType.value
 
-    // Initialize arrays for labels and data
     const labels = []
     const data = []
     const backgroundColor = []
 
     const stayCodeColors = {
       1: '#FF6384', // Unclassified
-      2: '#FF9F40', // Anchor
-      3: '#FFCD56', // Buoy
-      4: '#4BC0C0', // Dock
+      2: '#A2D9D9', // Anchor
+      3: '#BDE2B9', // Buoy
+      4: '#F4B678', // Dock
     }
 
     Object.keys(timeData).forEach((stayCode) => {

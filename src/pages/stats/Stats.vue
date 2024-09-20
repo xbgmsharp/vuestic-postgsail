@@ -132,7 +132,7 @@
                 </tbody>
               </table>
               <div class="h-48">
-                <va-chart :data="pieChartUnderway" type="doughnut" />
+                <va-chart :data="pieChartUnderway" type="doughnut" :options="pieChartOptions" />
               </div>
             </template>
           </va-inner-loading>
@@ -191,7 +191,7 @@
             </tbody>
           </table>
           <div class="h-48">
-            <va-chart :data="pieChartStayType" type="doughnut" />
+            <va-chart :data="pieChartStayType" type="doughnut" :options="pieChartOptions" />
           </div>
         </va-card-content>
       </va-card>
@@ -306,6 +306,18 @@
     return `flag-icon-${code} ${size}`
   }
 
+  const pieChartOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return t('units.time.days', context.parsed)
+          },
+        },
+      },
+    },
+  }
+
   const pieChartUnderway = computed(() => {
     if (!stats_logs.value || !stats_moorages.value) {
       return {}
@@ -316,9 +328,9 @@
       datasets: [
         {
           data: [
-            moment.duration(stats_logs.value.sum_duration).as('days'),
-            moment.duration(stats_moorages.value.time_spent_away).as('days'),
-            moment.duration(stats_moorages.value.time_at_home_ports).as('days'),
+            moment.duration(stats_logs.value.sum_duration).as('days').toFixed(1),
+            moment.duration(stats_moorages.value.time_spent_away).as('days').toFixed(1),
+            moment.duration(stats_moorages.value.time_at_home_ports).as('days').toFixed(1),
           ],
           backgroundColor: ['#004B95', '#73C5C5', '#F9E0A2'],
         },
@@ -377,10 +389,9 @@
 
     Object.keys(timeData).forEach((stayCode) => {
       const value = timeData[stayCode]
-      const percentage = parseFloat(value.percentage)
-      if (percentage > 0) {
+      if (value.durationMs > 0) {
         labels.push(t('id.stay_code.' + stayCode))
-        data.push(percentage)
+        data.push(moment.duration(value.duration).as('days').toFixed(1))
         backgroundColor.push(stayCodeColors[stayCode] || '#CCCCCC')
       }
     })

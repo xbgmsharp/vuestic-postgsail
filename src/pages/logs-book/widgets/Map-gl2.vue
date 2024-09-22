@@ -7,6 +7,9 @@
   import { MapView } from '@deck.gl/core'
   import { GeoJsonLayer } from '@deck.gl/layers'
   import PostgSail from '../../../services/api-client'
+  import { dateFormatUTC, durationFormatHours } from '../../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
+  import { speedFormatKnots } from '../../../utils/speedFormatter.js'
 
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -37,9 +40,13 @@
       center: [coords[0], coords[1]],
       zoom: 5,
     })
+    // OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map)
+    // Add Carto
+    // Zoom to bottomright
+    L.control.zoom({ position: 'bottomright' }).addTo(map)
 
     const deckLayer = new LeafletLayer({
       views: [
@@ -60,7 +67,7 @@
 
           // Set the icon based on feature properties
           getIcon: (f) => {
-            console.log(f)
+            //console.log(f)
             if (!f.properties.stay_code) return null
             if (f.properties.stay_code == 3) {
               return { id: 'mooring', url: '/mooring_icon.png', width: 32, height: 32 }
@@ -68,6 +75,7 @@
             if (f.properties.stay_code == 4) {
               return { id: 'dock', url: '/dock_icon.png', width: 32, height: 32 }
             }
+            // Add default icon is anchor
             return { id: 'anchor', url: '/anchoricon.png', width: 32, height: 32 }
             //return f.properties.stay_code ? customIconUrl : null // Only set custom icon if property exists
           },
@@ -104,20 +112,19 @@
 
           // Add onClick handler for feature clicks
           onClick: (info, event) => {
-            console.log(info, event)
+            //console.log(info, event)
             if (info && info.object) {
               const feature = info.object
 
               // Get coordinates of the clicked feature
               const [lng, lat] = info.coordinate
+              // Get description
+              const description = getOnClickDesc(feature)
 
               // Create a Leaflet popup
               const popup = L.popup({ autoClose: false, closeOnClick: false })
                 .setLatLng([lat, lng])
-                .setContent(
-                  `<p>${feature.properties.name || 'Unnamed Feature'}</p>
-                             <p>Duration:${feature.properties.duration}</p>`,
-                )
+                .setContent(description)
                 .openOn(map)
             }
           },
@@ -146,11 +153,77 @@
     return [o(r() * s), o(r() * s), o(r() * s), r().toFixed(1)]
   }
 
-  function getTooltip(object) {
-    if (object.properties.stay_code) {
-      return `${object.properties.name} ${object.properties.stay_code}`
+  function getTooltip(feature) {
+    if (feature.properties.stay_code) {
+      let stay_type = ''
+      if (feature.properties.stay_code == 2) {
+        stay_type = ' stay at anchor'
+      }
+      if (feature.properties.stay_code == 3) {
+        stay_type = ' stay at mooring buoy'
+      }
+      if (feature.properties.stay_code == 4) {
+        stay_type = ' stay at dock'
+      }
+      return `${feature.properties.name} ${stay_type}`
     } else {
-      return `${object.properties.name} ${object.properties.distance} ${object.properties.duration}`
+      // is logbook
+      let time = dateFormatUTC(feature.properties._from_time)
+      let duration = durationFormatHours(feature.properties.duration)
+      let distance = distanceFormatMiles(feature.properties.distance)
+      let avg_speed = speedFormatKnots(feature.properties.avg_speed)
+      let max_speed = speedFormatKnots(feature.properties.max_speed)
+      let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+      let text = {
+        html: `<div class='mpopup'>
+                        <h4>${feature.properties.name}</a><br/>
+                        <table class='data'><tbody>
+                          <tr><td>Time</td><td>${time}</td></tr>
+                          <tr><td>Distance</td><td>${distance}</td></tr>
+                          <tr><td>Duration</td><td>${duration} hours</td></tr>
+                          <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
+                          <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                        </tbody></table></br>
+                      </div>`,
+      }
+      return text
+    }
+  }
+
+  function getOnClickDesc(feature) {
+    // Is moorage
+    if (feature.properties.stay_code) {
+      let stay_type = ''
+      if (feature.properties.stay_code == 2) {
+        stay_type = ' stay at anchor'
+      }
+      if (feature.properties.stay_code == 3) {
+        stay_type = ' stay at mooring buoy'
+      }
+      if (feature.properties.stay_code == 4) {
+        stay_type = ' stay at dock'
+      }
+      return `<a href="/moorage/${feature.properties.id}">${feature.properties.name}</a> ${stay_type}`
+    } else {
+      // is logbook
+      let time = dateFormatUTC(feature.properties._from_time)
+      let duration = durationFormatHours(feature.properties.duration)
+      let distance = distanceFormatMiles(feature.properties.distance)
+      let avg_speed = speedFormatKnots(feature.properties.avg_speed)
+      let max_speed = speedFormatKnots(feature.properties.max_speed)
+      let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+      let text = `<div class='mpopup'>
+                        <h4><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                        <table class='data'><tbody>
+                          <tr><td>Time</td><td>${time}</td></tr>
+                          <tr><td>Distance</td><td>${distance}</td></tr>
+                          <tr><td>Duration</td><td>${duration} hours</td></tr>
+                          <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
+                          <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                        </tbody></table></br>
+                        <a href="/timelapse/${feature.properties.id}">Replay</a>
+                      </div>`
+      return text
     }
   }
 </script>

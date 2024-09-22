@@ -141,8 +141,10 @@
         </va-card-content>
       </router-link>
     </va-card>
-
+    <!--
     <charts class="col-span-12" />
+-->
+    <echarts class="col-span-12" />
 
     <va-card class="col-span-12">
       <va-card-title>{{ t('dashboard.overview') }}</va-card-title>
@@ -175,7 +177,8 @@
   import { useVesselStore } from '../../stores/vessel-store'
   import { storeToRefs } from 'pinia'
   import { useI18n } from 'vue-i18n'
-  const Charts = defineAsyncComponent(() => import('./Charts.vue'))
+  //const Charts = defineAsyncComponent(() => import('./Charts.vue'))
+  const Echarts = defineAsyncComponent(() => import('./Echarts.vue'))
   const lMap = defineAsyncComponent(() => import('../../components/maps/leafletMap.vue'))
   import PostgSail from '../../services/api-client'
   import { fromNow, localTime } from '../../utils/dateFormatter.js'

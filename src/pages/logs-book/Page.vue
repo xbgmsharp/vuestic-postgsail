@@ -13,10 +13,12 @@
               { label: 'Cards', value: 1 },
               { label: 'Table', value: 2 },
               { label: 'Map', value: 3 },
+              { label: 'Mapgl', value: 4 },
+              { label: 'MapLibre-gl', value: 5 },
             ]"
           />
         </div>
-        <div v-if="doShowAsCards != 3" class="layout flex flex-col lg:flex-row gap-4 justify-between">
+        <div v-if="doShowAsCards < 3" class="layout flex flex-col lg:flex-row gap-4 justify-between">
           <va-input v-model="filter.name" :clearable="true" placeholder="Filter by name..." />
           <va-date-input
             v-model="filter.dateRange"
@@ -47,8 +49,11 @@
             </template>
           </va-select>
         </div>
-        <div v-else class="layout flex">
+        <div v-if="doShowAsCards == 3" class="layout flex">
           <p class="text-center">Showing only last 10 logs.</p>
+        </div>
+        <div v-if="doShowAsCards >= 4" class="layout flex">
+          <p class="text-center">Explore your logbooks and moorages</p>
         </div>
       </div>
 
@@ -72,7 +77,9 @@
         @replay="replayTrip"
       />
       <logbook-map v-if="doShowAsCards === 3" :loading="isBusy" />
-      <div class="flex mt-4">
+      <LogbookMapGl v-if="doShowAsCards === 4" :loading="isBusy" />
+      <LogbookMapLibreGl v-if="doShowAsCards === 5" :loading="isBusy" />
+      <div v-if="doShowAsCards < 3" class="flex mt-4">
         <va-icon
           v-if="items.length > 0"
           name="csv"
@@ -101,6 +108,8 @@
   import LogbookCards from './widgets/Cards.vue'
   import LogbookTable from './widgets/Table.vue'
   import LogbookMap from './widgets/Map.vue'
+  import LogbookMapGl from './widgets/Map-gl2.vue'
+  import LogbookMapLibreGl from './widgets/Map-gl4.vue'
   import { useModal, useToast } from 'vuestic-ui'
   import { useRouter } from 'vue-router'
   import { useGlobalStore } from '../../stores/global-store'

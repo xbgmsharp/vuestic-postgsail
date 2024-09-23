@@ -93,6 +93,7 @@
           iconSizeScale: 4,
           iconSizeMinPixels: 12,
 
+          /* Bug only work on right click
           // Handle the click event on the layer using onClick
           onClick: (info, event) => {
             console.log(info, event)
@@ -116,6 +117,7 @@
                 .addTo(map.value)
             }
           },
+          */
         }),
       ],
       getTooltip: ({ object }) => object && getTooltip(object),
@@ -123,7 +125,7 @@
 
     map.value.addControl(deckOverlay)
 
-    /*
+    // Solve bug left click
     // Add click event to display popup on left click
     map.value.on('click', (event) => {
       const [longitude, latitude] = event.lngLat.toArray()
@@ -136,6 +138,7 @@
 
       if (picked && picked.object) {
         const feature = picked.object
+        const description = getOnClickDesc(feature)
 
         // Remove any existing popup
         if (popup) {
@@ -145,18 +148,10 @@
         // Create a new popup
         popup = new maplibregl.Popup({ closeOnClick: true })
           .setLngLat([longitude, latitude])
-          .setHTML(
-            `
-            <div>
-              <strong>${feature.properties.name}</strong><br/>
-              ${feature.properties.distance ? `Distance: ${feature.properties.distance}` : ''}<br/>
-              ${feature.properties.duration ? `Duration: ${feature.properties.duration}` : ''}
-            </div>
-          `,
-          )
+          .setHTML(description)
           .addTo(map.value)
       }
-    })*/
+    })
   })
 
   function random_rgb_dark() {

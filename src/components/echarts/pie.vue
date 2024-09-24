@@ -55,5 +55,6 @@
 <style lang="scss">
   #echarts {
     height: 400px;
+    width: 400px;
   }
 </style>

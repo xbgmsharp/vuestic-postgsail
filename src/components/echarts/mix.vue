@@ -1,13 +1,24 @@
 <script setup>
+  import { ref, computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { BarChart, LineChart } from 'echarts/charts'
   import { TooltipComponent, ToolboxComponent, LegendComponent, GridComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
+  import { useI18n } from 'vue-i18n'
+
+  const { t } = useI18n()
 
   use([TooltipComponent, ToolboxComponent, LegendComponent, GridComponent, BarChart, LineChart, CanvasRenderer])
 
-  const option = {
+  const props = defineProps({
+    series: {
+      type: Array,
+      required: true,
+    },
+  })
+
+  const defaultConfig = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -26,24 +37,27 @@
       },
     },
     legend: {
+      show: true,
+      top: '5%',
+      left: 'center',
       data: ['Evaporation', 'Precipitation', 'Temperature'],
     },
     xAxis: [
       {
         type: 'category',
         data: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
+          t('dashboard.months.january'),
+          t('dashboard.months.february'),
+          t('dashboard.months.march'),
+          t('dashboard.months.april'),
+          t('dashboard.months.may'),
+          t('dashboard.months.june'),
+          t('dashboard.months.july'),
+          t('dashboard.months.august'),
+          t('dashboard.months.september'),
+          t('dashboard.months.october'),
+          t('dashboard.months.november'),
+          t('dashboard.months.december'),
         ],
         axisPointer: {
           type: 'shadow',
@@ -60,57 +74,18 @@
         },
       },
     ],
-    series: [
-      {
-        name: 'logs',
-        type: 'bar',
-        tooltip: {
-          valueFormatter: function (value) {
-            return value
-          },
-        },
-        data: [4, 6, 7, 4, 5, 5, 17, 6, 6, 4, 2, 2],
-      },
-      {
-        name: 'log 2021',
-        type: 'line',
-        smooth: true,
-        tooltip: {
-          valueFormatter: function (value) {
-            return value
-          },
-        },
-        data: [0, 0, 0, 0, 5, 5, 17, 6, 6, 4, 2, 2],
-      },
-      {
-        name: 'log 2022',
-        type: 'line',
-        smooth: true,
-        tooltip: {
-          valueFormatter: function (value) {
-            return value
-          },
-        },
-        data: [3, 4, 3, 0, 8, 12, 26, 12, 4, 3, 3, 3],
-      },
-      {
-        name: 'log 2023',
-        type: 'line',
-        smooth: true,
-        tooltip: {
-          valueFormatter: function (value) {
-            return value
-          },
-        },
-        data: [1, 2, 4, 4, 3, 4, 0, 5, 1, 3, 0, 0],
-      },
-    ],
+    series: [],
   }
+  const chartOptions = computed(() => {
+    const localoptions = { ...defaultConfig }
+    localoptions['series'] = props.series
+    return localoptions
+  })
 </script>
 
 <template>
   <div id="echarts">
-    <v-chart :option="option" autoresize />
+    <v-chart :option="chartOptions" autoresize />
   </div>
 </template>
 

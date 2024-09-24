@@ -1,21 +1,21 @@
 <script setup>
+  /* eslint-disable */
   import { onMounted, ref } from 'vue'
+  import * as L from 'leaflet'
+  import 'leaflet/dist/leaflet.css'
+  import { LeafletLayer } from 'deck.gl-leaflet'
+  import { MapView } from '@deck.gl/core'
   import { GeoJsonLayer } from '@deck.gl/layers'
-  import { MapboxOverlay } from '@deck.gl/mapbox'
-  import PostgSail from '../../../services/api-client'
-  import maplibregl from 'maplibre-gl'
-  import 'maplibre-gl/dist/maplibre-gl.css'
-  import { dateFormatUTC, durationFormatHours } from '../../../utils/dateFormatter.js'
-  import { distanceFormatMiles } from '../../../utils/distanceFormatter.js'
-  import { speedFormatKnots } from '../../../utils/speedFormatter.js'
+  import PostgSail from '../../services/api-client'
+  import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
+  import { speedFormatKnots } from '../../utils/speedFormatter.js'
+  import { baseMaps, overlayMaps } from './leafletHelpers.js'
 
   const isBusy = ref(false)
   const apiError = ref(null)
   const mapgl_geojson = ref({})
-  const mapContainer = ref()
-  const map = ref()
-  let popup = null // Popup instance
-  const customIconUrl = '/dock_icon.png'
+  const isHovering = ref(false)
 
   onMounted(async () => {
     isBusy.value = true
@@ -37,39 +37,31 @@
     } finally {
       isBusy.value = false
     }
-    const coords = mapgl_geojson.value.features[0].geometry.coordinates[0]
-
-    map.value = new maplibregl.Map({
-      container: 'logs-map-gl',
-      style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+    const coords = mapgl_geojson.value.features[0].geometry.coordinates[0].reverse()
+    const map = L.map(document.getElementById('logs-map-gl'), {
       center: [coords[0], coords[1]],
       zoom: 5,
+      zoomControl: false,
     })
+    const bMaps = baseMaps()
+    const oMaps = overlayMaps()
+    bMaps['CARTO'].addTo(map)
+    L.control.layers(bMaps, oMaps).addTo(map)
+    // Zoom to bottomright
+    L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-    await map.value.once('load')
-
-    const deckOverlay = new MapboxOverlay({
-      interleaved: true,
+    const deckLayer = new LeafletLayer({
+      views: [
+        new MapView({
+          repeat: true,
+        }),
+      ],
       layers: [
         new GeoJsonLayer({
           id: 'GeoJsonLayer',
           data: mapgl_geojson.value,
-          extruded: true,
+
           filled: true,
-          getElevation: 30,
-          getFillColor: [160, 160, 180, 200],
-          getLineColor: (f) => {
-            if (f.properties.distance) {
-              return random_rgb_dark()
-            } else {
-              return [0, 0, 0]
-            }
-          },
-          getLineWidth: 20,
-          getPointRadius: 4,
-          getText: (f) => f.properties.name,
-          getTextSize: 12,
-          lineWidthMinPixels: 2,
           pointRadiusUnits: 'pixels',
           pointType: 'circle+icon+text',
           stroked: false,
@@ -77,7 +69,7 @@
 
           // Set the icon based on feature properties
           getIcon: (f) => {
-            console.log(f)
+            //console.log(f)
             if (!f.properties.stay_code) return null
             if (f.properties.stay_code == 3) {
               return { id: 'mooring', url: '/mooring_icon.png', width: 32, height: 32 }
@@ -93,10 +85,36 @@
           iconSizeScale: 4,
           iconSizeMinPixels: 12,
 
-          /* Bug only work on right click
-          // Handle the click event on the layer using onClick
+          extruded: true,
+          getElevation: 30,
+          getFillColor: [160, 160, 180, 200],
+          getLineColor: (f) => {
+            //console.log(f.properties)
+            const hex = f.properties.color
+            // convert to RGB
+            //console.log(hex ? hex.match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)) : [0, 0, 0])
+            //console.log(random_rgb_dark())
+            //return hex ? hex.match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)) : [0, 0, 0]
+            //return [0, 0, 0]
+            //return random_rgb_dark()
+            if (f.properties.distance) {
+              const rgba = random_rgb_dark()
+              //console.log(rgba)
+              return rgba
+            } else {
+              return [0, 0, 0]
+            }
+          },
+          getLineWidth: 20,
+          getPointRadius: 4,
+          getText: (f) => f.properties.name,
+          getTextSize: 12,
+          pointRadiusUnits: 'pixels',
+          lineWidthMinPixels: 2,
+
+          // Add onClick handler for feature clicks
           onClick: (info, event) => {
-            console.log(info, event)
+            //console.log(info, event)
             if (info && info.object) {
               const feature = info.object
 
@@ -105,53 +123,22 @@
               // Get description
               const description = getOnClickDesc(feature)
 
-              // Remove existing popup
-              if (popup) {
-                popup.remove()
-              }
-
-              // Create a new popup
-              popup = new maplibregl.Popup({ closeOnClick: true })
-                .setLngLat([lng, lat])
-                .setHTML(description)
-                .addTo(map.value)
+              // Create a Leaflet popup
+              const popup = L.popup({ autoClose: false, closeOnClick: false })
+                .setLatLng([lat, lng])
+                .setContent(description)
+                .openOn(map)
             }
           },
-          */
         }),
       ],
       getTooltip: ({ object }) => object && getTooltip(object),
     })
+    map.addLayer(deckLayer)
 
-    map.value.addControl(deckOverlay)
-
-    // Solve bug left click
-    // Add click event to display popup on left click
-    map.value.on('click', (event) => {
-      const [longitude, latitude] = event.lngLat.toArray()
-
-      // Use Deck.gl picking to find the object under the click
-      const picked = deckOverlay.pickObject({
-        x: event.point.x,
-        y: event.point.y,
-      })
-
-      if (picked && picked.object) {
-        const feature = picked.object
-        const description = getOnClickDesc(feature)
-
-        // Remove any existing popup
-        if (popup) {
-          popup.remove()
-        }
-
-        // Create a new popup
-        popup = new maplibregl.Popup({ closeOnClick: true })
-          .setLngLat([longitude, latitude])
-          .setHTML(description)
-          .addTo(map.value)
-      }
-    })
+    //const featureGroup = L.featureGroup()
+    //featureGroup.addLayer(L.marker([51.4709959, -0.4531566]))
+    //map.addLayer(featureGroup)
   })
 
   function random_rgb_dark() {
@@ -159,6 +146,13 @@
       r = Math.random,
       s = 256
     return [o(r() * s), o(r() * s), o(r() * s)]
+  }
+
+  function random_rgba() {
+    var o = Math.round,
+      r = Math.random,
+      s = 255
+    return [o(r() * s), o(r() * s), o(r() * s), r().toFixed(1)]
   }
 
   function getTooltip(feature) {
@@ -184,15 +178,15 @@
       let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
       let text = {
         html: `<div class='mpopup'>
-                        <h4>${feature.properties.name}</a><br/>
-                        <table class='data'><tbody>
-                          <tr><td>Time</td><td>${time}</td></tr>
-                          <tr><td>Distance</td><td>${distance}</td></tr>
-                          <tr><td>Duration</td><td>${duration} hours</td></tr>
-                          <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
-                          <tr><td>Wind</td><td>max ${max_wind}</td></tr>
-                        </tbody></table></br>
-                      </div>`,
+                          <h4>${feature.properties.name}</a><br/>
+                          <table class='data'><tbody>
+                            <tr><td>Time</td><td>${time}</td></tr>
+                            <tr><td>Distance</td><td>${distance}</td></tr>
+                            <tr><td>Duration</td><td>${duration} hours</td></tr>
+                            <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
+                            <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                          </tbody></table></br>
+                        </div>`,
       }
       return text
     }
@@ -221,23 +215,23 @@
       let max_speed = speedFormatKnots(feature.properties.max_speed)
       let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
       let text = `<div class='mpopup'>
-                        <h4><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
-                        <table class='data'><tbody>
-                          <tr><td>Time</td><td>${time}</td></tr>
-                          <tr><td>Distance</td><td>${distance}</td></tr>
-                          <tr><td>Duration</td><td>${duration} hours</td></tr>
-                          <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
-                          <tr><td>Wind</td><td>max ${max_wind}</td></tr>
-                        </tbody></table></br>
-                        <a href="/timelapse/${feature.properties.id}">Replay</a>
-                      </div>`
+                          <h4><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
+                          <table class='data'><tbody>
+                            <tr><td>Time</td><td>${time}</td></tr>
+                            <tr><td>Distance</td><td>${distance}</td></tr>
+                            <tr><td>Duration</td><td>${duration} hours</td></tr>
+                            <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
+                            <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                          </tbody></table></br>
+                          <a href="/timelapse/${feature.properties.id}">Replay</a>
+                        </div>`
       return text
     }
   }
 </script>
 
 <template>
-  <div id="logs-map-gl" ref="logs-map-gl"></div>
+  <div id="logs-map-gl"></div>
 </template>
 
 <style lang="scss">
@@ -245,19 +239,27 @@
     width: 100%;
     height: 80vh;
     position: relative;
+    z-index: 0; /* Ensure it's behind the popup */
   }
-
-  /* Fix the popup appearance */
-  .maplibregl-popup-content {
-    background-color: white !important; /* Ensure a solid background */
-    color: black !important; /* Set proper text color */
-    padding: 10px !important; /* Add some padding for spacing */
-    border-radius: 5px !important; /* Optional: rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important; /* Add a shadow for depth */
+  #tooltip {
+    pointer-events: none;
+    position: absolute;
+    z-index: 9;
+    font-size: 12px;
+    padding: 8px;
+    background: #000;
+    color: #fff;
+    min-width: 160px;
+    max-height: 240px;
+    overflow-y: hidden;
   }
-
-  /* Ensure the popup container is on top of other elements */
-  .maplibregl-popup {
-    z-index: 1000 !important;
+  #deck-tooltip {
+    font-size: 0.8em;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .leaflet-popup {
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1000; /* Ensure it appears on top */
   }
 </style>

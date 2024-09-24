@@ -159,6 +159,18 @@
     </va-card>
 
     <va-card class="col-span-12">
+      <va-card-title>{{ t('dashboard.overview') }}</va-card-title>
+      <template v-if="LogsImage">
+        <va-card-content v-if="LogsImage">
+          <lMapgl />
+        </va-card-content>
+      </template>
+      <template v-else>
+        <va-card-content>{{ t('nodata.nodata') }}</va-card-content>
+      </template>
+    </va-card>
+
+    <va-card class="col-span-12">
       <va-card-title>{{ t('dashboard.versions') }}</va-card-title>
       <va-card-content>
         Frontend version: {{ versions.web_version }}, VueJS: {{ version }}, Vite: {{ vite_version }}<br />
@@ -180,6 +192,7 @@
   //const Charts = defineAsyncComponent(() => import('./Charts.vue'))
   const Echarts = defineAsyncComponent(() => import('./Echarts.vue'))
   const lMap = defineAsyncComponent(() => import('../../components/maps/leafletMap.vue'))
+  const lMapgl = defineAsyncComponent(() => import('../../components/maps/leafletMapgl.vue'))
   import PostgSail from '../../services/api-client'
   import { fromNow, localTime } from '../../utils/dateFormatter.js'
   import { Moon } from 'lunarphase-js'

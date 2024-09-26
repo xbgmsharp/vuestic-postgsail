@@ -117,7 +117,16 @@
       "september": "September",
       "october": "Oktober",
       "november": "November",
-      "december": "Dezember"
+      "dece,mber": "Dezember"
+    },
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
     }
   },
   "api": {

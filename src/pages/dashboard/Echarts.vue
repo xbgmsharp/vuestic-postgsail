@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import { ref, computed, onMounted, watch, defineAsyncComponent, PropType } from 'vue'
   import { useI18n } from 'vue-i18n'
   import EchartsMix from '../../components/echarts/mix.vue'
@@ -87,9 +87,7 @@
         smooth: true,
       })
       line.name = elm[0]
-      line.data = elm[1] as number[]
-      line.borderColor = random_rgb_dark()
-      line.backgroundColor = line.borderColor
+      line.data = elm[1]
       mymixedChartData[ind + 1] = line
     })
     return mymixedChartData

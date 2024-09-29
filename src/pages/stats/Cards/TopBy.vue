@@ -3,7 +3,7 @@
 
   const props = defineProps({
     items: {
-      type: Array,
+      type: [],
       required: true,
     },
     title: {

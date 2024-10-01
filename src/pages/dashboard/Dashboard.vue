@@ -209,8 +209,8 @@
   const { t } = useI18n()
 
   const GlobalStore = useGlobalStore()
-  const { userName, versions, currentWeather, Monitoring2 } = storeToRefs(GlobalStore)
-  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2 } = GlobalStore
+  const { userName, versions, currentWeather, Monitoring2, stats_logs, stats_moorages } = storeToRefs(GlobalStore)
+  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2, fetchStats } = GlobalStore
 
   const CacheStore = useCacheStore()
   const { getInfoTiles, GetLastLogId } = storeToRefs(CacheStore)
@@ -433,6 +433,18 @@
       console.log('Dashboard onMounted Monitoring2.value', Monitoring2.value)
     } catch (err) {
       console.log('fetchMonitoring2 failed', err)
+      //updateError.value = response.message
+    } finally {
+      //isBusy.value = false
+    }
+
+    // Fetch Stats
+    try {
+      await fetchStats()
+      //console.log('Dashboard onMounted stats', stats_logs.value)
+      //console.log('Dashboard onMounted stats', stats_moorages.value)
+    } catch (err) {
+      console.log('stats failed', err)
       //updateError.value = response.message
     } finally {
       //isBusy.value = false

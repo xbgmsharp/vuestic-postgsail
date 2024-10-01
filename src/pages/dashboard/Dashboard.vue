@@ -20,47 +20,13 @@
         </table>
       </va-card-content>
     </va-card>
-    <template v-if="monitoring.geojson">
-      <va-card v-if="currentWeather.temp" class="flex card-width">
-        <va-card-content class="grid grid-cols-12">
-          <div class="col-span-6 flex flex-col va-text-center">
-            <p style="font-size: 3rem; line-height: 54px">
-              {{ currentWeather.temp }}
-              <span style="font-size: 1rem; line-height: 32px; vertical-align: super; opacity: 0.8; top: 15px">°C</span>
-            </p>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <va-icon style="display: inline-block" name="icon-sunrise" outline :size="48"></va-icon>
-                <div>{{ currentWeather.sunriseTime }}</div>
-              </div>
-              <div>
-                <va-icon style="display: inline-block" name="icon-sunset" outline :size="48"></va-icon>
-                <div>{{ currentWeather.sunsetTime }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-span-6 flex flex-col va-text-center">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <img class="" :src="currentWeather.img" :width="96" :height="96" />
-                <div>{{ currentWeather.description }}</div>
-              </div>
-              <div>
-                <img class="" :src="Lunar.src" :width="96" :height="96" style="padding: 20%" />
-                <div>{{ Lunar.text }}</div>
-              </div>
-            </div>
-          </div>
-        </va-card-content>
-      </va-card>
-      <va-card v-if="monitoring.geojson && mapGeoJsonFeatures" class="flex card-width">
-        <va-card-content style="width: 100%">
-          <template v-if="monitoring.geojson && mapGeoJsonFeatures">
-            <l-map id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
-          </template>
-        </va-card-content>
-      </va-card>
-    </template>
+    <va-card v-if="monitoring.geojson && mapGeoJsonFeatures" class="flex card-width">
+      <va-card-content style="width: 100%">
+        <template v-if="monitoring.geojson && mapGeoJsonFeatures">
+          <l-map id="dashboard-map" :geo-json-feature="mapGeoJsonFeatures" :control-layer="false" :map-zoom="10" />
+        </template>
+      </va-card-content>
+    </va-card>
   </div>
   <div class="dashboard grid grid-cols-12 items-start p-2 gap-4">
     <template v-if="Monitoring2">
@@ -195,17 +161,6 @@
   const lMapgl = defineAsyncComponent(() => import('../../components/maps/leafletMapgl.vue'))
   import PostgSail from '../../services/api-client'
   import { fromNow, localTime } from '../../utils/dateFormatter.js'
-  import { Moon } from 'lunarphase-js'
-  const moon_phases = [
-    'New',
-    'Waxing Crescent',
-    'First Quarter',
-    'Waxing Gibbous',
-    'Full',
-    'Waning Gibbous',
-    'Last Quarter',
-    'Waning Crescent',
-  ]
   const { t } = useI18n()
 
   const GlobalStore = useGlobalStore()
@@ -342,15 +297,6 @@
     return obj
   })
 
-  const Lunar = computed(() => {
-    if (!Array.isArray(moon_phases)) return { src: '', text: '' }
-    const text = Moon.lunarPhase()
-    const isPhase = (element) => element === text
-    const index = moon_phases.findIndex(isPhase)
-    //console.log(`/moon_phase_${index}.svg`)
-    return { src: `/moon_phase_${index}.svg`, text: text.toLowerCase() }
-  })
-
   const LogsImage = computed(() => {
     //console.log(GetLastLogId.value)
     //console.log(vesselId.value)
@@ -370,19 +316,6 @@
     if (!(mylogs && mylogs[0] && mystays && mystays[0] && mymoorages && mymoorages[0])) {
       console.warn('no metrics, new vessel?')
     }
-    /*
-    if (mylogs && mylogs[0] && mystays && mystays[0] && mymoorages && mymoorages[0]) {
-      // for manual expanding in console:
-      console.log('Dashboard onMounted my(logs|stays|moorages)', [
-        [mylogs, mystays, mymoorages],
-        {
-          'mylogs[0].Distance': mylogs[0].Distance,
-          'mystays[0].duration': mystays[0].duration,
-          'mymoorages[0].total_stay': mymoorages[0].total_stay,
-        },
-      ])
-    }
-    */
     // Load Charts Dashboard
     getTags()
     InfoTiles()

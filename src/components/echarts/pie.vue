@@ -52,9 +52,4 @@
   </div>
 </template>
 
-<style lang="scss">
-  #echarts {
-    height: 400px;
-    width: 400px;
-  }
-</style>
+<style lang="scss"></style>

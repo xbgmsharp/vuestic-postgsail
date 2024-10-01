@@ -78,7 +78,7 @@
   }
   const chartOptions = computed(() => {
     const localoptions = { ...defaultConfig }
-    localoptions['series'] = props.series
+    localoptions['series'] = props.series || []
     return localoptions
   })
 </script>

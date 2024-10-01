@@ -1,4 +1,5 @@
 <script setup>
+  import { ref, computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { PieChart } from 'echarts/charts'
@@ -7,7 +8,14 @@
 
   use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
 
-  const option = {
+  const props = defineProps({
+    series: {
+      type: Array,
+      required: true,
+    },
+  })
+
+  const defaultConfig = {
     tooltip: {
       trigger: 'item',
     },
@@ -45,16 +53,22 @@
       },
     ],
   }
+
+  const chartOptions = computed(() => {
+    const localoptions = { ...defaultConfig }
+    localoptions.series[0].data = props.series || []
+    return localoptions
+  })
 </script>
 
 <template>
-  <div id="echarts">
-    <v-chart :option="option" autoresize />
+  <div id="donught">
+    <v-chart :option="chartOptions" autoresize />
   </div>
 </template>
 
 <style lang="scss">
-  #echarts {
+  #donught {
     height: 400px;
   }
 </style>

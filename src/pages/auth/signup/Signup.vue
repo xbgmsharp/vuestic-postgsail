@@ -126,7 +126,11 @@
     console.log(formReady.value, formData.email, emailErrors.value.length, validate())
     if (!validate()) return
     if (!formReady.value) return
-
+    if (formData.email.indexOf('+') > -1) {
+      emailErrors.value = ['invalid email format']
+      apiError.value = 'invalid email format'
+      return
+    }
     const payload = {
       email: formData.email,
       pass: formData.password,

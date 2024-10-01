@@ -90,6 +90,11 @@
 
     if (!validate()) return
     if (!formReady.value) return
+    if (email.value.indexOf('+') > -1) {
+      emailErrors.value = ['invalid email format']
+      loginError.value = 'invalid email format'
+      return
+    }
 
     loginError.value = null
     isBusy.value = true

@@ -15,17 +15,17 @@
       </va-card>
     </div>
     <!-- From stats -->
-    <div class="dashboard flex flex-wrap col-span-12 p-2 gap-4">
-      <va-card class="flex card-width">
-        <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
-        <va-card-content>
-          <EchartsDonught />
+    <div class="dashboard flex flex-auto col-span-12 p-2 gap-4">
+      <va-card class="flex-auto card-width">
+        <va-card-title>{{ t('stats.logs') }}</va-card-title>
+        <va-card-content style="width: 100%">
+          <EchartsDonught v-if="pieChartUnderway" :series="pieChartUnderway" />
         </va-card-content>
       </va-card>
-      <va-card class="flex card-width">
-        <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
-        <va-card-content>
-          <EchartsDonught />
+      <va-card class="flex-auto card-width">
+        <va-card-title>{{ t('stats.moorages') }}</va-card-title>
+        <va-card-content style="width: 100%">
+          <EchartsDonught v-if="pieChartStayType" :series="pieChartStayType" />
         </va-card-content>
       </va-card>
     </div>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, onMounted, watch, defineAsyncComponent, PropType } from 'vue'
+  import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import EchartsMix from '../../components/echarts/mix.vue'
   import EchartsPie from '../../components/echarts/pie.vue'
@@ -49,19 +49,17 @@
   import EchartsHeatmap from '../../components/echarts/heatmap.vue'
   import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
+  import moment from 'moment/min/moment-with-locales'
+  import { useGlobalStore } from '../../stores/global-store'
 
+  const GlobalStore = useGlobalStore()
+  const { stats_logs, stats_moorages } = storeToRefs(GlobalStore)
   const { t } = useI18n()
 
   const CacheStore = useCacheStore()
-  const { getAPI, logs_by_month, logs_by_year_by_month, logs_by_month_by_weekday } = storeToRefs(CacheStore)
+  const { logs_by_month, logs_by_year_by_month, logs_by_month_by_weekday } = storeToRefs(CacheStore)
+  const { logs, stays, moorages } = storeToRefs(CacheStore)
   console.log('echarts logs_by_month', logs_by_year_by_month.value)
-
-  function random_rgb_dark() {
-    var o = Math.floor,
-      r = Math.random,
-      s = 256
-    return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')'
-  }
 
   const series = [
     {
@@ -93,11 +91,82 @@
     return mymixedChartData
   })
   const HeatmapChartComputed = computed(() => {
-    let matrix_data = null
+    let matrix_data = []
     if (logs_by_month_by_weekday.value.length != 0) {
-      matrix_data = logs_by_month_by_weekday.value
+      logs_by_month_by_weekday.value.forEach((elm, ind) => {
+        matrix_data.push([elm.x, elm.y, elm.v])
+      })
     }
     return matrix_data
+  })
+  const pieChartUnderway = computed(() => {
+    if (!stats_logs.value || !stats_moorages.value) {
+      return []
+    }
+    return [
+      {
+        value: moment.duration(stats_logs.value.sum_duration).as('days').toFixed(1),
+        name: 'Underway',
+      },
+      {
+        value: moment.duration(stats_moorages.value.time_spent_away).as('days').toFixed(1),
+        name: 'Away',
+      },
+      {
+        value: moment.duration(stats_moorages.value.time_at_home_ports).as('days').toFixed(1),
+        name: 'Home',
+      },
+    ]
+  })
+
+  const timeSpentAwayByType = computed(() => {
+    if (
+      !stats_moorages.value ||
+      !Array.isArray(stats_moorages.value.time_spent_away_arr) ||
+      stats_moorages.value.time_spent_away_arr.length === 0
+    ) {
+      return {}
+    }
+
+    let totalDurationMs = 0
+    const stayMap = {}
+
+    stats_moorages.value.time_spent_away_arr.forEach((entry) => {
+      const stayCode = entry.stay_code
+      const durationMs = moment.duration(entry.stay_duration).asMilliseconds()
+
+      totalDurationMs += durationMs
+      if (!stayMap[stayCode]) {
+        stayMap[stayCode] = { durationMs: 0 }
+      }
+      stayMap[stayCode].durationMs += durationMs
+    })
+
+    Object.keys(stayMap).forEach((stayCode) => {
+      const durationMs = stayMap[stayCode].durationMs
+
+      stayMap[stayCode].percentage = Math.round((durationMs / totalDurationMs) * 100)
+
+      const durationObj = moment.duration(durationMs)
+      stayMap[stayCode].duration = durationObj.toISOString()
+    })
+
+    return stayMap
+  })
+
+  const pieChartStayType = computed(() => {
+    const timeData = timeSpentAwayByType.value
+    const data = []
+    Object.keys(timeData).forEach((stayCode) => {
+      const value = timeData[stayCode]
+      if (value.durationMs > 0) {
+        data.push({
+          value: moment.duration(value.duration).as('days').toFixed(1),
+          name: t('id.stay_code.' + stayCode),
+        })
+      }
+    })
+    return data
   })
 </script>
 

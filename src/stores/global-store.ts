@@ -29,6 +29,10 @@ const defaultState = {
   openweather: null,
   currentweather: {},
   monitoring2: [],
+  stats: {
+    stats_logs: [],
+    stats_moorages: [],
+  },
   status: 'pending',
   versions: {
     web_version: '',
@@ -219,6 +223,21 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
+    async fetchStats() {
+      const payload = {
+        start_date: null,
+        end_date: null,
+      }
+      const api = new PostgSail()
+      try {
+        const response = await api.stats(payload)
+        this.stats = response.stats || {}
+        console.log('fetchStats response', response)
+        return this.stats
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async set_userBadges() {
       const user_badges = this.settings?.preferences?.badges || {}
       console.log('set_userBadges', user_badges)
@@ -250,6 +269,8 @@ export const useGlobalStore = defineStore('global', {
     imperialUnits: (state) => state.settings?.preferences?.use_imperial_units || false,
     doubleCount: (state) => state.count * 2,
     Monitoring2: (state) => state.monitoring2,
+    stats_logs: (state) => state.stats?.stats_logs || [],
+    stats_moorages: (state) => state.stats?.stats_moorages || [],
     openWeather: (state) => state.openweather,
     currentWeather: (state) => state.currentweather,
     Badges: (state) => state.settings?.preferences?.badges || {},

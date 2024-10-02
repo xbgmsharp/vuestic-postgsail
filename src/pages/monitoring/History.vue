@@ -22,56 +22,54 @@
         </div>
       </va-card-content>
     </va-card>
-    <div class="mb-3">
-      <div class="grid grid-cols-2 gap-3 self-center">
-        <div>
-          <va-card v-if="windChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.wind.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="windChartDataComputed" type="line" :options="windChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
-        <div>
-          <va-card v-if="temperaturesChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.temperature.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="temperaturesChartDataComputed" type="line" :options="temperaturesChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
-        <div>
-          <va-card v-if="seaChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.water.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="seaChartDataComputed" type="line" :options="seaChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
-        <div>
-          <va-card v-if="humidityChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.humidity.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="humidityChartDataComputed" type="line" :options="humidityChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
-        <div>
-          <va-card v-if="batteryChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.battery.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="batteryChartDataComputed" type="line" :options="batteryChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
-        <div>
-          <va-card v-if="barometerChartDataComputed" class="chart-widget md:col-span-6 col-span-12">
-            <va-card-title>{{ t('monitoring.pressure.headerString') }}</va-card-title>
-            <va-card-content>
-              <va-chart :data="barometerChartDataComputed" type="line" :options="barometerChartOptionsComputed" />
-            </va-card-content>
-          </va-card>
-        </div>
+    <div class="grid gap-4 lg:grid-cols-2 md:grid-cols-2 grid-cols-1">
+      <div>
+        <va-card v-if="windChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.wind.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="windChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
+      </div>
+      <div>
+        <va-card v-if="temperaturesChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.temperature.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="temperaturesChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
+      </div>
+      <div>
+        <va-card v-if="seaChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.water.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="seaChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
+      </div>
+      <div>
+        <va-card v-if="humidityChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.humidity.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="humidityChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
+      </div>
+      <div>
+        <va-card v-if="batteryChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.battery.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="batteryChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
+      </div>
+      <div>
+        <va-card v-if="barometerChartOptionsComputed">
+          <va-card-title>{{ t('monitoring.pressure.headerString') }}</va-card-title>
+          <va-card-content>
+            <ECharts :option="barometerChartOptionsComputed" autoresize class="w-full h-80" />
+          </va-card-content>
+        </va-card>
       </div>
     </div>
   </template>
@@ -90,8 +88,8 @@
 
 <script setup>
   // TODO update setup with lang="ts"
-  import { computed, ref, reactive, onMounted, toRaw } from 'vue'
-  import VaChart from '../../components/va-charts/VaChart.vue'
+  import { computed, ref, reactive, onMounted, toRaw, defineComponent } from 'vue'
+  //import VaChart from '../../components/va-charts/VaChart.vue'
   import { dateFormatUTC } from '../../utils/dateFormatter.js'
   import { kelvinToHuman } from '../../utils/temperatureFormatter.js'
   import { pascalToHectoPascal } from '../../utils/presureFormatter.js'
@@ -101,6 +99,15 @@
   import useGlobalStore from '../../stores/global-store'
   import MySelect from '../../components/vaSelect.vue'
   import { useI18n } from 'vue-i18n'
+
+  import ECharts from 'vue-echarts'
+  import { use } from 'echarts/core'
+  import { CanvasRenderer } from 'echarts/renderers'
+  import { LineChart } from 'echarts/charts'
+  import { GridComponent, TooltipComponent, LegendComponent, TitleComponent } from 'echarts/components'
+
+  // Register the required components
+  use([TooltipComponent, LegendComponent, GridComponent, LineChart, CanvasRenderer, TitleComponent])
 
   const { t } = useI18n()
   const GlobalStore = useGlobalStore()
@@ -140,191 +147,277 @@
   const ChartColorTer = 'rgb(255, 207, 159)'
   const ChartbgColorTer = 'rgb(255, 207, 159, 0.5)'
 
-  /* Default Chartjs Data */
-  const ChartDataDefault = {
-    labels: [],
-    datasets: [
+  /* Default echarts option */
+  const defaultChartOptions = {
+    tooltip: {
+      trigger: 'axis',
+    },
+    xAxis: {
+      type: 'category',
+      //data: labels.value,
+      data: [],
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '{value} kts',
+      },
+    },
+    series: [
       {
-        label: 'Default',
+        name: 'Speed',
+        type: 'line',
+        //data: winddata.value,
         data: [],
-        fill: false,
-        tension: 0.5,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
       },
     ],
   }
-  /* Default Chartjs Options */
-  const ChartOptionsDefault = {
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-    },
-    scales: {
-      x: {
-        // beginAtZero: true
-      },
-      y: {
-        // beginAtZero: true
-        ticks: {},
-      },
-    },
-  }
 
   const windChartOptionsComputed = computed(() => {
-    let windChartOptions = structuredClone(ChartOptionsDefault)
-    windChartOptions.scales.y.ticks.callback = (value) => {
-      return value + 'kts'
-    }
-    console.log(windChartOptions)
-    return windChartOptions
-  })
-  const windChartDataComputed = computed(() => {
-    //console.log('windChartDataComputed', ChartDataDefault)
-    //console.log('winddata', winddata.value)
-    let windChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(winddata.value) && winddata.value.length > 0) {
-      windChartData.datasets[0].label = 'Speed'
-      windChartData.datasets[0].data = winddata.value
-      windChartData.labels = labels.value
-    }
-    console.log(windChartData)
-    return windChartData
-  })
-  const temperaturesChartOptionsComputed = computed(() => {
-    let tempChartOptions = structuredClone(ChartOptionsDefault)
-    tempChartOptions.scales.y.ticks.callback = (value) => {
-      return value + tempUnit.value
-    }
-    console.log(tempChartOptions)
-    return tempChartOptions
-  })
-  const temperaturesChartDataComputed = computed(() => {
-    let tempChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(temperaturesdata.value) && temperaturesdata.value.length > 0 && Array.isArray(labels.value)) {
-      tempChartData.datasets[0].label = 'Inside'
-      tempChartData.datasets[0].data = temperaturesdata.value[0]
-      tempChartData.datasets[1] = {
-        label: 'Outside',
-        fill: false,
-        data: temperaturesdata.value[1],
-        borderColor: ChartColorBis,
-        backgroundColor: ChartbgColorBis,
-      }
-      tempChartData.datasets[2] = {
-        label: 'Sea',
-        fill: false,
-        data: temperaturesdata.value[2],
-        borderColor: ChartColorTer,
-        backgroundColor: ChartbgColorTer,
-      }
-      tempChartData.labels = labels.value
-      console.log(tempChartData)
-    }
-    return tempChartData
-  })
-  const seaChartOptionsComputed = computed(() => {
-    let seaChartOptions = structuredClone(ChartOptionsDefault)
-    seaChartOptions.scales.y.ticks.callback = (value) => {
-      return value + depthUnit.value
-    }
-    console.log(seaChartOptions)
-    return seaChartOptions
-  })
-  const seaChartDataComputed = computed(() => {
-    let seaChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(depthdata.value) && depthdata.value.length > 0 && Array.isArray(labels.value)) {
-      seaChartData.datasets[0].label = 'Depth'
-      seaChartData.datasets[0].data = depthdata.value
-      seaChartData.labels = labels.value
-    }
-    console.log('seaChartData', seaChartData)
-    return seaChartData
-  })
-  const humidityChartOptionsComputed = computed(() => {
-    let humidityChartOptions = structuredClone(ChartOptionsDefault)
-    humidityChartOptions.scales.y.ticks.callback = (value) => {
-      return value + '%'
-    }
-    console.log(humidityChartOptions)
-    return humidityChartOptions
-  })
-  const humidityChartDataComputed = computed(() => {
-    let humidityChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(humiditydata.value) && humiditydata.value.length > 0 && Array.isArray(labels.value)) {
-      humidityChartData.datasets[0].label = 'Inside'
-      humidityChartData.datasets[0].data = humiditydata.value[0]
-      humidityChartData.datasets[1] = {
-        label: 'Outside',
-        fill: false,
-        data: humiditydata.value[1],
-        borderColor: ChartColorBis,
-        backgroundColor: ChartbgColorBis,
-      }
-      humidityChartData.labels = labels.value
-    }
-    return humidityChartData
-  })
-  const batteryChartOptionsComputed = computed(() => {
-    let batteryChartOptions = structuredClone(ChartOptionsDefault)
-    //batteryChartOptions.scales.y1 = structuredClone(batteryChartOptions.scales.y)
-    batteryChartOptions.scales.y.ticks.callback = (value) => {
-      return value + '%'
-    }
-    batteryChartOptions.scales.y1 = {
-      type: 'linear',
-      display: true,
-      position: 'right',
-      grid: {
-        drawOnChartArea: false, // only want the grid lines for one axis to show up
+    if (winddata.value && winddata.value.length == 0) return {}
+    return {
+      tooltip: {
+        trigger: 'axis',
       },
-      ticks: {
-        callback: function (value) {
-          value = Math.round(value * 100) / 100
-          return value + 'V'
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: '{value} kts',
         },
       },
+      series: [
+        {
+          name: 'Speed',
+          type: 'line',
+          data: winddata.value,
+        },
+      ],
     }
-    console.log(batteryChartOptions)
-    return batteryChartOptions
   })
-  const batteryChartDataComputed = computed(() => {
-    let batteryChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(batterydata.value) && batterydata.value.length > 0 && Array.isArray(labels.value)) {
-      batteryChartData.datasets[0].label = 'Charge'
-      batteryChartData.datasets[0].yAxisID = 'y'
-      batteryChartData.datasets[0].data = batterydata.value[1]
-      batteryChartData.datasets[1] = {
-        label: 'Voltage',
-        fill: false,
-        data: batterydata.value[0],
-        borderColor: ChartColorBis,
-        backgroundColor: ChartbgColorBis,
-        yAxisID: 'y1',
-      }
-      batteryChartData.labels = labels.value
+
+  const temperaturesChartOptionsComputed = computed(() => {
+    if (temperaturesdata.value && temperaturesdata.value.length == 0) return {}
+    return {
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Inside', 'Outside', 'Sea'],
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: `{value} ${tempUnit.value}`,
+        },
+      },
+      series: [
+        {
+          name: 'Inside',
+          type: 'line',
+          data: temperaturesdata.value[0],
+        },
+        {
+          name: 'Outside',
+          type: 'line',
+          data: temperaturesdata.value[1],
+          itemStyle: {
+            color: ChartColorBis,
+          },
+        },
+        {
+          name: 'Sea',
+          type: 'line',
+          data: temperaturesdata.value[2],
+          itemStyle: {
+            color: ChartColorTer,
+          },
+        },
+      ],
     }
-    return batteryChartData
+  })
+
+  const seaChartOptionsComputed = computed(() => {
+    if (depthdata.value && depthdata.value.length == 0) return {}
+    return {
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        name: `Depth (${depthUnit.value})`,
+        axisLabel: {
+          formatter: (value) => `${value} ${depthUnit.value}`,
+        },
+      },
+      series: [
+        {
+          name: 'Depth',
+          type: 'line',
+          data: depthdata.value, // Sea depth data
+          lineStyle: { color: '#6495ed' }, // Customize line color
+          smooth: true,
+        },
+      ],
+    }
+  })
+
+  const humidityChartOptionsComputed = computed(() => {
+    if (humiditydata.value && humiditydata.value.length == 0) return {}
+    console.log('humiditydata', {
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Inside', 'Outside'],
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: '{value} %',
+        },
+      },
+      series: [
+        {
+          name: 'Inside',
+          type: 'line',
+          data: humiditydata.value[0],
+        },
+        {
+          name: 'Outside',
+          type: 'line',
+          data: humiditydata.value[1],
+          itemStyle: {
+            color: ChartColorBis,
+          },
+        },
+      ],
+    })
+    return {
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['Inside', 'Outside'],
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: '{value} %',
+        },
+      },
+      series: [
+        {
+          name: 'Inside',
+          type: 'line',
+          data: humiditydata.value[0],
+        },
+        {
+          name: 'Outside',
+          type: 'line',
+          data: humiditydata.value[1],
+          itemStyle: {
+            color: ChartColorBis,
+          },
+        },
+      ],
+    }
+  })
+
+  const batteryChartOptionsComputed = computed(() => {
+    if (batterydata.value && batterydata.value.length == 0) return {}
+    return {
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: 'Charge (%)',
+          axisLabel: {
+            formatter: '{value}%',
+          },
+        },
+        {
+          type: 'value',
+          name: 'Voltage (V)',
+          axisLabel: {
+            formatter: '{value}V',
+          },
+          position: 'right',
+          offset: 0,
+        },
+      ],
+      series: [
+        {
+          name: 'Charge',
+          type: 'line',
+          yAxisIndex: 0,
+          data: batterydata.value[1], // Battery charge data
+          lineStyle: { color: '#ff7f50' }, // Customize line color
+          smooth: true,
+        },
+        {
+          name: 'Voltage',
+          type: 'line',
+          yAxisIndex: 1,
+          data: batterydata.value[0], // Battery voltage data
+          lineStyle: { color: '#87cefa' }, // Customize line color
+          smooth: true,
+        },
+      ],
+    }
   })
   const barometerChartOptionsComputed = computed(() => {
-    let barometerChartOptions = structuredClone(ChartOptionsDefault)
-    barometerChartOptions.scales.y.ticks.callback = (value) => {
-      return value + ' hPa'
+    if (barometerdata.value && barometerdata.value.length == 0) return {}
+    return {
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: labels.value,
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Pressure (hPa)',
+        axisLabel: {
+          formatter: '{value} hPa',
+        },
+      },
+      series: [
+        {
+          name: 'Atmospheric Pressure',
+          type: 'line',
+          data: barometerdata.value, // Barometer data
+          lineStyle: { color: '#32cd32' }, // Customize line color
+          smooth: true,
+        },
+      ],
     }
-    console.log(barometerChartOptions)
-    return barometerChartOptions
-  })
-  const barometerChartDataComputed = computed(() => {
-    console.log('barometerChartDataComputed', ChartDataDefault)
-    let barometerChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(barometerdata.value) && barometerdata.value.length > 0 && Array.isArray(labels.value)) {
-      barometerChartData.datasets[0].label = 'Atmospheric Pressure'
-      barometerChartData.datasets[0].data = barometerdata.value
-      barometerChartData.labels = labels.value
-    }
-    console.log('barometerChartData', barometerChartData)
-    return barometerChartData
   })
 
   /* computed the labels from the api response */
@@ -335,7 +428,7 @@
         return dateFormatUTC(item.time_bucket)
       })
     }
-    console.log('labels arr:', arr.length)
+    //console.log('labels arr:', arr.length)
     return arr
   })
 
@@ -347,7 +440,7 @@
         return utils.metersToKnots(item.windspeedoverground)
       })
     }
-    console.log('winddata arr:', arr.length)
+    //console.log('winddata arr:', arr.length)
     return arr
   })
 
@@ -359,7 +452,7 @@
         return parseFloat(depth).toFixed(1)
       })
     }
-    console.log('depthdata arr:', arr.length)
+    //console.log('depthdata arr:', arr.length)
     return arr
   })
 
@@ -370,7 +463,7 @@
         return pascalToHectoPascal(item.outsidepressure)
       })
     }
-    console.log('barometerdata arr:', arr.length)
+    //console.log('barometerdata arr:', arr.length)
     return arr
   })
 
@@ -389,7 +482,7 @@
         return kelvinToHuman(item.watertemperature)
       })
     }
-    console.log('temperaturesdata arr:', [arr_inside, arr_outside, arr_water])
+    //console.log('temperaturesdata arr:', [arr_inside, arr_outside, arr_water])
     return [arr_inside, arr_outside, arr_water]
   })
 
@@ -404,7 +497,7 @@
         return floatToPercentage(item.outsidehumidity)
       })
     }
-    console.log('humiditydata arr:', [arr_inside, arr_outside])
+    //console.log('humiditydata arr:', [arr_inside, arr_outside])
     return [arr_inside, arr_outside]
   })
 
@@ -419,7 +512,7 @@
         return floatToPercentage(item.batterycharge)
       })
     }
-    console.log('batterydata arr:', [arr_volt, arr_charge])
+    //console.log('batterydata arr:', [arr_volt, arr_charge])
     return [arr_volt, arr_charge]
   })
 
@@ -442,6 +535,7 @@
         if (response.history_metrics === null) {
           offline.value = true
           // if null it is not an error
+          apiSuccess.value = true
           return
         }
         throw { response }

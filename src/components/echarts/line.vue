@@ -1,11 +1,19 @@
 <script setup>
+  import { ref, computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { LineChart } from 'echarts/charts'
-  import { GridComponent } from 'echarts/components'
+  import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
 
-  use([GridComponent, LineChart, CanvasRenderer])
+  use([GridComponent, LineChart, CanvasRenderer, LegendComponent, TooltipComponent])
+
+  const props = defineProps({
+    series: {
+      type: Array,
+      required: true,
+    },
+  })
 
   const option = {
     xAxis: {

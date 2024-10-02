@@ -40,7 +40,6 @@
       show: true,
       top: '5%',
       left: 'center',
-      data: ['Evaporation', 'Precipitation', 'Temperature'],
     },
     xAxis: [
       {

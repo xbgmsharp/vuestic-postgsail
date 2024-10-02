@@ -29,22 +29,13 @@
         </va-card-content>
       </va-card>
     </div>
-    <!-- For logbook details -->
-    <va-card class="chart-widget col-span-12">
-      <va-card-title>{{ t('dashboard.charts.mixedChart') }}</va-card-title>
-      <va-card-content>
-        <EchartsLine />
-      </va-card-content>
-    </va-card>
   </div>
 </template>
 
 <script setup>
-  import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue'
+  import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
   import EchartsMix from '../../components/echarts/mix.vue'
-  import EchartsPie from '../../components/echarts/pie.vue'
-  import EchartsLine from '../../components/echarts/line.vue'
   import EchartsDonught from '../../components/echarts/donught.vue'
   import EchartsHeatmap from '../../components/echarts/heatmap.vue'
   import { useCacheStore } from '../../stores/cache-store'

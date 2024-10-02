@@ -165,7 +165,7 @@
 
   const GlobalStore = useGlobalStore()
   const { userName, versions, currentWeather, Monitoring2, stats_logs, stats_moorages } = storeToRefs(GlobalStore)
-  const { fetchVersions, fetchWeatherForecast, fetchMonitoring2, fetchStats } = GlobalStore
+  const { fetchVersions, fetchMonitoring2, fetchStats } = GlobalStore
 
   const CacheStore = useCacheStore()
   const { getInfoTiles, GetLastLogId } = storeToRefs(CacheStore)
@@ -342,19 +342,6 @@
       // If exit as we need coordinates
       console.log('monitoring failed', err)
       return
-      //updateError.value = response.message
-    } finally {
-      //isBusy.value = false
-    }
-
-    // WeatherForecast
-    try {
-      // Duplicate json ref to keep origin geojson valid
-      const geojson = monitoring.value.geojson.geometry.coordinates.map((x) => x)
-      await fetchWeatherForecast(geojson.reverse())
-      console.log('Dashboard onMounted currentWeather.value', currentWeather.value)
-    } catch (err) {
-      console.log('fetchWeatherForecast failed', err)
       //updateError.value = response.message
     } finally {
       //isBusy.value = false

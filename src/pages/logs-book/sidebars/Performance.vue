@@ -1,6 +1,6 @@
 <script setup>
   import { computed } from 'vue'
-  import VaChart from '../../../components/va-charts/VaChart.vue'
+  import VaChart from '../../../components/echarts/linetimeseries.vue'
 
   const props = defineProps({
     speeddata: {
@@ -21,90 +21,27 @@
     },
   })
 
-  /* Default Chartjs Data */
-  const ChartDataDefault = {
-    labels: [],
-    datasets: [
-      {
-        label: 'Default',
-        data: [],
-        fill: true,
-        tension: 0.5,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      },
-    ],
-  }
-  /* Default Chartjs Options */
-  const ChartOptionsDefault = {
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          callback: null,
-        },
-        //title: { display: true, text: 'Time' },
-      },
-      y: {
-        ticks: {
-          callback: null,
-          display: true,
-          stepSize: 1,
-        },
-        title: { display: true, text: 'Speed in [kt]' },
-        display: true,
-      },
-    },
-  }
-
-  const windChartOptionsComputed = computed(() => {
-    let windChartOptions = structuredClone(ChartOptionsDefault)
-    //console.log(windChartOptions)
-    return windChartOptions
-  })
-  const windChartDataComputed = computed(() => {
-    //console.log('windChartDataComputed', ChartDataDefault)
-    //console.log('winddata', props.winddata)
-    let windChartData = structuredClone(ChartDataDefault)
-    if (Array.isArray(props.winddata) && props.winddata.length > 0) {
-      windChartData.datasets[0].label = 'Wind Speed'
-      windChartData.datasets[0].data = props.winddata
-      windChartData.labels = props.labels
-    }
-    //console.log(windChartData)
-    return windChartData
-  })
-
-  const speedChartOptionsComputed = computed(() => {
-    let speedChartOptions = structuredClone(ChartOptionsDefault)
-    //console.log(speedChartOptions)
-    return speedChartOptions
-  })
-  const speedChartDataComputed = computed(() => {
-    //console.log('speedChartDataComputed', ChartDataDefault)
-    //console.log('speeddata', props.speeddata)
-    let speedChartData = structuredClone(ChartDataDefault)
+  const eChartComputed = computed(() => {
+    let speed_arr = []
     if (Array.isArray(props.speeddata) && props.speeddata.length > 0) {
-      speedChartData.datasets[0].label = 'Boat Speed'
-      speedChartData.datasets[0].data = props.speeddata
-      speedChartData.labels = props.labels
+      props.speeddata.forEach((currentElement, index, array) => {
+        if (props.speeddata[index] != null && props.winddata[index] != null) {
+          speed_arr.push([props.labels[index], props.speeddata[index], props.winddata[index]])
+        }
+      })
     }
-    //console.log(speedChartData)
-    return speedChartData
+    //console.log(speed_arr)
+    return speed_arr
   })
 </script>
 
 <template>
   <div class="p-2">
-    <template v-if="winddata">
+    <template v-if="winddata && eChartComputed">
       <va-card v-if="winddata">
         <va-card-title>Wind Speed</va-card-title>
         <va-card-content>
-          <VaChart :data="windChartDataComputed" type="line" :options="windChartOptionsComputed" />
+          <VaChart :series="eChartComputed" />
         </va-card-content>
       </va-card>
     </template>
@@ -114,7 +51,7 @@
       <va-card v-if="speeddata">
         <va-card-title>Boat Speed</va-card-title>
         <va-card-content>
-          <VaChart :data="speedChartDataComputed" type="line" :options="speedChartOptionsComputed" />
+          <VaChart :series="eChartComputed" />
         </va-card-content>
       </va-card>
     </template>

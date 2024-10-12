@@ -72,6 +72,7 @@
       },
     },
     visualMap: {
+      show: false,
       min: 0,
       max: 20,
       calculable: true,

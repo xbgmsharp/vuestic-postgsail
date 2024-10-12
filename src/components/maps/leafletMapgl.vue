@@ -37,7 +37,7 @@
     } finally {
       isBusy.value = false
     }
-    const coords = mapgl_geojson.value.features[0].geometry.coordinates[0].reverse()
+    const coords = mapgl_geojson.value.features[0].geometry.coordinates[0]
     const map = L.map(document.getElementById('logs-map-gl'), {
       center: [coords[0], coords[1]],
       zoom: 5,

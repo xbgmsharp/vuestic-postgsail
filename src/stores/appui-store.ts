@@ -9,9 +9,6 @@ const defaultState = {
   isMobile: false,
   doShowAsCards: 1,
   currentTheme: 'light',
-  unsplash: null,
-  openweather: null,
-  currentweather: {},
   timelapse: {
     map_type: null,
     boat_type: null,

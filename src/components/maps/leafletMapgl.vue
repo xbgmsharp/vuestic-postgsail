@@ -5,7 +5,7 @@
   import 'leaflet/dist/leaflet.css'
   import { LeafletLayer } from 'deck.gl-leaflet'
   import { MapView } from '@deck.gl/core'
-  import { GeoJsonLayer } from '@deck.gl/layers'
+  import { GeoJsonLayer, TextLayer } from '@deck.gl/layers'
   import PostgSail from '../../services/api-client'
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
@@ -15,7 +15,6 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const mapgl_geojson = ref({})
-  const isHovering = ref(false)
 
   onMounted(async () => {
     isBusy.value = true
@@ -39,8 +38,8 @@
     }
     const coords = mapgl_geojson.value.features[0].geometry.coordinates[0]
     const map = L.map(document.getElementById('logs-map-gl'), {
-      center: [coords[0], coords[1]],
-      zoom: 5,
+      center: [coords[1], coords[0]],
+      zoom: currentZoom.value,
       zoomControl: false,
     })
     const bMaps = baseMaps()
@@ -60,7 +59,7 @@
         new GeoJsonLayer({
           id: 'GeoJsonLayer',
           data: mapgl_geojson.value,
-
+          controller: true,
           filled: true,
           pointRadiusUnits: 'pixels',
           pointType: 'circle+icon+text',
@@ -90,13 +89,6 @@
           getFillColor: [160, 160, 180, 200],
           getLineColor: (f) => {
             //console.log(f.properties)
-            const hex = f.properties.color
-            // convert to RGB
-            //console.log(hex ? hex.match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)) : [0, 0, 0])
-            //console.log(random_rgb_dark())
-            //return hex ? hex.match(/[0-9a-f]{2}/g).map((x) => parseInt(x, 16)) : [0, 0, 0]
-            //return [0, 0, 0]
-            //return random_rgb_dark()
             if (f.properties.distance) {
               const rgba = random_rgb_dark()
               //console.log(rgba)
@@ -107,6 +99,7 @@
           },
           getLineWidth: 20,
           getPointRadius: 4,
+          sizeUnits: 'meters',
           getText: (f) => f.properties.name,
           getTextSize: 12,
           pointRadiusUnits: 'pixels',

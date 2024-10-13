@@ -1,4 +1,5 @@
 <template>
+  <!--
   <div class="dashboard flex flex-wrap p-2 gap-4">
     <va-card v-if="monitoring && status" class="flex card-width">
       <va-card-content>
@@ -20,6 +21,16 @@
         </table>
       </va-card-content>
     </va-card>
+    <va-card class="flex card-width">
+      <template v-if="LogsImage">
+        <va-card-content v-if="LogsImage">
+          <img style="margin: auto" src="https://gis.openplotter.cloud/logs_06b6d311ccfe_11429_thumb.png" />
+        </va-card-content>
+      </template>
+      <template v-else>
+        <va-card-content>{{ t('nodata.nodata') }}</va-card-content>
+      </template>
+    </va-card>
     <va-card v-if="monitoring.geojson && mapGeoJsonFeatures" class="flex card-width">
       <va-card-content style="width: 100%">
         <template v-if="monitoring.geojson && mapGeoJsonFeatures">
@@ -28,6 +39,7 @@
       </va-card-content>
     </va-card>
   </div>
+-->
   <div class="dashboard grid grid-cols-12 items-start p-2 gap-4">
     <template v-if="Monitoring2">
       <va-card v-if="Monitoring2" class="col-span-12">
@@ -55,49 +67,6 @@
         </va-card-content>
       </va-card>
     </template>
-
-    <!--
-    <va-card class="col-span-12 sm:col-span-6">
-      <va-card-content class="grid grid-cols-12 row-separated">
-        <div v-if="stateOfCharge" class="col-span-4 p-4 flex flex-col row">
-          <va-icon name="icon-battery" outline :size="96"></va-icon>
-          <h3 class="va-h3 m-0 va-text-center">{{ stateOfCharge.value }}%</h3>
-          <p class="va-text-center">{{ stateOfCharge.key }}</p>
-        </div>
-        <div v-if="panelPower" class="col-span-4 p-4 flex flex-col row">
-          <va-icon name="icon-solar" outline :size="96"></va-icon>
-          <h3 class="va-h3 m-0 va-text-center">{{ panelPower.value }} W</h3>
-          <p class="va-text-center no-wrap">{{ panelPower.key }}</p>
-        </div>
-        <div v-if="Power" class="col-span-4 p-4 flex flex-col row">
-          <va-icon name="bolt" outline :size="96"></va-icon>
-          <h3 class="va-h3 m-0 va-text-center">{{ Power.value }}W</h3>
-          <p class="va-text-center">{{ Power.key }}</p>
-        </div>
-      </va-card-content>
-    </va-card>
-
-    <va-card v-if="monitoring" class="col-span-12 sm:col-span-6">
-      <va-card-content class="grid grid-cols-12 row-separated">
-        <div class="col-span-4 p-4 flex flex-col">
-          <h2>Local Time</h2>
-          <p>10:47</p>
-          <h2>Status</h2>
-          <p>OK?</p>
-          <h2>Last updated</h2>
-          <p>OK?</p>
-        </div>
-        <div v-if="currentweather && iconurl" class="col-span-4 p-4 flex flex-col">
-          <img :src="iconurl" :width="96" :height="96" />
-          <h3 class="va-h3 m-0 va-text-center">{{ currentweather.temp }}C</h3>
-          <p class="va-text-center">{{ currentweather.description }}</p>
-        </div>
-        <div v-if="mapGeoJsonFeatures" class="col-span-4 p-4 flex flex-col">
-          <lMap :geo-json-feature="mapGeoJsonFeatures" style="width: 100%; height: 120px" />
-        </div>
-      </va-card-content>
-    </va-card>
--->
 
     <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
       <router-link :to="info.text">

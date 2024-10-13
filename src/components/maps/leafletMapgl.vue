@@ -15,6 +15,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const mapgl_geojson = ref({})
+  const currentZoom = ref(6) // Track zoom level
 
   onMounted(async () => {
     isBusy.value = true
@@ -36,11 +37,16 @@
     } finally {
       isBusy.value = false
     }
+    // Extract the first coordinates as a center
     const coords = mapgl_geojson.value.features[0].geometry.coordinates[0]
     const map = L.map(document.getElementById('logs-map-gl'), {
       center: [coords[1], coords[0]],
       zoom: currentZoom.value,
       zoomControl: false,
+    })
+    // Track zoom level and hide/show labels based on zoom
+    map.on('zoomend', () => {
+      currentZoom.value = map.getZoom()
     })
     const bMaps = baseMaps()
     const oMaps = overlayMaps()

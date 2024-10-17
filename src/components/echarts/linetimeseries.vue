@@ -3,10 +3,10 @@
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { LineChart } from 'echarts/charts'
-  import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
+  import { GridComponent, LegendComponent, TooltipComponent, TitleComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
 
-  use([GridComponent, LineChart, CanvasRenderer, LegendComponent, TooltipComponent])
+  use([GridComponent, LineChart, CanvasRenderer, LegendComponent, TooltipComponent, TitleComponent])
 
   const props = defineProps({
     series: {
@@ -19,7 +19,8 @@
   const defaultConfig = {
   title: {
     text: 'Boat Speed and Wind Speed Over Time',
-    left: 'center'
+    left: 'center',
+    show: false
   },
   tooltip: {
     trigger: 'axis'

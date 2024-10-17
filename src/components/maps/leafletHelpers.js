@@ -26,12 +26,21 @@ export const baseMaps = function () {
   })
 
   // CARTO
-  const cartodb = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  const CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>',
-    maxZoom: 18,
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20,
   })
 
+  const CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20,
+  })
+
+  // Eniro sea maps (for Scandinavia)
   const eniroSeamap = L.tileLayer('https://{s}.eniro.com/geowebcache/service/tms1.0.0/nautical/{z}/{x}/{y}.png', {
     subdomains: ['map01', 'map02', 'map03', 'map04'],
     attribution: '&copy; Kort & Matrikelstyrelsen',
@@ -59,8 +68,9 @@ export const baseMaps = function () {
   const baseMaps = {
     Satellite: sat,
     OpenStreetMap: osm,
-    CARTO: cartodb,
-    'Eniro Seamap': eniroSeamap,
+    'CartoDB.Positron': CartoDB_Positron,
+    'CartoDB.DarkMatter': CartoDB_DarkMatter,
+    'Eniro (Scandinavia)': eniroSeamap,
     'Nautical charts (USA)': noaa,
     'EMODnet Bathymetry': bathymetryGroupLayer,
   }

@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import PostgSail from '../services/api-client'
 import deepMerge from '../utils/deepMerge'
-import WeatherForecast from '../services/openweathermap'
+import OpenMeteo from '../services/openmeteo'
 import moment from 'moment'
-import { userBadges } from '../utils/PostgSail'
+import { userBadges, WMO } from '../utils/PostgSail'
 
 const demo_pattern = /^[A-Za-z0-9._%+-]+@openplotter.cloud$/
 
@@ -186,21 +186,18 @@ export const useGlobalStore = defineStore('global', {
       this.versions.web_version = web_version
     },
     set_currentWeather() {
-      if (this.openweather && this.openweather['current']) {
-        //const openweatherTodayData = this.openweather['daily'][0]
-        this.currentweather = Object.assign(
-          { temp: this.openweather['current']['temp'] },
-          this.openweather['current']['weather'][0],
-          { img: `https://openweathermap.org/img/wn/${this.openweather['current']['weather'][0]['icon']}@2x.png` },
-          {
-            sunriseTime: moment.unix(this.openweather['current']['sunrise']).format('HH:mm'),
-            sunsetTime: moment.unix(this.openweather['current']['sunset']).format('HH:mm'),
-          },
-        )
+      if (this.openweather && this.openweather['daily']) {
+        this.currentweather = Object.assign({
+          temp: this.openweather['current']['temperature_2m'],
+          description: WMO[this.openweather['current']['weather_code']]['day']['description'],
+          img: WMO[this.openweather['current']['weather_code']]['day']['image'],
+          sunriseTime: moment.unix(this.openweather['daily']['sunrise'][0]).format('HH:mm'),
+          sunsetTime: moment.unix(this.openweather['daily']['sunset'][0]).format('HH:mm'),
+        })
       }
     },
     async fetchWeatherForecast(coordinates: [number, number]) {
-      const weather = new WeatherForecast()
+      const weather = new OpenMeteo()
       try {
         await weather.updateForecast(coordinates as [number, number])
         this.openweather = weather.data

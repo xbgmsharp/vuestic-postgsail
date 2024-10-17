@@ -8,6 +8,7 @@
   import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
+  import { stayed_at_options } from '../../utils/PostgSail.ts'
 
   const isBusy = ref(false)
   const apiError = ref(null)
@@ -182,6 +183,7 @@
       let avg_speed = speedFormatKnots(feature.properties.avg_speed)
       let max_speed = speedFormatKnots(feature.properties.max_speed)
       let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+      let notes = feature.properties?.notes || ''
       let text = {
         html: `<div class='mpopup'>
                         <h4>${feature.properties.name}</a><br/>
@@ -191,6 +193,7 @@
                           <tr><td>Duration</td><td>${duration} hours</td></tr>
                           <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
                           <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                          <tr><td>Notes</td><td>${notes}</td></tr>
                         </tbody></table></br>
                       </div>`,
       }
@@ -201,17 +204,23 @@
   function getOnClickDesc(feature) {
     // Is moorage
     if (feature.properties.stay_code) {
-      let stay_type = ''
-      if (feature.properties.stay_code == 2) {
-        stay_type = ' stay at anchor'
+      let popup = `<div class='mpopup'><center><h4><a href="/moorage/${feature.properties.id}">${feature.properties.name}</a></h4></center>`
+      popup += '<table class="data">'
+      popup += '<tr><th>Visits</th><td><a href="/moorage/arrivals-departures/' + feature.properties.id + '">'
+      popup += `${feature?.properties?.reference_count}`
+      popup += '</a></td></tr>'
+      popup += '<tr><th>Stays</th><td>'
+      popup +=
+        '<a href="/stays/moorage/' + feature.properties.id + '">' + (feature?.properties?.total_stay || 0) + ' day'
+      if ((feature?.properties?.total_stay || 0) > 1) popup = popup + 's'
+      popup = popup + '</a></td></tr>'
+      //popup += `Preference: ${feature.properties.stay_code}`
+      popup += '<tr><th>Preference</th><td>' + stayed_at_options[feature.properties.stay_code - 1].text + '</td></tr>'
+      if (feature?.properties?.notes) {
+        popup += '<tr><th>Notes</th><td>' + feature?.properties?.notes + '</td></tr>'
       }
-      if (feature.properties.stay_code == 3) {
-        stay_type = ' stay at mooring buoy'
-      }
-      if (feature.properties.stay_code == 4) {
-        stay_type = ' stay at dock'
-      }
-      return `<a href="/moorage/${feature.properties.id}">${feature.properties.name}</a> ${stay_type}`
+      popup += '</table></div>'
+      return popup
     } else {
       // is logbook
       let time = dateFormatUTC(feature.properties._from_time)
@@ -220,6 +229,7 @@
       let avg_speed = speedFormatKnots(feature.properties.avg_speed)
       let max_speed = speedFormatKnots(feature.properties.max_speed)
       let max_wind = speedFormatKnots(feature.properties.max_wind_speed)
+      let notes = feature.properties?.notes || ''
       let text = `<div class='mpopup'>
                         <h4><a href="/log/${feature.properties.id}">${feature.properties.name}</a></h4><br/>
                         <table class='data'><tbody>
@@ -228,6 +238,7 @@
                           <tr><td>Duration</td><td>${duration} hours</td></tr>
                           <tr><td>Speed</td><td>avg ${avg_speed} / max ${max_speed}</td></tr>
                           <tr><td>Wind</td><td>max ${max_wind}</td></tr>
+                          <tr><td>Notes</td><td>${notes}</td></tr>
                         </tbody></table></br>
                         <a href="/timelapse/${feature.properties.id}">Replay</a>
                       </div>`

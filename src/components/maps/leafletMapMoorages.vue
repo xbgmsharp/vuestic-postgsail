@@ -24,9 +24,9 @@
                   class="sidepanel-tab-content"
                   :data-tab-content="'tab-' + (index + 1)"
                 >
-                  <div v-for="(moorage, index) in mooragesList" :key="index">
+                  <div>
                     <ol>
-                      <li>
+                      <li v-for="(moorage, index) in mooragesList" :key="index">
                         {{ index + 1 }}.
                         <a class="va-link" @click="navigateMoorage(moorage.geometry.coordinates, index)">{{
                           moorage.properties.name

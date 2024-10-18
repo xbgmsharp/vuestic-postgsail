@@ -75,7 +75,7 @@
     "vuestic-ui": "^1.10.2"
   },
   "devDependencies": {
-    "@intlify/unplugin-vue-i18n": "^2.0.0",
+    "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@testing-library/vue": "^8.1.0",
     "@types/node": "^20.14.14",
     "@typescript-eslint/eslint-plugin": "^5.20.0",

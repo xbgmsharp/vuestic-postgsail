@@ -16,7 +16,7 @@
     "keep_logged_in": "Mantenme conectado",
     "termsOfUse": "Términos de uso",
     "reset_password": "Restablecer contraseña",
-    "vessel_register": "Añadir barco",
+    "vessel_register": "Registrar barco",
     "otp": "Introduce el código de verificación OTP",
     "otp_validate": "Validar código OTP",
     "otp_validated": "Código OTP validado con éxito",
@@ -25,7 +25,7 @@
     "errors": {
       "credentials": "Credenciales erróneos",
       "email": "Se requiere un correo electrónico",
-      "email_valid": "Email should be valid",
+      "email_valid": "El email debe ser válido",
       "password": "Se requiere una contraseña",
       "mismatch_pass": "Las contraseñas no coinciden",
       "short_pass": "La contraseña es demasiado corta",
@@ -40,9 +40,9 @@
   },
   "menu": {
     "dashboard": "Panel de control",
-    "logs": "Registros de bitácora",
+    "logs": "Cuaderno de bitácora",
     "stays": "Estancias",
-    "moorages": "Fondeaderos",
+    "moorages": "Lugares",
     "map": "Mapa",
     "boats": "Barcos",
     "stats": "Estadísticas",
@@ -50,8 +50,8 @@
     "timelapse_replay": "Reproducir línea del tiempo",
     "timelapse_form": "Ajustes de reproducción",
     "grafana": "Grafana",
-    "monitoring": "Monitoreo",
-    "monitoring_realtime": "Ahora mismo",
+    "monitoring": "Monitorización",
+    "monitoring_realtime": "En estos momentos",
     "explore": "Explorar",
     "privacy": "Privacidad",
     "faq": "FAQ",
@@ -68,16 +68,16 @@
   },
   "modals": {
     "close": "Cerrar",
-    "reset": "Reset",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
+    "reset": "Resetear",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Borrar",
     "noteEditor": {
-      "title": "Note Editor",
-      "placeholder": "Write your note here..."
+      "title": "Editor de notas",
+      "placeholder": "Escribe aquí tu nota..."
     },
     "imageUpload": {
-      "title": "Photo Upload"
+      "title": "Subir imagen"
     }
   },
   "404": {
@@ -99,7 +99,7 @@
   "dashboard": {
     "title": "Panel de control",
     "versions": "Versiones",
-    "overview": "Vistazo de la bitácora",
+    "overview": "Mapa de la bitácora",
     "local_time": "Hora local",
     "charts": {
       "verticalBarChart": "Número de registros por mes",
@@ -107,16 +107,16 @@
       "mixedWeekChart": "Número de registros por semana y año",
       "lineChart": "Número de registros por año",
       "HeatmapChart": "Cuadro por mes y dia",
-      "NetworkGraph": "Routes Network",
+      "NetworkGraph": "Gráfica de rutas",
       "logEntries": "Número de registros",
       "byMonth": "Por meses",
       "byWeek": "Por semana",
-      "tripFrequency": "Trip Frequency",
-      "totalDistance": "Total Distance",
-      "totalDuration": "Total Duration",
-      "weightBy": "Weight by",
-      "minTrips": "Min trips",
-      "showLabels": "Show labels"
+      "tripFrequency": "Frecuencia de viajes",
+      "totalDistance": "Distancia total",
+      "totalDuration": "Duración total",
+      "weightBy": "Ordenar por",
+      "minTrips": "Mínimo viajes",
+      "showLabels": "Mostrar etiquetas"
     },
     "panel": {
       "battery": "Batería",
@@ -149,9 +149,9 @@
       "sunday": "Domingo"
     },
     "status": {
-      "moored_at_anchor": "amarrado al ancla en",
-      "moored_at_buoy": "amarrado a boya de amarre en",
-      "moored_at_dock": "amarrado en el muelle en",
+      "moored_at_anchor": "fondeado en",
+      "moored_at_buoy": "amarrado a boya en",
+      "moored_at_dock": "amarrado en muelle en",
       "underway": "en ruta",
       "no_status_detected": "No se detectó estado"
     }
@@ -161,7 +161,7 @@
   },
   "logs": {
     "list": {
-      "title": "Cuaderno de bitácora - buscar de",
+      "title": "Cuaderno de bitácora de",
       "filter": {
         "title": "Buscar por registro",
         "name": "Filtrar por nombre...",
@@ -180,12 +180,12 @@
       "edit": "Editar",
       "replay": "Reproducir",
       "delete": "Borrar",
-      "merge": "Merge",
+      "merge": "Unir",
       "merge_modal": {
-        "title": "Merge Logs",
-        "message": "Start log must be earlier than End log and they must be adjacent (previous or next).",
-        "danger": "This operation is irreversible. Are you sure you want to continue?",
-        "success": "Logs merged successfully."
+        "title": "Unir viajes",
+        "message": "El viaje de inicio debe ser anterior al viaje de fin y deben ser adyancentes (anterior o siguiente).",
+        "danger": "Esta acción es irreversible, ¿estás seguro de continuar?",
+        "success": "Viajes unidos con éxito."
       }
     },
     "details": {
@@ -209,7 +209,7 @@
       "note": "Nota | Notas",
       "remarks": "Describe el evento",
       "export": "Exportar",
-      "avg_max_speed": "Media / Velocidad máxima",
+      "avg_max_speed": "Media de la Velocidad máxima",
       "max_wind_speed": "Velocidad máxima del viento",
       "sea_state": "Estado de la mar",
       "cloud_coverage": "Nubosidad",
@@ -223,7 +223,7 @@
   },
   "stays": {
     "list": {
-      "title": "Estancias - Historial de estancias",
+      "title": "Historial de estancias de",
       "filter": {
         "title": "Búsqueda de estancia",
         "name": "Filtrar por nombre...",
@@ -240,32 +240,32 @@
       "moorage": "Lugar",
       "departure": "Día y hora de salida",
       "arrival": "Día y hora de llegada",
-      "departed": "Llegó",
-      "arrived": "Salió",
-      "stayed_at": "Estuvo en",
+      "departed": "Llegada",
+      "arrived": "Salida",
+      "stayed_at": "Tipo de estancia",
       "duration": "Duración",
       "duration_d": "Duración [D]",
       "note": "Notas | Notas"
     },
     "moorage": {
-      "title": "Estancias en amarre",
-      "arrived": "Salió",
-      "departed": "Llegó",
-      "stayed_at": "Estuvo en",
+      "title": "Lugar",
+      "arrived": "Salida",
+      "departed": "Llegada",
+      "stayed_at": "Tipo de estancia",
       "duration": "Duración",
       "duration_d": "Duración [D]"
     }
   },
   "moorages": {
     "list": {
-      "title": "Fondeos de",
+      "title": "Lugares de estancia de",
       "filter": {
         "title": "Título",
         "name": "Filtrar por nombre...",
         "stay_type": "Filtrar por tipo de estancia...",
         "reset": "Resetear"
       },
-      "moorage": "Fondeadero",
+      "moorage": "Lugares",
       "default_stay": "Tipo de estancia",
       "total_stay": "Total estancia [D]",
       "arrivals": "Número de registros"
@@ -280,12 +280,12 @@
       "title": "Amarre"
     },
     "moorage": {
-      "title": "Estancias en fondeo",
+      "title": "Lugares de estancia",
       "moorage": "Nombre del fondeo",
       "departed": "Tipo de fondeo",
       "home": "Puerto base",
       "stayed_at": "Duración total de la estancia",
-      "arrivals": "Numero de viajes",
+      "arrivals": "Numero de llegadas",
       "visits": "Número de visitas",
       "first_seen": "Primer registro",
       "last_seen": "Último registro",
@@ -310,14 +310,14 @@
     "first_date": "Primer registro",
     "last_date": "Último registro",
     "longest_nonstop": "Navegación más larga sin parar",
-    "max_speed": "Velocidad máxima",
+    "max_speed": "Velocidad máxima en navegación",
     "max_wind_speed": "Velocidad máxima del viento",
-    "sum_distance": "Distancia total",
+    "sum_distance": "Distancia recorrida en total",
     "sum_duration": "Tiempo total en navegación",
     "total_duration": "Duración total del viaje",
     "home_ports": "Puertos base",
-    "unique_moorages": "Número de fondeaderos",
-    "time_spent_at_home_port(s)": "Tiempo en puerto base",
+    "unique_moorages": "Número de lugares de estancia",
+    "time_spent_at_home_port(s)": "Tiempo pasado en puerto base",
     "time_spent_away": "Tiempo fuera de puerto",
     "country": "País visitado",
     "top_logs_by_distance": "Lista de Registros ordenados por distancia",
@@ -352,10 +352,10 @@
         "message": "Copia y pega este token en tu plugin de SignalK"
       },
       "polar": {
-        "submit": "Save Polar",
-        "title": "Boat's Polar",
-        "placeholder": "Paste ORC polar CSV data here...",
-        "message": "Copy/paste the csv content of the polar in http://jieter.github.io/orc-data/site/ style."
+        "submit": "Guardar Polar",
+        "title": "Polar de tu barco",
+        "placeholder": "Pega aquí tus datos de polares en CSV",
+        "message": "Copia y pega en CSV los datos de polares de tu barco de esta dirección http://jieter.github.io/orc-data/site/"
       },
       "beam": "Manga",
       "height": "Puntal",
@@ -365,25 +365,25 @@
       "status": "Status",
       "plugin_version": "Versión del Plugin",
       "signalk_version": "Versión de Signalk",
-      "signalk": "Estos datos se extraen del 'Vessel DataBase' de SignalK",
+      "signalk": "Estos datos se extraen del 'Vessel Base Data' de SignalK",
       "platform": "Plataforma",
-      "configuration": "Configuration Signalk Mapping",
-      "make_model": "Make and Model",
-      "photo": "Photo",
-      "last_updated": "Last updated"
+      "configuration": "Configuración mapeo Signalk",
+      "make_model": "Fabricante y modelo",
+      "photo": "Foto",
+      "last_updated": "Actualizado por última vez en "
     },
     "errors": {
       "name": "Se requiere nombre",
       "param": "Comprueba tus parámetros",
       "length": "Mínimo 4 caracteres",
-      "mmsi": "Se requiere MMSI valido"
+      "mmsi": "Se requiere un MMSI válido"
     },
     "messages": {
-      "pending": "Su barco aún no ha enviado ningún dato a PostgSail, todo debería estar bien cuando se conecte",
-      "offline": "Su barco ha estado desconectado desde {0} pero está configurado en PostgSail, todo debería estar bien cuando vuelva a estar conectado",
-      "online": "Su barco está en línea, últimos datos recibidos {0}",
-      "plugin_version": "Está ejecutando una versión anterior del plugin de PostgSail. Actualice a la última versión",
-      "monitoring": "Monitoring configuration changes will apply automatically on your boat however it may take several minutes. Please ensure your device is online."
+      "pending": "Tu barco no ha enviado aún ningún dato a PostgSail, todo debería estar bien cuando se conecte",
+      "offline": "Tu barco ha estado desconectado desde {0} pero está configurado en PostgSail, todo debería estar bien cuando vuelva a estar conectado",
+      "online": "Tu barco está en línea, últimos datos recibidos {0}",
+      "plugin_version": "Estás ejecutando una versión anterior del plugin de PostgSail. Actualice a la última versión",
+      "monitoring": "Los cambios en la configuración de monitorización se aplicarán automáticamente a tu barco, pero puede tardar algunos minutos. Asegúrate de que tu barco esté online."
     }
   },
   "profile": {
@@ -403,11 +403,11 @@
       }
     },
     "token_modal": {
-      "button": "AI agents MCP token",
-      "title": "MCP token",
+      "button": "Token MCP de agentes IA",
+      "title": "Token MCP",
       "token": "Token",
-      "details": "This MCP token provides AI agents with read-only access to your PostgSail marine data systems.",
-      "message": "Copy paste this token into PostgSail MCP server."
+      "details": "Este token MCP token provee a los agentes de IA un acceso de solo lectura a tus datos en Postgsail",
+      "message": "Copia y pega este token en el servido MCP de Postgsail."
     },
     "name": "Nombre",
     "website": "Página web",
@@ -426,11 +426,11 @@
     "public_profile_enabled": "Public Profile Enabled",
     "phone_notifications_enabled": "Phone Notifications Enabled",
     "windy_station": "Estación Windy",
-    "mcp_integration": "AI agents MCP Integration",
-    "password_protected": "Password Protected",
-    "set_password": "Set Password",
-    "delete_account": "Delete Account",
-    "alerting_enabled": "Alerting Enabled",
+    "mcp_integration": "Integración con agentes IA de MCP",
+    "password_protected": "Protegido por contraseña",
+    "set_password": "Escribe una contraseña",
+    "delete_account": "Borrar cuenta",
+    "alerting_enabled": "Alertas activadas",
     "public_profile": "Perfil público",
     "public_logs": "Detalles de registro público",
     "public_name": "Nombre",
@@ -460,7 +460,7 @@
       "connected": "Tu usuario ha sido conectado a Push."
     },
     "telegram_bot": {
-      "telegram_bot": "Telegram Bot",
+      "telegram_bot": "Bot de Telegram ",
       "link": "Añade PostgSail bot a un grupo o chat directo.",
       "connected": "Tu usuario se ha conectado a {'@'}postgsail_bot."
     },
@@ -470,30 +470,30 @@
       "website": "Página web mostrando tus estadísticas, por favor introduce la URL completa empezando con http:// or https://",
       "instagram_handle": "Vínculo a tu Instagram mostrando tus estadísticas, por favor, introduce el nick sin el símbolo de la {'@'}",
       "theme": "Elige tu tema preferido para la interfaz de PostgSail. Puedes seleccionar el modo Claro, Oscuro o Automático que se ajusta según la configuración de tu sistema.",
-      "preferred_homepage": "Choose the page you want to see after you login to PostgSail",
-      "use_imperial_units": "When enabled, your statistics and monitoring will be displayed using imperial units (e.g. °F, ft, kts) instead of metric units (e.g. °C, m, km/h).",
-      "language": "Choose your preferred language for the PostgSail interface.",
-      "email_notifications": "E-mail Notifications allow you to receive updates and alerts about your boat's activities, logs, and monitoring data directly to your inbox. You stay informed about important events related to your vessel.",
-      "phone_notifications": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
-      "public_profile_info": "Enabling your public profile allows you to share your sailing adventures and boat information with the world. You can choose to make specific details like your logs, stats, timelapse, and monitoring data publicly accessible. This way, you can connect with other sailors, share your experiences, and even inspire others with your journeys on the water.",
-      "phone_notifications_info": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
-      "alerting": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
-      "alerting_enabled": "Alerting is enabled. You will receive notifications when any of your defined thresholds are exceeded.",
-      "alerting_info": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
-      "pushover": "Pushover is a service that allows you to receive real-time notifications on your phone or desktop. By linking your Pushover account, you can get instant alerts about important events and conditions related to your boat, helping you stay informed and take timely action.",
-      "telegram_bot": "Telegram is a messaging app that allows you to receive real-time notifications on your phone or desktop. By connecting your Telegram account to PostgSail, you can get instant alerts about important events and conditions related to your boat, helping you stay informed and take timely action.",
-      "sponsor_thank_you": "Thank you for sponsoring PostgSail! Your support helps us continue to develop and improve the platform, making it even better for sailors around the world. We truly appreciate your contribution to your sailing community!",
-      "password_protected": "When enabled, you will be required to enter your password to access your public data. This adds an extra layer of security to protect your personal information.",
-      "min_notification_interval": "Min Notification Interval (h)",
-      "high_wind_speed_threshold": "Wind Speed (kts)",
-      "low_outdoor_temperature_threshold": "Minimum Outdoor Temperature (C)",
-      "low_indoor_temperature_threshold": "Minimum Indoor Temperature (C)",
-      "low_water_temperature_threshold": "Minimum Water Temperature (C)",
-      "low_water_depth_threshold": "Minimum Water Depth (m)",
-      "low_pressure_threshold": "Minimum Pressure (hpa)",
-      "high_pressure_drop_threshold": "Maximum Pressure Drop in 12 hours (hpa)",
-      "low_battery_charge_threshold": "Minimum Battery Charge (%)",
-      "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
+      "preferred_homepage": "Elige la página que quieres ver después de iniciar sesión en PostgSail",
+      "use_imperial_units": "Si se activa, tus estadísticas y monitorización se mostrarán usando unidades imperiales (p. ej. °F, ft, kts) en lugar de unidades métricas (p. ej. °C, m, km/h).",
+      "language": "Elige tu idioma preferido para la interfaz de PostgSail.",
+      "email_notifications": "Las notificaciones por correo electrónico te permiten recibir actualizaciones y alertas sobre las actividades de tu embarcación, registros y datos de monitorización directamente en tu bandeja de entrada. Así te mantendrás informado de los eventos importantes relacionados con tu barco.",
+      "phone_notifications": "Al activar las notificaciones en el teléfono podrás recibir alertas en tiempo real sobre eventos y condiciones importantes relacionadas con tu embarcación. Esta función te ayuda a mantenerte informado y a actuar a tiempo para garantizar la seguridad y el rendimiento de tu barco.",
+      "public_profile_info": "Activar tu perfil público te permite compartir tus aventuras de navegación y la información de tu embarcación con el mundo. Puedes elegir hacer públicos ciertos datos como tus registros, estadísticas, timelapse y datos de monitorización. De esta forma podrás conectar con otros navegantes, compartir tus experiencias e incluso inspirar a otros con tus travesías.",
+      "phone_notifications_info": "Al activar las notificaciones en el teléfono podrás recibir alertas en tiempo real sobre eventos y condiciones importantes relacionadas con tu embarcación. Esta función te ayuda a mantenerte informado y a actuar a tiempo para garantizar la seguridad y el rendimiento de tu barco.",
+      "alerting": "Las alertas te permiten configurar umbrales personalizados para distintos parámetros como velocidad del viento, temperatura, presión, carga de batería y más. Cuando cualquiera de estos parámetros supere los umbrales definidos, recibirás notificaciones en tu teléfono o por correo electrónico, lo que te ayudará a gestionar de forma proactiva el rendimiento y la seguridad de tu embarcación.",
+      "alerting_enabled": "Las alertas están activadas. Recibirás notificaciones cuando se superen los umbrales que hayas definido.",
+      "alerting_info": "Las alertas te permiten configurar umbrales personalizados para distintos parámetros como velocidad del viento, temperatura, presión, carga de batería y más. Cuando cualquiera de estos parámetros supere los umbrales definidos, recibirás notificaciones en tu teléfono o por correo electrónico, lo que te ayudará a gestionar de forma proactiva el rendimiento y la seguridad de tu embarcación.",
+      "pushover": "Pushover es un servicio que permite recibir notificaciones en tiempo real en tu teléfono o escritorio. Al vincular tu cuenta de Pushover podrás recibir alertas instantáneas sobre eventos y condiciones importantes relacionadas con tu embarcación.",
+      "telegram_bot": "Telegram es una aplicación de mensajería que permite recibir notificaciones en tiempo real en tu teléfono o escritorio. Al conectar tu cuenta de Telegram con PostgSail podrás recibir alertas instantáneas sobre eventos y condiciones importantes relacionadas con tu embarcación.",
+      "sponsor_thank_you": "¡Gracias por patrocinar PostgSail! Tu apoyo nos ayuda a seguir desarrollando y mejorando la plataforma para navegantes de todo el mundo. Agradecemos sinceramente tu contribución a la comunidad náutica.",
+      "password_protected": "Si se activa, tendrás que introducir tu contraseña para acceder a tus datos públicos. Esto añade una capa adicional de seguridad para proteger tu información personal.",
+      "min_notification_interval": "Intervalo mínimo entre notificaciones (h)",
+      "high_wind_speed_threshold": "Velocidad del viento (kts)",
+      "low_outdoor_temperature_threshold": "Temperatura exterior mínima (°C)",
+      "low_indoor_temperature_threshold": "Temperatura interior mínima (°C)",
+      "low_water_temperature_threshold": "Temperatura mínima del agua (°C)",
+      "low_water_depth_threshold": "Profundidad mínima del agua (m)",
+      "low_pressure_threshold": "Presión mínima (hPa)",
+      "high_pressure_drop_threshold": "Caída máxima de presión en 12 horas (hPa)",
+      "low_battery_charge_threshold": "Carga mínima de batería (%)",
+      "low_battery_voltage_threshold": "Voltaje mínimo de batería (V)",
       "windy_station": "Identificador de estación Windy tal y como se muestra en la URL de Windy después de /station/pws- (e.g. d06efc48)",
       "public_profile": "Estando activado, las páginas de estadísticas, líneas de tiempo y otras pueden ser accedidas por otros sin hacer login.",
       "public_logs": "Estando activado, tus registros personales de navegación serán accesibles públicamente en https://iot.openplotter.cloud/{0}/log/{'id'}",
@@ -503,7 +503,7 @@
       "public_monitoring": "Estando activado, tus datos de monitorización serán accesibles públicamente en https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "Cuando habilites tu perfil público, tendrás la opción de elegir el nombre de tu barco",
       "public_windy": "Cuando habilites tu perfil público, tendrás la opción de transformar tu barco en una estaciòn de navegación integrada en Windy.",
-      "mcp_integration": "Model Context Protocol (MCP) is an open protocol that allows AI agents in a secure (read-only) and standardized way. When using PostgSail MCP server, you can enable advanced functionalities that enhance the capabilities of your marine data systems, making it easier to manage and optimize your boating experience."
+      "mcp_integration": "El Modelo de Protocolo de Contexto (Model Context Protocol o MCP) en un protocolo de código abierto que permite trabajar con los agentes de IA de una forma segura (solo lectura) y estandarizada. Usando el servidor MCP de PostgSail MCP podrás activar funcionalidades avanzadas que mejorarán la gestión de tus sistemas marinos de datos, optimizando así tu experiencia náutica."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",
@@ -540,7 +540,7 @@
     "title": "Privacidad"
   },
   "monitoring": {
-    "title": "Supervisión",
+    "title": "Monitorización",
     "error": "Incapaz de obtener datos de monitorización",
     "depth": "Profundidad",
     "wind_speed": "Velocidad del viento",
@@ -580,7 +580,7 @@
     "solar": {
       "headerString": "Solar",
       "unitString": "W",
-      "detailString": "Voltage: "
+      "detailString": "Voltaje: "
     },
     "tank": {
       "headerString": "Tank",
@@ -588,7 +588,7 @@
       "detailString": "Volume: "
     },
     "offline": {
-      "offline": "Su embarcación está fuera de línea. La monitorización en tiempo real requiere una conexión a Internet.",
+      "offline": "Tu embarcación está fuera de línea. La monitorización en tiempo real requiere una conexión a Internet.",
       "lastupdate": "No hemos recibido ningún dato de su barco en los últimos 70 minutos."
     },
     "history": {
@@ -619,29 +619,29 @@
   },
   "seaState": {
     "-1": "",
-    "0": "Glassy calm (0m)",
-    "1": "Rippled calm (0-0.1m)",
-    "2": "Smooth (0.1-0.5m)",
-    "3": "Slight (0.5-1.25m)",
-    "4": "Moderate (1.25-2.5m)",
-    "5": "Rough (2.5-4m)",
-    "6": "Very rough (4-6m)",
-    "7": "High (6-9m)",
-    "8": "Very high (9-14m)",
-    "9": "Phenomenal (14-20m)"
+     "0": "Calma total (0 m)",
+  "1": "Calma rizada (0–0,1 m)",
+  "2": "Marejadilla (0,1–0,5 m)",
+  "3": "Marejada (0,5–1,25 m)",
+  "4": "Fuerte marejada (1,25–2,5 m)",
+  "5": "Gruesa (2,5–4 m)",
+  "6": "Muy gruesa (4–6 m)",
+  "7": "Arbolada (6–9 m)",
+  "8": "Montañosa (9–14 m)",
+  "9": "Enorme (14–20 m)"
   },
   "visibility": {
     "-1": "",
-    "0": "Dense fog (<45m)",
-    "1": "Thick fog (<180m)",
-    "2": "Fog (<360m)",
-    "3": "Moderate fog (<0.5NM)",
-    "4": "Thin fog (<1NM)",
-    "5": "Poor visibility (<2NM)",
-    "6": "Moderate visibility (<5NM)",
-    "7": "Good visibility (<10NM)",
-    "8": "Very good visibility (<30NM)",
-    "9": "Excellent visibility (>30NM)"
+      "0": "Niebla densa (<45 m)",
+  "1": "Niebla espesa (<180 m)",
+  "2": "Niebla (<360 m)",
+  "3": "Niebla moderada (<0,5 MN)",
+  "4": "Niebla ligera (<1 MN)",
+  "5": "Visibilidad reducida (<2 MN)",
+  "6": "Visibilidad moderada (<5 MN)",
+  "7": "Buena visibilidad (<10 MN)",
+  "8": "Muy buena visibilidad (<30 MN)",
+  "9": "Visibilidad excelente (>30 MN)"
   },
   "units": {
     "distance": {
@@ -658,22 +658,22 @@
   },
   "badges": {
     "Helmsman": "¡Excelente! Has registrado tu primera navegación! ¡Ya eres oficialmente un patrón!",
-    "Wake Maker": "Bienvenido al club de los 15+ Nudos! 'Eres un as de la velocidad!",
-    "Explorer": "Tu casa está donde esté tu barco, ¡Felicidades por estar más de 10 dias fuera de tu puerto!",
-    "Mooring Pro": "Hacen falta muchas habilidades para \"enhebrar la aguja flotante\" pero parece ser que has conseguido estar al menos 10 noches en una boya!",
-    "Anchormaster": "De cabo a rabo Eres un maestro del fondeo de la cabeza a los pies, llevas 25 días al ancla!",
-    "Traveler": "¿Quien quiere volar cuando puede navegar? Eres un navegante internacional. ¡A tu salud",
+    "Wake Maker": "Bienvenido al club de los +15 Nudos! ¡Eres un as de la velocidad!",
+    "Explorer": "Tu hogar está donde esté tu barco, ¡Felicidades por estar más de 10 dias fuera de tu puerto!",
+    "Mooring Pro": "Hacen falta muchas habilidades para poder enhebrar la aguja mientras navegas  ¡has conseguido estar más de 10 noches en una boya!",
+    "Anchormaster": "Eres de la cabeza a los pies todo un maestro del fondeo, llevas más de 25 días fondeado!",
+    "Traveler": "¿Quien quiere volar cuando puede navegar? Eres un navegante internacional. ¡A tu salud!",
     "Stormtrooper": "Como un buen stormtrooper imperial de élite; Ahí lo llevas, manejando tu Hidro-nave imperial con vientos superiores a 30 Nudos, buen trabajo, Stromtrooper!",
     "Club Alaska": "El hogar de los osos polares, glaciares, sol de medianoche y aventura del más alto nivel. ¡Bienvenido al club Capitán Alaska!",
     "Tropical Traveler": "Mírate con tu bronceado, bebida tropical y latitudes del sur!",
     "Aloha Award": "Obtener la marca de más de 2300 millas náuticas a través del gran Océano Pacífico te hace honroso receptor de la condecoración Aloha. ¡Bien hecho, navegante Aloha!",
     "Navigator Award": "¡Yuju!¡Lo conseguiste! ¡Más de 100 millas náuticas de una tirada! ¡Bien hecho!",
-    "Captain Award": "Enhorabuena, hiciste ya más de 1000 millas, ¡bravo, navegante!",
+    "Captain Award": "Enhorabuena, ya anotaste más de 1000 millas, ¡bravo, navegante!",
     "default": "Mírate navegando en",
     "locked": "Bloqueado"
   },
   "nodata": {
-    "nodata": "¡No hay nada aún por aquí! ¡Configura tu instancia de Signalk y comienza a navegar!",
+    "nodata": "¡Nada por aquí! ¡Configura tu instancia de Signalk y comienza a navegar!",
     "start": "Las cosas comenzarán a aparecer aquí. Puedes encontrar los detalles",
     "start_link": "Página de detalles de tu barco.",
     "wait": "Si acabas de ingresar tu token, echa un vistazo a ",
@@ -685,8 +685,8 @@
     "title": "Reproducir",
     "customize": "Ajustar reproducción",
     "choosetrips": "Elegir viajes",
-    "start": "Iniciar viaje",
-    "end": "Finalizar viaje",
+    "start": "Inicio del viaje",
+    "end": "Final del viaje",
     "basemap": "Mapa base",
     "boattype": "Mostrar barco como",
     "trackcolor": "Color de pista",
@@ -698,19 +698,19 @@
     "export": "Exportar"
   },
   "timeline": {
-    "timeline": "Línea de tiempo",
-    "last": "Los últimos 500 eventos",
+    "timeline": "Línea del tiempo",
+    "last": "Últimos 500 eventos",
     "new_account": "Nueva cuenta creada",
     "email_otp": "Cuenta validada",
     "new_vessel": "Nuevo barco registrado",
     "grafana": "Aplicación de monitorización lista",
-    "monitoring_offline": "Monitoreo desconectado",
-    "monitoring_online": "Monitoreo en línea",
-    "new_logbook": "Nuevo registro",
+    "monitoring_offline": "Monitorización offline",
+    "monitoring_online": "Monitorización en línea",
+    "new_logbook": "Nuevo registro bitácora",
     "new_moorage": "Nuevo fondeo",
     "maplapse_video": "Reproducir vídeo",
     "new_video": "Nuevo vídeo",
-    "autodiscovery": "Automatic SignalK path mapping"
+    "autodiscovery": "Mapeo automático de sentencias SignalK"
   },
   "vuestic": {
     "search": "Buscar",
@@ -779,8 +779,8 @@
     "fileTypeIncorrect": "El tipo de archivo es incorrecto",
     "select": "Seleccionar una opción",
     "themeSelect": {
-      "dark": "Dark",
-      "light": "Light"
+      "dark": "Oscuro",
+      "light": "Claro"
     }
   },
   "photoUploader": {
@@ -795,7 +795,7 @@
     "deleting": "Eliminando...",
     "error_upload": "Error al subir la foto. Por favor, inténtalo de nuevo.",
     "error_delete": "Error al eliminar la foto. Por favor, inténtalo de nuevo.",
-    "no_photos": "No se han subido fotos todavía.",
+    "no_photos": "No se han subido aún fotos.",
     "success_delete": "Foto eliminada con éxito.",
     "success_upload": "Foto subida con éxito.",
     "lastUpdated": "Última actualización",
@@ -839,14 +839,14 @@
     "light_thunderstorms_with_hail": "Tormentas Eléctricas Ligeras con Granizo",
     "thunderstorm_with_hail": "Tormenta Eléctrica con Granizo",
     "moon": {
-      "new": "New Moon",
-      "waxing_crescent": "Waxing Crescent",
-      "first_quarter": "First Quarter",
-      "waxing_gibbous": "Waxing Gibbous",
-      "full": "Full Moon",
-      "waning_gibbous": "Waning Gibbous",
-      "last_quarter": "Last Quarter",
-      "waning_crescent": "Waning Crescent"
+      "new": "Luna nueva",
+      "waxing_crescent": "Luna creciente",
+      "first_quarter": "Cuarto creciente",
+      "waxing_gibbous": "Gibosa creciente",
+      "full": "Luna llena",
+      "waning_gibbous": "Gibosa menguante",
+      "last_quarter": "Cuarto menguante",
+      "waning_crescent": "Luna menguante"
     }
   }
 }

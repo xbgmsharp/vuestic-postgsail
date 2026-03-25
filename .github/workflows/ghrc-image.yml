@@ -1,0 +1,61 @@
+name: Build and Push Image to GHCR
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+on:
+  push:
+    branches:
+      - 'main'
+  schedule:
+    # we build monthly at 00:00 on day-of-month 1
+    #- cron:  '0 0 1 * *'
+    # we build weekly at 00:00 on Sunday.
+    - cron:  '0 0 * * 0'
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v6
+      -
+        name: 'Create env file'
+        run: |
+          touch .env.production.local
+          echo VITE_PGSAIL_URL=https://api.openplotter.cloud > .env.production.local
+          echo VITE_GRAFANA_URL=https://app.openplotter.cloud >> .env.production.local
+          echo VUE_APP_INCLUDE_DEMOS=false >> .env.production.local
+          echo VITE_APP_BUILD_VERSION=true >> .env.production.local
+          echo VITE_APP_TITLE=PostgSail >> .env.production.local
+          cat .env.production.local
+      # https://github.com/docker/setup-qemu-action
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+      # https://github.com/docker/setup-buildx-action
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      # https://github.com/marketplace/actions/docker-login
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # https://github.com/marketplace/actions/build-and-push-docker-images
+      -
+        name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/xbgmsharp/postgsail-telegram-bot:latest

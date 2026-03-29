@@ -7,7 +7,7 @@ env:
 on:
   push:
     branches:
-      - 'main'
+      - 'live'
   schedule:
     # we build monthly at 00:00 on day-of-month 1
     #- cron:  '0 0 1 * *'
@@ -58,4 +58,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/xbgmsharp/postgsail-telegram-bot:latest
+          tags: ghcr.io/xbgmsharp/postgsail-web:latest

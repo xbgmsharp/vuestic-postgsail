@@ -22,6 +22,7 @@ export const badges: { [key: string]: any } = {
   'Tropical Traveler': { image: '/tropical_traveler.png', description: t('badges.Tropical Traveler') },
   'Navigator Award': { svg: true, description: t('badges.Navigator Award') },
   'Captain Award': { svg: true, description: t('badges.Captain Award') },
+  'Speed Demon': { svg: true, description: t('badges.Speed Demon') },
 }
 
 export async function userBadges(payload: undefined | any) {

@@ -1,6 +1,6 @@
 <template>
   <va-card>
-    <va-card-title>{{ $t('boats.details.title') }}</va-card-title>
+    <va-card-title>{{ $t('boats.boat.title') }}</va-card-title>
     <va-card-content>
       <template v-if="apiError">
         <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
@@ -24,19 +24,39 @@
           v-model="vessel_mmsi"
           class="mb-3"
           type="text"
-          :label="t('boats.boat.mmsi')"
           :error="!!mmsiErrors.length"
           :error-messages="mmsiErrors"
-        />
+        >
+          <template #label>
+            {{ t('boats.boat.mmsi') }}
+            <span style="color: var(--va-secondary)">{{ t('boats.boat.optional') }}</span>
+          </template>
+        </va-input>
 
-        <va-input
-          v-model="vessel_name"
-          class="mb-3"
-          type="text"
-          :label="t('boats.boat.name')"
-          :error="!!nameErrors.length"
-          :error-messages="nameErrors"
-        />
+        <div class="flex gap-2">
+          <va-select
+            v-model="vesselPrefix"
+            :options="vesselOptions"
+            label="prefix"
+            track-by="value"
+            value-by="value"
+            text-by="description"
+            outline
+            class="w-full md:w-64"
+          />
+          <va-input
+            v-model="vessel_name"
+            class="mb-3"
+            type="text"
+            :error="!!nameErrors.length"
+            :error-messages="nameErrors"
+          >
+            <template #label>
+              {{ t('boats.boat.name') }}
+              <span style="color: var(--va-danger)" aria-hidden="true"> *</span>
+            </template>
+          </va-input>
+        </div>
 
         <div class="d-flex justify--center mt-3">
           <va-button class="my-0" :disabled="!canSubmit" @click="handleSubmit">{{
@@ -44,6 +64,25 @@
           }}</va-button>
         </div>
       </form>
+
+      <div
+        class="sm:min-h-[114px] p-4 mt-6 rounded-lg border border-dashed border-primary flex flex-col sm:flex-row items-start sm:items-center gap-4 note"
+        :style="{ backgroundColor: colorToRgba(getColor('primary'), 0.07) }"
+      >
+        <div class="flex flex-col gap-2 flex-grow">
+          <div class="text-lg font-bold leading-relaxed">Important note</div>
+          <div class="text-secondary text-sm leading-tight">
+            PostgSail Cloud is Open Source and free for personal use with a single vessel. If you encounter any issue
+            validating your account, please contact us at info@openplotter.cloud.
+          </div>
+
+          <div class="text-secondary text-sm leading-tight">
+            <a href="mailto:info@openplotter.cloud?subject=PostgSail Cloud&body=Issue adding my boat" target="_blank">
+              <VaButton class="d-flex w-full">Contact us</VaButton>
+            </a>
+          </div>
+        </div>
+      </div>
     </va-card-content>
   </va-card>
 </template>
@@ -54,8 +93,10 @@
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useColors } from 'vuestic-ui'
   import { useGlobalStore } from '../../stores/global-store'
 
+  const { getColor, colorToRgba } = useColors()
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
@@ -70,6 +111,22 @@
   const emailErrors = ref('')
   const mmsiErrors = ref('')
   const nameErrors = ref('')
+
+  /* Vessel */
+  const vesselOptions = ref([
+    { value: 'SV', text: 'SV', description: 'SV - Sailing Vessel' },
+    { value: 'MV', text: 'MV', description: 'MV - Motor Vessel' },
+    { value: 'SY', text: 'SY', description: 'SY - Sailing Yacht' },
+    { value: 'MY', text: 'MY', description: 'MY - Motor Yacht' },
+  ])
+  const vesselPrefix = ref('SV')
+  const vesselName = ref('')
+
+  // Get current prefix description
+  const vesselPrefixDescription = computed(() => {
+    const option = vesselOptions.value.find((opt) => opt.value === vesselPrefix.value)
+    return option ? option.description : ''
+  })
 
   const formReady = computed(() => !emailErrors.value.length && !mmsiErrors.value.length && !nameErrors.value.length)
 
@@ -109,7 +166,7 @@
 
     const api = new PostgSail()
     const payload = {
-      vessel_name: vessel_name.value,
+      vessel_name: `${vesselPrefix.value} ${vessel_name.value}`,
       vessel_mmsi: vessel_mmsi.value,
       vessel_email: email.value,
     }

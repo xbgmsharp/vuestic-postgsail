@@ -3,120 +3,118 @@
     <va-card>
       <va-card-title>{{ title }}</va-card-title>
       <va-card-content>
-        <template v-if="apiError">
-          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
-        </template>
-        <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
-          <va-input v-model="filter.name" :clearable="true" :placeholder="$t('stays.list.filter.name')" />
-          <va-date-input
-            v-model="filter.dateRange"
-            :clearable="true"
-            :placeholder="$t('stays.list.filter.date_range')"
-            mode="range"
-          />
-          <va-select
-            v-model="filter.stayed_at"
-            :placeholder="$t('stays.list.filter.stay_type')"
-            :options="options"
-            multiple
+        <!-- Error -->
+        <template v-if="stays.isError.value">
+          <va-alert color="danger" outline class="mb-4"
+            >{{ $t('api.error') }}: {{ stays.error.value?.message }}</va-alert
           >
-            <template #content="{ value }">
-              <va-chip
-                v-for="chip in value"
-                :key="chip.text"
-                size="small"
-                class="mr-2"
-                outline
-                closeable
-                @update:modelValue="deleteChip(chip)"
-              >
-                {{ chip }}
-              </va-chip>
-            </template>
-          </va-select>
+        </template>
+
+        <!-- Filters -->
+        <div class="flex flex-col lg:flex-row items-center gap-4 mb-4 justify-between">
+          <va-button-toggle
+            v-model="doShowAsCards"
+            preset="secondary"
+            border-color="primary"
+            size="large"
+            :options="[
+              { label: 'Cards', value: 1 },
+              { label: 'Table', value: 2 },
+            ]"
+          />
+          <div class="layout flex flex-col lg:flex-row gap-4 flex-1">
+            <va-input
+              v-model="filter.name"
+              :clearable="true"
+              :placeholder="$t('stays.list.filter.name')"
+              size="large"
+              class="flex-1"
+            />
+            <va-date-input
+              v-model="filter.dateRange"
+              :clearable="true"
+              :placeholder="$t('stays.list.filter.date_range')"
+              mode="range"
+              size="large"
+              class="flex-1"
+            />
+            <va-select
+              v-model="filter.stayed_at_ids"
+              :placeholder="$t('stays.list.filter.stay_type')"
+              :options="stayOptions"
+              size="large"
+              class="flex-1"
+              multiple
+            >
+              <template #content="{ value }">
+                <va-chip
+                  v-for="chip in value"
+                  :key="chip.value"
+                  size="small"
+                  class="mr-2"
+                  outline
+                  closeable
+                  @update:modelValue="deleteChip(chip)"
+                >
+                  {{ chip.text }}
+                </va-chip>
+              </template>
+            </va-select>
+          </div>
         </div>
 
-        <va-data-table
-          :columns="columns"
-          :items="items"
-          :loading="isBusy"
-          :per-page="perPage"
-          :current-page="currentPage"
-          striped
-          hoverable
-          class="datatable"
+        <!-- No data at all (not a filter issue) -->
+        <no-data-screen v-if="stays.isSuccess.value && stays.totalCount.value === 0 && !hasActiveFilters" />
+
+        <!-- No results matching active filters -->
+        <va-alert
+          v-else-if="stays.isSuccess.value && stays.totalCount.value === 0 && hasActiveFilters"
+          color="info"
+          outline
+          class="mb-4"
         >
-          <template #cell(name)="{ value, rowData }">
-            <div class="whitespace-normal break-words">
-              <router-link
-                v-if="value"
-                class="va-link link"
-                :to="{ name: 'stay-details', params: { id: rowData.id || 0 } }"
-              >
-                {{ value }}
-              </router-link>
-            </div>
-          </template>
-          <template #cell(moorage)="{ value, rowData }">
-            <div class="whitespace-normal break-words">
-              <router-link
-                class="va-link link"
-                :to="{ name: 'moorage-details', params: { id: rowData.moorage_id || 0 } }"
-              >
-                {{ value }}
-              </router-link>
-            </div>
-          </template>
-          <template #cell(arrived)="{ value, rowData }">
-            <div class="whitespace-normal break-words">
-              <router-link
-                v-if="typeof rowData.departed_log_id !== 'undefined'"
-                class="va-link link"
-                :to="{ name: 'log-map', params: { id: rowData.departed_log_id || 0 } }"
-              >
-                {{ dateFormatUTC(value) }}
-              </router-link>
-            </div>
-          </template>
-          <template #cell(departed)="{ value, rowData }">
-            <div class="whitespace-normal break-words">
-              <router-link
-                v-if="typeof rowData.arrived_log_id !== 'undefined'"
-                class="va-link link"
-                :to="{ name: 'log-map', params: { id: rowData.arrived_log_id || 0 } }"
-              >
-                {{ dateFormatUTC(value) }}
-              </router-link>
-            </div>
-          </template>
-          <template #cell(stayed_at)="{ rowData }">
-            <div v-if="rowData.stayed_at_id" style="max-width: 150px">
-              <stay-at
-                :id="parseInt(rowData.id)"
-                :key="rowData.id"
-                :data="parseInt(rowData.stayed_at_id)"
-                @clickFromChildComponent="updateStayedAt"
-              />
-            </div>
-          </template>
-          <template #cell(duration)="{ value }">
-            {{ value }}
-          </template>
-        </va-data-table>
-        <template v-if="items.length > perPage">
+          {{ $t('stays.list.no_results') }}
+        </va-alert>
+
+        <template v-else>
+          <stays-cards
+            v-if="doShowAsCards === 1"
+            :items="items"
+            :loading="stays.isFetching.value"
+            @updateStayedAt="updateStayedAt"
+          />
+          <stays-table
+            v-if="doShowAsCards === 2"
+            :items="items"
+            :loading="stays.isFetching.value"
+            @updateStayedAt="updateStayedAt"
+          />
+        </template>
+
+        <template v-if="stays.totalCount.value > pageSize">
           <div class="mt-3 row justify-center">
-            <va-pagination v-model="currentPage" input :pages="pages" />
+            <va-pagination v-model="currentPage" input :pages="stays.totalPages.value" />
           </div>
         </template>
+
+        <template v-if="items.length > 0">
+          <div class="flex flex-wrap gap-4 mt-4 py-3 border-t border-[var(--va-background-element)] text-md">
+            <div v-for="entry in summary" :key="entry.label" class="flex items-center gap-1">
+              <va-chip size="small" outline>{{ entry.count }}</va-chip>
+              <span class="text-[var(--va-secondary)]">{{ entry.label }}</span>
+            </div>
+          </div>
+        </template>
+
         <div class="flex mt-4">
           <va-icon
-            v-if="items.length > 0"
+            v-if="stays.totalCount.value > 0"
             name="csv"
             outline
             :size="34"
             style="grid-column-end: 13"
             class="themed"
-            @click="handleCSV(items)"
+            @click="handleCSV()"
           ></va-icon>
         </div>
       </va-card-content>
@@ -125,183 +123,116 @@
 </template>
 
 <script setup>
-  import { computed, ref, reactive, onMounted } from 'vue'
-  import { areIntervalsOverlapping } from 'date-fns'
+  import { computed, ref, reactive, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { watchDebounced } from '@vueuse/core'
   import { setAppTitle } from '../../utils/app.js'
-  import { useCacheStore } from '../../stores/cache-store'
-  import PostgSail from '../../services/api-client'
-  import { default as utils } from '../../utils/utils.js'
-  import { dateFormatUTC, durationFormatDays } from '../../utils/dateFormatter.js'
-  import { asBusy, handleExport } from '../../utils/handleExports'
-  import StayAt from '../../components/SelectStayAt.vue'
-  import { stayed_at_options } from '../../utils/PostgSail.ts'
+  import { durationFormatDays, stayGeneratedName } from '../../utils/dateFormatter.js'
+  import { downloadFile } from '../../utils/handleExports'
+  import NoDataScreen from '../../components/noDataScreen.vue'
   import { useVesselStore } from '../../stores/vessel-store'
+  import { useGlobalStore } from '../../stores/global-store'
+  import { storeToRefs } from 'pinia'
+  import { useStaysList, useUpdateStay, exportStaysCSV } from '../../queries/stays'
+  import StaysCards from './widgets/Cards.vue'
+  import StaysTable from './widgets/Table.vue'
 
-  const { vesselName, vesselType } = useVesselStore()
-
-  import staysData from '../../data/stays.json'
-
+  const { vesselName } = useVesselStore()
   const { t } = useI18n()
-  const getDefaultFilter = () => {
-    return {
-      name: null,
-      dateRange: null,
-      stayed_at: [],
-    }
-  }
+  const GlobalStore = useGlobalStore()
+  const { isMobile, doShowAsCards } = storeToRefs(GlobalStore)
 
-  const CacheStore = useCacheStore()
-  const isBusy = ref(false)
-  const apiError = ref(null)
-  const rowsData = ref([])
-  const perPage = ref(20)
+  if (isMobile.value) doShowAsCards.value = 1
+  watch(doShowAsCards, () => {
+    GlobalStore.$state.doShowAsCards = doShowAsCards.value
+  })
+
+  const pageSize = 20
   const currentPage = ref(1)
-  const columns = ref([
-    { key: 'name', label: t('stays.stay.name'), sortable: true },
-    { key: 'moorage', label: t('stays.stay.moorage'), sortable: true },
-    { key: 'arrived', label: t('stays.stay.arrived'), sortable: true },
-    { key: 'departed', label: t('stays.stay.departed'), sortable: true },
-    { key: 'stayed_at', label: t('stays.stay.stayed_at'), sortable: true },
-    { key: 'duration', label: t('stays.stay.duration_d'), sortable: true, sortingFn: utils.sortNum, tdAlign: 'right' },
+
+  const stayOptions = computed(() => [
+    { value: 1, text: t('id.stay_code.1') },
+    { value: 2, text: t('id.stay_code.2') },
+    { value: 3, text: t('id.stay_code.3') },
+    { value: 4, text: t('id.stay_code.4') },
   ])
-  const filter = reactive(getDefaultFilter())
-  const options = computed(() => {
-    let arr = []
-    for (let key in stayed_at_options) {
-      //console.log(key)
-      arr.push(stayed_at_options[key].text)
+
+  const filter = reactive({ name: null, dateRange: null, stayed_at_ids: [] })
+
+  const hasActiveFilters = computed(() => !!filter.name || !!filter.dateRange || filter.stayed_at_ids.length > 0)
+
+  const queryFilters = ref({ name: null, dateRange: null, stayed_at_ids: [] })
+  watchDebounced(
+    () => ({
+      name: filter.name,
+      dateRange: filter.dateRange,
+      stayed_at_ids: filter.stayed_at_ids.map((o) => o.value),
+    }),
+    (val) => {
+      currentPage.value = 1
+      queryFilters.value = val
+    },
+    { debounce: 400, immediate: true },
+  )
+
+  const stays = useStaysList({ page: currentPage, pageSize, filters: queryFilters })
+
+  const items = computed(() =>
+    stays.items.value.map((row) => ({
+      id: row.id ?? null,
+      name: stayGeneratedName(row.duration, row.moorage ?? '', row.departed ?? null),
+      moorage: row.moorage ?? '',
+      moorage_id: row.moorage_id ?? null,
+      arrived: row.arrived ?? null,
+      arrived_log_id: row.arrived_log_id ?? null,
+      departed: row.departed ?? null,
+      departed_log_id: row.departed_log_id ?? null,
+      stayed_at: row.stayed_at ?? '',
+      stayed_at_id: row.stayed_at_id ?? null,
+      duration: durationFormatDays(row.duration),
+    })),
+  )
+
+  const summary = computed(() => {
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0 }
+    for (const row of stays.items.value) {
+      const id = row.stayed_at_id
+      if (id in counts) counts[id]++
     }
-    //console.log(arr)
-    return arr
-  })
-
-  function deleteChip(chip) {
-    filter.stayed_at = filter.stayed_at.filter((v) => v !== chip)
-  }
-
-  const items = computed(() => {
-    return Array.isArray(rowsData.value)
-      ? rowsData.value
-          .map((row) => ({
-            id: row.id,
-            name: row.name,
-            moorage: row.moorage,
-            moorage_id: row.moorage_id,
-            arrived: row.arrived,
-            arrived_log_id: row.arrived_log_id,
-            departed: row.departed,
-            departed_log_id: row.departed_log_id,
-            stayed_at: row.stayed_at,
-            stayed_at_id: row.stayed_at_id,
-            duration: durationFormatDays(row.duration),
-          }))
-          .filter((row) => {
-            const f = filter
-            if (Object.keys(f).every((fkey) => !f[fkey])) {
-              return true
-            }
-            return Object.keys(f).every((fkey) => {
-              if (!f[fkey]) {
-                return true
-              }
-              switch (fkey) {
-                case 'name':
-                  return (
-                    row.name.toLowerCase().includes(f[fkey].toLowerCase()) ||
-                    row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-                  )
-                case 'dateRange':
-                  // TODO: temp fix for Vuestic date range bug
-                  if (!f[fkey].start || !f[fkey].end) {
-                    return true
-                  }
-                  return areIntervalsOverlapping({ start: new Date(row.arrived), end: new Date(row.departed) }, f[fkey])
-                case 'stayed_at':
-                  var valid = false
-                  if (f['stayed_at'].length == 0) return true
-                  for (let i = 0; i < f['stayed_at'].length; i++) {
-                    if (!f['stayed_at'][i] || valid) {
-                      continue
-                    }
-                    valid = row.stayed_at.toLowerCase().includes(f['stayed_at'][i].toLowerCase())
-                  }
-                  return valid
-              }
-            })
-          })
-      : []
-  })
-
-  const pages = computed(() => {
-    return Math.ceil(items.value.length / perPage.value)
+    return stayOptions.value
+      .map((opt) => ({ label: opt.text, count: counts[opt.value] ?? 0 }))
+      .filter((e) => e.count > 0)
   })
 
   const title = t('stays.list.title') + ' ' + vesselName
+  document.title = setAppTitle(title)
 
-  onMounted(async () => {
-    document.title = setAppTitle(title)
+  function deleteChip(chip) {
+    filter.stayed_at_ids = filter.stayed_at_ids.filter((v) => v.value !== chip.value)
+  }
 
-    isBusy.value = true
-    apiError.value = null
+  const { mutateAsync: updateStay } = useUpdateStay()
+
+  async function updateStayedAt(stay_code, id) {
+    if (!stay_code || stay_code <= 0) return
     try {
-      const response = await CacheStore.getAPI('stays')
-      if (Array.isArray(response)) {
-        rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...response)
-        console.log('Stays List rowsData:', rowsData.value)
-      } else {
-        throw { response }
-      }
-    } catch (e) {
-      apiError.value = e
-      if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample data from local json...', apiError.value)
-        rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...staysData)
-      }
+      await updateStay({ id: String(id), payload: { stay_code } })
+    } catch (err) {
+      console.error('updateStayedAt failed', err)
+    }
+  }
+
+  const isExporting = ref(false)
+
+  async function handleCSV() {
+    isExporting.value = true
+    try {
+      const csv = await exportStaysCSV(queryFilters.value)
+      downloadFile(csv, 'text/csv', 'PostgSail_Stays.csv')
+    } catch (err) {
+      console.error('CSV export failed', err)
     } finally {
-      isBusy.value = false
+      isExporting.value = false
     }
-  })
-
-  function runBusy(fn, ...args) {
-    asBusy(isBusy, apiError, fn, ...args)
-  }
-
-  function updateStayedAt(update_stayed_at, id) {
-    // runBusy handles isBusy & apiError
-    console.log('updateStayedAt', update_stayed_at, id)
-    if (update_stayed_at && update_stayed_at > 0) {
-      new PostgSail()
-        .stay_update(id, { stay_code: update_stayed_at })
-        .then(async (response) => {
-          console.log('updateStayedAt success', response)
-          // Clean CacheStore and force refresh
-          await CacheStore.resetCache()
-          response = await CacheStore.getAPI('stays')
-          if (Array.isArray(response)) {
-            rowsData.value.splice(0, rowsData.value.length || [])
-            rowsData.value.push(...response)
-            console.log('Stays List rowsData:', rowsData.value)
-          } else {
-            throw { response }
-          }
-        })
-        .catch((err) => {
-          console.log('updateStayedAt failed', err.message ?? err)
-          //throw err.message ?? err
-        })
-    }
-  }
-
-  function handleCSV(items) {
-    runBusy(handleExport, 'csv', 'stays', items)
   }
 </script>
-
-<style lang="scss" scoped>
-  .va-data-table {
-    overflow-x: auto;
-  }
-</style>

@@ -3,89 +3,94 @@
     <va-card class="mb-3">
       <va-card-title>{{ title }}</va-card-title>
       <va-card-content>
-        <template v-if="apiError">
-          <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
-        </template>
-        <div class="layout flex flex-col lg:flex-row gap-4 justify-between">
-          <va-input v-model="filter.name" :clearable="true" :placeholder="$t('moorages.list.filter.name')" />
-          <va-select
-            v-model="filter.default_stay"
-            :placeholder="$t('moorages.list.filter.stay_type')"
-            :options="options"
-            multiple
-            text-by="text"
+        <template v-if="moorages.isError.value">
+          <va-alert color="danger" outline class="mb-4"
+            >{{ $t('api.error') }}: {{ moorages.error.value?.message }}</va-alert
           >
-            <template #content="{ value }">
-              <va-chip
-                v-for="chip in value"
-                :key="chip.text"
-                size="small"
-                class="mr-2"
-                outline
-                closeable
-                @update:modelValue="deleteChip(chip)"
-              >
-                {{ chip }}
-              </va-chip>
-            </template>
-          </va-select>
+        </template>
+        <div class="flex flex-col lg:flex-row items-center gap-4 mb-2 justify-between">
+          <va-button-toggle
+            v-model="doShowAsCards"
+            preset="secondary"
+            border-color="primary"
+            size="large"
+            :options="[
+              { label: 'Cards', value: 1 },
+              { label: 'Table', value: 2 },
+            ]"
+          />
+          <div class="layout flex flex-col lg:flex-row gap-4 flex-1">
+            <va-input
+              v-model="filter.name"
+              :clearable="true"
+              :placeholder="$t('moorages.list.filter.name')"
+              size="large"
+              class="flex-1"
+            />
+            <va-select
+              v-model="filter.default_stay_ids"
+              :placeholder="$t('moorages.list.filter.stay_type')"
+              :options="stayOptions"
+              size="large"
+              class="flex-1"
+              multiple
+            >
+              <template #content="{ value }">
+                <va-chip
+                  v-for="chip in value"
+                  :key="chip.value"
+                  size="small"
+                  class="mr-2"
+                  outline
+                  closeable
+                  @update:modelValue="deleteChip(chip)"
+                >
+                  {{ chip.text }}
+                </va-chip>
+              </template>
+            </va-select>
+          </div>
         </div>
-        <va-data-table
-          v-model:sort-by="sorting.sortBy"
-          v-model:sorting-order="sorting.sortingOrder"
-          :columns="columns"
+
+        <moorage-cards
+          v-if="doShowAsCards === 1"
           :items="items"
-          :loading="isBusy"
-          :per-page="perPage"
-          :current-page="currentPage"
-          striped
-          hoverable
-        >
-          <template #cell(moorage)="{ value, rowData }">
-            <div class="whitespace-normal break-words">
-              <router-link class="va-link link" :to="{ name: 'moorage-details', params: { id: rowData.id } }">
-                {{ value }}
-              </router-link>
-            </div>
-          </template>
-          <template #cell(default_stay)="{ rowData }">
-            <div v-if="rowData.default_stay_id" style="max-width: 150px">
-              <stay-at
-                :id="parseInt(rowData.id)"
-                :key="rowData.id"
-                :data="parseInt(rowData.default_stay_id)"
-                @clickFromChildComponent="updateDefaultStay"
-              />
-            </div>
-          </template>
-          <template #cell(total_stay)="{ value, rowData }">
-            <router-link class="va-link link" :to="{ name: 'moorage-stays', params: { id: rowData.id } }">
-              {{ value }}
-            </router-link>
-          </template>
-          <template #cell(arrivals_departures)="{ value, rowData }">
-            <router-link class="va-link link" :to="{ name: 'moorage-arrivals-departures', params: { id: rowData.id } }">
-              {{ value }}
-            </router-link>
-          </template>
-        </va-data-table>
-        <template v-if="items.length > perPage">
+          :loading="moorages.isFetching.value"
+          @updateDefaultStay="updateDefaultStay"
+        />
+        <moorage-table
+          v-if="doShowAsCards === 2"
+          :items="items"
+          :loading="moorages.isFetching.value"
+          @updateDefaultStay="updateDefaultStay"
+        />
+
+        <template v-if="moorages.totalCount.value > pageSize">
           <div class="mt-3 row justify-center">
-            <va-pagination v-model="currentPage" input :pages="pages" />
+            <va-pagination v-model="currentPage" input :pages="moorages.totalPages.value" />
           </div>
         </template>
+        <template v-if="items.length > 0">
+          <div class="flex flex-wrap gap-4 mt-4 py-3 border-t border-[var(--va-background-element)] text-md">
+            <div v-for="entry in summary" :key="entry.label" class="flex items-center gap-1">
+              <va-chip size="small" outline>{{ entry.count }}</va-chip>
+              <span class="text-[var(--va-secondary)]">{{ entry.label }}</span>
+            </div>
+          </div>
+        </template>
+
         <div class="flex mt-4">
           <va-icon
-            v-if="items.length > 0"
+            v-if="moorages.totalCount.value > 0"
             name="csv"
             outline
             :size="34"
             style="grid-column-end: 11"
             class="themed"
-            @click="handleCSV(items)"
+            @click="handleCSV()"
           ></va-icon>
           <va-icon
-            v-if="items.length > 0"
+            v-if="moorages.totalCount.value > 0"
             name="gpx"
             outline
             :size="34"
@@ -94,13 +99,22 @@
             @click="handleGPX()"
           ></va-icon>
           <va-icon
-            v-if="items.length > 0"
+            v-if="moorages.totalCount.value > 0"
             name="geojson"
             outline
             :size="34"
             style="grid-column-end: 13"
             class="themed"
             @click="handleGeoJSON()"
+          ></va-icon>
+          <va-icon
+            v-if="moorages.totalCount.value > 0"
+            name="kml"
+            outline
+            :size="34"
+            style="grid-column-end: 14"
+            class="themed"
+            @click="handleKML()"
           ></va-icon>
         </div>
       </va-card-content>
@@ -109,176 +123,122 @@
 </template>
 
 <script setup>
-  import { computed, ref, reactive, onMounted } from 'vue'
+  import { computed, ref, reactive, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useCacheStore } from '../../stores/cache-store'
+  import { watchDebounced } from '@vueuse/core'
   import { setAppTitle } from '../../utils/app.js'
-  import PostgSail from '../../services/api-client'
-  import { asBusy, handleExport } from '../../utils/handleExports'
-  import nodatayet from '../../components/noDataScreen.vue'
-  import StayAt from '../../components/SelectStayAt.vue'
-  import { stayed_at_options } from '../../utils/PostgSail.ts'
+  import { handleExport, downloadFile } from '../../utils/handleExports'
   import { durationFormatDays } from '../../utils/dateFormatter.js'
   import { useVesselStore } from '../../stores/vessel-store'
+  import { useGlobalStore } from '../../stores/global-store'
+  import { storeToRefs } from 'pinia'
+  import { useMooragesList, useUpdateMoorage, exportMooragesCSV } from '../../queries/moorages'
+  import MoorageCards from './widgets/Cards.vue'
+  import MoorageTable from './widgets/Table.vue'
 
-  const { vesselName, vesselType } = useVesselStore()
-
-  import mooragesData from '../../data/moorages.json'
-
+  const { vesselName } = useVesselStore()
   const { t } = useI18n()
-  const getDefaultFilter = () => {
-    return {
-      name: null,
-      default_stay: [],
-    }
-  }
+  const GlobalStore = useGlobalStore()
+  const { isMobile, doShowAsCards } = storeToRefs(GlobalStore)
 
-  const CacheStore = useCacheStore()
-  const isBusy = ref(false)
-  const apiError = ref(null)
-  const rowsData = ref([])
-  const perPage = ref(20)
+  if (isMobile.value) doShowAsCards.value = 1
+  watch(doShowAsCards, () => {
+    GlobalStore.$state.doShowAsCards = doShowAsCards.value
+  })
+
+  const pageSize = 20
   const currentPage = ref(1)
-  const columns = ref([
-    { key: 'moorage', label: t('moorages.list.moorage'), sortable: true },
-    { key: 'default_stay', label: t('moorages.list.default_stay'), sortable: true },
-    { key: 'total_stay', label: t('moorages.list.total_stay'), sortable: true, tdAlign: 'right' },
-    { key: 'arrivals_departures', label: t('moorages.list.arrivals'), sortable: true, tdAlign: 'right' },
-  ])
   const sorting = ref({ sortBy: 'total_stay', sortingOrder: 'desc' })
-  const filter = reactive(getDefaultFilter())
-  const options = computed(() => {
-    let arr = []
-    for (let key in stayed_at_options) {
-      //console.log(key)
-      arr.push(stayed_at_options[key].text)
+
+  const stayOptions = computed(() => [
+    { value: 1, text: t('id.stay_code.1') },
+    { value: 2, text: t('id.stay_code.2') },
+    { value: 3, text: t('id.stay_code.3') },
+    { value: 4, text: t('id.stay_code.4') },
+  ])
+
+  const filter = reactive({ name: null, default_stay_ids: [] })
+
+  // Debounced name filter (avoids a request on every keystroke)
+  const queryFilters = ref({ name: null, default_stay_ids: [], sortBy: 'total_stay', sortingOrder: 'desc' })
+  watchDebounced(
+    () => ({ name: filter.name, default_stay_ids: filter.default_stay_ids.map((o) => o.value) }),
+    (val) => {
+      currentPage.value = 1
+      queryFilters.value = { ...queryFilters.value, ...val }
+    },
+    { debounce: 400, immediate: true },
+  )
+  // Sort changes apply immediately
+  watch(sorting, (val) => {
+    currentPage.value = 1
+    queryFilters.value = { ...queryFilters.value, sortBy: val.sortBy, sortingOrder: val.sortingOrder }
+  })
+
+  const moorages = useMooragesList({ page: currentPage, pageSize, filters: queryFilters })
+
+  const items = computed(() =>
+    moorages.items.value.map((row) => ({
+      id: row.id,
+      moorage: row.moorage,
+      default_stay: row.default_stay,
+      default_stay_id: row.default_stay_id,
+      total_stay: durationFormatDays(row.total_duration),
+      arrivals_departures: row.arrivals_departures,
+    })),
+  )
+
+  const summary = computed(() => {
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0 }
+    for (const row of moorages.items.value) {
+      const id = row.default_stay_id
+      if (id in counts) counts[id]++
     }
-    //console.log(arr)
-    return arr
-  })
-
-  function deleteChip(chip) {
-    filter.default_stay = filter.default_stay.filter((v) => v !== chip)
-  }
-
-  const items = computed(() => {
-    return Array.isArray(rowsData.value)
-      ? rowsData.value
-          .map((row) => ({
-            id: row.id,
-            moorage: row.moorage,
-            default_stay: row.default_stay,
-            default_stay_id: row.default_stay_id,
-            total_stay: durationFormatDays(row.total_duration),
-            arrivals_departures: row.arrivals_departures,
-          }))
-          .filter((row) => {
-            const f = filter
-            if (Object.keys(f).every((fkey) => !f[fkey])) {
-              return true
-            }
-            return Object.keys(f).every((fkey) => {
-              if (!f[fkey]) {
-                return true
-              }
-              switch (fkey) {
-                case 'name':
-                  return row.moorage.toLowerCase().includes(f[fkey].toLowerCase())
-                case 'default_stay':
-                  var valid = false
-                  if (f['default_stay'].length == 0) return true
-                  for (let i = 0; i < f['default_stay'].length; i++) {
-                    if (!f['default_stay'][i] || valid) {
-                      continue
-                    }
-                    valid = row.default_stay.toLowerCase().includes(f['default_stay'][i].toLowerCase())
-                  }
-                  return valid
-              }
-            })
-          })
-      : []
-  })
-
-  const pages = computed(() => {
-    return Math.ceil(items.value.length / perPage.value)
+    return stayOptions.value
+      .map((opt) => ({ label: opt.text, count: counts[opt.value] ?? 0 }))
+      .filter((e) => e.count > 0)
   })
 
   const title = t('moorages.list.title') + ' ' + vesselName
+  document.title = setAppTitle(title)
 
-  onMounted(async () => {
-    document.title = setAppTitle(title)
-    isBusy.value = true
-    apiError.value = null
+  function deleteChip(chip) {
+    filter.default_stay_ids = filter.default_stay_ids.filter((v) => v.value !== chip.value)
+  }
+
+  const { mutateAsync: updateMoorage } = useUpdateMoorage()
+
+  const updateDefaultStay = async (stay_code, id) => {
+    if (!stay_code || stay_code <= 0) return
     try {
-      const response = await CacheStore.getAPI('moorages')
-      if (Array.isArray(response)) {
-        rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...response)
-        console.log('Moorages List rowsData:', rowsData.value)
-      } else {
-        throw { response }
-      }
-    } catch (e) {
-      apiError.value = e
-      if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample data from local json...', apiError.value)
-        rowsData.value.splice(0, rowsData.value.length || [])
-        rowsData.value.push(...mooragesData)
-      }
+      await updateMoorage({ id: String(id), payload: { stay_code } })
+    } catch (err) {
+      console.error('updateDefaultStay failed', err)
+    }
+  }
+
+  const isExporting = ref(false)
+
+  async function handleCSV() {
+    isExporting.value = true
+    try {
+      const csv = await exportMooragesCSV(queryFilters.value)
+      downloadFile(csv, 'text/csv', 'PostgSail_Moorages.csv')
+    } catch (err) {
+      console.error('CSV export failed', err)
     } finally {
-      isBusy.value = false
-    }
-  })
-
-  function runBusy(fn, ...args) {
-    asBusy(isBusy, apiError, fn, ...args)
-  }
-
-  const updateDefaultStay = async (update_default_stay, id) => {
-    console.log('updateDefaultStay', update_default_stay, id)
-    if (update_default_stay && update_default_stay > 0) {
-      isBusy.value = true
-      apiError.value = null
-      const api = new PostgSail()
-      const payload = {
-        stay_code: update_default_stay,
-      }
-      try {
-        const response = await api.moorage_update(id, payload)
-        if (response) {
-          console.log('updateDefaultStay success', response)
-          // Clean CacheStore and force refresh
-          await CacheStore.resetCache()
-          const resp = await CacheStore.getAPI('moorages')
-          if (Array.isArray(resp)) {
-            rowsData.value.splice(0, rowsData.value.length || [])
-            rowsData.value.push(...resp)
-            console.log('Moorages List rowsData:', rowsData.value)
-          } else {
-            throw { resp }
-          }
-        } else {
-          throw { response }
-        }
-      } catch (err) {
-        const { response } = err
-        console.log('updateDefaultStay failed', response)
-        apiError.value = response.message
-      } finally {
-        isBusy.value = false
-      }
+      isExporting.value = false
     }
   }
 
-  function handleCSV(items) {
-    runBusy(handleExport, 'csv', 'moorages', items)
-  }
   function handleGPX() {
-    runBusy(handleExport, 'gpx', 'moorages')
+    handleExport('gpx', 'moorages', undefined)
   }
   function handleGeoJSON() {
-    runBusy(handleExport, 'geojson', 'moorages')
+    handleExport('geojson', 'moorages', undefined)
+  }
+  function handleKML() {
+    handleExport('kml', 'moorages', undefined)
   }
 </script>
 

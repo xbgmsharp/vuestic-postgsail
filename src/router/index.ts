@@ -165,6 +165,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { titleKey: 'boats.details.title' },
       },
       {
+        name: 'boat-specifications',
+        path: 'boat/specifications',
+        component: () => import('../pages/boats/Specifications.vue'),
+        meta: { titleKey: 'boats.details.title' },
+      },
+      {
         path: 'profile',
         name: 'profile',
         component: () => import('../pages/profile/Settings.vue'),

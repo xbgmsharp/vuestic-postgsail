@@ -55,7 +55,7 @@
                 </dt>
                 <dd class="text-gray-800 dark:text-white">
                   <a href="https://www.npmjs.com/package/signalk-postgsail" target="_blank">
-                    <va-chip :color="item.plugin_version === '0.4.0' ? 'success' : 'warning'" class="cursor-pointer">
+                    <va-chip :color="item.plugin_version >= '0.4.1' ? 'success' : 'warning'" class="cursor-pointer">
                       {{ item.plugin_version }}
                     </va-chip>
                   </a>
@@ -64,7 +64,7 @@
 
               <!-- VesselFinder & MarineVesselTraffic -->
               <div v-if="item.mmsi" class="hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded transition">
-                <dt class="font-semibold text-gray-800 dark:text-white">VesselFinder</dt>
+                <dt class="font-semibold text-gray-800 dark:text-white">VesselFinder & MarineVesselTraffic</dt>
                 <dd class="text-gray-800 dark:text-white">
                   <a
                     :href="`https://www.vesselfinder.com/vessels?name=${item.mmsi}`"
@@ -74,12 +74,7 @@
                     VesselFinder
                     <va-icon name="fa-external-link" size="small" />
                   </a>
-                </dd>
-              </div>
-
-              <div v-if="item.mmsi" class="hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded transition">
-                <dt class="font-semibold text-gray-800 dark:text-white">MarineVesselTraffic</dt>
-                <dd class="text-gray-800 dark:text-white">
+                  <br />
                   <a
                     :href="`https://www.marinevesseltraffic.com/2013/06/mmsi-number-search.html?mmsi=${item.mmsi}`"
                     target="_blank"
@@ -88,6 +83,29 @@
                     MarineVesselTraffic
                     <va-icon name="fa-external-link" size="small" />
                   </a>
+                </dd>
+              </div>
+
+              <!-- Specifications -->
+              <div class="hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded transition">
+                <dt class="font-semibold text-gray-800 dark:text-white">
+                  {{ $t('boats.boat.spec.title') }}
+                </dt>
+                <dd class="text-gray-800 dark:text-white">
+                  <a :href="item.spec_url" target="_blank" class="text-blue-600 hover:underline dark:text-blue-400">
+                    SailboatData.com
+                    <va-icon name="fa-external-link" size="small" />
+                  </a>
+                  <br />
+                  <router-link :to="{ name: 'boat-specifications' }">
+                    <va-chip
+                      :color="item.spec_url ? 'success' : 'warning'"
+                      class="cursor-pointer group-hover:shadow-md transition-all"
+                    >
+                      {{ spec_msg }}
+                      <va-icon name="edit" size="small" class="ml-1" />
+                    </va-chip>
+                  </router-link>
                 </dd>
               </div>
 
@@ -248,6 +266,8 @@
           has_polar: apiData.row.has_polar,
           has_images: apiData.row.has_images,
           images: apiData.row.images,
+          spec: apiData.row.spec,
+          spec_url: apiData.row?.spec?.permalink ? apiData.row.spec.permalink : null,
         }
       : {}
   })
@@ -265,6 +285,9 @@
   })
   const polar_msg = computed(() => {
     return item.value.has_polar ? 'Present' : 'Missing'
+  })
+  const spec_msg = computed(() => {
+    return item.value.spec_url ? 'Present' : 'Missing'
   })
 
   onMounted(async () => {

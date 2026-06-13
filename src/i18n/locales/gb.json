@@ -18,7 +18,7 @@
     "reset_password": "Reset Password",
     "vessel_register": "Add vessel",
     "otp": "Enter the verification code",
-    "otp_message": "Please enter the 6-digit verification code we sent via email",
+    "otp_message": "Please enter the digital verification code we sent via email",
     "otp_description": "(we want to make sure it's you before we connect a vessel)",
     "otp_validate": "Validate",
     "otp_validated": "OTP code validated successfully.",
@@ -118,7 +118,8 @@
       "totalDuration": "Total Duration",
       "weightBy": "Weight by",
       "minTrips": "Min trips",
-      "showLabels": "Show labels"
+      "showLabels": "Show labels",
+      "total": "Total"
     },
     "panel": {
       "battery": "Battery",
@@ -156,6 +157,11 @@
       "moored_at_dock": "moored at dock in",
       "underway": "underway",
       "no_status_detected": "No status detected"
+    },
+    "tiles": {
+      "last_30d": "last 30 days",
+      "vs_prev_30d": "vs. prev. 30 days",
+      "no_prev_data": "No previous data"
     }
   },
   "api": {
@@ -217,6 +223,7 @@
       "cloud_coverage": "Cloud coverage",
       "visibility": "Visibility",
       "metadata": "Metadata",
+      "metrics": "Trip Metrics",
       "observations": "Observations",
       "share": "Share",
       "tags": "Tags",
@@ -232,7 +239,8 @@
         "date_range": "Filter by date range...",
         "stay_type": "Filter by stay type...",
         "reset": "Reset"
-      }
+      },
+      "no_results": "No stays found matching your filters."
     },
     "details": {
       "title": "Stay"
@@ -338,8 +346,10 @@
       "title": "Boat"
     },
     "boat": {
-      "name": "Boat Name | Names",
+      "title": "Add your boat to PostgSail",
+      "name": "Boat Name",
       "mmsi": "MMSI",
+      "optional": "(optional) leave blank if unsure",
       "first_contact": "First Contact",
       "last_contact": "Last Contact",
       "created_at": "Created at",
@@ -355,6 +365,17 @@
         "title": "Boat's Polar",
         "placeholder": "Paste ORC polar CSV data here...",
         "message": "Copy/paste the csv content of the polar in http://jieter.github.io/orc-data/site/ style."
+      },
+      "spec": {
+        "title": "Boat Specifications",
+        "submit": "Save Specifications",
+        "make_model_placeholder": "e.g. Beneteau Oceanis 40.1",
+        "permalink_label": "Sailboatdata.com Permalink",
+        "permalink_placeholder": "https://sailboatdata.com/sailboat/...",
+        "permalink_hint": "Find your boat on ",
+        "message": "Save a sailboatdata.com permalink and the backend will automatically fetch your boat's full specifications (dimensions, rig, ratios, engine).",
+        "success": "Specifications saved successfully",
+        "error": "Error saving specifications"
       },
       "beam": "Beam",
       "height": "Height",
@@ -442,6 +463,9 @@
     "use_imperial_units": "Use Imperial Units",
     "email_notifications": "E-mail Notifications",
     "phone_notifications": "Phone Notifications",
+    "position_reporting": "Position Reporting",
+    "position_reporting_enabled": "Position Reporting Enabled",
+    "position_reporting_interval": "Reporting Interval (minutes)",
     "alerting": "Alerting",
     "min_notification_interval": "Min Notification Interval (h)",
     "high_wind_speed_threshold": "Wind Speed (kts)",
@@ -476,7 +500,9 @@
       "phone_notifications": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
       "public_profile_info": "Enabling your public profile allows you to share your sailing adventures and boat information with the world. You can choose to make specific details like your logs, stats, timelapse, and monitoring data publicly accessible. This way, you can connect with other sailors, share your experiences, and even inspire others with your journeys on the water.",
       "phone_notifications_info": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
-      "alerting": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
+      "position_reporting": "When enabled, sends position reports via email and notifications every N minutes while the vessel is underway.",
+      "position_reporting_info": "Position reports will be sent at the configured interval while your vessel is underway.",
+      "position_reporting_interval": "How often (in minutes) to send a position report while underway. Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting_enabled": "Alerting is enabled. You will receive notifications when any of your defined thresholds are exceeded.",
       "alerting_info": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "pushover": "Pushover is a service that allows you to receive real-time notifications on your phone or desktop. By linking your Pushover account, you can get instant alerts about important events and conditions related to your boat, helping you stay informed and take timely action.",
@@ -495,7 +521,7 @@
       "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
       "windy_station": "Windy station identifier as displayed in Windy URL after /station/pws- (e.g. d06efc48)",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login or password protected. It is a read-only mode.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}{1}/log/{0}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",

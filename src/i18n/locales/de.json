@@ -118,7 +118,8 @@
       "totalDuration": "Total Duration",
       "weightBy": "Weight by",
       "minTrips": "Min trips",
-      "showLabels": "Show labels"
+      "showLabels": "Show labels",
+      "total": "Total"
     },
     "panel": {
       "battery": "Battery",
@@ -156,6 +157,11 @@
       "moored_at_dock": "moored at dock in",
       "underway": "underway",
       "no_status_detected": "No status detected"
+    },
+    "tiles": {
+      "last_30d": "letzte 30 Tage",
+      "vs_prev_30d": "vs. vorh. 30 Tage",
+      "no_prev_data": "Keine früheren Daten"
     }
   },
   "api": {
@@ -217,6 +223,7 @@
       "cloud_coverage": "Cloud coverage",
       "visibility": "Visibility",
       "metadata": "Metadata",
+      "metrics": "Fahrtmetriken",
       "observations": "Observations",
       "share": "Share",
       "tags": "Tags",
@@ -232,7 +239,8 @@
         "date_range": "Filter by date range...",
         "stay_type": "Filter by stay type...",
         "reset": "Zurücksetzen"
-      }
+      },
+      "no_results": "Keine Liegeplätze gefunden, die Ihren Filtern entsprechen."
     },
     "details": {
       "title": "Details des Aufenthalts"
@@ -334,8 +342,10 @@
       "title": "Details des Bootes"
     },
     "boat": {
-      "name": "Name | Namen",
+      "title": "Add your boat to PostgSail",
+      "name": "Name",
       "mmsi": "MMSI",
+      "optional": "(optional) Bei Unsicherheit leer lassen",
       "first_contact": "First Kontakt",
       "last_contact": "Letzter Kontakt",
       "created_at": "Erstellt am",
@@ -351,6 +361,17 @@
         "title": "Boat's Polar",
         "placeholder": "Paste ORC polar CSV data here...",
         "message": "Copy/paste the csv content of the polar in http://jieter.github.io/orc-data/site/ style."
+      },
+      "spec": {
+        "title": "Bootsspezifikationen",
+        "submit": "Spezifikationen speichern",
+        "make_model_placeholder": "z.B. Beneteau Oceanis 40.1",
+        "permalink_label": "Sailboatdata.com Permalink",
+        "permalink_placeholder": "https://sailboatdata.com/sailboat/...",
+        "permalink_hint": "Finden Sie Ihr Boot auf ",
+        "message": "Speichern Sie einen sailboatdata.com-Permalink und der Server ruft automatisch die vollständigen Spezifikationen Ihres Bootes ab (Abmessungen, Rigg, Verhältnisse, Motor).",
+        "success": "Spezifikationen erfolgreich gespeichert",
+        "error": "Fehler beim Speichern der Spezifikationen"
       },
       "beam": "Breite",
       "height": "Höhe",
@@ -438,6 +459,9 @@
     "use_imperial_units": "Imperiale Einheiten verwenden",
     "email_notifications": "E-Mail-Benachrichtigungen",
     "phone_notifications": "Telefonbenachrichtigungen",
+    "position_reporting": "Position Reporting",
+    "position_reporting_enabled": "Position Reporting Enabled",
+    "position_reporting_interval": "Reporting Interval (minutes)",
     "alerting": "Benachrichtigungen",
     "min_notification_interval": "Minimales Benachrichtigungsintervall (h)",
     "high_wind_speed_threshold": "Windgeschwindigkeit (kts)",
@@ -472,6 +496,9 @@
       "phone_notifications": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
       "public_profile_info": "Enabling your public profile allows you to share your sailing adventures and boat information with the world. You can choose to make specific details like your logs, stats, timelapse, and monitoring data publicly accessible. This way, you can connect with other sailors, share your experiences, and even inspire others with your journeys on the water.",
       "phone_notifications_info": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
+      "position_reporting": "When enabled, sends position reports via email and notifications every N minutes while the vessel is underway.",
+      "position_reporting_info": "Position reports will be sent at the configured interval while your vessel is underway.",
+      "position_reporting_interval": "How often (in minutes) to send a position report while underway. Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting_enabled": "Alerting is enabled. You will receive notifications when any of your defined thresholds are exceeded.",
       "alerting_info": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
@@ -491,7 +518,7 @@
       "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
       "windy_station": "Windy station identifier as displayed in Windy URL after /station/pws- (e.g. d06efc48)",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login or password protected. It is a read-only mode.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}{1}/log/{0}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",

@@ -18,6 +18,8 @@
     "reset_password": "Restablecer contraseña",
     "vessel_register": "Registrar barco",
     "otp": "Introduce el código de verificación OTP",
+    "otp_message": "Por favor, introduce el código de verificación digital que enviamos por correo electrónico",
+    "otp_description": "(queremos asegurarnos de que eres tú antes de conectar un barco)",
     "otp_validate": "Validar código OTP",
     "otp_validated": "Código OTP validado con éxito",
     "pushover_message": "Mensaje push",
@@ -116,7 +118,8 @@
       "totalDuration": "Duración total",
       "weightBy": "Ordenar por",
       "minTrips": "Mínimo viajes",
-      "showLabels": "Mostrar etiquetas"
+      "showLabels": "Mostrar etiquetas",
+      "total": "Total"
     },
     "panel": {
       "battery": "Batería",
@@ -154,6 +157,11 @@
       "moored_at_dock": "amarrado en muelle en",
       "underway": "en ruta",
       "no_status_detected": "No se detectó estado"
+    },
+    "tiles": {
+      "last_30d": "últimos 30 días",
+      "vs_prev_30d": "vs. 30 días ant.",
+      "no_prev_data": "Sin datos anteriores"
     }
   },
   "api": {
@@ -215,6 +223,7 @@
       "cloud_coverage": "Nubosidad",
       "visibility": "Visibilidad",
       "metadata": "Metadatos",
+      "metrics": "Métricas del viaje",
       "observations": "Observaciones",
       "share": "Compartir",
       "tags": "Etiquetas",
@@ -230,7 +239,8 @@
         "date_range": "Filtrar por fecha...",
         "stay_type": "Filtrar por tipo de estancia...",
         "reset": "Resetear"
-      }
+      },
+      "no_results": "No se encontraron estancias que coincidan con sus filtros."
     },
     "details": {
       "title": "Estancias"
@@ -340,8 +350,10 @@
       "title": "Barco"
     },
     "boat": {
-      "name": "Nombre | Nombres",
+      "title": "Añade tu barco a PostgSail",
+      "name": "Nombre",
       "mmsi": "MMSI",
+      "optional": "(opcional) deja en blanco si no estás seguro",
       "first_contact": "Primer contacto",
       "last_contact": "Último contacto",
       "created_at": "Creado el",
@@ -356,6 +368,17 @@
         "title": "Polar de tu barco",
         "placeholder": "Pega aquí tus datos de polares en CSV",
         "message": "Copia y pega en CSV los datos de polares de tu barco de esta dirección http://jieter.github.io/orc-data/site/"
+      },
+      "spec": {
+        "title": "Especificaciones del barco",
+        "submit": "Guardar especificaciones",
+        "make_model_placeholder": "ej. Beneteau Oceanis 40.1",
+        "permalink_label": "Enlace permanente de Sailboatdata.com",
+        "permalink_placeholder": "https://sailboatdata.com/sailboat/...",
+        "permalink_hint": "Encuentra tu barco en ",
+        "message": "Guarda un enlace permanente de sailboatdata.com y el servidor obtendrá automáticamente las especificaciones completas de tu barco (dimensiones, aparejo, ratios, motor).",
+        "success": "Especificaciones guardadas con éxito",
+        "error": "Error al guardar las especificaciones"
       },
       "beam": "Manga",
       "height": "Puntal",
@@ -443,6 +466,9 @@
     "use_imperial_units": "Usar medidas imperiales",
     "email_notifications": "Notificaciones por E-mail",
     "phone_notifications": "Notificaciones por teléfono",
+    "position_reporting": "Position Reporting",
+    "position_reporting_enabled": "Position Reporting Enabled",
+    "position_reporting_interval": "Reporting Interval (minutes)",
     "alerting": "Alertas",
     "min_notification_interval": "Intervalo Min notificaciones (H)",
     "high_wind_speed_threshold": "Velocidad del viento (Kts)",
@@ -477,6 +503,9 @@
       "phone_notifications": "Al activar las notificaciones en el teléfono podrás recibir alertas en tiempo real sobre eventos y condiciones importantes relacionadas con tu embarcación. Esta función te ayuda a mantenerte informado y a actuar a tiempo para garantizar la seguridad y el rendimiento de tu barco.",
       "public_profile_info": "Activar tu perfil público te permite compartir tus aventuras de navegación y la información de tu embarcación con el mundo. Puedes elegir hacer públicos ciertos datos como tus registros, estadísticas, timelapse y datos de monitorización. De esta forma podrás conectar con otros navegantes, compartir tus experiencias e incluso inspirar a otros con tus travesías.",
       "phone_notifications_info": "Al activar las notificaciones en el teléfono podrás recibir alertas en tiempo real sobre eventos y condiciones importantes relacionadas con tu embarcación. Esta función te ayuda a mantenerte informado y a actuar a tiempo para garantizar la seguridad y el rendimiento de tu barco.",
+      "position_reporting": "When enabled, sends position reports via email and notifications every N minutes while the vessel is underway.",
+      "position_reporting_info": "Position reports will be sent at the configured interval while your vessel is underway.",
+      "position_reporting_interval": "How often (in minutes) to send a position report while underway. Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting": "Las alertas te permiten configurar umbrales personalizados para distintos parámetros como velocidad del viento, temperatura, presión, carga de batería y más. Cuando cualquiera de estos parámetros supere los umbrales definidos, recibirás notificaciones en tu teléfono o por correo electrónico, lo que te ayudará a gestionar de forma proactiva el rendimiento y la seguridad de tu embarcación.",
       "alerting_enabled": "Las alertas están activadas. Recibirás notificaciones cuando se superen los umbrales que hayas definido.",
       "alerting_info": "Las alertas te permiten configurar umbrales personalizados para distintos parámetros como velocidad del viento, temperatura, presión, carga de batería y más. Cuando cualquiera de estos parámetros supere los umbrales definidos, recibirás notificaciones en tu teléfono o por correo electrónico, lo que te ayudará a gestionar de forma proactiva el rendimiento y la seguridad de tu embarcación.",
@@ -496,7 +525,7 @@
       "low_battery_voltage_threshold": "Voltaje mínimo de batería (V)",
       "windy_station": "Identificador de estación Windy tal y como se muestra en la URL de Windy después de /station/pws- (e.g. d06efc48)",
       "public_profile": "Estando activado, las páginas de estadísticas, líneas de tiempo y otras pueden ser accedidas por otros sin hacer login.",
-      "public_logs": "Estando activado, tus registros personales de navegación serán accesibles públicamente en https://iot.openplotter.cloud/{0}/log/{'id'}",
+      "public_logs": "Estando activado, tus registros personales de navegación serán accesibles públicamente en https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "Estando activado, tus estadísticas serán accesibles públicamente en https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "Estando activado, el listado de tus registros de navegación serán accesibles públicamente en https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "Estando activado, tus líneas de tiempo serán accesibles públicamente en https://iot.openplotter.cloud/{0}/timelapse",

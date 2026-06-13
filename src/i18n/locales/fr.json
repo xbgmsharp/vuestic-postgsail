@@ -18,6 +18,8 @@
     "reset_password": "Réinitialiser le mot de passe",
     "vessel_register": "Ajouter un navire",
     "otp": "Entrer le code de vérification",
+    "otp_message": "Veuillez entrer le code de vérification numérique que nous avons envoyé par e-mail",
+    "otp_description": "(nous voulons nous assurer que c'est bien vous avant de connecter un navire)",
     "otp_validate": "Valider",
     "otp_validated": "Code OTP validé.",
     "pushover_message": "Validation Pushover",
@@ -116,7 +118,8 @@
       "totalDuration": "Durée total",
       "weightBy": "Weight by",
       "minTrips": "Min trips",
-      "showLabels": "Show labels"
+      "showLabels": "Show labels",
+      "total": "Total"
     },
     "panel": {
       "battery": "Batterie",
@@ -154,6 +157,11 @@
       "moored_at_dock": "amarré au quai à",
       "underway": "en navigation",
       "no_status_detected": "Aucun statut détecté"
+    },
+    "tiles": {
+      "last_30d": "30 derniers jours",
+      "vs_prev_30d": "vs. 30 j. préc.",
+      "no_prev_data": "Aucune donnée précédente"
     }
   },
   "api": {
@@ -215,6 +223,7 @@
       "cloud_coverage": "Couverture nuageuse",
       "visibility": "Visibilité",
       "metadata": "Métadonnées",
+      "metrics": "Métriques du trajet",
       "observations": "Observations",
       "share": "Partager",
       "tags": "Étiquettes",
@@ -228,9 +237,10 @@
         "title": "Search for stay",
         "name": "Filtrer par nom...",
         "date_range": "Filtrer par plage de dates...",
-        "stay_type": "Filtrer par stay type...",
-        "reset": "Reset"
-      }
+        "stay_type": "Filtrer par type de mouillage...",
+        "reset": "Réinitialiser"
+      },
+      "no_results": "Aucune escale trouvée correspondant à vos filtres."
     },
     "details": {
       "title": "Séjour"
@@ -262,16 +272,16 @@
       "filter": {
         "title": "Search for moorage",
         "name": "Filtrer par nom...",
-        "stay_type": "Filtrer par stay type...",
-        "reset": "Reset"
+        "stay_type": "Filtrer par type de mouillage...",
+        "reset": "Réinitialiser"
       },
       "moorage": "Amarrage",
       "default_stay": "Séjour par défaut",
       "total_stay": "Séjour total [j]",
-      "arrivals": "Arrivals & Departures"
+      "arrivals": "Arrivées et départs"
     },
     "arrivals-departures": {
-      "title": "Arrivals and Departures for Moorage"
+      "title": "Arrivées et départs pour le mouillage de"
     },
     "map": {
       "title": "Carte des mouillages"
@@ -339,8 +349,10 @@
       "title": "Boat"
     },
     "boat": {
-      "name": "Nom | Noms",
+      "title": "Ajoute ton bateau à PostgSail",
+      "name": "Nom",
       "mmsi": "MMSI",
+      "optional": "(optionnel) laissez vide si vous n'êtes pas sûr",
       "first_contact": "Premiere contact",
       "last_contact": "Dernier contact",
       "created_at": "Créé à",
@@ -355,6 +367,17 @@
         "title": "Boat's Polar",
         "placeholder": "Paste ORC polar CSV data here...",
         "message": "Copy/paste the csv content of the polar in http://jieter.github.io/orc-data/site/ style."
+      },
+      "spec": {
+        "title": "Spécifications du bateau",
+        "submit": "Enregistrer les spécifications",
+        "make_model_placeholder": "ex. Beneteau Océanis 40.1",
+        "permalink_label": "Permalien Sailboatdata.com",
+        "permalink_placeholder": "https://sailboatdata.com/sailboat/...",
+        "permalink_hint": "Trouvez votre bateau sur ",
+        "message": "Enregistrez un permalien sailboatdata.com et le serveur récupérera automatiquement les spécifications complètes de votre bateau (dimensions, gréement, ratios, moteur).",
+        "success": "Spécifications enregistrées avec succès",
+        "error": "Erreur lors de l'enregistrement des spécifications"
       },
       "beam": "Maître-bau",
       "height": "Hauteur",
@@ -418,50 +441,53 @@
       "dark": "Dark",
       "auto": "Auto"
     },
-    "general_preferences": "General Preferences",
+    "general_preferences": "Préférences générales",
     "information": "Information",
-    "member_since": "Member since",
-    "social_links": "Social Links",
-    "public_profile_enabled": "Public Profile Enabled",
-    "phone_notifications_enabled": "Phone Notifications Enabled",
-    "windy_station": "Windy Station",
-    "mcp_integration": "AI agents MCP Integration",
-    "password_protected": "Password Protected",
-    "set_password": "Set Password",
-    "delete_account": "Delete Account",
-    "alerting_enabled": "Alerting Enabled",
-    "public_profile": "Public Profile",
-    "public_name": "Name",
-    "public_logs": "Log Details",
+    "member_since": "Membre depuis",
+    "social_links": "Liens sociaux",
+    "public_profile_enabled": "Profil public activé",
+    "phone_notifications_enabled": "Notifications téléphoniques activées",
+    "windy_station": "Station Windy",
+    "mcp_integration": "Intégration des agents IA MCP",
+    "password_protected": "Protégé par mot de passe",
+    "set_password": "Définir le mot de passe",
+    "delete_account": "Supprimer le compte",
+    "alerting_enabled": "Alertes activées",
+    "public_profile": "Profil public",
+    "public_name": "Nom",
+    "public_logs": "Détails des journaux",
     "public_stats": "Statistiques",
-    "public_logs_list": "Logs List",
+    "public_logs_list": "Liste des journaux",
     "public_timelapse": "Timelapse",
-    "public_monitoring": "Tracking & Monitoring",
-    "instagram_handle": "Instagram Handle",
-    "preferred_homepage": "Preferred Homepage",
-    "use_imperial_units": "Use Imperial Units",
-    "email_notifications": "E-mail Notifications",
-    "phone_notifications": "Phone Notifications",
-    "alerting": "Alerting",
-    "min_notification_interval": "Min Notification Interval (h)",
-    "high_wind_speed_threshold": "Wind Speed (kts)",
-    "low_outdoor_temperature_threshold": "Outdoor Temperature (C)",
-    "low_indoor_temperature_threshold": "Indoor Temperature (C)",
-    "low_water_temperature_threshold": "Water Temperature",
-    "low_water_depth_threshold": "Water Depth (m)",
-    "low_pressure_threshold": "Pressure (hpa)",
-    "high_pressure_drop_threshold": "Pressure Drop in 12 hours (hpa)",
-    "low_battery_charge_threshold": "Battery Charge (%)",
-    "low_battery_voltage_threshold": "Battery Voltage (V)",
+    "public_monitoring": "Suivi et surveillance",
+    "instagram_handle": "Identifiant Instagram",
+    "preferred_homepage": "Page d'accueil préférée",
+    "use_imperial_units": "Utiliser les unités impériales",
+    "email_notifications": "Notifications par e-mail",
+    "phone_notifications": "Notifications téléphoniques",
+    "position_reporting": "Position Reporting",
+    "position_reporting_enabled": "Position Reporting Enabled",
+    "position_reporting_interval": "Reporting Interval (minutes)",
+    "alerting": "Alertes",
+    "min_notification_interval": "Intervalle minimum de notification (h)",
+    "high_wind_speed_threshold": "Vitesse du vent (kts)",
+    "low_outdoor_temperature_threshold": "Température extérieure (C)",
+    "low_indoor_temperature_threshold": "Température intérieure (C)",
+    "low_water_temperature_threshold": "Température de l'eau",
+    "low_water_depth_threshold": "Profondeur de l'eau (m)",
+    "low_pressure_threshold": "Pression (hpa)",
+    "high_pressure_drop_threshold": "Chute de pression en 12 heures (hpa)",
+    "low_battery_charge_threshold": "Charge de la batterie (%)",
+    "low_battery_voltage_threshold": "Tension de la batterie (V)",
     "pushover": {
       "pushover": "Pushover",
-      "link": "Link Your Pushover Account to Enable",
-      "connected": "Your user is connected to Pushover."
+      "link": "Lier votre compte Pushover pour activer",
+      "connected": "Votre utilisateur est connecté à Pushover."
     },
     "telegram_bot": {
-      "telegram_bot": "Telegram Bot",
-      "link": "Add PostgSail bot to a group or direct chat.",
-      "connected": "Your user is connected to {'@'}postgsail_bot."
+      "telegram_bot": "Bot Telegram",
+      "link": "Ajouter le bot PostgSail à un groupe ou à une conversation directe.",
+      "connected": "Votre utilisateur est connecté à {'@'}postgsail_bot."
     },
     "success": "Successfully updated {key} with {value}",
     "failure": "Error updating {key} with {value}",
@@ -476,6 +502,9 @@
       "phone_notifications": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
       "public_profile_info": "Enabling your public profile allows you to share your sailing adventures and boat information with the world. You can choose to make specific details like your logs, stats, timelapse, and monitoring data publicly accessible. This way, you can connect with other sailors, share your experiences, and even inspire others with your journeys on the water.",
       "phone_notifications_info": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
+      "position_reporting": "When enabled, sends position reports via email and notifications every N minutes while the vessel is underway.",
+      "position_reporting_info": "Position reports will be sent at the configured interval while your vessel is underway.",
+      "position_reporting_interval": "How often (in minutes) to send a position report while underway. Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting_enabled": "Alerting is enabled. You will receive notifications when any of your defined thresholds are exceeded.",
       "alerting_info": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
@@ -495,7 +524,7 @@
       "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
       "windy_station": "Windy station identifier as displayed in Windy URL after /station/pws- (e.g. d06efc48)",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login or password protected. It is a read-only mode.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}{1}/log/{0}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
@@ -651,8 +680,8 @@
       "knots": "{n} kts"
     },
     "time": {
-      "days": "{n} day | {n} days",
-      "hours": "hour | hours | hours"
+      "days": "{n} jour | {n} jours",
+      "hours": "heure | heures | heures"
     },
     "temp": {
       "celsius": "{n} °C",

@@ -16,26 +16,28 @@
     "keep_logged_in": "Mantenha-me conectado",
     "termsOfUse": "Termos de uso.",
     "reset_password": "Redefinir senha",
-    "vessel_register": "Add vessel",
-    "otp": "Enter the verification code",
-    "otp_validate": "Validate",
-    "otp_validated": "OTP code validated successfully.",
-    "pushover_message": "Pushover validation",
-    "reset": "Your password has been reset successfully.",
+    "vessel_register": "Adicionar embarcação",
+    "otp": "Digite o código de verificação",
+    "otp_message": "Por favor, digite o código de verificação digital que enviamos por e-mail",
+    "otp_description": "(queremos ter certeza de que é você antes de conectar uma embarcação)",
+    "otp_validate": "Validar",
+    "otp_validated": "Código OTP validado com sucesso.",
+    "pushover_message": "Validação Pushover",
+    "reset": "Sua senha foi redefinida com sucesso.",
     "errors": {
-      "credentials": "Wrong credentials",
-      "email": "e-mail requerida",
-      "email_valid": "Email should be valid",
+      "credentials": "Credenciais incorretas",
+      "email": "E-mail requerido",
+      "email_valid": "O e-mail deve ser válido",
       "password": "Senha requerida",
       "mismatch_pass": "Incompatibilidade de senha",
       "short_pass": "A senha é muito curta",
-      "first_name": "First name is required",
-      "last_name": "Last name is required",
-      "agreed_to_terms": "You must agree to the terms of use to continue",
-      "expired_session": "Your session has expired.",
-      "otp": "validation code is required",
-      "otp_invalid": "We can't find your code",
-      "reset": "Invalid input"
+      "first_name": "Primeiro nome é requerido",
+      "last_name": "Sobrenome é requerido",
+      "agreed_to_terms": "Você deve concordar com os termos de uso para continuar",
+      "expired_session": "Sua sessão expirou.",
+      "otp": "Código de verificação é requerido",
+      "otp_invalid": "Não conseguimos encontrar seu código de verificação, por favor tente novamente",
+      "reset": "Entrada inválida"
     }
   },
   "menu": {
@@ -116,7 +118,8 @@
       "totalDuration": "Total Duration",
       "weightBy": "Weight by",
       "minTrips": "Min trips",
-      "showLabels": "Show labels"
+      "showLabels": "Show labels",
+      "total": "Total"
     },
     "panel": {
       "battery": "Battery",
@@ -154,6 +157,11 @@
       "moored_at_dock": "moored at dock in",
       "underway": "underway",
       "no_status_detected": "No status detected"
+    },
+    "tiles": {
+      "last_30d": "últimos 30 dias",
+      "vs_prev_30d": "vs. 30 dias ant.",
+      "no_prev_data": "Sem dados anteriores"
     }
   },
   "api": {
@@ -215,6 +223,7 @@
       "cloud_coverage": "Cobertura de nuvem",
       "visibility": "Visibilidade",
       "metadata": "Metadados",
+      "metrics": "Métricas da viagem",
       "observations": "Observações",
       "share": "Compartilhar",
       "tags": "Tags",
@@ -230,7 +239,8 @@
         "date_range": "Filter by date range...",
         "stay_type": "Filter by stay type...",
         "reset": "Reset"
-      }
+      },
+      "no_results": "Nenhuma estada encontrada correspondente aos seus filtros."
     },
     "details": {
       "title": "Stay"
@@ -340,11 +350,13 @@
       "title": "Boat"
     },
     "boat": {
-      "name": "Name | Names",
+      "title": "Add your boat to PostgSail",
+      "name": "Name",
       "mmsi": "MMSI",
+      "optional": " (optional) leave blank if unsure",
       "first_contact": "Primeiro contato",
       "last_contact": "Último contato",
-      "created_at": "Creado en",
+      "created_at": "Criado em",
       "token_modal": {
         "button": "Get token",
         "title": "Boat's token",
@@ -356,6 +368,17 @@
         "title": "Boat's Polar",
         "placeholder": "Paste ORC polar CSV data here...",
         "message": "Copy/paste the csv content of the polar in http://jieter.github.io/orc-data/site/ style."
+      },
+      "spec": {
+        "title": "Especificações do barco",
+        "submit": "Salvar especificações",
+        "make_model_placeholder": "ex. Beneteau Oceanis 40.1",
+        "permalink_label": "Link permanente do Sailboatdata.com",
+        "permalink_placeholder": "https://sailboatdata.com/sailboat/...",
+        "permalink_hint": "Encontre seu barco em ",
+        "message": "Salve um link permanente do sailboatdata.com e o servidor buscará automaticamente as especificações completas do seu barco (dimensões, mastro, índices, motor).",
+        "success": "Especificações salvas com sucesso",
+        "error": "Erro ao salvar as especificações"
       },
       "beam": "Beam",
       "height": "Altura",
@@ -443,6 +466,9 @@
     "use_imperial_units": "Use Imperial Units",
     "email_notifications": "E-mail Notifications",
     "phone_notifications": "Phone Notifications",
+    "position_reporting": "Position Reporting",
+    "position_reporting_enabled": "Position Reporting Enabled",
+    "position_reporting_interval": "Reporting Interval (minutes)",
     "alerting": "Alerting",
     "min_notification_interval": "Min Notification Interval (h)",
     "high_wind_speed_threshold": "Wind Speed (kts)",
@@ -477,6 +503,9 @@
       "phone_notifications": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
       "public_profile_info": "Enabling your public profile allows you to share your sailing adventures and boat information with the world. You can choose to make specific details like your logs, stats, timelapse, and monitoring data publicly accessible. This way, you can connect with other sailors, share your experiences, and even inspire others with your journeys on the water.",
       "phone_notifications_info": "Enabling phone notifications allows you to receive real-time alerts about important events and conditions related to your boat. This feature helps you stay informed and take timely action to ensure the safety and performance of your vessel.",
+      "position_reporting": "When enabled, sends position reports via email and notifications every N minutes while the vessel is underway.",
+      "position_reporting_info": "Position reports will be sent at the configured interval while your vessel is underway.",
+      "position_reporting_interval": "How often (in minutes) to send a position report while underway. Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
       "alerting_enabled": "Alerting is enabled. You will receive notifications when any of your defined thresholds are exceeded.",
       "alerting_info": "Alerting allows you to set up custom thresholds for various parameters such as wind speed, temperature, pressure, battery charge, and more. When any of these parameters exceed the defined thresholds, you will receive notifications on your phone or via email, helping you stay proactive in managing your boat's performance and safety.",
@@ -496,7 +525,7 @@
       "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
       "windy_station": "Windy station identifier as displayed in Windy URL after /station/pws- (e.g. d06efc48)",
       "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login or password protected. It is a read-only mode.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}{1}/log/{0}",
+      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{1}",
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
@@ -652,8 +681,8 @@
       "knots": "{n} kts"
     },
     "time": {
-      "days": "{n} day | {n} days",
-      "hours": "hour | hours | hours"
+      "days": "{n} dia | {n} dias",
+      "hours": "hora | horas | horas"
     },
     "temp": {
       "celsius": "{n} °C",

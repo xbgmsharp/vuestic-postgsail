@@ -122,10 +122,33 @@ class ApiClient extends HttpClient {
     return this.get('metadata?select=polar:user_data->>polar,polar_updated_at:user_data->>polar_updated_at')
   }
 
+  async vessel_settings() {
+    return this.get('rpc/vessel_settings_fn')
+  }
+
   async vessel_update(payload: JSObj) {
     return this.post('rpc/update_metadata_userdata_fn', payload)
   }
 
+  async vessel_search_specs(query: string) {
+    return this.post('rpc/search_vessel_specs_fn', { _query: query })
+  }
+
+  async vessel_search_specs_html(query: string) {
+    return this.post('rpc/search_vessel_specs_html_fn', { _query: query })
+  }
+
+  async vessel_search_specs_id(query: string) {
+    return this.post('rpc/get_vessel_specs_id_fn', { _post_id: query })
+  }
+
+  async vessel_activity() {
+    return this.get('rpc/vessel_activity_fn')
+  }
+
+  async update_vessel_settings(payload: JSObj) {
+    return this.post(`rpc/update_vessel_settings_fn`, payload)
+  }
   /*
    * Logs API endpoint
    */
@@ -240,6 +263,10 @@ class ApiClient extends HttpClient {
     return this.post(`rpc/mapgl_fn`, payload)
   }
 
+  async logs_tags() {
+    return this.get(`rpc/logs_tags_fn`)
+  }
+
   /*
    * Moorages API endpoint
    */
@@ -257,6 +284,14 @@ class ApiClient extends HttpClient {
     this.setHeader('Accept', 'application/json')
     return data
     //return this.post('rpc/export_moorages_gpx_fn')
+  }
+
+  async moorages_export_kml() {
+    this.setHeader('Accept', 'text/xml')
+    const data = this.get(`rpc/export_moorages_kml_fn`)
+    this.setHeader('Accept', 'application/json')
+    return data
+    //return this.post('rpc/export_moorages_kml_fn')
   }
 
   async moorage_get(id: string) {
@@ -368,25 +403,34 @@ class ApiClient extends HttpClient {
   /*
    * Charts API endpoint
    */
-  async total_info() {
-    return this.get(`total_info_view`)
+  async logs_by_day() {
+    return this.get(`rpc/graph_logs_by_day_fn`)
+  }
+  async logs_by_week() {
+    return this.get(`rpc/graph_logs_by_week_fn`)
   }
   async logs_by_month() {
-    return this.get(`rpc/logs_by_month_fn`)
+    return this.get(`rpc/graph_logs_by_month_fn`)
   }
   async logs_by_year() {
-    return this.get(`rpc/logs_by_month_fn`)
+    return this.get(`rpc/graph_logs_by_year_fn`)
+  }
+  async logs_by_year_week() {
+    return this.get(`rpc/graph_logs_by_year_week_fn`)
+  }
+  async logs_by_year_month() {
+    return this.get(`rpc/graph_logs_by_year_month_fn`)
+  }
+  async logs_by_month_day() {
+    return this.get(`rpc/graph_logs_by_month_day_fn`)
+  }
+  async logs_network() {
+    return this.get(`rpc/graph_logs_network_fn`)
   }
 
   /*
    * Stats API endpoint
    */
-  async stats_logs_view() {
-    return this.get(`stats_logs_view`)
-  }
-  async stats_moorages_view() {
-    return this.get(`stats_moorages_view`)
-  }
   async stats_logs(payload: JSObj) {
     return this.post(`rpc/stats_logs_fn`, payload)
   }
@@ -401,7 +445,7 @@ class ApiClient extends HttpClient {
    * Badges API endpoint
    */
   async badges() {
-    return this.get(`badges_view`)
+    return this.get(`rpc/badges_fn`)
   }
 
   /*

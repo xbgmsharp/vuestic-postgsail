@@ -75,7 +75,7 @@
   async function onsubmit() {
     otpErrors.value = otpcode.value ? [] : [t('auth.errors.otp')]
     otpErrors.value = !isNaN(otpcode.value) ? [] : [t('auth.errors.otp')]
-    otpErrors.value = otpcode.value.length == 6 ? [] : [t('auth.errors.otp')]
+    otpErrors.value = otpcode.value.length >= 6 ? [] : [t('auth.errors.otp')]
 
     if (!formReady.value) return
 

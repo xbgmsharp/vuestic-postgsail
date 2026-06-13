@@ -81,12 +81,12 @@
         resetError.value = true
         return
       }
-      if (uuid.value == '' || uuid.value.length != 12) {
+      if (uuid.value == '' || uuid.value.length < 12) {
         console.warn('Invalid uuid')
         resetError.value = true
         return
       }
-      if (Number.isInteger(token.value) || token.value.length != 6) {
+      if (Number.isInteger(token.value) || token.value.length < 6) {
         console.warn('Invalid token')
         resetError.value = true
         return

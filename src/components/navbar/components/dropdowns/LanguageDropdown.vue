@@ -30,6 +30,7 @@
 
   const { t, locale } = useI18n()
   const GlobalStore = useGlobalStore()
+  const { updatePref } = GlobalStore
   const { language } = storeToRefs(GlobalStore)
   locale.value = language.value
   watch(locale, () => {
@@ -37,6 +38,7 @@
     console.log('language:', locale.value)
     GlobalStore.$state.language = locale.value
     language.value = locale.value
+    updatePref('language', locale.value)
   })
 
   withDefaults(

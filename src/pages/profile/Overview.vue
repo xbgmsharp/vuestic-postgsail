@@ -47,9 +47,10 @@
                 <span class="font-semibold">{{ settings.preferences.is_sponsor }}</span>
             -->
         <template v-if="settings.preferences.is_sponsor">
-          {{ t('profile.msg.sponsor_thank_you') }}
+          <span class="font-semibold">{{ t('profile.msg.sponsor_thank_you') }}</span>
         </template>
         <template v-else>
+          <VaIcon name="check_circle" color="warning" />
           <a href="https://github.com/sponsors/xbgmsharp" target="_blank">
             <va-button color="success" icon="sponsor" target="_blank"> Sponsor on GitHub </va-button></a
           >
@@ -64,13 +65,7 @@
       <div class="flex flex-col space-y-2">
         <div class="flex items-center justify-between">
           <label class="text-regularMedium font-semibold">{{ t('profile.language') }}</label>
-          <va-select
-            v-model="languageModel"
-            :options="languageOptions"
-            outline
-            class="w-full md:w-64"
-            @update:modelValue="UpdatePref('language', $event.value)"
-          />
+          <va-select v-model="languageModel" :options="languageOptions" outline class="w-full md:w-64" />
         </div>
         <p class="text-sm">{{ $t('profile.msg.language') }}</p>
       </div>
@@ -482,6 +477,7 @@
     },
     set(value) {
       locale.value = languageName[value]
+      UpdatePref('language', locale.value)
     },
   })
 

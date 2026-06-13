@@ -8,47 +8,55 @@
     </template>
 
     <va-input
-      id="Email"
+      id="email"
       v-model="formData.email"
       name="email"
-      autocomplete="email"
-      class="mb-4"
       type="email"
+      autocomplete="username"
+      class="mb-4"
       :label="t('auth.email')"
-      aria-label="Email"
+      :input-attrs="{ 'aria-label': t('auth.email') }"
       :rules="[(v) => !!v || t('auth.errors.email'), (v) => /.+@.+\..+/.test(v) || t('auth.errors.email_valid')]"
+      placeholder="john@example.com"
     />
 
     <va-input
-      id="Password"
+      id="password"
       v-model="formData.password"
       name="password"
-      autocomplete="password"
-      class="mb-4"
       type="password"
+      autocomplete="new-password"
+      class="mb-4"
       :label="t('auth.password')"
-      :rules="[(value) => (value && value.length >= 4) || t('auth.errors.password')]"
-      aria-label="Password"
+      :input-attrs="{ 'aria-label': t('auth.password') }"
+      :rules="[(v) => (v && v.length >= 4) || t('auth.errors.password')]"
+      placeholder="******"
     />
 
     <va-input
-      id="firstName"
+      id="firstname"
       v-model="formData.firstName"
+      name="firstname"
+      type="text"
+      autocomplete="given-name"
       class="mb-4"
-      type="firstName"
       :label="t('auth.first_name')"
-      :rules="[(value) => (value && value.length > 2) || t('auth.errors.first_name')]"
-      aria-label="firstName"
+      :input-attrs="{ 'aria-label': t('auth.first_name') }"
+      :rules="[(v) => (v && v.length > 2) || t('auth.errors.first_name')]"
+      placeholder="John"
     />
 
     <va-input
-      id="lastName"
+      id="lastname"
       v-model="formData.lastName"
+      name="lastname"
+      type="text"
+      autocomplete="family-name"
       class="mb-4"
-      type="lastName"
       :label="t('auth.last_name')"
-      :rules="[(value) => (value && value.length > 2) || t('auth.errors.last_name')]"
-      aria-label="lastName"
+      :input-attrs="{ 'aria-label': t('auth.last_name') }"
+      :rules="[(v) => (v && v.length > 2) || t('auth.errors.last_name')]"
+      placeholder="Doe"
     />
 
     <div class="auth-layout__options flex items-center justify-between">

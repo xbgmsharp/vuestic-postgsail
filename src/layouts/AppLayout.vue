@@ -45,13 +45,16 @@
   import Sidebar from '../components/sidebar/Sidebar.vue'
   //import LoadingScreen from '../components/loadingScreen.vue'
 
+  import { useVersionCheck } from '../composables/useVersionCheck'
+  useVersionCheck()
+
   const GlobalStore = useGlobalStore()
   const { hasLogs } = storeToRefs(GlobalStore)
   const { fetchStats } = GlobalStore
 
   const CacheStore = useCacheStore()
-  const { getInfoTiles } = storeToRefs(CacheStore)
-  const { getTags, getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+  const { getTags, Activity, lineChartbyMonth, lineChartbyWeek, logsChartHeatmap, logsChartNetwork, getAPI } =
+    CacheStore
 
   const VesselStore = useVesselStore()
   const router = useRouter()
@@ -123,11 +126,12 @@
       await CacheStore.resetCache()
     }
     // Load dynamic data for graph and dashboard
-    getTags()
-    InfoTiles()
-    barChart()
-    lineChartbyYear()
-    matrixChartbyMonthDay()
+    await getTags()
+    await Activity()
+    await lineChartbyMonth()
+    await lineChartbyWeek()
+    await logsChartHeatmap()
+    await logsChartNetwork()
     // Fetch Stats
     try {
       await fetchStats()

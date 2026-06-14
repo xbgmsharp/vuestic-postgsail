@@ -40,6 +40,13 @@ export const useCacheStore = defineAPIStore('cache', {
     logs_map: [],
     moorages_map: [],
     stays_map: [],
+    activity: {} as Record<string, any>,
+    bar_chart_by_week: [],
+    bar_chart_by_month: [],
+    line_chart_by_week: [],
+    line_chart_by_month: [],
+    logs_by_month_day: [],
+    network_chart: {},
   }),
 
   actions: {
@@ -75,7 +82,7 @@ export const useCacheStore = defineAPIStore('cache', {
       console.log('CacheStore resetCache')
     },
 
-    getTags(): Array<string> {
+    getTags2(): Array<string> {
       this.log_tags = []
       if (Array.isArray(this.logs) && this.logs.length > 0) {
         const tagSet = new Set<string>()
@@ -90,12 +97,26 @@ export const useCacheStore = defineAPIStore('cache', {
       }
       return this.log_tags
     },
-    InfoTiles(): Array<number> {
-      if (this.logs && this.stays && this.moorages) {
-        this.tiles = [this.logs.length, this.stays.length, this.moorages.length]
-      } else {
-        this.tiles = [0, 0, 0]
-      }
+    InfoTiles(): Array<Record<string, any>> {
+      const act = this.activity as Record<string, any>
+      const colors = ['info', 'info', 'info']
+      const routes = ['/logs', '/stays', '/moorages']
+      const keys = ['logs', 'stays', 'moorages']
+      this.tiles = keys.map((key, i) => {
+        if (act[key]) {
+          const a = act[key]
+          return {
+            color: colors[i],
+            route: routes[i],
+            text: key,
+            value: key === 'moorages' ? a.total : a.total,
+            last30d: key === 'moorages' ? a.new_last_30d ?? 0 : a.last_30d ?? 0,
+            pct: key === 'moorages' ? a.visits_pct ?? null : a.pct ?? null,
+          }
+        }
+        const len = key === 'logs' ? this.logs.length : key === 'stays' ? this.stays.length : this.moorages.length
+        return { color: colors[i], route: routes[i], text: key, value: len, last30d: 0, pct: null }
+      })
       return this.tiles
     },
     barChart(): Array<number> {
@@ -295,12 +316,140 @@ export const useCacheStore = defineAPIStore('cache', {
       console.log('pieChartStays obj', obj)
       return obj
     },*/,
+    async fetchStats() {
+      const payload = {
+        start_date: null,
+        end_date: null,
+      }
+      const api = new PostgSail()
+      try {
+        const response = await api.stats(payload)
+        this.stats = response.stats || {}
+        console.log('CacheStore fetchStats response', response)
+        return this.stats
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async Activity(): Promise<Record<string, any>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.vessel_activity()
+        if (response && typeof response === 'object' && !Array.isArray(response)) {
+          this.activity = response
+          //console.log('CacheStore Activity response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore Activity failed', err)
+      }
+      return this.activity
+    },
+    async barChartbyWeek(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_by_week()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.bar_chart_by_week = response
+          //console.log('CacheStore barChartbyWeek response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore barChartbyWeek failed', err)
+      }
+      return this.bar_chart_by_week
+    },
+    async barChartbyMonth(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_by_month()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.bar_chart_by_month = response
+          //console.log('CacheStore barChartbyMonth response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore barChartbyMonth failed', err)
+      }
+      return this.bar_chart_by_month
+    },
+    async lineChartbyWeek(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_by_year_week()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.line_chart_by_week = response.charts
+          //console.log('CacheStore lineChartbyWeek response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore lineChartbyWeek failed', err)
+      }
+      return this.line_chart_by_week
+    },
+    async lineChartbyMonth(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_by_year_month()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.line_chart_by_month = response.charts
+          //console.log('CacheStore lineChartbyMonth response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore lineChartbyMonth failed', err)
+      }
+      return this.line_chart_by_month
+    },
+    async logsChartHeatmap(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_by_month_day()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.heatmap = response.charts
+          //console.log('CacheStore logsChartHeatmap response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore logsChartHeatmap failed', err)
+      }
+      return this.heatmap
+    },
+    async logsChartNetwork(): Promise<Array<number>> {
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_network()
+        if (response && typeof response === 'object' && response?.charts) {
+          this.network_chart = response.charts
+          //console.log('CacheStore logsChartNetwork response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore logsChartNetwork failed', err)
+      }
+      return this.network_chart
+    },
+    async getTags(): Promise<Array<number>> {
+      if (this.log_tags.length > 0) return this.log_tags
+      const api = new PostgSail()
+      try {
+        const response = await api.logs_tags()
+        if (response && typeof response === 'object' && Array.isArray(response)) {
+          this.log_tags = response
+          //console.log('CacheStore logsTags response', response)
+        }
+      } catch (err) {
+        console.warn('CacheStore logsTags failed', err)
+      }
+      return this.log_tags
+    },
   } as JSObj,
   getters: {
-    getInfoTiles: (state: JSObj) => state.tiles,
-    logs_by_month: (state: JSObj) => state.stats,
-    logs_by_year_by_month: (state: JSObj) => state.lines,
-    logs_by_month_by_weekday: (state: JSObj) => state.matrix,
+    /* new */
+    logsTags: (state: JSObj) => state.log_tags,
+    getActivity: (state: JSObj) => state.activity,
+    logs_by_year_by_month: (state: JSObj) => state.line_chart_by_month,
+    logs_by_year_by_week: (state: JSObj) => state.line_chart_by_week,
+    logs_by_month_by_weekday: (state: JSObj) => state.heatmap,
+    logs_network: (state: JSObj) => state.network_chart,
+    /* old */
+    //getInfoTiles: (state: JSObj) => state.tiles,
+    //logs_by_month: (state: JSObj) => state.stats,
+    //logs_by_year_by_month: (state: JSObj) => state.lines,
+    //logs_by_month_by_weekday: (state: JSObj) => state.matrix,
     GetLastLogId: (state: JSObj) => (state?.logs && state.logs.length > 1 ? state.logs[0].id : -1),
     GetLogsDistance: (state: JSObj) => {
       let sum = 0

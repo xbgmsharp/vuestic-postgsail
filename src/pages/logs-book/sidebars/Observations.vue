@@ -37,6 +37,35 @@
     (event: 'updated', log: Trip): void
   }>()
 
+  // Metrics display helpers
+  function formatMetricKey(key: string | number | symbol): string {
+    const k = String(key)
+    const parts = k.split('.')
+    // Drop the namespace prefix (navigation, propulsion, tanks, solar…)
+    const meaningful = parts.slice(1).join(' ')
+    // Split camelCase and capitalise each word
+    return meaningful
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+      .trim()
+  }
+
+  function formatMetricValue(key: string | number | symbol, value: any): string {
+    const k = String(key)
+    if (typeof value === 'number') {
+      if (k.includes('Level')) return (value * 100).toFixed(1) + ' %'
+      if (k.includes('energy_wh')) return value.toFixed(0) + ' Wh'
+      return value.toFixed(2)
+    }
+    return String(value)
+  }
+
+  // Keys already extracted and formatted as engineHours — skip them in the raw loop
+  function isEngineRunTime(key: string | number | symbol): boolean {
+    const parts = String(key).split('.')
+    return parts[0] === 'propulsion' && parts[parts.length - 1] === 'runTime'
+  }
+
   // handle Observations
   const handleSeaState = async (new_sea_state: number, obj: { value: number; text: string }) => {
     console.log('handleSeaState new_sea_state', new_sea_state, obj)
@@ -233,6 +262,28 @@
 <template>
   <!-- observations section -->
   <div v-if="isLoggedIn && logbook.id > 0" class="">
+    <!-- Trip metrics from extra.metrics -->
+    <template v-if="logbook.extra?.metrics && Object.keys(logbook.extra.metrics).length > 0">
+      <div class="text-xs uppercase mt-4 mb-2">{{ t('logs.log.metrics') }}</div>
+      <dl class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
+        <!-- Engine hours: pre-formatted by DetailsMap -->
+        <div v-for="engine in logbook.engineHours" :key="engine.name" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ engine.name }} Run Time</dt>
+          <dd class="font-mono text-right">{{ engine.duration }}</dd>
+        </div>
+        <!-- Remaining metrics, skipping propulsion runTime keys -->
+        <div
+          v-for="(value, key) in logbook.extra.metrics"
+          v-show="!isEngineRunTime(key)"
+          :key="key"
+          class="flex justify-between py-1"
+        >
+          <dt class="text-gray-600 dark:text-gray-400">{{ formatMetricKey(key) }}</dt>
+          <dd class="font-mono text-right">{{ formatMetricValue(key, value) }}</dd>
+        </div>
+      </dl>
+    </template>
+
     <div class="text-xs uppercase mt-4">{{ t('logs.log.sea_state') }}</div>
     <div class="text-sm">
       <template v-if="isLoggedIn">

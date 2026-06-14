@@ -183,7 +183,6 @@
                       </div>
                     </li>
                   </ol>
-                  <hr class="cool-hr" />
                   <div v-if="logsList.length > 0" class="stats-list">
                     <div class="stat-line">
                       <strong>{{ $t('stats.count') }}:</strong> {{ stats.logs.count }}
@@ -355,6 +354,12 @@
                       </span>
                     </li>
                   </ol>
+                  <hr class="cool-hr" />
+                  <div v-if="mooragesList.length > 0" class="stats-list">
+                    <div class="stat-line">
+                      <strong>{{ $t('stats.count') }}:</strong> {{ stats.moorages.count }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div id="stays-list" class="sidepanel-tab-content" data-tab-content="tab-3">
@@ -821,9 +826,9 @@
     //observer.observe(document.getElementById('explore-map'))
     // Force map to recalculate size after initialization
     setTimeout(() => {
-      if (this.map) {
+      if (map.value) {
         console.log('Invalidate map size after timeout')
-        this.map.invalidateSize()
+        map.value.invalidateSize()
         const elm = document.getElementById('explore-map')
         console.debug('Leaflet map element size:', elm.getBoundingClientRect())
       }
@@ -917,6 +922,7 @@
     stats.logs.duration = 0
     stats.logs.distance = 0
     stats.moorages.count = 0
+    stats.moorages.duration = 0
 
     console.debug('filter.tags, filter.dateRange', filter.tags, filter.dateRange)
     console.debug('logsListFull', logsListFull.value)
@@ -965,7 +971,7 @@
       filter.dateRange = [0, logsListFull.value.length - 1] // Reset range to the new limits
     }
 
-    // Add moorages in range of the log. Bug the first moorage is never included if it is before the first log
+    // Add moorages in range of the log. Bug the first moorage is never included as it is before the first log
     mooragesListFull.value.forEach((moorageFeature, i) => {
       const moorageId = moorageFeature.properties.id
       const moorageStart = new Date(moorageFeature.properties.stay_first_seen)
@@ -973,7 +979,8 @@
       // be aware of logs order, desc vs asc
       // Check if moorage is within the log date range and referenced by logs
       if (
-        (moorageStart >= logEnd && moorageEnd <= logStart && referencedMoorageIds.has(moorageId)) ||
+        (moorageStart >= logEnd && moorageEnd <= logStart) ||
+        referencedMoorageIds.has(moorageId) ||
         moorageFeature.properties.stay_first_seen === null ||
         moorageFeature.properties.stay_last_seen === null
       ) {
@@ -981,10 +988,11 @@
           mooragesList.value.push(moorageFeature)
           map.value.addLayer(mooragesLayers.value[i])
           stats.moorages.count++
-          stats.moorages.duration += moorageFeature.properties?.stays_sum_duration || 0
+          stats.moorages.duration += durationHours(moorageFeature.properties?.stays_sum_duration || 0)
         }
       } else {
         console.debug(
+          ' Excluded moorage',
           moorageFeature.properties,
           'moorageStart',
           moorageStart,
@@ -1002,6 +1010,7 @@
     // Stats summary
     stats.logs.duration = parseFloat(stats.logs.duration).toFixed(1) + ' h'
     stats.logs.distance = distanceFormatMiles(stats.logs.distance)
+    stats.moorages.duration = parseFloat(stats.moorages.duration).toFixed(1) + ' h'
     //console.debug('Stats', stats)
 
     // Logs bounds

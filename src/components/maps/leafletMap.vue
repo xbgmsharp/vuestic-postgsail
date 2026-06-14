@@ -421,36 +421,42 @@
         GeoJSONLayer.value = featGroup
       } else if (this.geoJsonFeatures && this.geoJsonFeatures.length > 0) {
         const boatType = vesselType === 'Sailing' ? 'Sailboat' : vesselType === 'Pleasure Craft' ? 'Powerboat' : 'Dot'
+        const lineFilter = (feature) => feature.properties && (feature.properties.time || feature.properties._from_time)
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
-            filter: (feature) => feature.properties && (feature.properties.time || feature.properties._from_time),
+            filter: lineFilter,
             pointToLayer: boatTypes['Sailboat'],
             onEachFeature: popup,
           }),
           SailboatSails: L.geoJSON(geojson, {
-            filter: (feature) => feature.properties && (feature.properties.time || feature.properties._from_time),
+            filter: lineFilter,
             pointToLayer: boatTypes['SailboatSails'],
             onEachFeature: popup,
           }),
           Powerboat: L.geoJSON(geojson, {
-            filter: (feature) => feature.properties && (feature.properties.time || feature.properties._from_time),
+            filter: lineFilter,
             pointToLayer: boatTypes['Powerboat'],
             onEachFeature: popup,
           }),
           Dot: L.geoJSON(geojson, {
-            filter: (feature) => feature.properties && (feature.properties.time || feature.properties._from_time),
+            filter: lineFilter,
             pointToLayer: boatTypes['Dot'],
+            onEachFeature: popup,
+          }),
+          'Color by Status': L.geoJSON(geojson, {
+            filter: lineFilter,
+            pointToLayer: pointToLayerByStatus,
+            onEachFeature: popup,
+          }),
+          'Color by Speed': L.geoJSON(geojson, {
+            filter: lineFilter,
+            pointToLayer: pointToLayerBySpeed,
             onEachFeature: popup,
           }),
         }
         // Check if the last feature is a LineString with segment_num
         const lastFeature = this.geoJsonFeatures[this.geoJsonFeatures.length - 1]
-        GeoJSONLayer.value =
-          vesselType === 'Sailing'
-            ? GeoJSONbasemapObj.value['Sailboat']
-            : vesselType === 'Pleasure Craft'
-            ? GeoJSONbasemapObj.value['Powerboat']
-            : GeoJSONbasemapObj.value['Dot']
+        GeoJSONLayer.value = GeoJSONbasemapObj.value[boatType]
         if (
           lastFeature &&
           lastFeature.geometry.type === 'LineString' &&
@@ -573,6 +579,40 @@
         this.$emit('delete-point', coordinates)
       },
     },
+  }
+
+  const STATUS_COLORS = {
+    sailing: '#0074D9',
+    motoring: '#FF4136',
+    'motor sailing': '#FF851B',
+  }
+
+  const SPEED_COLOR = (knots) => {
+    if (knots < 2) return '#2166ac'
+    if (knots < 4) return '#74add1'
+    if (knots < 6) return '#abd9e9'
+    if (knots < 8) return '#f46d43'
+    if (knots < 10) return '#d73027'
+    return '#a50026'
+  }
+
+  const circleMarkerOptions = (color) => ({
+    radius: 4,
+    fillColor: color,
+    color: '#fff',
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.85,
+  })
+
+  const pointToLayerByStatus = (feature, latlng) => {
+    const status = (feature.properties?.status || '').toLowerCase()
+    return L.circleMarker(latlng, circleMarkerOptions(STATUS_COLORS[status] || '#3388FF'))
+  }
+
+  const pointToLayerBySpeed = (feature, latlng) => {
+    const knots = feature.properties?.speedoverground || 0
+    return L.circleMarker(latlng, circleMarkerOptions(SPEED_COLOR(knots)))
   }
 
   const styleSegment = (feature) => {

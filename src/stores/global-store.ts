@@ -4,6 +4,7 @@ import PostgSail from '../services/api-client'
 import deepMerge from '../utils/deepMerge'
 import OpenMeteo from '../services/openmeteo'
 import moment from 'moment'
+import i18n from '../i18n'
 import { userBadges } from '../utils/PostgSail'
 
 const demo_pattern = /^[A-Za-z0-9._%+-]+@openplotter.cloud$/
@@ -49,7 +50,7 @@ const defaultState = {
       time_spent_away: null,
       unique_moorages: 0,
       time_at_home_ports: null,
-      time_spent_away_arr: null,
+      time_spent_away_by: null,
     },
     logs_top_distance: null,
     logs_top_duration: null,
@@ -68,6 +69,7 @@ const defaultState = {
     postgis: '',
     postgrest: '',
   },
+  alarms: {},
   settings: {
     email: '',
     first: '',
@@ -105,6 +107,9 @@ const defaultState = {
       email_notifications: true,
       phone_notifications: false,
       windy: null,
+      position_reporting: false,
+      position_reporting_interval: 60,
+      language: 'gb',
       /*cache_minutes: 10,
       cache_clear_on_logout: true*/
     },
@@ -179,8 +184,12 @@ export const useGlobalStore = defineStore('global', {
       } catch (error) {
         console.error(error)
       }
+      this.language = this.settings?.preferences?.language || 'gb'
       await this.set_userBadges()
       this.settings.public_vessel = this.settings?.preferences?.public_vessel || 'no_public_vessel'
+      const alerts = await api.vessel_settings()
+      deepMerge(this.settings?.preferences?.alerting, alerts?.vessel_settings?.user_data?.alerting || {})
+      deepMerge(this.alarms, alerts?.vessel_settings?.user_data?.alarms || {})
       return this.settings
     },
     async updatePref(key: string, value: any): Promise<any> {
@@ -190,6 +199,18 @@ export const useGlobalStore = defineStore('global', {
         //const preferences: Record<string, any> = this.settings.preferences
         //preferences[key] = value
         console.log('GlobalStore updatePref response', response)
+        return response
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async updateVessel(key: string, value: any): Promise<any> {
+      const api = new PostgSail()
+      try {
+        const response = await api.update_vessel_settings({ key: `{${key}}`, value: value })
+        //const preferences: Record<string, any> = this.settings.preferences
+        //preferences[key] = value
+        console.log('GlobalStore updateVessel response', response)
         return response
       } catch (error) {
         console.log(error)
@@ -247,16 +268,11 @@ export const useGlobalStore = defineStore('global', {
         console.log(error)
       }
     },
-    async fetchStats() {
-      const payload = {
-        start_date: null,
-        end_date: null,
-      }
+    async fetchStats(payload?: { start_date?: string | null; end_date?: string | null }) {
       const api = new PostgSail()
       try {
-        const response = await api.stats(payload)
+        const response = await api.stats(payload || { start_date: null, end_date: null })
         this.stats = response.stats || {}
-        console.log('GlobalStore fetchStats response', response)
         return this.stats
       } catch (error) {
         console.log(error)
@@ -299,6 +315,48 @@ export const useGlobalStore = defineStore('global', {
     MonitoringLive: (state) => state.monitoringlive[0] || {},
     stats_logs: (state) => state.stats?.stats_logs || {},
     stats_moorages: (state) => state.stats?.stats_moorages || {},
+    vessel_stats: (state) => state.stats || {},
+    timeSpentAwayByType(): Record<string, any> {
+      const arr = (this.stats_moorages as any)?.time_spent_away_by
+      if (!Array.isArray(arr) || arr.length === 0) return {}
+      const descToCode: Record<string, string> = { Unknown: '1', Anchor: '2', 'Mooring Buoy': '3', Dock: '4' }
+      let totalMs = 0
+      const map: Record<string, any> = {}
+      arr.forEach((entry: any) => {
+        const ms = moment.duration(entry.duration).asMilliseconds()
+        const code = descToCode[entry.description] ?? entry.description
+        totalMs += ms
+        if (!map[code]) map[code] = { durationMs: 0 }
+        map[code].durationMs += ms
+      })
+      Object.keys(map).forEach((code) => {
+        const ms = map[code].durationMs
+        map[code].percentage = Math.round((ms / totalMs) * 100)
+        map[code].duration = moment.duration(ms).toISOString()
+      })
+      return map
+    },
+    pieChartUnderway(): any[] {
+      void (i18n.global.locale as any).value // track locale changes
+      const sl = this.stats_logs as any
+      const sm = this.stats_moorages as any
+      if (!sl?.sum_duration || !sm?.time_spent_away) return []
+      return [
+        { value: moment.duration(sl.sum_duration).as('days').toFixed(1), name: i18n.global.t('stats.underway') },
+        { value: moment.duration(sm.time_spent_away).as('days').toFixed(1), name: i18n.global.t('stats.away') },
+        { value: moment.duration(sm.time_at_home_ports).as('days').toFixed(1), name: i18n.global.t('stats.home') },
+      ]
+    },
+    pieChartStayType(): any[] {
+      void (i18n.global.locale as any).value // track locale changes
+      const timeData = this.timeSpentAwayByType as Record<string, any>
+      return Object.keys(timeData)
+        .filter((code) => timeData[code].durationMs > 0)
+        .map((code) => ({
+          value: moment.duration(timeData[code].duration).as('days').toFixed(1),
+          name: i18n.global.t('id.stay_code.' + code),
+        }))
+    },
     openWeather: (state) => state.openweather,
     currentWeather: (state) => state.currentweather,
     Badges: (state) => state.settings?.preferences?.badges || {},

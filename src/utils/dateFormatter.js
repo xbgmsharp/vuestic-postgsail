@@ -32,10 +32,7 @@ export const durationFormat = (durationString) => {
 }
 export const dateFormatUTC = (dateString, format = 'll LT') => {
   if (!dateString) return null
-  //const date = moment.utc(dateString).locale(moment_locale()).format('L LT')
-  //const date = moment.utc(dateString).locale(moment_locale()).format(format)
-  const date = new Date(dateString).toLocaleString()
-  return date
+  return moment.utc(dateString).locale(moment_locale()).format(format)
 }
 export const dateFormatTime = (dateString) => {
   if (!dateString) return null
@@ -78,6 +75,19 @@ export const durationFormatDays = (durationString) => {
 export const durationI18nDays = (durationString, tr = 'units.time.days') => {
   const durationD = parseFloat(durationFormatDays(durationString))
   return t(tr, durationD)
+}
+
+export const stayGeneratedName = (duration, moorage, departed) => {
+  const days = durationDays(duration)
+  let durationLabel
+  if (days >= 1) {
+    durationLabel = t('units.time.days', Math.round(days))
+  } else {
+    const hours = Math.round(durationHours(duration))
+    durationLabel = hours + ' ' + t('units.time.hours', hours)
+  }
+  const monthYear = departed ? moment.utc(departed).locale(moment_locale()).format('MMMM YYYY') : ''
+  return [durationLabel, moorage, monthYear].filter(Boolean).join(' · ')
 }
 
 export const durationI18nDaysHours = (durationString) => {

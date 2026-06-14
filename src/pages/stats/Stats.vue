@@ -60,6 +60,14 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>{{ $t('stats.first_date') }}</td>
+                    <td>{{ dateFormat(stats_logs.first_date) }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('stats.last_date') }}</td>
+                    <td>{{ dateFormat(stats_logs.last_date) }}</td>
+                  </tr>
+                  <tr>
                     <td>{{ $t('stats.sum_distance') }}</td>
                     <td>
                       <router-link class="va-link link" :to="{ name: 'logs' }">
@@ -132,7 +140,7 @@
                 </tbody>
               </table>
               <div>
-                <EchartsDonught v-if="pieChartUnderway" :series="pieChartUnderway" :theme="currentTheme" />
+                <EchartsDonught v-if="pieChartUnderway.length" :series="pieChartUnderway" :theme="currentTheme" />
               </div>
             </template>
           </va-inner-loading>
@@ -142,55 +150,59 @@
       <va-card class="col-span-12 lg:col-span-6 sm:col-span-12 p-2">
         <va-card-title>{{ t('stats.moorages') }}</va-card-title>
         <va-card-content>
-          <table class="va-table va-table--hoverable va-table--striped">
-            <tbody>
-              <tr>
-                <td>{{ $t('stats.home_ports') }}</td>
-                <td>
-                  <router-link class="va-link link" :to="{ name: 'moorages' }">
-                    {{ stats_moorages.home_ports }}
-                  </router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>{{ $t('stats.unique_moorages') }}</td>
-                <td>
-                  <router-link class="va-link link" :to="{ name: 'moorages' }">
-                    {{ stats_moorages.unique_moorages }}
-                  </router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>{{ $t('stats.time_at_home_ports') }}</td>
-                <td>
-                  <router-link class="va-link link" :to="{ name: 'stays' }">
-                    {{ durationI18nDaysHours(stats_moorages.time_at_home_ports) }}
-                  </router-link>
-                </td>
-              </tr>
-              <tr>
-                <td>{{ $t('stats.time_spent_away') }}</td>
-                <td>
-                  <router-link class="va-link link" :to="{ name: 'stays' }">
-                    {{ durationI18nDaysHours(stats_moorages.time_spent_away) }}
-                  </router-link>
-                </td>
-              </tr>
-              <tr v-for="(value, stayCode) in timeSpentAwayByType" :key="stayCode">
-                <template v-if="value.durationMs > 0">
-                  <td class="sub-setting">{{ $t('id.stay_code.' + stayCode) }}</td>
-                  <td class="flex">
-                    <router-link class="va-link link" :to="{ name: 'stays' }">
-                      {{ durationI18nDaysHours(value.duration) }}
-                    </router-link>
-                  </td>
-                </template>
-              </tr>
-            </tbody>
-          </table>
-          <div>
-            <EchartsDonught v-if="pieChartStayType" :series="pieChartStayType" :theme="currentTheme" />
-          </div>
+          <va-inner-loading :loading="isBusy">
+            <template v-if="stats_moorages?.unique_moorages">
+              <table class="va-table va-table--hoverable va-table--striped">
+                <tbody>
+                  <tr>
+                    <td>{{ $t('stats.home_ports') }}</td>
+                    <td>
+                      <router-link class="va-link link" :to="{ name: 'moorages' }">
+                        {{ stats_moorages.home_ports }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('stats.unique_moorages') }}</td>
+                    <td>
+                      <router-link class="va-link link" :to="{ name: 'moorages' }">
+                        {{ stats_moorages.unique_moorages }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('stats.time_at_home_ports') }}</td>
+                    <td>
+                      <router-link class="va-link link" :to="{ name: 'stays' }">
+                        {{ durationI18nDaysHours(stats_moorages.time_at_home_ports) }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ $t('stats.time_spent_away') }}</td>
+                    <td>
+                      <router-link class="va-link link" :to="{ name: 'stays' }">
+                        {{ durationI18nDaysHours(stats_moorages.time_spent_away) }}
+                      </router-link>
+                    </td>
+                  </tr>
+                  <tr v-for="(value, stayCode) in timeSpentAwayByType" :key="stayCode">
+                    <template v-if="value.durationMs > 0">
+                      <td class="sub-setting">{{ $t('id.stay_code.' + stayCode) }}</td>
+                      <td class="flex">
+                        <router-link class="va-link link" :to="{ name: 'stays' }">
+                          {{ durationI18nDaysHours(value.duration) }}
+                        </router-link>
+                      </td>
+                    </template>
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <EchartsDonught v-if="pieChartStayType.length" :series="pieChartStayType" :theme="currentTheme" />
+              </div>
+            </template>
+          </va-inner-loading>
         </va-card-content>
       </va-card>
 
@@ -270,347 +282,95 @@
 <script setup>
   import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import PostgSail from '../../services/api-client'
   const nodatayet = defineAsyncComponent(() => import('../../components/noDataScreen.vue'))
   import EchartsDonught from '../../components/echarts/donught.vue'
   import { useGlobalStore } from '../../stores/global-store'
-  import { useCacheStore } from '../../stores/cache-store'
   import { storeToRefs } from 'pinia'
   import moment from 'moment/min/moment-with-locales'
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
-  import { durationI18nDaysHours, durationI18nDays } from '../../utils/dateFormatter.js'
+  import { durationI18nDaysHours, dateFormat } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
-  const { isLoggedIn, publicVessel, instagram, website } = useGlobalStore()
+  const { publicVessel, instagram, website } = useGlobalStore()
   import TopBy from './Cards/TopBy.vue'
   import TopMooragesBy from './Cards/TopMooragesBy.vue'
 
   const { t } = useI18n()
   const GlobalStore = useGlobalStore()
-  const { userBadges, currentTheme } = storeToRefs(GlobalStore)
-  const CacheStore = useCacheStore()
-  const { logs, stays, moorages } = storeToRefs(CacheStore)
+  const {
+    userBadges,
+    currentTheme,
+    vessel_stats,
+    stats_logs,
+    stats_moorages,
+    pieChartUnderway,
+    pieChartStayType,
+    timeSpentAwayByType,
+  } = storeToRefs(GlobalStore)
 
   const isBusy = ref(false)
   const apiError = ref(null)
-
-  const vessel_stats = ref({})
-  const stats_logs = ref({})
-  const stats_moorages = ref({})
   const dateRange = ref(null)
 
   function getFlagIcon(code, size) {
     return `flag-icon-${code} ${size}`
   }
 
-  const disabled = computed(() => {
-    //console.log('disabled logs', logs.value)
-    //console.log('disabled stays', stays.value)
-    if (!Array.isArray(logs.value) || logs.value.length == 0) return true
-    if (!Array.isArray(stays.value) || stays.value.length == 0) return true
-    return false
-  })
+  const disabled = computed(() => !isBusy.value && !stats_logs.value?.count)
 
-  // TopBy listing
-  const tripMap = computed(() => new Map(logs.value.map((trip) => [trip.id, trip])))
-
-  const logsTopByAvgSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_avg_speed) || vessel_stats.value.logs_top_avg_speed.length === 0)
-      return []
-    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
-
-    return vessel_stats.value.logs_top_avg_speed
-      .map((match) => {
-        const trip = tripMap.value.get(match.id)
-        if (trip) {
-          return {
-            ...trip,
-            avg_speed: speedFormatKnots(match.avg_speed),
-          }
-        }
-        return null
-      })
-      .filter((trip) => trip !== null)
-  })
-  const logsTopByMaxSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_speed) || vessel_stats.value.logs_top_speed.length === 0) return []
-    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
-
-    return vessel_stats.value.logs_top_speed
-      .map((match) => {
-        const trip = tripMap.value.get(match.id)
-        if (trip) {
-          return {
-            ...trip,
-            max_speed: speedFormatKnots(match.max_speed),
-          }
-        }
-        return null
-      })
-      .filter((trip) => trip !== null)
-  })
-  const logsTopByWindSpeed = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_wind_speed) || vessel_stats.value.logs_top_wind_speed.length === 0)
-      return []
-    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
-
-    const tripMap = new Map(logs.value.map((trip) => [trip.id, trip]))
-    return vessel_stats.value.logs_top_wind_speed
-      .map((match) => {
-        const trip = tripMap.get(match.id)
-        if (trip) {
-          return {
-            ...trip,
-            wind_speed: speedFormatKnots(match.max_wind_speed),
-          }
-        }
-        return null
-      })
-      .filter((trip) => trip !== null)
-  })
-  const logsTopByDistance = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_distance) || vessel_stats.value.logs_top_distance.length === 0)
-      return []
-    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
-
-    return vessel_stats.value.logs_top_distance
-      .map((id) => {
-        const trip = tripMap.value.get(id)
-        if (trip) {
-          return {
-            ...trip,
-            distance: distanceFormatMiles(trip.distance),
-          }
-        }
-        return null
-      })
-      .filter((trip) => trip !== null)
-  })
-  const logsTopByDuration = computed(() => {
-    if (!Array.isArray(vessel_stats.value.logs_top_duration) || vessel_stats.value.logs_top_duration.length === 0)
-      return []
-    if (!Array.isArray(logs.value) || logs.value.length === 0) return []
-
-    return vessel_stats.value.logs_top_duration
-      .map((id) => {
-        const trip = tripMap.value.get(id)
-        if (trip) {
-          return {
-            ...trip,
-            duration: durationI18nDaysHours(trip.duration),
-          }
-        }
-        return null
-      })
-      .filter((trip) => trip !== null)
-  })
-
-  // TopMooragesBy listing
-  const moorageMap = computed(() => new Map(moorages.value.map((moorage) => [moorage.id, moorage])))
-
-  const mooragesTopByDuration = computed(() => {
-    if (
-      !Array.isArray(vessel_stats.value.moorages_top_duration) ||
-      vessel_stats.value.moorages_top_duration.length === 0
-    )
-      return []
-    if (!Array.isArray(moorages.value) || moorages.value.length === 0) return []
-
-    return vessel_stats.value.moorages_top_duration
-      .map((match) => {
-        const moorage = moorageMap.value.get(match.id)
-        if (moorage) {
-          return {
-            ...moorage,
-            duration: durationI18nDaysHours(match.dur),
-          }
-        }
-        return null
-      })
-      .filter((moorage) => moorage !== null)
-  })
-  const mooragesTopByArrivals = computed(() => {
-    if (
-      !Array.isArray(vessel_stats.value.moorages_top_arrivals) ||
-      vessel_stats.value.moorages_top_arrivals.length === 0
-    )
-      return []
-    if (!Array.isArray(moorages.value) || moorages.value.length === 0) return []
-
-    return vessel_stats.value.moorages_top_arrivals
-      .map((match) => {
-        const moorage = moorageMap.value.get(match.id)
-        if (moorage) {
-          return {
-            ...moorage,
-            arrivals: match.ref_count,
-          }
-        }
-        return null
-      })
-      .filter((moorage) => moorage !== null)
-  })
+  const logsTopByAvgSpeed = computed(() =>
+    (vessel_stats.value.logs_top_avg_speed ?? []).map((e) => ({ ...e, avg_speed: speedFormatKnots(e.avg_speed) })),
+  )
+  const logsTopByMaxSpeed = computed(() =>
+    (vessel_stats.value.logs_top_speed ?? []).map((e) => ({ ...e, max_speed: speedFormatKnots(e.max_speed) })),
+  )
+  const logsTopByWindSpeed = computed(() =>
+    (vessel_stats.value.logs_top_wind_speed ?? []).map((e) => ({
+      ...e,
+      wind_speed: speedFormatKnots(e.max_wind_speed),
+    })),
+  )
+  const logsTopByDistance = computed(() =>
+    (vessel_stats.value.logs_top_distance ?? []).map((e) => ({ ...e, distance: distanceFormatMiles(e.distance) })),
+  )
+  const logsTopByDuration = computed(() =>
+    (vessel_stats.value.logs_top_duration ?? []).map((e) => ({ ...e, duration: durationI18nDaysHours(e.duration) })),
+  )
+  const mooragesTopByDuration = computed(() =>
+    (vessel_stats.value.moorages_top_duration ?? []).map((e) => ({ ...e, duration: durationI18nDaysHours(e.dur) })),
+  )
+  const mooragesTopByArrivals = computed(() =>
+    (vessel_stats.value.moorages_top_arrivals ?? []).map((e) => ({ ...e, arrivals: e.ref_count })),
+  )
 
   onMounted(async () => {
-    console.log('Stats onMounted')
     isBusy.value = true
     apiError.value = null
-    const api = new PostgSail()
     try {
-      let response = null
-      // Get logs
-      if (logs.value.length === 0) {
-        response = await CacheStore.getAPI('logs')
-        console.log('Get logs', response)
-      }
-      // Get stays
-      if (stays.value.length === 0) {
-        response = await CacheStore.getAPI('stays')
-        console.log('Get stays', response)
-      }
-      // Get moorages
-      if (moorages.value.length === 0) {
-        response = await CacheStore.getAPI('moorages')
-        console.log('Get moorages', response)
-      }
+      await GlobalStore.fetchStats()
+      dateRange.value = { start: stats_logs.value?.first_date || null, end: stats_logs.value?.last_date || null }
     } catch (e) {
       apiError.value = e
-      if (!import.meta.env.PROD) {
-        console.warn('Fallback using sample data from local json...', apiError.value)
-        stats_logs.value = 2 //stats_logs[0]
-        stats_moorages.value = 1 //stats_moorages[0]
-      }
-      return
     } finally {
       isBusy.value = false
     }
-    console.log('logs', logs.value)
-    console.log('moorages', moorages.value)
-
-    try {
-      let response = await api.stats()
-      if (response.stats) {
-        console.log('stats success', response)
-        vessel_stats.value = response.stats
-        stats_logs.value = response.stats.stats_logs
-        stats_moorages.value = response.stats.stats_moorages
-        dateRange.value = { start: stats_logs.value?.first_date || null, end: stats_logs.value?.last_date || null }
-      } else {
-        throw { response }
-      }
-    } catch (err) {
-      // If exit as we need coordinates
-      console.log('stats failed', err)
-      //updateError.value = response.message
-    } finally {
-      //isBusy.value = false
-    }
-    // userBadges
-    console.log('stats userBadges', userBadges.value)
   })
 
-  function updateDateRange(range) {
-    // runBusy handles isBusy & apiError
-    console.log('updateDateRange', range)
+  function updateDateRange() {
     updateStatsLogs()
   }
 
   async function updateStatsLogs() {
-    const payload = {
-      start_date: moment(dateRange.value.start).format('YYYY-MM-DD'),
-      end_date: moment(dateRange.value.end).format('YYYY-MM-DD'),
-    }
     try {
-      const api = new PostgSail()
-      let response = await api.stats(payload)
-      if (response.stats) {
-        console.log('updateStatsLogs success', response)
-        vessel_stats.value = response.stats
-        stats_logs.value = response.stats.stats_logs
-        stats_moorages.value = response.stats.stats_moorages
-      } else {
-        throw { response }
-      }
+      await GlobalStore.fetchStats({
+        start_date: moment(dateRange.value.start).format('YYYY-MM-DD'),
+        end_date: moment(dateRange.value.end).format('YYYY-MM-DD'),
+      })
     } catch (err) {
-      // If exit as we need coordinates
-      console.log('updateStatsLogs failed', err)
-      return
-      //updateError.value = response.message
-    } finally {
-      //isBusy.value = false
+      console.error('updateStatsLogs failed', err)
     }
   }
-
-  const pieChartUnderway = computed(() => {
-    if (!stats_logs.value || !stats_moorages.value) {
-      return []
-    }
-    return [
-      {
-        value: moment.duration(stats_logs.value.sum_duration).as('days').toFixed(1),
-        name: t('stats.underway'),
-      },
-      {
-        value: moment.duration(stats_moorages.value.time_spent_away).as('days').toFixed(1),
-        name: t('stats.away'),
-      },
-      {
-        value: moment.duration(stats_moorages.value.time_at_home_ports).as('days').toFixed(1),
-        name: t('stats.home'),
-      },
-    ]
-  })
-
-  const timeSpentAwayByType = computed(() => {
-    if (
-      !stats_moorages.value ||
-      !Array.isArray(stats_moorages.value.time_spent_away_arr) ||
-      stats_moorages.value.time_spent_away_arr.length === 0
-    ) {
-      return {}
-    }
-
-    let totalDurationMs = 0
-    const stayMap = {}
-
-    stats_moorages.value.time_spent_away_arr.forEach((entry) => {
-      const stayCode = entry.stay_code
-      const durationMs = moment.duration(entry.stay_duration).asMilliseconds()
-
-      totalDurationMs += durationMs
-      if (!stayMap[stayCode]) {
-        stayMap[stayCode] = { durationMs: 0 }
-      }
-      stayMap[stayCode].durationMs += durationMs
-    })
-
-    Object.keys(stayMap).forEach((stayCode) => {
-      const durationMs = stayMap[stayCode].durationMs
-
-      stayMap[stayCode].percentage = Math.round((durationMs / totalDurationMs) * 100)
-
-      const durationObj = moment.duration(durationMs)
-      stayMap[stayCode].duration = durationObj.toISOString()
-    })
-
-    return stayMap
-  })
-
-  const pieChartStayType = computed(() => {
-    const timeData = timeSpentAwayByType.value
-    const data = []
-    Object.keys(timeData).forEach((stayCode) => {
-      const value = timeData[stayCode]
-      if (value.durationMs > 0) {
-        data.push({
-          value: moment.duration(value.duration).as('days').toFixed(1),
-          name: t('id.stay_code.' + stayCode),
-        })
-      }
-    })
-    return data
-  })
 </script>
 
 <style lang="scss" scoped>

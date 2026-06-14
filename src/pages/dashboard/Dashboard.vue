@@ -28,7 +28,7 @@
             </tbody>
           </table>
         </div>
-        <div class="col-span-6 flex flex-col va-text-center">
+        <div v-if="statusText.img" class="col-span-6 flex flex-col va-text-center">
           <div class="grid gap-4 va-text-center">
             <div>
               <img :src="statusText.img" :width="84" :height="84" alt="status icon" style="margin-left: 30%" />
@@ -117,12 +117,36 @@
       </va-card>
     </template>
 
-    <!-- Info Tiles -->
+    <!-- Info Tiles — powered by vessel_activity_fn() -->
     <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
-      <router-link :to="info.text">
-        <va-card-content>
-          <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>
-          <p class="text-white">{{ t('menu.' + info.text) }}</p>
+      <router-link :to="info.route">
+        <va-card-content class="flex flex-col space-y-3">
+          <!-- Total count + label -->
+          <div>
+            <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2>
+            <p class="text-white opacity-80 text-sm">{{ t('menu.' + info.text) }}</p>
+          </div>
+
+          <!-- 30-day delta -->
+          <section class="border-t border-white/20 pt-2">
+            <div class="text-white font-semibold text-base">{{ info.last30d }} {{ t('dashboard.tiles.last_30d') }}</div>
+
+            <!-- pct is NULL when prev_30d = 0 (first activity or off-season) -->
+            <p v-if="info.pct !== null" class="text-xs flex items-center gap-1 mt-0.5">
+              <va-icon
+                :name="info.pct >= 0 ? 'arrow_upward' : 'arrow_downward'"
+                size="14px"
+                :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'"
+              />
+              <span :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'">
+                {{ Math.abs(info.pct).toFixed(1) }}%
+              </span>
+              <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
+            </p>
+            <p v-else class="text-xs text-white/50 mt-0.5">
+              {{ t('dashboard.tiles.no_prev_data') }}
+            </p>
+          </section>
         </va-card-content>
       </router-link>
     </va-card>
@@ -178,8 +202,9 @@
   const { fetchVersions, fetchWeatherForecast, fetchMonitoring2, fetchMonitoringLive, fetchStats } = GlobalStore
 
   const CacheStore = useCacheStore()
-  const { getInfoTiles, GetLastLogId } = storeToRefs(CacheStore)
-  const { getTags, getAPI, InfoTiles, barChart, lineChartbyYear, matrixChartbyMonthDay } = CacheStore
+  const { getActivity, GetLastLogId } = storeToRefs(CacheStore)
+  const { getTags, Activity, lineChartbyMonth, lineChartbyWeek, logsChartHeatmap, logsChartNetwork, getAPI } =
+    CacheStore
 
   const VesselStore = useVesselStore()
   const { vesselId } = storeToRefs(VesselStore)
@@ -197,24 +222,9 @@
   console.log('app_version:', app_version.value, userName.value)
 
   const infoTiles = ref([
-    {
-      color: 'info',
-      value: '0',
-      text: 'logs',
-      icon: 'menu-logs',
-    },
-    {
-      color: 'info',
-      value: '0',
-      text: 'stays',
-      icon: 'menu-stays',
-    },
-    {
-      color: 'info',
-      value: '0',
-      text: 'moorages',
-      icon: 'menu-moorages',
-    },
+    { color: 'info', route: '/logs', text: 'logs', total: 0, last30d: 0, pct: null },
+    { color: 'info', route: '/stays', text: 'stays', total: 0, last30d: 0, pct: null },
+    { color: 'info', route: '/moorages', text: 'moorages', total: 0, last30d: 0, pct: null },
   ])
 
   const monitoring = ref({})
@@ -345,16 +355,18 @@
     }
 
     // Load Charts Dashboard
-    getTags()
-    InfoTiles()
-    barChart()
-    lineChartbyYear()
-    matrixChartbyMonthDay()
-    console.log('Dashboard onMounted getInfoTiles.value', getInfoTiles.value)
-    for (let tile in CacheStore.tiles) {
-      //infoTiles.value[tile as unknown as number].value = CacheStore.tiles[tile as unknown as number]
-      infoTiles.value[tile].value = CacheStore.tiles[tile]
-    }
+    await getTags()
+    await Activity()
+    await lineChartbyMonth()
+    await lineChartbyWeek()
+    await logsChartHeatmap()
+    await logsChartNetwork()
+    console.log('Dashboard onMounted getActivity.value', getActivity.value)
+    infoTiles.value = [
+      { color: 'info', route: '/logs', text: 'logs', ...CacheStore.getActivity.logs },
+      { color: 'info', route: '/stays', text: 'stays', ...CacheStore.getActivity.stays },
+      { color: 'info', route: '/moorages', text: 'moorages', ...CacheStore.getActivity.moorages },
+    ]
     console.debug('Dashboard onMounted CacheStore, found logs', CacheStore.logs.length, mylogs.length)
 
     const api = new PostgSail()
@@ -458,7 +470,7 @@
         img = '/dock_icon.png'
       }
       return {
-        text: `${status} ${props.name}`,
+        text: `${status} ${props?.name || ''}`,
         img: img,
       }
     } else if (status !== 'moored' && status !== null) {

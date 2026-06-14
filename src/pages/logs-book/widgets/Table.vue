@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { PropType, computed } from 'vue'
+  import { PropType } from 'vue'
   import { defineVaDataTableColumns } from 'vuestic-ui'
   import { useVModel } from '@vueuse/core'
-  import { Log, Pagination } from '../types'
+  import { Log } from '../types'
   import TagsChip from '../../../components/TagsChip.vue'
   import { useI18n } from 'vue-i18n'
   import { dateFormatUTC } from '../../../utils/dateFormatter.js'
@@ -46,10 +46,6 @@
       type: String,
       required: true,
     },
-    pagination: {
-      type: Object as PropType<Pagination>,
-      required: true,
-    },
   })
 
   const emit = defineEmits<{
@@ -62,21 +58,11 @@
 
   const sortByVModel = useVModel(props, 'sortBy', emit)
   const sortingOrderVModel = useVModel(props, 'sortingOrder', emit)
-
-  const totalPages = computed(() => Math.ceil(props.logbook.length / props.pagination.perPage))
 </script>
 
 <template>
   <div>
-    <va-data-table
-      :columns="columns"
-      :items="logbook"
-      :loading="loading"
-      :per-page="props.pagination.perPage"
-      :current-page="props.pagination.page"
-      striped
-      hoverable
-    >
+    <va-data-table :columns="columns" :items="logbook" :loading="loading" striped hoverable>
       <template #cell(name)="{ value, rowData }">
         <div class="whitespace-normal break-words">
           <template v-if="isLoggedIn">
@@ -188,18 +174,6 @@
         </div>
       </template>
     </va-data-table>
-    <template v-if="logbook.length > $props.pagination.perPage">
-      <div class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2">
-        <div>
-          <b>{{ logbook.length }} trips.</b>
-          Logs per page
-          <va-select v-model="$props.pagination.perPage" class="!w-20" :options="[10, 20, 50, 100]" />
-        </div>
-        <div class="mt-3 row justify-center">
-          <va-pagination v-model="$props.pagination.page" input :pages="totalPages" />
-        </div>
-      </div>
-    </template>
   </div>
 </template>
 

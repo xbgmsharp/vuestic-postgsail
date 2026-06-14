@@ -14,8 +14,8 @@ class HttpClient {
     })
 
     if (res.status === 401) {
-      // Unauthorized or token expired
       console.warn('Unauthorized or token expired')
+      window.dispatchEvent(new CustomEvent('app:unauthorized'))
       return 401
     }
     if (res.status === 551) {

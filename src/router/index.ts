@@ -451,7 +451,7 @@ router.beforeEach(async (to, from, next) => {
       return
     }
     // Enforce vessel creation
-    if (to.name != 'boat-new' && isLoggedIn && validEmail && !hasVessel) {
+    if (to.name != 'boat-new' && to.name != 'logout' && isLoggedIn && validEmail && !hasVessel) {
       next({ name: 'boat-new' })
       return
     }

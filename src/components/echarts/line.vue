@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { LineChart } from 'echarts/charts'
@@ -12,6 +12,10 @@
     series: {
       type: Array,
       required: true,
+    },
+    theme: {
+      type: String,
+      default: THEME_KEY.LIGHT,
     },
   })
 
@@ -31,11 +35,15 @@
       },
     ],
   }
+
+  const themeOption = computed(() => {
+    return props.theme || THEME_KEY.LIGHT
+  })
 </script>
 
 <template>
   <div id="echarts">
-    <v-chart :option="option" autoresize />
+    <v-chart :option="option" :theme="themeOption" autoresize />
   </div>
 </template>
 

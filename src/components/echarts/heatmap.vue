@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { HeatmapChart } from 'echarts/charts'

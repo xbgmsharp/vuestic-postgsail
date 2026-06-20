@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, watch } from 'vue'
+  import { computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { LineChart, BarChart } from 'echarts/charts'

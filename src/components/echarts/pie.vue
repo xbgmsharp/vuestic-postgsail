@@ -1,4 +1,5 @@
 <script setup>
+  import { computed } from 'vue'
   import VChart, { THEME_KEY } from 'vue-echarts'
   import { use } from 'echarts/core'
   import { PieChart } from 'echarts/charts'
@@ -6,6 +7,21 @@
   import { CanvasRenderer } from 'echarts/renderers'
 
   use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
+
+  const props = defineProps({
+    series: {
+      type: Array,
+      required: true,
+    },
+    theme: {
+      type: String,
+      default: THEME_KEY.LIGHT,
+    },
+  })
+
+  const themeOption = computed(() => {
+    return props.theme || THEME_KEY.LIGHT
+  })
 
   const option = {
     title: {
@@ -48,7 +64,7 @@
 
 <template>
   <div id="echarts">
-    <v-chart :option="option" autoresize />
+    <v-chart :option="option" :theme="themeOption" autoresize />
   </div>
 </template>
 

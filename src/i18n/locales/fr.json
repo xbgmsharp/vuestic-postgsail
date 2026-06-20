@@ -217,8 +217,8 @@
       "note": "Note | Notes",
       "remarks": "Raconte ce qui s'est passé",
       "export": "Export",
-      "avg_max_speed": "SPEED AVG / MAX",
-      "max_wind_speed": "WIND AVG / MAX",
+      "avg_max_speed": "VITESSE MOY / MAX",
+      "max_wind_speed": "VENT MOY / MAX",
       "sea_state": "État de la mer",
       "cloud_coverage": "Couverture nuageuse",
       "visibility": "Visibilité",
@@ -227,7 +227,7 @@
       "observations": "Observations",
       "share": "Partager",
       "tags": "Étiquettes",
-      "delete": "Delete Log Book"
+      "delete": "Supprimer le livre de bord"
     }
   },
   "stays": {
@@ -319,8 +319,8 @@
     "first_date": "Première entrée",
     "last_date": "Dernière entrée",
     "longest_nonstop": "La plus longue navigation sans escale",
-    "max_speed": "Max Speed",
-    "max_wind_speed": "Max Wind Speed",
+    "max_speed": "Vitesse max",
+    "max_wind_speed": "Vitesse maximale du vent",
     "sum_distance": "Distance totale",
     "sum_duration": "Temps total en navigation",
     "total_duration": "Durée totale du voyage",
@@ -329,24 +329,24 @@
     "time_at_home_ports": "Temps passé au port d'attache",
     "time_spent_away": "Temps passé loin",
     "country": "Pays visité",
-    "top_logs_by_distance": "Top Logs by Distance",
-    "top_logs_by_duration": "Top Logs by Duration",
-    "top_logs_by_avg_speed": "Top Logs by Average Speed",
-    "top_logs_by_max_speed": "Top Logs by Max Speed",
-    "top_logs_by_wind_speed": "Top Logs by Max Wind Speed",
-    "top_moorages_by_duration": "Top Moorages by Stay Duration",
-    "top_moorages_by_arrivals": "Top Moorages by Arrivals",
+    "top_logs_by_distance": "Top des journaux de bord par distance",
+    "top_logs_by_duration": "Top des journaux de bord par durée",
+    "top_logs_by_avg_speed": "Top des journaux de bord par vitesse moyenne",
+    "top_logs_by_max_speed": "Top des journaux de bord par vitesse maximale",
+    "top_logs_by_wind_speed": "Top des journaux de bord par vitesse maximale du vent",
+    "top_moorages_by_duration": "Top des mouillages par durée de séjour",
+    "top_moorages_by_arrivals": "Top des mouillages par arrivées",
     "underway": "En navigation",
     "away": "Hors du port de base",
     "home": "Port de base"
   },
   "boats": {
     "list": {
-      "title": "Boats",
+      "title": "Bateaux",
       "actions": "Actions"
     },
     "details": {
-      "title": "Boat"
+      "title": "Bateau"
     },
     "boat": {
       "title": "Ajoute ton bateau à PostgSail",
@@ -512,26 +512,26 @@
       "telegram_bot": "Telegram is a messaging app that allows you to receive real-time notifications on your phone or desktop. By connecting your Telegram account to PostgSail, you can get instant alerts about important events and conditions related to your boat, helping you stay informed and take timely action.",
       "sponsor_thank_you": "Thank you for sponsoring PostgSail! Your support helps us continue to develop and improve the platform, making it even better for sailors around the world. We truly appreciate your contribution to your sailing community!",
       "password_protected": "When enabled, you will be required to enter your password to access your public data. This adds an extra layer of security to protect your personal information.",
-      "min_notification_interval": "Min Notification Interval (h)",
-      "high_wind_speed_threshold": "Wind Speed (kts)",
-      "low_outdoor_temperature_threshold": "Minimum Outdoor Temperature (C)",
-      "low_indoor_temperature_threshold": "Minimum Indoor Temperature (C)",
-      "low_water_temperature_threshold": "Minimum Water Temperature (C)",
-      "low_water_depth_threshold": "Minimum Water Depth (m)",
-      "low_pressure_threshold": "Minimum Pressure (hpa)",
-      "high_pressure_drop_threshold": "Maximum Pressure Drop in 12 hours (hpa)",
-      "low_battery_charge_threshold": "Minimum Battery Charge (%)",
-      "low_battery_voltage_threshold": "Minimum Battery Voltage (V)",
-      "windy_station": "Windy station identifier as displayed in Windy URL after /station/pws- (e.g. d06efc48)",
-      "public_profile": "When enabled, corresponding pages like stats, timelapse and others can be accessed by anyone without being required to login or password protected. It is a read-only mode.",
-      "public_logs": "When enabled, your individual log details will be publicly accessible at https://iot.openplotter.cloud/{0}/log/{1}",
-      "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
-      "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
-      "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
-      "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
-      "public_name": "When you enable your public profile, you will have the option to choose your boat name",
-      "public_windy": "When you enable your public profile, you will have the option to transform your boat in a weather station integrate in Windy.",
-      "mcp_integration": "Allows AI agents integration in a secure (read-only) and standardized way. When using PostgSail MCP server, you can enable advanced functionalities that enhance the capabilities of your marine data systems, making it easier to manage and optimize your boating experience."
+      "min_notification_interval": "Intervalle de notification min. (h)",
+      "high_wind_speed_threshold": "Vitesse du vent (nœuds)",
+      "low_outdoor_temperature_threshold": "Température extérieure minimale (C)",
+      "low_indoor_temperature_threshold": "Température intérieure minimale (C)",
+      "low_water_temperature_threshold": "Température de l'eau minimale (C)",
+      "low_water_depth_threshold": "Profondeur de l'eau minimale (m)",
+      "low_pressure_threshold": "Pression minimale (hpa)",
+      "high_pressure_drop_threshold": "Chute de pression maximale en 12 heures (hpa)",
+      "low_battery_charge_threshold": "Charge de batterie minimale (%)",
+      "low_battery_voltage_threshold": "Tension de batterie minimale (V)",
+      "windy_station": "Identifiant de la station Windy tel qu'affiché dans l'URL Windy après /station/pws- (par ex. d06efc48)",
+      "public_profile": "Lorsque activé, les pages correspondantes comme les statistiques, le timelapse et d'autres peuvent être accessibles par n'importe qui sans être obligé de se connecter ou de protéger par mot de passe. C'est un mode lecture seule.",
+      "public_logs": "Lorsque activé, les détails de vos journaux individuels seront accessibles publiquement à https://iot.openplotter.cloud/{0}/log/{1}",
+      "public_stats": "Lorsque activé, vos statistiques seront accessibles publiquement à https://iot.openplotter.cloud/{0}/stats",
+      "public_logs_list": "Lorsque activé, la liste de tous vos journaux sera accessible publiquement à https://iot.openplotter.cloud/{0}/logs",
+      "public_timelapse": "Lorsque activé, votre timelapse sera accessible publiquement à https://iot.openplotter.cloud/{0}/timelapse",
+      "public_monitoring": "Lorsque activé, votre surveillance sera accessible publiquement à https://iot.openplotter.cloud/{0}/monitoring",
+      "public_name": "Lorsque vous activez votre profil public, vous aurez la possibilité de choisir le nom de votre bateau",
+      "public_windy": "Lorsque vous activez votre profil public, vous aurez la possibilité de transformer votre bateau en une station météorologique intégrée à Windy.",
+      "mcp_integration": "Permet l'intégration des agents IA de manière sécurisée (lecture seule) et standardisée. Lors de l'utilisation du serveur PostgSail MCP, vous pouvez activer des fonctionnalités avancées qui améliorent les capacités de vos systèmes de données marines, facilitant ainsi la gestion et l'optimisation de votre expérience de navigation."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",
@@ -542,22 +542,22 @@
       "public_windy": "https://www.windy.com/station/pws-{0}"
     },
     "monitoring": {
-      "depthKey": "Depth Source",
-      "waterTemperatureKey": "Water Temperature Source",
-      "windSpeedKey": "True Wind Speed Source",
-      "windDirectionKey": "True Wind Direction Source",
-      "insidePressureKey": "Inside Barometer Source",
-      "outsidePressureKey": "Outside Barometer Source",
-      "insideTemperatureKey": "Inside Temperature Source",
-      "outsideTemperatureKey": "Outside Temperature Source",
-      "insideHumidityKey": "Inside Humidity Source",
-      "outsideHumidityKey": "Outside Humidity Source",
-      "stateOfChargeKey": "Battery Charge Source",
-      "voltageKey": "Battery Voltage Source",
-      "solarVoltageKey": "Solar Voltage Source",
-      "solarPowerKey": "Solar Power Source",
-      "tankLevelKey": "Tank Level Source",
-      "message": "You can monitor all data available on your boat network using PostgSail. Monitoring data sources can be organized into sections based on shared characteristics, such as measurement units. For instance, a 'Tanks' section could group together data sources for Freshwater, Wastewater, and Fuel, providing a structured and intuitive overview. You can add as many sections as you would like."
+      "depthKey": "Source de profondeur",
+      "waterTemperatureKey": "Source de température de l'eau",
+      "windSpeedKey": "Source de vitesse du vent réel",
+      "windDirectionKey": "Source de direction du vent réel",
+      "insidePressureKey": "Source de baromètre intérieur",
+      "outsidePressureKey": "Source de baromètre extérieur",
+      "insideTemperatureKey": "Source de température intérieure",
+      "outsideTemperatureKey": "Source de température extérieure",
+      "insideHumidityKey": "Source d'humidité intérieure",
+      "outsideHumidityKey": "Source d'humidité extérieure",
+      "stateOfChargeKey": "Source de charge de la batterie",
+      "voltageKey": "Source de tension de la batterie",
+      "solarVoltageKey": "Source de tension solaire",
+      "solarPowerKey": "Source de puissance solaire",
+      "tankLevelKey": "Source de niveau de réservoir",
+      "message": "Vous pouvez surveiller toutes les données disponibles sur votre réseau de bateau en utilisant PostgSail. Les sources de données de surveillance peuvent être organisées en sections en fonction de caractéristiques communes, telles que les unités de mesure. Par exemple, une section 'Réservoirs' pourrait regrouper les sources de données pour l'eau douce, les eaux usées et le carburant, offrant une vue d'ensemble structurée et intuitive. Vous pouvez ajouter autant de sections que vous le souhaitez."
     }
   },
   "faq": {
@@ -569,7 +569,7 @@
   },
   "monitoring": {
     "title": "Monitoring",
-    "error": "Unable to fetch monitoring data",
+    "error": "Impossible de récupérer les données de surveillance",
     "depth": "Sonde",
     "wind_speed": "Vitesse du vent",
     "wind_direction": "Direction du vent",
@@ -581,37 +581,37 @@
       "detailString": "Direction: "
     },
     "temperature": {
-      "headerString": "Temperature",
+      "headerString": "Température",
       "unitString": "°C",
-      "detailString": "Exterieur: "
+      "detailString": "Extérieur: "
     },
     "battery": {
       "headerString": "Batterie",
       "unitString": "%",
-      "detailString": "Voltage: "
+      "detailString": "Tension: "
     },
     "humidity": {
       "headerString": "Humidité",
       "unitString": "%",
-      "detailString": "Exterieur: "
+      "detailString": "Extérieur: "
     },
     "water": {
       "headerString": "L'eau",
       "unitString": "m",
-      "detailString": "Temperature: "
+      "detailString": "Température: "
     },
     "pressure": {
-      "headerString": "Barometre",
+      "headerString": "Baromètre",
       "unitString": "hPa",
       "detailString": "24h Moyenne:"
     },
     "solar": {
-      "headerString": "Solar",
+      "headerString": "Solaire",
       "unitString": "W",
-      "detailString": "Voltage: "
+      "detailString": "Tension: "
     },
     "tank": {
-      "headerString": "Tank",
+      "headerString": "Réservoir",
       "unitString": "%",
       "detailString": "Volume: "
     },
@@ -620,18 +620,18 @@
       "lastupdate": "Nous n'avons reçu aucune donnée de votre bateau au cours des 70 dernières minutes."
     },
     "history": {
-      "title": "Monitoring History",
+      "title": "Historique de la surveillance",
       "24h": "Dernières 24 heures",
       "48h": "Dernières 48 heures",
       "72h": "Dernières 72 heures",
       "7d": "7 derniers jours"
     },
     "explore": {
-      "title": "Explore Data",
-      "msg": "List of paths and value gather from SignalK and use to process logs, stays, moorages, maps and monitoring"
+      "title": "Explorer les données",
+      "msg": "Liste des chemins et des valeurs recueillies à partir de SignalK et utilisées pour traiter les journaux, les séjours, les mouillages, les cartes et la surveillance"
     },
     "windy": {
-      "title": "Windy Monitoring"
+      "title": "Surveillance Windy"
     },
     "polar": {
       "title": "Polar Diagram"

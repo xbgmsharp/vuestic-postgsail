@@ -59,7 +59,7 @@
     "faq": "FAQ",
     "badges": "Abzeichen",
     "eventlogs": "Aktivitäts Log",
-    "help": "Hilfe,
+    "help": "Hilfe",
     "history": "Historie",
     "windy": "Windy"
   },
@@ -423,7 +423,6 @@
       },
       "correlations": {
         "title": "Korrelationen"
-
       }
     },
     "token_modal": {
@@ -648,7 +647,7 @@
       "4": "Anlegestelle"
     }
   },
-"seaState": {
+  "seaState": {
     "-1": "",
     "0": "Spiegelglatte See (0m)",
     "1": "Ruhige See (0-0,1m)",
@@ -673,7 +672,7 @@
     "7": "Gute Sicht (<10 SM)",
     "8": "Sehr gute Sicht (<30 SM)",
     "9": "Ausgezeichnete Sicht (>30 SM)"
-  }
+  },
   "units": {
     "distance": {
       "miles": "{n} NM",
@@ -756,7 +755,7 @@
   },
   "vuestic": {
     "search": "Suchen",
-    "noOptions": "nicht gefunden,
+    "noOptions": "nicht gefunden",
     "ok": "OK",
     "cancel": "Cancel",
     "uploadFile": "Upload Datei",

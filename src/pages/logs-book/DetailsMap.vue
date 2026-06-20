@@ -212,7 +212,7 @@
       formData.notes = apiData.row.notes || null
       formData.geojson = apiData.row.geojson || null
       formData.tags = apiData.row?.tags || []
-      tagsOptions.value = CacheStore.getTags()
+      tagsOptions.value = CacheStore.logsTags
       if (formData.name) {
         document.title = setAppTitle(t('logs.details.title') + ': ' + formData.name)
       }

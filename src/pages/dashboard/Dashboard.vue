@@ -121,9 +121,16 @@
     <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
       <router-link :to="info.route">
         <va-card-content class="flex flex-col space-y-3">
+          <header class="flex items-center justify-between">
+            <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2>
+            <div class="p-1.5 rounded flex items-center justify-center">
+              <va-icon :name="info.icon" outline :size="48" class="text-white" />
+            </div>
+          </header>
+
           <!-- Total count + label -->
           <div>
-            <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2>
+            <!-- <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2> -->
             <p class="text-white opacity-80 text-sm">{{ t('menu.' + info.text) }}</p>
           </div>
 
@@ -132,10 +139,10 @@
             <div class="text-white font-semibold text-base">{{ info.last30d }} {{ t('dashboard.tiles.last_30d') }}</div>
 
             <!-- pct is NULL when prev_30d = 0 (first activity or off-season) -->
-            <p v-if="info.pct !== null" class="text-xs flex items-center gap-1 mt-0.5">
+            <p v-if="info.pct !== null" class="text-sm flex items-center gap-1 mt-0.5">
               <va-icon
                 :name="info.pct >= 0 ? 'arrow_upward' : 'arrow_downward'"
-                size="14px"
+                size="16px"
                 :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'"
               />
               <span :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'">
@@ -143,7 +150,20 @@
               </span>
               <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
             </p>
-            <p v-else class="text-xs text-white/50 mt-0.5">
+
+            <p v-else-if="info.delta !== null" class="text-sm flex items-center gap-1 mt-0.5">
+              <va-icon
+                :name="info.delta >= 0 ? 'arrow_upward' : 'arrow_downward'"
+                size="16px"
+                :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'"
+              />
+              <span :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'">
+                {{ info.delta >= 0 ? '+' : '' }}{{ info.delta }}
+              </span>
+              <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
+            </p>
+
+            <p v-else class="text-sm text-white/50 mt-0.5">
               {{ t('dashboard.tiles.no_prev_data') }}
             </p>
           </section>
@@ -222,9 +242,9 @@
   console.log('app_version:', app_version.value, userName.value)
 
   const infoTiles = ref([
-    { color: 'info', route: '/logs', text: 'logs', total: 0, last30d: 0, pct: null },
-    { color: 'info', route: '/stays', text: 'stays', total: 0, last30d: 0, pct: null },
-    { color: 'info', route: '/moorages', text: 'moorages', total: 0, last30d: 0, pct: null },
+    { color: 'info', route: '/logs', text: 'logs', icon: 'map', total: 0, last30d: 0, pct: null },
+    { color: 'info', route: '/stays', text: 'stays', icon: 'houseboat', total: 0, last30d: 0, pct: null },
+    { color: 'info', route: '/moorages', text: 'moorages', icon: 'anchor', total: 0, last30d: 0, pct: null },
   ])
 
   const monitoring = ref({})
@@ -363,9 +383,9 @@
     await logsChartNetwork()
     console.log('Dashboard onMounted getActivity.value', getActivity.value)
     infoTiles.value = [
-      { color: 'info', route: '/logs', text: 'logs', ...CacheStore.getActivity.logs },
-      { color: 'info', route: '/stays', text: 'stays', ...CacheStore.getActivity.stays },
-      { color: 'info', route: '/moorages', text: 'moorages', ...CacheStore.getActivity.moorages },
+      { color: 'info', route: '/logs', text: 'logs', icon: 'map', ...CacheStore.getActivity.logs },
+      { color: 'info', route: '/stays', text: 'stays', icon: 'houseboat', ...CacheStore.getActivity.stays },
+      { color: 'info', route: '/moorages', text: 'moorages', icon: 'anchor', ...CacheStore.getActivity.moorages },
     ]
     console.debug('Dashboard onMounted CacheStore, found logs', CacheStore.logs.length, mylogs.length)
 
@@ -502,19 +522,24 @@
 <style lang="scss">
   #dashboard-map {
     width: 100%;
+
     @media (max-width: 576px) {
       height: 126px;
     }
+
     @media (min-width: 1024px) {
       height: 100%;
     }
   }
+
   .dashboard {
     .va-icon {
       fill: var(--va-text-primary);
     }
+
     .va-card {
       margin-bottom: 0 !important;
+
       &__title {
         display: flex;
         justify-content: space-between;
@@ -525,10 +550,12 @@
       text-align: right;
       padding-right: 5px;
     }
+
     td:nth-child(2) {
       font-weight: bold;
     }
   }
+
   .row-separated {
     .flex + .flex {
       border-left: 1px solid var(--va-background-primary);

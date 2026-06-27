@@ -112,7 +112,7 @@
       "NetworkGraph": "Routen-Netz",
       "logEntries": "Log Einträge",
       "byMonth": "Pro Monat",
-      "byWeek": "Pro Wocrhentag",
+      "byWeek": "Pro Wochentag",
       "tripFrequency": "Reisefrequenz",
       "totalDistance": "Gesamtentfernung",
       "totalDuration": "Gesamtdauer",
@@ -305,7 +305,7 @@
   "stats": {
     "stats": "Statistiken für",
     "date_range": "Zeiträume",
-    "badges": "Badges Awarded",
+    "badges": "Verliehene Badges",
     "logs": "Logstatistiken",
     "moorages": "Anlegestellenstatistiken",
     "name": "Boot",
@@ -323,7 +323,7 @@
     "max_wind_speed": "Maximale Windgeschwindigkeit",
     "sum_distance": "Gesamtdistanz",
     "sum_duration": "Gesamte Fahrtzeit",
-    "total_duration": "Gesamtdauer des Schlags",
+    "total_duration": "Gesamtdauer der Schläge",
     "home_ports": "Heimathäfen",
     "unique_moorages": "Einzigartige Liegeplätze",
     "time_at_home_ports": "Zeit im Heimathafen",
@@ -683,7 +683,7 @@
     },
     "time": {
       "days": "{n} Tag | {n} Tage",
-      "hours": "Stunde | Stunden | Stunden"
+      "hours": "Stunden | Stunde | Stunden"
     },
     "temp": {
       "celsius": "{n} °C",
@@ -708,7 +708,7 @@
     "Navigator Award": "Juhu! Du hast es geschafft, über 100 Seemeilen auf einmal abzuhaken. Gut gemacht, Segler!",
     "Captain Award": "Herzlichen Glückwunsch, du hast über 1000 Seemeilen erreicht. Gut gemacht, Segler!",
     "Speed Demon": "Verliehen für ein Top-Etmal: Mindestens 100 Seemeilen in 24 Stunden am Stück! Dieses Abzeichen wird aktualisiert, sobald Du Deinen eigenen Rekord einstellst.",
-    "default": "Siehan, du segelst in",
+    "default": "Sieh an, du segelst in",
     "locked": "Gesperrt",
     "log_ref": "Logbuch Referenz",
     "date": "Datum"
@@ -719,15 +719,15 @@
     "start_link": "Seite mit den Bootsdetails.",
     "wait": "Wenn du gerade dein Token eingegeben hast, schau dir doch mal die ",
     "wait_link": "Monitoring Seite an.",
-    "help": "Wenn dir nicht klar ist, was du für die Protokollierung tun musst, lies die Antwort zu \"Was brauche ich, um PostgSail zu verwenden?\" in unseren ",
+    "help": "Wenn dir nicht klar ist, was du für das Loggen tun musst, lies die Antwort zu \"Was brauche ich, um PostgSail zu verwenden?\" in unseren ",
     "help_link": "FAQ durch."
   },
   "timelapse": {
     "title": "Replay",
     "customize": "Konfiguration Replay",
     "choosetrips": "Wähle Schläge aus",
-    "start": "Start des Schlages",
-    "end": "Ende des Schlage",
+    "start": "Start des Schlags",
+    "end": "Ende des Schlags",
     "basemap": "Basiskarte",
     "boattype": "Zeige Boot als",
     "trackcolor": "Track Farbe",
@@ -845,7 +845,7 @@
   },
   "important_note": {
     "title": "Wichtiger Hinweis",
-    "message": "PostgSail Cloud ist Open Source und kostenlos für den persönlichen Gebrauch mit einem einzelnen Schiff. Um mehrere Boote zu verwalten, kontaktieren Sie uns bitte. Sie können öffentliche oder private Flotten für Ihre Freunde, Segelvereine, Yachtclubs oder Flotillen erstellen. Für weitere Informationen kontaktieren Sie uns unter ",
+    "message": "PostgSail Cloud ist Open Source und kostenlos für den persönlichen Gebrauch mit einem einzelnen Schiff. Um mehrere Boote zu verwalten, kontaktiere uns bitte. Du kannst öffentliche oder private Flotten für deine Freunde, Segelvereine, Yachtclubs oder Flotillen erstellen. Für weitere Informationen kontaktiere uns unter ",
     "contact": "Contact us"
   },
   "weather": {

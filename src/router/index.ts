@@ -85,7 +85,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/logs-book/Page.vue'),
         meta: { titleKey: 'logs.list.title', isPublic: true, type: 'public_logs_list' },
       },
-
       {
         name: 'log-map',
         path: 'log/:id(\\d+)',
@@ -339,10 +338,16 @@ const routes: Array<RouteRecordRaw> = [
         meta: { titleKey: 'timelapse.title', isPublic: true, type: 'public_timelapse' },
       },
       {
-        name: 'logless-replay',
-        path: 'loglapse/:id(\\d+)?',
-        component: () => import('../pages/stays/Logbook.vue'),
+        name: 'stayslapse',
+        path: 'stayslapse',
+        component: () => import('../pages/stays/Stayslapse.vue'),
         meta: { titleKey: 'timelapse.title', isPublic: false },
+      },
+      {
+        name: 'logslapse',
+        path: 'logslapse',
+        component: () => import('../pages/logs-book/Logbook.vue'),
+        meta: { titleKey: 'logs.details.title', isPublic: true, type: 'public_logs' },
       },
     ],
   },

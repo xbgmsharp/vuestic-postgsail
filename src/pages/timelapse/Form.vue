@@ -236,6 +236,10 @@
                   <va-icon name="icon-png" class="mr-2" />
                   PNG
                 </va-button>
+                <va-button preset="secondary" size="medium" @click="handleLogbook(formData)">
+                  <va-icon name="menu_book" class="mr-2" />
+                  Logbook
+                </va-button>
               </div>
             </section>
 
@@ -568,6 +572,14 @@
     handleKML = (id) => handleExport_common('kml', id),
     handleGeoJSON = (id) => handleExport_common('geojson', id),
     handleExport_common = (format) => {
+      if (formData.end_log < formData.start_log) {
+        initToast({
+          message: `Starting trip must be before ending trip.`,
+          position: 'top-right',
+          color: 'warning',
+        })
+        return
+      }
       const payload = { end_log: formData.end_log, start_log: formData.start_log }
       let qs = null
       if (format === 'geojson') {
@@ -577,14 +589,43 @@
     }
 
   const handlePNG = () => {
+    if (!import.meta.env.VITE_QGIS_URL) {
+      return null
+    }
+    //console.debug('handlePNG formData:', formData)
+    if (formData.end_log < formData.start_log) {
+      initToast({
+        message: `Starting trip must be before ending trip.`,
+        position: 'top-right',
+        color: 'warning',
+      })
+      return
+    }
     if (formData.end_log === '') {
       formData.end_log = formData.start_log
     }
     if (formData.map_type == 'Satellite') {
-      window.open(`https://gis.openplotter.cloud/trip_${vesselId}_${formData.start_log}_${formData.end_log}_sat.png`)
+      window.open(`${import.meta.env.VITE_QGIS_URL}/trip_${vesselId}_${formData.start_log}_${formData.end_log}_sat.png`)
     } else {
-      window.open(`https://gis.openplotter.cloud/trip_${vesselId}_${formData.start_log}_${formData.end_log}.png`)
+      window.open(`${import.meta.env.VITE_QGIS_URL}/trip_${vesselId}_${formData.start_log}_${formData.end_log}.png`)
     }
+  }
+
+  const handleLogbook = () => {
+    console.debug('handleLogbook formData:', formData)
+    if (formData.end_log < formData.start_log) {
+      initToast({
+        message: `Starting trip must be before ending trip.`,
+        position: 'top-right',
+        color: 'warning',
+      })
+      return
+    }
+    if (formData.end_log === '') {
+      formData.end_log = formData.start_log
+    }
+    const searchParams = new URLSearchParams(formData)
+    window.open(`/logslapse?${searchParams.toString()}`)
   }
 
   function removeNullValues(obj) {

@@ -1099,7 +1099,7 @@
       L.DomEvent.on(div, 'click', function (e) {
         L.DomEvent.stopPropagation(e)
         L.DomEvent.preventDefault(e)
-        router.push('/loglapse')
+        router.push('/stayslapse')
       })
 
       return div

@@ -1,7 +1,7 @@
 {
   "name": "vuestic-postgsail",
   "private": false,
-  "version": "0.1.0-beta22",
+  "version": "0.1.0-beta23",
   "scripts": {
     "prepare": "husky",
     "dev": "vite",
@@ -59,10 +59,10 @@
     "register-service-worker": "^1.7.1",
     "sass": "^1.78.0",
     "steelseries": "^2.0.7",
-    "vue": "^3.5.38",
-    "vue-chartjs": "^5.3.3",
+    "vue": "^3.5.39",
+    "vue-chartjs": "^5.3.4",
     "vue-echarts": "^8.0.1",
-    "vue-i18n": "^11.4.4",
+    "vue-i18n": "^11.4.6",
     "vue-router": "^5.0.7",
     "vuestic-ui": "^1.10.3"
   },
@@ -71,7 +71,8 @@
     "@tanstack/vue-query-devtools": "^6.1.16",
     "@testing-library/vue": "^8.1.0",
     "@types/geojson": "^7946.0.16",
-    "@types/node": "^22.19.21",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^22.20.1",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "@vitejs/plugin-vue": "^5.2.4",

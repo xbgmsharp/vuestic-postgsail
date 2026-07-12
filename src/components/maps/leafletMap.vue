@@ -392,6 +392,29 @@
         return false
       }
 
+      const NOTE_BADGE_ICON = L.divIcon({
+        className: 'note-badge-icon',
+        html: `<i class="material-icons">chat</i>`,
+        iconSize: [18, 18],
+        iconAnchor: [0, 18], // anchors the badge's bottom-left at the point, so it sits top-right of the marker
+      })
+
+      // Wraps any pointToLayer fn: if the feature has notes, overlay a badge marker on top
+      const withNotesBadge = (iconFn) => (feature, latlng) => {
+        const baseLayer = iconFn(feature, latlng)
+        const notes = feature?.properties?.notes
+        if (!notes || !String(notes).trim()) {
+          return baseLayer
+        }
+        const badge = L.marker(latlng, {
+          icon: NOTE_BADGE_ICON,
+          interactive: false, // clicks pass through to the base marker so the popup still opens normally
+          keyboard: false,
+          zIndexOffset: 1000,
+        })
+        return L.featureGroup([baseLayer, badge]) // featureGroup so bindPopup/popupopen still propagate
+      }
+
       const boatTypes = boatMarkerTypes()
       const boatIcon = vesselType === 'Sailing' ? boatTypes['Sailboat'] : boatTypes['Powerboat']
       if (this.multigeojson) {
@@ -425,32 +448,32 @@
         GeoJSONbasemapObj.value = {
           Sailboat: L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: boatTypes['Sailboat'],
+            pointToLayer: withNotesBadge(boatTypes['Sailboat']),
             onEachFeature: popup,
           }),
           SailboatSails: L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: boatTypes['SailboatSails'],
+            pointToLayer: withNotesBadge(boatTypes['SailboatSails']),
             onEachFeature: popup,
           }),
           Powerboat: L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: boatTypes['Powerboat'],
+            pointToLayer: withNotesBadge(boatTypes['Powerboat']),
             onEachFeature: popup,
           }),
           Dot: L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: boatTypes['Dot'],
+            pointToLayer: withNotesBadge(boatTypes['Dot']),
             onEachFeature: popup,
           }),
-          'Color by Status': L.geoJSON(geojson, {
+          'Sailing vs Motoring': L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: pointToLayerByStatus,
+            pointToLayer: withNotesBadge(pointToLayerByStatus),
             onEachFeature: popup,
           }),
           'Color by Speed': L.geoJSON(geojson, {
             filter: lineFilter,
-            pointToLayer: pointToLayerBySpeed,
+            pointToLayer: withNotesBadge(pointToLayerBySpeed),
             onEachFeature: popup,
           }),
         }
@@ -680,5 +703,23 @@
     border: 1px solid black;
     clear: both;
     padding: 1px 1px;
+  }
+  .note-badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+
+    i {
+      font-size: 12px;
+      color: #000;
+      line-height: 1;
+    }
   }
 </style>

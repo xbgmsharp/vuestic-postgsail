@@ -20,6 +20,9 @@ import IconKML from '../../../components/icons/IconKML.vue'
 import IconMP4 from '../../../components/icons/IconMP4.vue'
 import IconPNG from '../../../components/icons/IconPNG.vue'
 import IconSponsor from '../../../components/icons/IconSponsor.vue'
+import IconIsland from '../../../components/icons/IconIsland.vue'
+import IconMap from '../../../components/icons/IconMap.vue'
+import IconEngine from '../../../components/icons/IconMap.vue'
 
 export default [
   {
@@ -326,6 +329,21 @@ export default [
   {
     name: 'sponsor',
     component: shallowRef(IconSponsor),
+    color: 'primary',
+  },
+  {
+    name: 'island',
+    component: shallowRef(IconIsland),
+    color: 'primary',
+  },
+  {
+    name: 'icon-map',
+    component: shallowRef(IconMap),
+    color: 'primary',
+  },
+  {
+    name: 'engine',
+    component: shallowRef(IconEngine),
     color: 'primary',
   },
 ]

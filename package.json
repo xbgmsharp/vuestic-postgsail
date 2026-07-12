@@ -94,5 +94,13 @@
     "vite-plugin-pwa": "^0.21.2",
     "vue-eslint-parser": "^9.4.3",
     "vue-tsc": "^1.8.27"
+  },
+  "optionalDependencies": {
+  "@rollup/rollup-darwin-arm64": "^4.32.0",
+  "@rollup/rollup-darwin-x64": "^4.32.0",
+  "@rollup/rollup-linux-arm64-gnu": "^4.32.0",
+  "@rollup/rollup-linux-x64-gnu": "^4.32.0",
+  "@rollup/rollup-win32-arm64-msvc": "^4.32.0",
+  "@rollup/rollup-win32-x64-msvc": "^4.32.0"
   }
 }

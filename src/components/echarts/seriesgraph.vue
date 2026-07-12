@@ -75,6 +75,7 @@
       })
 
     return {
+      backgroundColor: props.theme === 'dark' ? '#1f262f' : '',
       tooltip: {
         trigger: 'item',
         formatter: (params) => {

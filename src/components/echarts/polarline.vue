@@ -38,7 +38,7 @@
 
   const buildSeries = (twsLabels, rawData) => {
     return twsLabels.map((tws, i) => ({
-      name: `${tws} kt TWS`,
+      name: `${tws} kt`,
       type: 'line',
       smooth: true,
       showSymbol: true,
@@ -53,6 +53,7 @@
     title: {
       text: 'Sailing Polar Diagram (Line)',
       left: 'center',
+      show: false,
     },
     tooltip: {
       trigger: 'item',

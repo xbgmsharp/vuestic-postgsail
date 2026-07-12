@@ -54,6 +54,7 @@
     xAxis: {
       type: 'category',
       data: props.series.map((item) => item[0]), // Time labels
+      show: false,
     },
     yAxis: [
       {

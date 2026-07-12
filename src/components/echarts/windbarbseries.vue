@@ -121,12 +121,12 @@
       trigger: 'axis',
       formatter: (params) => {
         const t = params[0].value[0]
-        let html = `${new Date(t).toLocaleString()}<br/>`
+        let html = `${dateFormatUTC(t)}<br/>`
         params.forEach((p) => {
           if (p.seriesType === 'line') {
             html += `Wind speed: ${Math.round(p.value[1] * 100) / 100} knots<br/>`
           } else if (p.seriesType === 'custom') {
-            html += `Wind direction: ${Math.round(p.value[2])}° ${utils.deriveWindDir(p.value[2])}<br/>`
+            html += `Wind direction: ${Math.round(p.value[1])}° ${utils.deriveWindDir(p.value[1])}<br/>`
           }
         })
         return html
@@ -137,30 +137,30 @@
         { name: 'Wind Speed', icon: 'circle' },
         { name: 'Wind Direction', icon: 'path://M0,0 L10,-5 L10,5 Z' }, // small arrow symbol
       ],
-      top: 20,
+      //top: 20,
     },
-    grid: { left: 15, right: 15, top: 60, bottom: 40 },
+    //grid: { left: 15, right: 15, top: 60, bottom: 40 },
     xAxis: { type: 'time' },
-    yAxis: { name: 'Wind speed (knots)' },
+    yAxis: { axisLabel: { show: false } },
     series: [
       {
         type: 'line',
         name: 'Wind Speed',
         smooth: true,
         areaStyle: { opacity: 0.3 },
-        data: props.series.map((d) => [new Date(d[0]).getTime(), d[1]]),
+        data: props.series.map((d) => [new Date(d[0]).getTime(), d[2]]),
       },
       {
         type: 'custom',
         name: 'Wind Direction',
         renderItem: (params, api) => {
           const xValue = api.value(0)
-          const speed = api.value(1)
-          const dir = api.value(2)
+          const dir = api.value(1)
+          const speed = api.value(2)
           const coord = api.coord([xValue, speed]) // align with line value
           return buildWindBarb(speed, dir, coord[0], coord[1], api)
         },
-        encode: { x: 0, y: 1, tooltip: [1, 2] },
+        encode: { x: 0, y: 2, tooltip: [1, 2] },
         data: props.series
           .map((d, i) => {
             // only keep 1 barb every N points

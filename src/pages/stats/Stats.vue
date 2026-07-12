@@ -20,7 +20,7 @@
             <div>
               <div class="mb-2">{{ $t('stats.badges') }}:</div>
               <div class="badges-stats">
-                <div v-for="(item, key) in userBadges" :key="key">
+                <div v-for="(item, key) in filteredBadges" :key="key">
                   <div v-if="!item.disabled">
                     <va-popover :message="key">
                       <va-image
@@ -28,6 +28,13 @@
                         class="badges-icon max-h-8 w-[fit-content] mr-1"
                         fit="contain"
                         :src="item.image"
+                      />
+                      <va-icon
+                        v-else-if="item.icon"
+                        :name="item.icon"
+                        :size="32"
+                        class="badges-icon max-h-8 w-[fit-content] mr-1"
+                        fit="contain"
                       />
                       <icon-award v-else-if="item.svg" class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
                       <icon-navigation v-else class="badges-icon max-h-8 w-[fit-content] mr-1" fit="contain" />
@@ -281,20 +288,24 @@
 
 <script setup>
   import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
+  import { useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const nodatayet = defineAsyncComponent(() => import('../../components/noDataScreen.vue'))
   import EchartsDonught from '../../components/echarts/donught.vue'
   import { useGlobalStore } from '../../stores/global-store'
   import { storeToRefs } from 'pinia'
-  import moment from 'moment/min/moment-with-locales'
   const IconAward = defineAsyncComponent(() => import('../../components/icons/IconAward.vue'))
   const IconNavigation = defineAsyncComponent(() => import('../../components/icons/IconNavigation.vue'))
   import { distanceFormatMiles } from '../../utils/distanceFormatter.js'
-  import { durationI18nDaysHours, dateFormat } from '../../utils/dateFormatter.js'
+  import { durationI18nDaysHours, dateFormat, toISODate } from '../../utils/dateFormatter.js'
   import { speedFormatKnots } from '../../utils/speedFormatter.js'
   const { publicVessel, instagram, website } = useGlobalStore()
   import TopBy from './Cards/TopBy.vue'
   import TopMooragesBy from './Cards/TopMooragesBy.vue'
+
+  const route = useRoute()
+  const start_log = ref(route.query.start_date || null),
+    end_log = ref(route.query.end_date || null)
 
   const { t } = useI18n()
   const GlobalStore = useGlobalStore()
@@ -318,6 +329,25 @@
   }
 
   const disabled = computed(() => !isBusy.value && !stats_logs.value?.count)
+
+  const filteredBadges = computed(() => {
+    const source = userBadges.value || {}
+    if (!start_log.value || !end_log.value) return source
+
+    const start = toISODate(start_log.value)
+    const end = toISODate(end_log.value)
+
+    const result = {}
+    for (const key in source) {
+      const badge = source[key]
+      if (badge.rawDate) {
+        const badgeDay = toISODate(badge.rawDate) // convert badge date the same way
+        if (badgeDay < start || badgeDay > end) continue
+      }
+      result[key] = badge
+    }
+    return result
+  })
 
   const logsTopByAvgSpeed = computed(() =>
     (vessel_stats.value.logs_top_avg_speed ?? []).map((e) => ({ ...e, avg_speed: speedFormatKnots(e.avg_speed) })),
@@ -348,8 +378,16 @@
     isBusy.value = true
     apiError.value = null
     try {
-      await GlobalStore.fetchStats()
-      dateRange.value = { start: stats_logs.value?.first_date || null, end: stats_logs.value?.last_date || null }
+      const startDate = start_log.value ? toISODate(start_log.value) : null
+      const endDate = end_log.value ? toISODate(end_log.value) : null
+      await GlobalStore.fetchStats({
+        start_date: startDate,
+        end_date: endDate,
+      })
+      dateRange.value = {
+        start: startDate || stats_logs.value?.first_date || null,
+        end: endDate || stats_logs.value?.last_date || null,
+      }
     } catch (e) {
       apiError.value = e
     } finally {
@@ -364,8 +402,8 @@
   async function updateStatsLogs() {
     try {
       await GlobalStore.fetchStats({
-        start_date: moment(dateRange.value.start).format('YYYY-MM-DD'),
-        end_date: moment(dateRange.value.end).format('YYYY-MM-DD'),
+        start_date: toISODate(dateRange.value.start),
+        end_date: toISODate(dateRange.value.end),
       })
     } catch (err) {
       console.error('updateStatsLogs failed', err)

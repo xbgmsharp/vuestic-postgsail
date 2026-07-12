@@ -5,6 +5,7 @@
   import { useRoute } from 'vue-router'
   import { useGlobalStore } from '../../../stores/global-store'
   import { seaState, visibility } from '../../../utils/PostgSail'
+  import { durationFormatHours, durationI18nHours } from '../../../utils/dateFormatter.js'
   import MySelect from '../../../components/vaSelect.vue'
   import PhotoUploaderModal from '../../../components/PhotoUploaderModal.vue'
   import PostgSail from '../../../services/api-client'
@@ -37,13 +38,22 @@
     (event: 'updated', log: Trip): void
   }>()
 
-  // Metrics display helpers
+  // ---------------------------------------------------------------------------
+  // Metrics display
+  // ---------------------------------------------------------------------------
+  // logbook.extra.metrics is a flat dot-namespaced bag, e.g.:
+  //   "fuel.avg_lph", "sailing.duration", "tanks.fuel.0.currentLevel",
+  //   "propulsion.port.revolutions.avg", "navigation.log", "fuel.source" (metadata)
+  // Rather than dumping every key into one flat list, we bucket known
+  // namespaces into dedicated mini-sections and fall back to a generic
+  // list for anything unrecognized so new metric keys never silently vanish.
+
+  const metrics = computed<Record<string, any>>(() => props.logbook.extra?.metrics ?? {})
+
   function formatMetricKey(key: string | number | symbol): string {
     const k = String(key)
     const parts = k.split('.')
-    // Drop the namespace prefix (navigation, propulsion, tanks, solar…)
     const meaningful = parts.slice(1).join(' ')
-    // Split camelCase and capitalise each word
     return meaningful
       .replace(/([A-Z])/g, ' $1')
       .replace(/\b\w/g, (c) => c.toUpperCase())
@@ -60,13 +70,123 @@
     return String(value)
   }
 
-  // Keys already extracted and formatted as engineHours — skip them in the raw loop
+  // Keys already extracted and formatted as engineHours (propulsion.<engine>.runTime)
   function isEngineRunTime(key: string | number | symbol): boolean {
     const parts = String(key).split('.')
     return parts[0] === 'propulsion' && parts[parts.length - 1] === 'runTime'
   }
 
-  // handle Observations
+  // "*.source" keys describe provenance (which sensor/derivation produced a
+  // value), not a metric worth its own row — always skip these.
+  function isMetadataKey(key: string | number | symbol): boolean {
+    return String(key).endsWith('.source')
+  }
+
+  // ISO 8601 duration ("PT4H25M58.537S") -> decimal hours, for durationFormatHours/durationI18nHours
+  function parseIsoDurationToHours(iso: string): number {
+    const match = iso.match(/^PT(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?$/)
+    if (!match) return 0
+    const h = parseFloat(match[1] || '0')
+    const m = parseFloat(match[2] || '0')
+    const s = parseFloat(match[3] || '0')
+    return h + m / 60 + s / 3600
+  }
+
+  function formatDurationHours(iso: string): string {
+    return `${durationFormatHours(iso)} ${durationI18nHours(iso)}`
+  }
+
+  const sailMotorSplit = computed(() => {
+    const m = metrics.value
+    if (m['sailing.duration'] == null && m['motoring.duration'] == null) return null
+    const sailDist = Number(m['sailing.distance_nm'] ?? 0)
+    const motorDist = Number(m['motoring.distance_nm'] ?? 0)
+    const total = sailDist + motorDist || 1
+    //console.log('sailMotorSplit', { sailPct: (sailDist / total) * 100, motorPct: (motorDist / total) * 100 })
+    return {
+      sail: {
+        distance: sailDist.toFixed(1),
+        duration: m['sailing.duration'] ? formatDurationHours(m['sailing.duration']) : '—',
+      },
+      motor: {
+        distance: motorDist.toFixed(1),
+        duration: m['motoring.duration'] ? formatDurationHours(m['motoring.duration']) : '—',
+      },
+      sailPct: (sailDist / total) * 100,
+      motorPct: (motorDist / total) * 100,
+    }
+  })
+
+  // Fuel summary (fuel.avg_lph, fuel.avg_lpnm, fuel.consumed_l)
+  const fuelMetrics = computed(() => {
+    const m = metrics.value
+    if (m['fuel.consumed_l'] == null && m['fuel.avg_lph'] == null && m['fuel.avg_lpnm'] == null) return null
+    return {
+      consumed: m['fuel.consumed_l'] != null ? Number(m['fuel.consumed_l']).toFixed(1) : null,
+      avgLph: m['fuel.avg_lph'] != null ? Number(m['fuel.avg_lph']).toFixed(2) : null,
+      avgLpnm: m['fuel.avg_lpnm'] != null ? Number(m['fuel.avg_lpnm']).toFixed(2) : null,
+    }
+  })
+
+  // Tank levels: tanks.<type>.<instance>.currentLevel
+  const TANK_LABELS: Record<string, string> = {
+    fuel: t('logs.log.tank_fuel') || 'Fuel',
+    freshWater: t('logs.log.tank_fresh_water') || 'Fresh Water',
+  }
+  const tankMetrics = computed(() => {
+    const m = metrics.value
+    return Object.entries(m)
+      .filter(([key]) => /^tanks\.\w+\.\d+\.currentLevel$/.test(key))
+      .map(([key, value]) => {
+        const match = key.match(/^tanks\.(\w+)\.(\d+)\.currentLevel$/)!
+        const [, type, instance] = match
+        return {
+          key,
+          label: `${TANK_LABELS[type] ?? type} #${instance}`,
+          value: Number(value) * 100,
+        }
+      })
+  })
+
+  // Propulsion detail beyond runTime: propulsion.<engine>.revolutions.(avg|max)
+  const propulsionMetrics = computed(() => {
+    const m = metrics.value
+    return Object.entries(m)
+      .filter(([key]) => /^propulsion\.\w+\.revolutions\.(avg|max)$/.test(key))
+      .map(([key, value]) => {
+        const match = key.match(/^propulsion\.(\w+)\.revolutions\.(avg|max)$/)!
+        const [, engine, stat] = match
+        const statLabel = stat === 'avg' ? t('logs.log.avg') || 'avg' : t('logs.log.max') || 'max'
+        return {
+          key,
+          label: `${engine.charAt(0).toUpperCase()}${engine.slice(1)} RPM (${statLabel})`,
+          value: `${value} rpm`,
+        }
+      })
+  })
+
+  // Anything not claimed by a section above and not pure metadata
+  const HANDLED_PATTERNS = [
+    /^sailing\./,
+    /^motoring\./,
+    /^sailing_motoring\./,
+    /^fuel\./,
+    /^tanks\./,
+    /^propulsion\./,
+    /^navigation\.log$/,
+  ]
+  const unhandledMetrics = computed(() => {
+    const m = metrics.value
+    return Object.entries(m)
+      .filter(([key]) => !isMetadataKey(key) && !isEngineRunTime(key) && !HANDLED_PATTERNS.some((p) => p.test(key)))
+      .map(([key, value]) => ({ key, value }))
+  })
+
+  const hasAnyMetrics = computed(() => !!props.logbook.engineHours?.length || Object.keys(metrics.value).length > 0)
+
+  // ---------------------------------------------------------------------------
+  // Observations (sea state / visibility / cloud coverage)
+  // ---------------------------------------------------------------------------
   const handleSeaState = async (new_sea_state: number, obj: { value: number; text: string }) => {
     console.log('handleSeaState new_sea_state', new_sea_state, obj)
     if (new_sea_state >= 0) {
@@ -263,27 +383,98 @@
   <!-- observations section -->
   <div v-if="isLoggedIn && logbook.id > 0" class="">
     <!-- Trip metrics from extra.metrics -->
-    <template v-if="logbook.extra?.metrics && Object.keys(logbook.extra.metrics).length > 0">
+    <template v-if="hasAnyMetrics">
       <div class="text-xs uppercase mt-4 mb-2">{{ t('logs.log.metrics') }}</div>
-      <dl class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
-        <!-- Engine hours: pre-formatted by DetailsMap -->
+
+      <!-- Sailing vs Motoring split -->
+      <div v-if="sailMotorSplit" class="text-sm mb-3">
+        <div class="flex justify-between mb-1">
+          <span class="text-gray-600 dark:text-gray-400">⛵ {{ t('logs.log.sailing') }}</span>
+          <span class="font-mono">{{ sailMotorSplit.sail.distance }} nm · {{ sailMotorSplit.sail.duration }}</span>
+        </div>
+        <div class="flex justify-between mb-1">
+          <span class="text-gray-600 dark:text-gray-400">🛥️ {{ t('logs.log.motoring') }}</span>
+          <span class="font-mono">{{ sailMotorSplit.motor.distance }} nm · {{ sailMotorSplit.motor.duration }}</span>
+        </div>
+        <div
+          class="h-5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex mt-2 text-white text-xs font-mono"
+        >
+          <div
+            v-if="sailMotorSplit.sailPct > 0"
+            class="h-full flex items-center justify-center gap-1"
+            :style="{ width: sailMotorSplit.sailPct + '%', backgroundColor: 'var(--va-primary)' }"
+          >
+            <span v-if="sailMotorSplit.sailPct >= 12">⛵ {{ sailMotorSplit.sailPct.toFixed(0) }}%</span>
+          </div>
+          <div
+            v-if="sailMotorSplit.motorPct > 0"
+            class="h-full flex items-center justify-center gap-1"
+            :style="{ width: sailMotorSplit.motorPct + '%', backgroundColor: 'var(--va-warning)' }"
+          >
+            <span v-if="sailMotorSplit.motorPct >= 12">🛥️ {{ sailMotorSplit.motorPct.toFixed(0) }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Engine hours + revolutions -->
+      <dl
+        v-if="logbook.engineHours?.length || propulsionMetrics.length"
+        class="text-sm divide-y divide-gray-100 dark:divide-gray-700"
+      >
         <div v-for="engine in logbook.engineHours" :key="engine.name" class="flex justify-between py-1">
           <dt class="text-gray-600 dark:text-gray-400">{{ engine.name }} Run Time</dt>
           <dd class="font-mono text-right">{{ engine.duration }}</dd>
         </div>
-        <!-- Remaining metrics, skipping propulsion runTime keys -->
-        <div
-          v-for="(value, key) in logbook.extra.metrics"
-          v-show="!isEngineRunTime(key)"
-          :key="key"
-          class="flex justify-between py-1"
-        >
+        <div v-for="metric in propulsionMetrics" :key="metric.key" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ metric.label }}</dt>
+          <dd class="font-mono text-right">{{ metric.value }}</dd>
+        </div>
+      </dl>
+
+      <!-- Fuel -->
+      <dl v-if="fuelMetrics" class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
+        <div v-if="fuelMetrics.consumed" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ t('logs.log.fuel_consumed') }}</dt>
+          <dd class="font-mono text-right">{{ fuelMetrics.consumed }} L</dd>
+        </div>
+        <div v-if="fuelMetrics.avgLph" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ t('logs.log.fuel_avg_rate') }}</dt>
+          <dd class="font-mono text-right">{{ fuelMetrics.avgLph }} L/h</dd>
+        </div>
+        <div v-if="fuelMetrics.avgLpnm" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ t('logs.log.fuel_avg_consumption') }}</dt>
+          <dd class="font-mono text-right">{{ fuelMetrics.avgLpnm }} L/nm</dd>
+        </div>
+      </dl>
+
+      <!-- Tanks -->
+      <dl v-if="tankMetrics.length" class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
+        <div v-for="tank in tankMetrics" :key="tank.key" class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ tank.label }}</dt>
+          <dd class="font-mono text-right" :class="{ 'text-warning': tank.value < 0 }">
+            {{ tank.value > 0 ? '+' : '' }}{{ tank.value.toFixed(1) }}%
+          </dd>
+        </div>
+      </dl>
+
+      <!-- Navigation -->
+      <dl v-if="metrics['navigation.log'] != null" class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
+        <div class="flex justify-between py-1">
+          <dt class="text-gray-600 dark:text-gray-400">{{ t('logs.log.total_log') }}</dt>
+          <dd class="font-mono text-right">{{ formatMetricValue('navigation.log', metrics['navigation.log']) }} nm</dd>
+        </div>
+      </dl>
+
+      <!-- Fallback for unrecognized metric keys -->
+      <dl v-if="unhandledMetrics.length" class="text-sm divide-y divide-gray-100 dark:divide-gray-700">
+        <div v-for="{ key, value } in unhandledMetrics" :key="key" class="flex justify-between py-1">
           <dt class="text-gray-600 dark:text-gray-400">{{ formatMetricKey(key) }}</dt>
           <dd class="font-mono text-right">{{ formatMetricValue(key, value) }}</dd>
         </div>
       </dl>
     </template>
 
+    <div class="h-1.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex mt-2" />
     <div class="text-xs uppercase mt-4">{{ t('logs.log.sea_state') }}</div>
     <div class="text-sm">
       <template v-if="isLoggedIn">
@@ -337,8 +528,9 @@
       </template>
     </div>
     <template v-if="imageSupport">
+      <div class="h-1.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex mt-2" />
       <div class="text-xs uppercase my-2 flex items-center justify-between">
-        <span>{{ $t('boats.boat.photo') }}</span>
+        <span>{{ $t('logs.log.photos') }}</span>
         <va-icon
           name="photo_camera"
           class="cursor-pointer hover:text-primary transition-colors"

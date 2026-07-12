@@ -66,7 +66,7 @@
 </script>
 
 <template>
-  <div class="p-2">
+  <div>
     <template v-if="speeddata && winddata && speedComputed">
       <va-card v-if="winddata && speeddata">
         <va-card-title>Wind Speed / Boat Speed</va-card-title>
@@ -79,7 +79,7 @@
       <div class="p-4 text-center text-gray-500">No Wind Speed / Boat Speed data available.</div>
     </template>
   </div>
-  <div class="p-2">
+  <div>
     <template v-if="winddata && twddata && twdComputed">
       <va-card v-if="winddata && twddata">
         <va-card-title>Wind Speed / Direction</va-card-title>
@@ -92,7 +92,7 @@
       <div class="p-4 text-center text-gray-500">No Wind Speed / Direction data available.</div>
     </template>
   </div>
-  <div class="p-2">
+  <div>
     <template v-if="polardata && polarComputed">
       <va-card v-if="polardata">
         <va-card-title>Polar</va-card-title>

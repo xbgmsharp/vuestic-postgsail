@@ -117,7 +117,7 @@
   import { useCacheStore } from '../../stores/cache-store'
   import { setAppTitle } from '../../utils/app.js'
   import { distanceFormat } from '../../utils/distanceFormatter.js'
-  import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter.js'
+  import { dateFormatUTC, durationFormatHours } from '../../utils/dateFormatter'
   import { default as utils } from '../../utils/utils.js'
   import { asBusy, handleExport } from '../../utils/handleExports'
   import { useRoute } from 'vue-router'

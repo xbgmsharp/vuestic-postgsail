@@ -26,6 +26,7 @@
     (event: 'replay', log: Log): void
     (event: 'replay3d', log: Log): void
     (event: 'merge', log: Log): void
+    (event: 'logslapse', log: Log): void
   }>()
 </script>
 
@@ -98,6 +99,15 @@
                         @click="$emit('merge', log)"
                       >
                         {{ t('logs.list.merge') }}
+                      </va-button>
+                      <va-button
+                        class="grid grid-cols-1"
+                        preset="secondary"
+                        icon="merge"
+                        color="secondary"
+                        @click="$emit('logslapse', log)"
+                      >
+                        {{ t('timeline.view_logbook') }}
                       </va-button>
                     </div>
                   </va-dropdown-content>

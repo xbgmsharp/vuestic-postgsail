@@ -45,8 +45,11 @@
       runBusy(handleExportNew, format, 'log', { _id: id }, `log_${id}`)
 
   const handlePNG = (id: number) => {
+    if (!import.meta.env.VITE_QGIS_URL || !vesselId || !id) {
+      return null
+    }
     console.log('handlePNG formData', id)
-    window.open(`https://gis.openplotter.cloud/log_${vesselId}_${id}.png`)
+    window.open(`${import.meta.env.VITE_QGIS_URL}/log_${vesselId}_${id}.png`)
   }
 </script>
 

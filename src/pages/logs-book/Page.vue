@@ -72,6 +72,7 @@
         @replay="replayTrip"
         @replay3d="replayTrip3D"
         @merge="mergeTrip"
+        @logslapse="logslapse"
       />
       <logbook-table
         v-if="doShowAsCards === 2"
@@ -84,6 +85,7 @@
         @replay="replayTrip"
         @replay3d="replayTrip3D"
         @merge="mergeTrip"
+        @logslapse="logslapse"
       />
 
       <template v-if="logs.totalCount.value > pageSize">
@@ -309,6 +311,7 @@
   const editTrip = (log) => router.push({ name: 'log-map', params: { id: log.id } })
   const replayTrip = (log) => router.push({ name: 'timelapse-replay', params: { id: log.id } })
   const replayTrip3D = (log) => router.push({ name: 'timelapse3d-replay', params: { id: log.id } })
+  const logslapse = (log) => router.push({ name: 'logslapse', query: { start_log: log.id, end_log: log.id } })
 
   const { mutateAsync: mergeLogs } = useMergeLogs()
 

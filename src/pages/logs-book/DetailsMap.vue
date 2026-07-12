@@ -10,7 +10,7 @@
             id="logbook-map"
             ref="logMap"
             :geo-json-features="GeoJSONfeatures"
-            :tabs="['summary', 'performance', 'observations', 'export']"
+            :tabs="['summary', 'performance', 'observations', 'logbook', 'export']"
             :tabs-auto-open="true"
             :control-layer="true"
             :map-zoom="17"
@@ -62,6 +62,18 @@
                 />
               </template>
             </template>
+            <template #tab-logbook><va-icon name="book" /></template>
+            <template #content-logbook>
+              <template v-if="item">
+                <trip-point
+                  v-if="item"
+                  :log-id="item.id"
+                  :log-name="item.name"
+                  :points="GeoJSONfeatures"
+                  :loading="isBusy"
+                />
+              </template>
+            </template>
             <template #tab-export><va-icon name="ios_share" /></template>
             <template #content-export>
               <template v-if="item">
@@ -101,6 +113,7 @@
   import tripSummary from './sidebars/Summary.vue'
   import tripPerformance from './sidebars/Performance.vue'
   import tripObservations from './sidebars/Observations.vue'
+  import tripPoint from './sidebars/Points.vue'
   import tripExport from './sidebars/Export.vue'
   import moment from 'moment'
   import { storeToRefs } from 'pinia'

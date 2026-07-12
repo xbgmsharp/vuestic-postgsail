@@ -189,6 +189,7 @@
       "replay": "Replay",
       "delete": "Löschen",
       "merge": "Zusammenführen",
+      "logslapse": "Logslapse",
       "merge_modal": {
         "title": "Logs zusammenführen",
         "message": "Start Log muss vor Ende Log liegen und sie müssen aneinander angrenzen (vorheriges oder nächstes).",
@@ -227,7 +228,31 @@
       "observations": "Beobachtungen",
       "share": "teilen",
       "tags": "Tags",
-      "delete": "Logbuch löschen"
+      "delete": "Logbuch löschen",
+      "sailing": "Segeln",
+      "motoring": "Motorbetrieb",
+      "fuel_consumed": "Verbrauchter Kraftstoff",
+      "fuel_avg_rate": "Durchschnittlicher Kraftstoffverbrauch",
+      "fuel_avg_consumption": "Durchschnittlicher Verbrauch",
+      "total_log": "Gesamtlog",
+      "tank_fuel": "Kraftstoff",
+      "tank_fresh_water": "Frischwasser",
+      "status": "Status",
+      "position": "Position",
+      "time": "Zeit",
+      "barometer": "Barometer",
+      "course": "Course",
+      "photos": "Fotos",
+      "print": "Print"
+    },
+    "points": {
+      "title": "Logbuch",
+      "fullTable": "Gesamttabelle"
+    },
+    "book": {
+      "days": "Tage",
+      "trips": "Reisen",
+      "stays": "Aufenthalte"
     }
   },
   "stays": {
@@ -393,7 +418,10 @@
       "configuration": "Konfiguration Signalk Mapping",
       "make_model": "Hersteller und Modell",
       "photo": "Foto",
-      "last_updated": "Letztes Update"
+      "last_updated": "Letztes Update",
+      "select": "Switch vessel",
+      "addNew": "Add new vessel",
+      "switched": "Switched to {name}"
     },
     "errors": {
       "name": "Name ist erforderlich",
@@ -695,6 +723,11 @@
     }
   },
   "badges": {
+    "Proud Owner": "Every great boat deserves an audience. Thanks for showing yours off!",
+    "Sponsor": "Keeps PostgSail's engine running — thank you for backing the project.",
+    "Fleet Commander": "You are a fleet commander! You have more than one boat registered in PostgSail.",
+    "Social Beacon": "You're putting yourself on the map — literally. Your logs are public for others to follow.",
+    "AI Co-Pilot": "You have enabled AI agents integration in your PostgSail account. This allows you to leverage advanced AI capabilities for enhanced sailing experiences.",
     "Helmsman": "Gute Arbeit, dass du deine erste Segelfahrt protokolliert hast! Du bist jetzt offiziell ein Steuermann!",
     "Wake Maker": "Willkommen im Club der 15-Knoten-Plus, du Geschwindigkeitsdämon Skipper!",
     "Explorer": "Es sieht so aus, als wäre dein Zuhause, wo das Steuerrad ist. Prost auf 10 Tage fern der Heimat!",
@@ -710,8 +743,13 @@
     "Speed Demon": "Verliehen für ein Top-Etmal: Mindestens 100 Seemeilen in 24 Stunden am Stück! Dieses Abzeichen wird aktualisiert, sobald Du Deinen eigenen Rekord einstellst.",
     "default": "Sieh an, du segelst in",
     "locked": "Gesperrt",
+    "earned": "Erreicht",
     "log_ref": "Logbuch Referenz",
-    "date": "Datum"
+    "date": "Datum",
+    "Milestones": "Milestones",
+    "Achievements": "Achievements",
+    "Seamanship": "Seamanship",
+    "World & Regions": "World & Regions"
   },
   "nodata": {
     "nodata": "Hier ist noch nichts! Bitte konfiguriere deine Signalk-Instanz und starte mit dem Segeln!",
@@ -740,7 +778,7 @@
   },
   "timeline": {
     "timeline": "Timeline",
-    "last": "Letzte 500 Ergeignisse",
+    "last": "Letzte 500 Ereignisse",
     "new_account": "Konto angelegt",
     "email_otp": "Konto validiert",
     "new_vessel": "Neues Boot registriert",
@@ -751,15 +789,21 @@
     "new_moorage": "Neue Anlegestelle",
     "maplapse_video": "Replay Video",
     "new_video": "Neues Video",
-    "autodiscovery": "Automatisches SignalK Pfad mapping"
+    "autodiscovery": "Automatisches SignalK Pfad mapping",
+    "monitoring_no_metrics": "Monitoring metrics alerts",
+    "weekly_summary": "Wöchentliche Zusammenfassung",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "view_stats": "Statistiken anzeigen",
+    "view_logbook": "Logbuch anzeigen"
   },
   "vuestic": {
     "search": "Suchen",
     "noOptions": "nicht gefunden",
     "ok": "OK",
-    "cancel": "Cancel",
-    "uploadFile": "Upload Datei",
-    "undo": "Undo",
+    "cancel": "Abbrechen",
+    "uploadFile": "Datei hochladen",
+    "undo": "Rückgängig",
     "dropzone": "Lege Dateien hier zum Upload ab",
     "fileDeleted": "Datei gelöscht",
     "closeAlert": "Schließe den Alarm",

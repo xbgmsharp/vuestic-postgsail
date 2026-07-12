@@ -189,6 +189,7 @@
       "replay": "Replay",
       "delete": "Supprimer",
       "merge": "Merge",
+      "logslapse": "Logslapse",
       "merge_modal": {
         "title": "Merge Logs",
         "message": "Start log must be earlier than End log and they must be adjacent (previous or next).",
@@ -212,11 +213,11 @@
       "distance_nm": "Distance [NM]",
       "avg": "Moyenne",
       "max": "Max",
-      "speed": "Vitesse surface",
+      "speed": "Vitesse",
       "wind_speed": "Force du vent",
       "note": "Note | Notes",
       "remarks": "Raconte ce qui s'est passé",
-      "export": "Export",
+      "export": "Exporter",
       "avg_max_speed": "VITESSE MOY / MAX",
       "max_wind_speed": "VENT MOY / MAX",
       "sea_state": "État de la mer",
@@ -227,14 +228,38 @@
       "observations": "Observations",
       "share": "Partager",
       "tags": "Étiquettes",
-      "delete": "Supprimer le livre de bord"
+      "delete": "Supprimer le livre de bord",
+      "sailing": "Navigation à la voile",
+      "motoring": "Navigation à moteur",
+      "fuel_consumed": "Carburant consommé",
+      "fuel_avg_rate": "Consommation moyenne",
+      "fuel_avg_consumption": "Consommation moyenne",
+      "total_log": "Journal total",
+      "tank_fuel": "Carburant",
+      "tank_fresh_water": "Eau douce",
+      "status": "Statut",
+      "position": "Coordonnées",
+      "time": "Date & Heure",
+      "barometer": "Baromètre",
+      "course": "Course",
+      "photos": "Photos",
+      "print": "Imprimer"
+    },
+    "points": {
+      "title": "Livre de bord pour",
+      "fullTable": "Table complète"
+    },
+    "book": {
+      "days": "Jours",
+      "trips": "Voyages",
+      "stays": "Séjours"
     }
   },
   "stays": {
     "list": {
-      "title": "Stays - Moorage History of",
+      "title": "Escales - Historique des mouillages de",
       "filter": {
-        "title": "Search for stay",
+        "title": "Rechercher une escale",
         "name": "Filtrer par nom...",
         "date_range": "Filtrer par plage de dates...",
         "stay_type": "Filtrer par type de mouillage...",
@@ -392,7 +417,10 @@
       "configuration": "Configuration Signalk Mapping",
       "make_model": "Marque et modèle",
       "photo": "Photo",
-      "last_updated": "Dernière mise à jour"
+      "last_updated": "Dernière mise à jour",
+      "select": "Changer de bateau",
+      "addNew": "Ajouter un nouveau bateau",
+      "switched": "Changé pour {name}"
     },
     "errors": {
       "name": "Name is required",
@@ -693,6 +721,11 @@
     }
   },
   "badges": {
+    "Proud Owner": "Every great boat deserves an audience. Thanks for showing yours off!",
+    "Sponsor": "Keeps PostgSail's engine running — thank you for backing the project.",
+    "Fleet Commander": "You are a fleet commander! You have more than one boat registered in PostgSail.",
+    "Social Beacon": "You're putting yourself on the map — literally. Your logs are public for others to follow.",
+    "AI Co-Pilot": "You have enabled AI agents integration in your PostgSail account. This allows you to leverage advanced AI capabilities for enhanced sailing experiences.",
     "Helmsman": "Nice work logging your first sail! You are officially a helmsman now!",
     "Wake Maker": "Welcome to the 15 knot+ club ya speed demon skipper!",
     "Explorer": "It looks like home is where the helm is. Cheers to 10 days away from home port!",
@@ -708,8 +741,13 @@
     "Speed Demon": "Awarded for achieving a best 24-hour distance of 100 NM or more in a single rolling window. Badge is updated each time you beat your own record.",
     "default": "Regarde-toi naviguer sur",
     "locked": "Verouillé",
+    "earned": "Gagné",
     "log_ref": "Logbook reference",
-    "date": "Date"
+    "date": "Date",
+    "Milestones": "Milestones",
+    "Achievements": "Achievements",
+    "Seamanship": "Seamanship",
+    "World & Regions": "World & Regions"
   },
   "nodata": {
     "nodata": "Rien ici encore! Veuillez configurer votre instance de signalk et commencer à naviguer!",
@@ -749,7 +787,13 @@
     "new_moorage": "New moorage",
     "maplapse_video": "Replay video",
     "new_video": "New video",
-    "autodiscovery": "Automatic SignalK path mapping"
+    "autodiscovery": "Automatic SignalK path mapping",
+    "monitoring_no_metrics": "Alertes des métriques de surveillance",
+    "weekly_summary": "Résumé hebdomadaire",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "view_stats": "Voir les statistiques",
+    "view_logbook": "Voir le journal de bord"
   },
   "vuestic": {
     "search": "Recherche",

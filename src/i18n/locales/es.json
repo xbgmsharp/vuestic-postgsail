@@ -189,6 +189,7 @@
       "replay": "Reproducir",
       "delete": "Borrar",
       "merge": "Unir",
+      "logslapse": "Logslapse",
       "merge_modal": {
         "title": "Unir viajes",
         "message": "El viaje de inicio debe ser anterior al viaje de fin y deben ser adyancentes (anterior o siguiente).",
@@ -227,7 +228,31 @@
       "observations": "Observaciones",
       "share": "Compartir",
       "tags": "Etiquetas",
-      "delete": "Borrar registro de bitácora"
+      "delete": "Borrar registro de bitácora",
+      "sailing": "Navegación a vela",
+      "motoring": "Navegación a motor",
+      "fuel_consumed": "Combustible consumido",
+      "fuel_avg_rate": "Consumo medio",
+      "fuel_avg_consumption": "Consumo medio",
+      "total_log": "Registro total",
+      "tank_fuel": "Combustible",
+      "tank_fresh_water": "Agua dulce",
+      "status": "Estado",
+      "position": "Posición",
+      "time": "Fecha y hora",
+      "barometer": "Barómetro",
+      "course": "Course",
+      "photos": "Fotos",
+      "print": "Print"
+    },
+    "points": {
+      "title": "Cuaderno de bitácora de",
+      "fullTable": "Tabla completa"
+    },
+    "book": {
+      "days": "Días",
+      "trips": "Viajes",
+      "stays": "Estancias"
     }
   },
   "stays": {
@@ -336,7 +361,7 @@
     "top_logs_by_max_speed": "Lista de Registros ordenados por velocidad máxima",
     "top_logs_by_wind_speed": "Lista de Registros ordenados por velocidad máxima del viento",
     "top_moorages_by_duration": "Lista de Registros ordenados por duración",
-    "top_moorages_by_arrivals": "Top Moorages by Arrivals",
+    "top_moorages_by_arrivals": "Lista de Registros ordenados por llegadas",
     "underway": "En navegación",
     "away": "Fuera del puerto base",
     "home": "En puerto base"
@@ -393,7 +418,10 @@
       "configuration": "Configuración mapeo Signalk",
       "make_model": "Fabricante y modelo",
       "photo": "Foto",
-      "last_updated": "Actualizado por última vez en "
+      "last_updated": "Actualizado por última vez en ",
+      "select": "Cambiar barco",
+      "addNew": "Agregar nuevo barco",
+      "switched": "Cambiado a {name}"
     },
     "errors": {
       "name": "Se requiere nombre",
@@ -686,6 +714,11 @@
     }
   },
   "badges": {
+    "Proud Owner": "Every great boat deserves an audience. Thanks for showing yours off!",
+    "Sponsor": "Keeps PostgSail's engine running — thank you for backing the project.",
+    "Fleet Commander": "You are a fleet commander! You have more than one boat registered in PostgSail.",
+    "Social Beacon": "You're putting yourself on the map — literally. Your logs are public for others to follow.",
+    "AI Co-Pilot": "You have enabled AI agents integration in your PostgSail account. This allows you to leverage advanced AI capabilities for enhanced sailing experiences.",
     "Helmsman": "¡Excelente! Has registrado tu primera navegación! ¡Ya eres oficialmente un patrón!",
     "Wake Maker": "Bienvenido al club de los +15 Nudos! ¡Eres un as de la velocidad!",
     "Explorer": "Tu hogar está donde esté tu barco, ¡Felicidades por estar más de 10 dias fuera de tu puerto!",
@@ -700,7 +733,14 @@
     "Captain Award": "Enhorabuena, ya anotaste más de 1000 millas, ¡bravo, navegante!",
     "Speed Demon": "Awarded for achieving a best 24-hour distance of 100 NM or more in a single rolling window. Badge is updated each time you beat your own record.",
     "default": "Mírate navegando en",
-    "locked": "Bloqueado"
+    "locked": "Bloqueado",
+    "earned": "Ganado",
+    "log_ref": "Referencia del diario de navegación",
+    "date": "Fecha",
+    "Milestones": "Milestones",
+    "Achievements": "Achievements",
+    "Seamanship": "Seamanship",
+    "World & Regions": "World & Regions"
   },
   "nodata": {
     "nodata": "¡Nada por aquí! ¡Configura tu instancia de Signalk y comienza a navegar!",
@@ -740,7 +780,13 @@
     "new_moorage": "Nuevo fondeo",
     "maplapse_video": "Reproducir vídeo",
     "new_video": "Nuevo vídeo",
-    "autodiscovery": "Mapeo automático de sentencias SignalK"
+    "autodiscovery": "Mapeo automático de sentencias SignalK",
+    "monitoring_no_metrics": "Alertas de métricas de monitorización",
+    "weekly_summary": "Resumen semanal",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "view_stats": "Ver estadísticas",
+    "view_logbook": "Ver registro de bitácora"
   },
   "vuestic": {
     "search": "Buscar",

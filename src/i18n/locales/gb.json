@@ -189,6 +189,7 @@
       "replay": "Replay",
       "delete": "Delete",
       "merge": "Merge",
+      "logslapse": "Logslapse",
       "merge_modal": {
         "title": "Merge Logs",
         "message": "Start log must be earlier than End log and they must be adjacent (previous or next).",
@@ -227,7 +228,31 @@
       "observations": "Observations",
       "share": "Share",
       "tags": "Tags",
-      "delete": "Delete Log Book"
+      "delete": "Delete Log Book",
+      "sailing": "Sailing",
+      "motoring": "Motoring",
+      "fuel_consumed": "Fuel Consumed",
+      "fuel_avg_rate": "Avg. Fuel Rate",
+      "fuel_avg_consumption": "Avg. Consumption",
+      "total_log": "Total Log",
+      "tank_fuel": "Fuel",
+      "tank_fresh_water": "Fresh Water",
+      "status": "Status",
+      "position": "Position",
+      "time": "Time",
+      "barometer": "Barometer",
+      "course": "Course",
+      "photos": "Photos",
+      "print": "Print"
+    },
+    "points": {
+      "title": "Log Book for",
+      "fullTable": "Full Table"
+    },
+    "book": {
+      "days": "Days",
+      "trips": "Trips",
+      "stays": "Stays"
     }
   },
   "stays": {
@@ -390,7 +415,10 @@
       "configuration": "Configuration Signalk Mapping",
       "make_model": "Make and Model",
       "photo": "Photo",
-      "last_updated": "Last updated"
+      "last_updated": "Last updated",
+      "select": "Switch vessel",
+      "addNew": "Add new vessel",
+      "switched": "Switched to {name}"
     },
     "errors": {
       "name": "Name is required",
@@ -696,6 +724,11 @@
     }
   },
   "badges": {
+    "Proud Owner": "Every great boat deserves an audience. Thanks for showing yours off!",
+    "Sponsor": "Keeps PostgSail's engine running — thank you for backing the project.",
+    "Fleet Commander": "You are a fleet commander! You have more than one boat registered in PostgSail.",
+    "Social Beacon": "You're putting yourself on the map — literally. Your logs are public for others to follow.",
+    "AI Co-Pilot": "You have enabled AI agents integration in your PostgSail account. This allows you to leverage advanced AI capabilities for enhanced sailing experiences.",
     "Helmsman": "Nice work logging your first sail! You are officially a helmsman now!",
     "Wake Maker": "Welcome to the 15 knot+ club ya speed demon skipper!",
     "Explorer": "It looks like home is where the helm is. Cheers to 10 days away from home port!",
@@ -711,8 +744,13 @@
     "Speed Demon": "Awarded for achieving a best 24-hour distance of 100 NM or more in a single rolling window. Badge is updated each time you beat your own record.",
     "default": "Look at you sailing the",
     "locked": "Locked",
+    "earned": "Earned",
     "log_ref": "Logbook reference",
-    "date": "Date"
+    "date": "Date",
+    "Milestones": "Milestones",
+    "Achievements": "Achievements",
+    "Seamanship": "Seamanship",
+    "World & Regions": "World & Regions"
   },
   "nodata": {
     "nodata": "Nothing here yet! Please configure your signalk-instance and start sailing!",
@@ -752,7 +790,13 @@
     "new_moorage": "New moorage",
     "maplapse_video": "Replay video",
     "new_video": "New video",
-    "autodiscovery": "Automatic SignalK path mapping"
+    "autodiscovery": "Automatic SignalK path mapping",
+    "monitoring_no_metrics": "Monitoring metrics alerts",
+    "weekly_summary": "Weekly summary",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "view_stats": "View statistics",
+    "view_logbook": "View logbook"
   },
   "vuestic": {
     "search": "Search",

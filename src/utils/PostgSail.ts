@@ -11,22 +11,36 @@ import { dateFormatUTC } from './dateFormatter'
  * Badges definition
  */
 export const badges: { [key: string]: any } = {
-  Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman') },
-  'Wake Maker': { image: '/wake_maker.png', description: t('badges.Wake Maker') },
-  Explorer: { image: '/explorer.png', description: t('badges.Explorer') },
-  'Mooring Pro': { image: '/mooring_pro.png', description: t('badges.Mooring Pro') },
-  Anchormaster: { image: '/anchormaster.png', description: t('badges.Anchormaster') },
-  Traveler: { image: '/traveler.png', description: t('badges.Traveler') },
-  Stormtrooper: { image: '/storm_trooper.png', description: t('badges.Stormtrooper') },
-  'Club Alaska': { image: '/club_alaska.png', description: t('badges.Club Alaska') },
-  'Tropical Traveler': { image: '/tropical_traveler.png', description: t('badges.Tropical Traveler') },
-  'Navigator Award': { svg: true, description: t('badges.Navigator Award') },
-  'Captain Award': { svg: true, description: t('badges.Captain Award') },
-  'Speed Demon': { svg: true, description: t('badges.Speed Demon') },
+  // --- Milestones ---
+  'Proud Owner': { icon: 'fa-camera', description: t('badges.Proud Owner'), category: 'Milestones' },
+  'Fleet Commander': { icon: 'fa-trophy', description: t('badges.Fleet Commander'), category: 'Milestones' },
+  'Social Beacon': { icon: 'fa-people-group', description: t('badges.Social Beacon'), category: 'Milestones' },
+  'AI Co-Pilot': { icon: 'fa-robot', description: t('badges.AI Co-Pilot'), category: 'Milestones' },
+  Helmsman: { image: '/helmsman.png', description: t('badges.Helmsman'), category: 'Milestones' },
+  Sponsor: { icon: 'fa-star', description: t('badges.Sponsor'), category: 'Milestones' },
+  // --- Seamanship ---
+  'Wake Maker': { image: '/wake_maker.png', description: t('badges.Wake Maker'), category: 'Seamanship' },
+  Explorer: { image: '/explorer.png', description: t('badges.Explorer'), category: 'Seamanship' },
+  'Mooring Pro': { image: '/mooring_pro.png', description: t('badges.Mooring Pro'), category: 'Seamanship' },
+  Anchormaster: { image: '/anchormaster.png', description: t('badges.Anchormaster'), category: 'Seamanship' },
+  Stormtrooper: { icon: 'fa-cloud-bolt', description: t('badges.Stormtrooper'), category: 'Seamanship' },
+  'Navigator Award': { svg: true, description: t('badges.Navigator Award'), category: 'Seamanship' },
+  'Captain Award': { svg: true, description: t('badges.Captain Award'), category: 'Seamanship' },
+  'Speed Demon': { svg: true, description: t('badges.Speed Demon'), category: 'Seamanship' },
+  // --- World & Regions ---
+  Traveler: { image: '/traveler.png', description: t('badges.Traveler'), category: 'World & Regions' },
+  'Club Alaska': { image: '/club_alaska.png', description: t('badges.Club Alaska'), category: 'World & Regions' },
+  'Tropical Traveler': {
+    image: '/tropical_traveler.png',
+    description: t('badges.Tropical Traveler'),
+    category: 'World & Regions',
+  },
 }
 
 export async function userBadges(payload: undefined | any) {
-  const default_badge = { default: { svg: false, description: t('badges.default') } }
+  const default_badge = {
+    default: { icon: false, svg: false, description: t('badges.default'), category: 'World & Regions' },
+  }
   const user_badges = payload || {}
   for (const key in badges) {
     //console.log(key, badges[key])
@@ -34,6 +48,7 @@ export async function userBadges(payload: undefined | any) {
       user_badges[key] = { ...user_badges[key], ...badges[key] }
       user_badges[key]['disabled'] = false
       user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+      user_badges[key]['rawDate'] = user_badges[key]['date']
     } else {
       if (key in badges) {
         user_badges[key] = badges[key]
@@ -47,6 +62,7 @@ export async function userBadges(payload: undefined | any) {
       user_badges[key]['description'] = `${default_badge['default']['description']} ${key}!`
       user_badges[key]['disabled'] = false
       user_badges[key]['date'] = dateFormatUTC(user_badges[key]['date'])
+      user_badges[key]['rawDate'] = user_badges[key]['date']
       user_badges[key]['i18n'] = false
     }
   }

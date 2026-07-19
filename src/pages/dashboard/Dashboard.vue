@@ -92,26 +92,31 @@
   <div class="dashboard grid grid-cols-12 items-start p-2 gap-4">
     <template v-if="Monitoring2">
       <va-card v-if="Monitoring2" class="col-span-12">
-        <va-card-content class="grid grid-cols-12 row row-separated">
-          <div v-if="stateOfCharge" class="col-span-3 flex flex-col">
+        <va-card-content class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div v-if="stateOfCharge" class="flex flex-col items-center gap-1 py-2">
             <va-icon name="icon-battery" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ stateOfCharge.value }}%</h3>
             <p class="va-text-center">{{ t('dashboard.panel.battery') }}</p>
           </div>
-          <div v-if="panelPower" class="col-span-3 flex flex-col">
+          <div v-if="panelPower" class="flex flex-col items-center gap-1 py-2">
             <va-icon name="icon-solar" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ panelPower.value }}W</h3>
             <p class="va-text-center no-wrap">{{ t('dashboard.panel.solar') }}</p>
           </div>
-          <div v-if="Power" class="col-span-3 flex flex-col">
+          <div v-if="Power" class="flex flex-col items-center gap-1 py-2">
             <va-icon name="icon-bolt" :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ Power.value }}W</h3>
             <p class="va-text-center">{{ t('dashboard.panel.power') }}</p>
           </div>
-          <div v-if="tanksCapacity" class="col-span-3 flex flex-col">
+          <div v-if="tanksCapacity" class="flex flex-col items-center gap-1 py-2">
             <va-icon name="icon-tank" outline :size="64"></va-icon>
             <h3 class="va-h3 m-0 va-text-center">{{ tanksCapacity.value }}%</h3>
             <p class="va-text-center">{{ t('dashboard.panel.tank') }}</p>
+          </div>
+          <div v-if="engineRuntime" class="flex flex-col items-center gap-1 py-2">
+            <va-icon name="engine" outline :size="64"></va-icon>
+            <h3 class="va-h3 m-0 va-text-center">{{ engineRuntime.value }}h</h3>
+            <p class="va-text-center">{{ t('dashboard.panel.engine') }}</p>
           </div>
         </va-card-content>
       </va-card>
@@ -290,6 +295,21 @@
       }
     })
     obj.value = Math.round(obj.value)
+    return obj
+  })
+  const engineRuntime = computed(() => {
+    let obj = { key: 'engineRuntime', value: 0 }
+    //Total running time for engine (Engine Hours in seconds)
+    re = new RegExp(/propulsion.*\.runTime/, 'i')
+    Monitoring2.value.forEach(({ key, value }) => {
+      //console.log(re.test(key))
+      if (re.test(key)) {
+        console.log(key, value)
+        obj.key = key.split('.').slice(1).join('.')
+        obj.value += value
+      }
+    })
+    obj.value = Math.round(obj.value / 3600) // Transform in hours
     return obj
   })
   const tanksCapacity = computed(() => {

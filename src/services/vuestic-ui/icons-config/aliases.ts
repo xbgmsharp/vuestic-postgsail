@@ -22,7 +22,7 @@ import IconPNG from '../../../components/icons/IconPNG.vue'
 import IconSponsor from '../../../components/icons/IconSponsor.vue'
 import IconIsland from '../../../components/icons/IconIsland.vue'
 import IconMap from '../../../components/icons/IconMap.vue'
-import IconEngine from '../../../components/icons/IconMap.vue'
+import IconEngine from '../../../components/icons/IconEngine.vue'
 
 export default [
   {

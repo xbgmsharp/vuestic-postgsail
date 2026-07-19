@@ -54,6 +54,9 @@
               </router-link>
               <span v-if="item.date" class="badge-meta__date">{{ item.date }}</span>
             </div>
+            <div v-if="item.distance_nm" class="badge-meta">
+              {{ t('logs.log.distance') }}<span class="badge-meta__date">{{ item.distance_nm }} nm</span>
+            </div>
           </va-card-content>
         </va-card>
       </div>

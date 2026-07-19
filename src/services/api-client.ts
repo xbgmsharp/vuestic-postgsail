@@ -110,6 +110,10 @@ class ApiClient extends HttpClient {
     return this.get(`vessels_view`)
   }
 
+  async vessels_get(id: string) {
+    return this.get(`vessel_view?vessel_id=eq.${id}`)
+  }
+
   async vessel_get() {
     return this.get(`rpc/vessel_fn`)
   }
@@ -265,6 +269,10 @@ class ApiClient extends HttpClient {
 
   async logs_tags() {
     return this.get(`rpc/logs_tags_fn`)
+  }
+
+  async logs_range(payload: JSObj) {
+    return this.get(`log_view?${payload}`)
   }
 
   /*

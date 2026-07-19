@@ -125,7 +125,8 @@
       "battery": "Batería",
       "solar": "Placas Solares",
       "power": "Energía",
-      "tank": "Depósitos"
+      "tank": "Depósitos",
+      "engine": "Motor"
     },
     "week_prefix": "S",
     "months": {

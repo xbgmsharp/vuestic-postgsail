@@ -125,7 +125,8 @@
       "battery": "Battery",
       "solar": "Solar",
       "power": "Power",
-      "tank": "Tank"
+      "tank": "Tank",
+      "engine": "Engine"
     },
     "week_prefix": "W",
     "months": {

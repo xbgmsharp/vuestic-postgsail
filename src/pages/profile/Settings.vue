@@ -13,6 +13,9 @@
             <va-tab name="NotificationsTab">
               {{ t('profile.tabs.notifications.title') }}
             </va-tab>
+            <va-tab name="StaysTypeTab">
+              {{ t('profile.stays_type.title') }}
+            </va-tab>
           </template>
         </va-tabs>
         <va-separator />
@@ -33,6 +36,7 @@
   const tabs = {
     OverviewTab: defineAsyncComponent(() => import('./Overview.vue')),
     NotificationsTab: defineAsyncComponent(() => import('./Notifications.vue')),
+    StaysTypeTab: defineAsyncComponent(() => import('./StaysType.vue')),
   }
 
   const emit = defineEmits<{

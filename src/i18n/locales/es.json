@@ -365,7 +365,14 @@
     "top_moorages_by_arrivals": "Lista de Registros ordenados por llegadas",
     "underway": "En navegación",
     "away": "Fuera del puerto base",
-    "home": "En puerto base"
+    "home": "En puerto base",
+    "range": {
+      "all": "Todo el tiempo",
+      "this_month": "Este mes",
+      "last_month": "El mes pasado",
+      "last_12_months": "Los últimos 12 meses"
+    },
+    "no_data_for_range": "No hay registros para este período."
   },
   "boats": {
     "list": {
@@ -588,6 +595,23 @@
       "solarPowerKey": "Potencia de las placas solares",
       "tankLevelKey": "Nivel de depósito",
       "message": "Con Postgsail, puedes monitorizar todos los datos disponibles en la red de tu barco Las fuentes de monitorización pueden ser organizadas en secciones de acuerdo a sus características tales como unidades de medida. POr ejemplo, una sección de 'Depósitos' puede agrupar las fuentes de datos de los depósitos de combustible agua dulce, aguas negras, etc, dando así una visión rápida y estructurada. Puedes crear tantas secciones como necesites"
+    },
+    "stays_type": {
+      "title": "Stay Type",
+      "intro": "Tag each stay and moorage with how you stayed. Built-in types can’t be changed; add your own below.",
+      "description": "Stay types are used to categorize your moorages based on how you stayed at each location. You can use the built-in stay types or create your own custom stay types to better reflect your experiences. This allows you to organize and analyze your moorage history more effectively. Types label where your boat stops. Add your own (e.g. Marina, Yacht Club) — they appear in the type picker on every moorage and stay, and in your Statistics.",
+      "built_in": "Built-in",
+      "your_types": "Your Types",
+      "add_type": "Add New Stay Type",
+      "add_placeholder": "e.g. Marina",
+      "empty": "You haven’t added any types yet. Add your own — like Marina, Yacht Club or Raft-up.",
+      "message": "You can define your own stay types to categorize your moorages. For example, you might have stay types like 'Anchoring', 'Marina', or 'Mooring Buoy'. This allows you to better organize and analyze your moorage history based on the type of stay.",
+      "name_required": "Stay type name is required",
+      "added": "Stay type added successfully.",
+      "error": "Error updating the name of the stay type. Please try again.",
+      "delete_confirm": "Are you sure you want to delete this stay type? This action cannot be undone.",
+      "delete_success": "Stay type deleted successfully.",
+      "delete_error": "Error deleting the stay type. Please try again."
     }
   },
   "faq": {

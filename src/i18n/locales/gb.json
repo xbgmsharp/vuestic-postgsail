@@ -61,7 +61,18 @@
     "eventlogs": "Event Logs",
     "help": "Help",
     "history": "History",
-    "windy": "Windy"
+    "windy": "Windy",
+    "friends": "Friends",
+    "sections": {
+      "navigate": "Navigate",
+      "fleet": "Fleet",
+      "insights": "Insights"
+    },
+    "places": "Places",
+    "monitoring_explore": "Metrics explorer",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "notifications": {
     "all": "All",
@@ -361,7 +372,14 @@
     "top_moorages_by_arrivals": "Top Moorages by Arrivals",
     "underway": "Underway",
     "away": "Away",
-    "home": "Home"
+    "home": "Home",
+    "range": {
+      "all": "All time",
+      "this_month": "This month",
+      "last_month": "Last month",
+      "last_12_months": "Last 12 months"
+    },
+    "no_data_for_range": "No logs for this period."
   },
   "boats": {
     "list": {
@@ -419,7 +437,16 @@
       "last_updated": "Last updated",
       "select": "Switch vessel",
       "addNew": "Add new vessel",
-      "switched": "Switched to {name}"
+      "switched": "Switched to {name}",
+      "differs_from_signalk": "Differs from SignalK",
+      "sync_metadata": "Sync from SignalK",
+      "sync_success": "Vessel identity synced from SignalK",
+      "sync_error": "Could not sync from SignalK",
+      "signalk_registered_prefix": "You registered",
+      "signalk_set_prefix": "set",
+      "signalk_missing_generic": "Not set in SignalK",
+      "or": "or",
+      "lookup_specs": "look up specs"
     },
     "errors": {
       "name": "Name is required",
@@ -584,6 +611,27 @@
       "solarPowerKey": "Solar Power Source",
       "tankLevelKey": "Tank Level Source",
       "message": "You can monitor all data available on your boat network using PostgSail. Monitoring data sources can be organized into sections based on shared characteristics, such as measurement units. For instance, a 'Tanks' section could group together data sources for Freshwater, Wastewater, and Fuel, providing a structured and intuitive overview. You can add as many sections as you would like."
+    },
+    "stays_type": {
+      "title": "Stay Type",
+      "intro": "Tag each stay and moorage with how you stayed. Built-in types can’t be changed; add your own below.",
+      "description": "Stay types are used to categorize your moorages based on how you stayed at each location. You can use the built-in stay types or create your own custom stay types to better reflect your experiences. This allows you to organize and analyze your moorage history more effectively. Types label where your boat stops. Add your own (e.g. Marina, Yacht Club) — they appear in the type picker on every moorage and stay, and in your Statistics.",
+      "built_in": "Built-in",
+      "your_types": "Your Types",
+      "add_type": "Add New Stay Type",
+      "add_placeholder": "e.g. Marina",
+      "empty": "You haven’t added any types yet. Add your own — like Marina, Yacht Club or Raft-up.",
+      "message": "You can define your own stay types to categorize your moorages. For example, you might have stay types like 'Anchoring', 'Marina', or 'Mooring Buoy'. This allows you to better organize and analyze your moorage history based on the type of stay.",
+      "name_required": "Stay type name is required",
+      "added": "Added \"{0}\".",
+      "renamed": "Renamed to \"{0}\".",
+      "delete_confirm": "Delete the \"{0}\" type? This can't be undone.",
+      "delete_title": "Delete stay type?",
+      "deleted": "Deleted \"{0}\".",
+      "parent_type": "Falls back to",
+      "parent_type_hint": "If this type is ever deleted, badges and stats will roll up to the type chosen here instead.",
+      "parent_type_none": "No fallback",
+      "parent_type_badge": "Falls back to: {0}"
     }
   },
   "faq": {
@@ -798,6 +846,63 @@
     "yesterday": "Yesterday",
     "view_stats": "View statistics",
     "view_logbook": "View logbook"
+  },
+  "friends": {
+    "title": "Friends",
+    "list": {
+      "title": "Followed boats"
+    },
+    "empty": "You're not following any boats yet. Follow a boat by its MMSI to see it here and on the friends map.",
+    "follow_a_boat": "Follow a boat",
+    "tabs": {
+      "map": "Map",
+      "list": "List"
+    },
+    "map": {
+      "sidepanel_title": "Friends of",
+      "no_position": "no position yet",
+      "manage": "Manage"
+    },
+    "table": {
+      "label": "Name",
+      "mmsi": "MMSI",
+      "status": "Status",
+      "status_unknown": "Unknown",
+      "position_time": "Last position",
+      "distance_nm": "Distance"
+    },
+    "follow_modal": {
+      "title": "Follow a boat",
+      "description": "PostgSail lets you follow your boating friends' adventures. Non-users with AIS transponders can be tracked via our AIS network. Enter one or more MMSI numbers (comma-separated) below.",
+      "mmsi_label": "MMSI number(s)",
+      "invalid_mmsi": "Check the MMSI numbers — they should be numbers separated by commas.",
+      "cancel": "Cancel",
+      "submit": "Follow",
+      "success": "Boat added to your friends.",
+      "error": "Couldn't follow that boat. Check the MMSI and try again."
+    },
+    "details": {
+      "label": "Label",
+      "mmsi": "MMSI",
+      "status": "Status",
+      "distance": "Distance",
+      "last_contact": "Last contact",
+      "arrival_alert": "Notify me on arrival",
+      "departure_alert": "Notify me on departure",
+      "proximity_alert": "Notify me when within (nm)",
+      "proximity_hint": "Set to 0 to disable proximity alerts.",
+      "renamed": "Label saved.",
+      "unfollow": "Unfollow",
+      "unfollow_confirm": "Stop following this boat?",
+      "unfollowed": "Boat removed from your friends."
+    },
+    "followers": {
+      "title": "Followers",
+      "empty": "No one is following your boat yet.",
+      "go_public_hint": "Your profile is private, so other users can't find and follow your boat.",
+      "go_public": "Make my boat public",
+      "mutual_hint": "Follows you back"
+    }
   },
   "vuestic": {
     "search": "Search",

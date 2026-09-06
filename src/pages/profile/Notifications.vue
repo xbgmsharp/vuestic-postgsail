@@ -92,50 +92,6 @@
       </template>
     </div>
 
-    <!-- Position Reporting Section -->
-    <div class="flex flex-col p-4 space-y-4 bg-backgroundSecondary rounded-lg">
-      <h3 class="h3">{{ t('profile.position_reporting') }}</h3>
-
-      <div class="flex flex-col space-y-2">
-        <div class="flex items-center justify-between">
-          <label class="text-regularMedium font-semibold">{{ t('profile.position_reporting') }}</label>
-          <va-switch
-            v-model="settings.preferences.position_reporting"
-            size="small"
-            outline
-            @update:modelValue="UpdatePref('position_reporting', $event)"
-          />
-        </div>
-        <p class="text-sm va-text-secondary">{{ t('profile.msg.position_reporting') }}</p>
-      </div>
-
-      <!-- Position Reporting Interval -->
-      <template v-if="settings.preferences.position_reporting">
-        <VaAlert class="rounded-lg p-4 m-0" color="info">
-          <template #icon>
-            <VaIcon size="24px" name="share_location" />
-          </template>
-          <div class="flex flex-col space-y-2">
-            <p class="text-regularLarge font-bold">{{ t('profile.position_reporting_enabled') }}</p>
-            <p class="text-regularMedium">{{ t('profile.msg.position_reporting_info') }}</p>
-          </div>
-        </VaAlert>
-
-        <div class="flex flex-col space-y-6 pl-4 border-l-2 border-primary">
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.position_reporting_interval') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.position_reporting_interval') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.position_reporting_interval"
-              mask="numeral"
-              outline
-              @change="UpdatePref('position_reporting_interval', settings.preferences.position_reporting_interval)"
-            />
-          </div>
-        </div>
-      </template>
-    </div>
-
     <!-- Alerting Section -->
     <div class="flex flex-col p-4 space-y-4 bg-backgroundSecondary rounded-lg">
       <h3 class="h3">{{ t('profile.alerting') }}</h3>

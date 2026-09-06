@@ -363,6 +363,7 @@ export const useGlobalStore = defineStore('global', {
     userBadges: (state) => state?.badges || {},
     publicVessel: (state) => state.settings?.public_vessel || null,
     publicTimelapse: (state) => state.settings?.preferences?.public_timelapse || false,
+    publicProfile: (state) => state.settings?.preferences?.public_profile || false,
     isPublic: (state) => state.ispublic || false,
     firstName: (state) => state.settings?.first,
     instagram: (state) => state.settings?.preferences?.instagram_handle,

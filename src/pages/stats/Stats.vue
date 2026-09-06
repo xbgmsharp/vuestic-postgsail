@@ -17,6 +17,19 @@
                 <va-date-input v-model="dateRange" mode="range" @update:modelValue="updateDateRange" />
               </div>
             </div>
+            <div class="flex flex-wrap gap-2 mb-3">
+              <va-chip
+                v-for="preset in rangePresets"
+                :key="preset.key"
+                size="small"
+                :outline="activeRangeKey !== preset.key"
+                class="va-link"
+                :color="activeRangeKey === preset.key ? 'primary' : 'secondary'"
+                @click="applyPreset(preset)"
+              >
+                {{ preset.label }}
+              </va-chip>
+            </div>
             <div>
               <div class="mb-2">{{ $t('stats.badges') }}:</div>
               <div class="badges-stats">
@@ -287,7 +300,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
+  import { ref, onMounted, computed, watch, defineAsyncComponent } from 'vue'
   import { useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const nodatayet = defineAsyncComponent(() => import('../../components/noDataScreen.vue'))
@@ -326,6 +339,59 @@
 
   function getFlagIcon(code, size) {
     return `flag-icon-${code} ${size}`
+  }
+
+  const activeRangeKey = ref(null)
+  const userFiltered = ref(!!(start_log.value && end_log.value))
+
+  // NOTE: noon anchor — toISODate() is UTC-based, midnight local would roll back a day in CET/CEST
+  const at = (y, m, d) => new Date(y, m, d, 12, 0, 0, 0)
+
+  // stats_logs.first_date/last_date narrow once a range is applied,
+  // so keep the widest bounds ever observed to build the year list.
+  const bounds = ref({ first: null, last: null })
+  watch(
+    stats_logs,
+    (s) => {
+      if (!s) return
+      const f = s.first_date ? new Date(s.first_date) : null
+      const l = s.last_date ? new Date(s.last_date) : null
+      if (f && (!bounds.value.first || f < bounds.value.first)) bounds.value.first = f
+      if (l && (!bounds.value.last || l > bounds.value.last)) bounds.value.last = l
+    },
+    { immediate: true },
+  )
+
+  const availableYears = computed(() => {
+    const { first, last } = bounds.value
+    if (!first || !last) return []
+    const years = []
+    for (let y = last.getFullYear(); y >= first.getFullYear(); y--) years.push(y)
+    return years
+  })
+
+  const rangePresets = computed(() => {
+    const now = new Date()
+    const y = now.getFullYear()
+    const m = now.getMonth()
+    // Date(y, m - 1, 1) / Date(y, m + 1, 0) handle month & year rollover natively
+    const presets = [
+      { key: 'all', label: t('stats.range.all'), start: null, end: null },
+      { key: 'this_month', label: t('stats.range.this_month'), start: at(y, m, 1), end: at(y, m + 1, 0) },
+      { key: 'last_month', label: t('stats.range.last_month'), start: at(y, m - 1, 1), end: at(y, m, 0) },
+      { key: 'last_12_months', label: t('stats.range.last_12_months'), start: at(y, m - 11, 1), end: at(y, m + 1, 0) },
+    ]
+    for (const year of availableYears.value) {
+      presets.push({ key: `year_${year}`, label: String(year), start: at(year, 0, 1), end: at(year, 11, 31) })
+    }
+    return presets
+  })
+
+  function applyPreset(preset) {
+    activeRangeKey.value = preset.key
+    userFiltered.value = true
+    dateRange.value = preset.start && preset.end ? { start: preset.start, end: preset.end } : null
+    updateStatsLogs()
   }
 
   const disabled = computed(() => !isBusy.value && !stats_logs.value?.count)
@@ -413,22 +479,28 @@
 
 <style lang="scss" scoped>
   @import 'flag-icons/css/flag-icons.css';
+
   .va-input .va-input-wrapper {
     width: 200px;
   }
+
   .va-table-responsive {
     overflow: auto;
   }
+
   .va-table {
     width: 100%;
   }
+
   .sub-setting {
     padding-left: 2em;
     font-size: 0.9rem;
   }
+
   .badges-stats {
     display: flex;
   }
+
   .badges-icon {
     width: 32px;
     height: 32px;

@@ -5,6 +5,7 @@
 import HttpClient from './HttpClient'
 import { useGlobalStore } from '../stores/global-store'
 import type { JSObj } from '../data/types'
+import type { FriendAlerts } from '../queries/friends'
 
 class ApiClient extends HttpClient {
   static #instance: ApiClient;
@@ -148,6 +149,10 @@ class ApiClient extends HttpClient {
 
   async vessel_activity() {
     return this.get('rpc/vessel_activity_fn')
+  }
+
+  async vessel_sync(payload: JSObj) {
+    return this.post(`rpc/vessel_sync_identity_fn?`, payload)
   }
 
   async update_vessel_settings(payload: JSObj) {
@@ -401,11 +406,24 @@ class ApiClient extends HttpClient {
   async history(payload: JSObj) {
     return this.post(`rpc/monitoring_history_fn`, payload)
   }
+
   /*
    * Stays at
    */
   async stays_at() {
     return this.get(`stays_at`)
+  }
+  async stay_types_list() {
+    return this.get('stays_at?order=stay_code.asc')
+  }
+  async stay_type_create(description: string, parentCode: number | null) {
+    return this.post('stays_at', { description, parent_code: parentCode })
+  }
+  async stay_type_rename(stayCode: number, description: string, parentCode: number | null) {
+    return this.patch(`stays_at?stay_code=eq.${stayCode}`, { description, parent_code: parentCode })
+  }
+  async stay_type_delete(stayCode: number) {
+    return this.delete(`stays_at?stay_code=eq.${stayCode}`)
   }
 
   /*
@@ -490,6 +508,40 @@ class ApiClient extends HttpClient {
       throw new Error('Unknown type for note upload: ' + type)
     }
     return data
+  }
+
+  /*
+   * Friends / follows
+   */
+  async friends_list() {
+    return this.get('friends_view?order=label')
+  }
+
+  async followers_list() {
+    return this.get('followers_view')
+  }
+
+  async friends_follow(mmsi: number) {
+    return this.post('follows', { mmsi })
+  }
+
+  async friends_rename(id: number, label: string) {
+    return this.patch(`follows?id=eq.${id}`, { label })
+  }
+
+  async friends_alerts(id: number, alerts: FriendAlerts) {
+    return this.patch(`/follows?id=eq.${id}`, { alerts })
+  }
+
+  async friends_unfollow(mmsi: number) {
+    return this.delete(`follows?mmsi=eq.${mmsi}`)
+  }
+
+  async friends_go_public() {
+    return this.post('rpc/update_user_preferences_fn', {
+      key: '{public_profile}',
+      value: 'true',
+    })
   }
 
   /*

@@ -1,7 +1,7 @@
 <template>
   <svg
     class="va-icon-vuestic"
-    :height="height"
+    :height="props.height"
     viewBox="0 0 148 34"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg"
@@ -24,10 +24,6 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue'
-  import { useColors } from 'vuestic-ui'
-  const { getColor, shiftHSLAColor } = useColors()
-
   const props = withDefaults(
     defineProps<{
       height?: number | string

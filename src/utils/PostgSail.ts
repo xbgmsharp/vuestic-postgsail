@@ -12,7 +12,7 @@ import { dateFormatUTC } from './dateFormatter'
  */
 export const badges: { [key: string]: any } = {
   // --- Milestones ---
-  'Proud Owner': { icon: 'fa-camera', description: t('badges.Proud Owner'), category: 'Milestones' },
+  'Proud Owner': { icon: 'fa-medal', description: t('badges.Proud Owner'), category: 'Milestones' },
   'Fleet Commander': { icon: 'fa-trophy', description: t('badges.Fleet Commander'), category: 'Milestones' },
   'Social Beacon': { icon: 'fa-people-group', description: t('badges.Social Beacon'), category: 'Milestones' },
   'AI Co-Pilot': { icon: 'fa-robot', description: t('badges.AI Co-Pilot'), category: 'Milestones' },
@@ -27,6 +27,7 @@ export const badges: { [key: string]: any } = {
   'Navigator Award': { svg: true, description: t('badges.Navigator Award'), category: 'Seamanship' },
   'Captain Award': { svg: true, description: t('badges.Captain Award'), category: 'Seamanship' },
   'Speed Demon': { svg: true, description: t('badges.Speed Demon'), category: 'Seamanship' },
+  'Night Owl': { svg: true, description: t('badges.Night Owl'), category: 'Seamanship' },
   // --- World & Regions ---
   Traveler: { image: '/traveler.png', description: t('badges.Traveler'), category: 'World & Regions' },
   'Club Alaska': { image: '/club_alaska.png', description: t('badges.Club Alaska'), category: 'World & Regions' },
@@ -76,20 +77,62 @@ export const stayed_at_options = [
   {
     value: 1,
     text: t('id.stay_code.1'),
+    icon: 'fa-circle-question',
   },
   {
     value: 2,
     text: t('id.stay_code.2'),
+    icon: 'fa-anchor',
   },
   {
     value: 3,
     text: t('id.stay_code.3'),
+    icon: 'fa-circle-dot',
+    desc: 'A mooring buoy or ball you tie up to — not a berth in a marina.',
   },
   {
     value: 4,
     text: t('id.stay_code.4'),
+    icon: 'fa-bridge-water',
   },
 ]
+
+interface CustomStayTypeRow {
+  stay_code: number
+  description: string
+  parent_code: number | null
+}
+
+export interface StayTypeOption {
+  value: number
+  text: string
+  icon: string
+  desc?: string
+  isCustom: boolean
+  parentCode?: number | null
+}
+
+/*
+ * Merge the built-in stay type options (translated, with icon/desc) with a
+ * vessel's custom stay types (rows from api.stays_at where vessel_id IS NOT
+ * NULL). One canonical, already-translated list — reusable anywhere stay
+ * types are listed: this settings tab, and any moorage/stay type picker
+ * elsewhere in the app.
+ *
+ * The `= []` default on an untyped parameter is what was inferring `never`
+ * before — the explicit `CustomStayTypeRow[]` annotation fixes that.
+ */
+export function getStayTypeOptions(customStayTypes: CustomStayTypeRow[] = []): StayTypeOption[] {
+  const builtIn: StayTypeOption[] = stayed_at_options.map((opt) => ({ ...opt, isCustom: false }))
+  const custom: StayTypeOption[] = customStayTypes.map((row) => ({
+    value: row.stay_code,
+    text: row.description,
+    icon: '', // user-defined types have no built-in icon
+    isCustom: true,
+    parentCode: row.parent_code,
+  }))
+  return [...builtIn, ...custom]
+}
 
 /*
  * seaState options definition

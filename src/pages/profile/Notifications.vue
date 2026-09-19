@@ -91,159 +91,6 @@
         </div>
       </template>
     </div>
-
-    <!-- Alerting Section -->
-    <div class="flex flex-col p-4 space-y-4 bg-backgroundSecondary rounded-lg">
-      <h3 class="h3">{{ t('profile.alerting') }}</h3>
-
-      <div class="flex flex-col space-y-2">
-        <div class="flex items-center justify-between">
-          <label class="text-regularMedium font-semibold">{{ t('profile.alerting') }}</label>
-          <va-switch
-            v-model="settings.preferences.alerting['enabled']"
-            size="small"
-            outline
-            @update:modelValue="UpdateVessel('alerting', $event)"
-          />
-        </div>
-        <p class="text-sm va-text-secondary">{{ t('profile.msg.alerting') }}</p>
-      </div>
-
-      <!-- Alerting Thresholds -->
-      <template v-if="settings.preferences.alerting.enabled">
-        <VaAlert class="rounded-lg p-4 m-0" color="info">
-          <template #icon>
-            <VaIcon size="24px" name="notifications_active" />
-          </template>
-          <div class="flex flex-col space-y-2">
-            <p class="text-regularLarge font-bold">{{ t('profile.alerting_enabled') }}</p>
-            <p class="text-regularMedium">{{ t('profile.msg.alerting_info') }}</p>
-          </div>
-        </VaAlert>
-
-        <div class="flex flex-col space-y-6 pl-4 border-l-2 border-primary">
-          <!-- Min Notification Interval -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.min_notification_interval') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.min_notification_interval') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.min_notification_interval"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- High Wind Speed Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.high_wind_speed_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.high_wind_speed_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.high_wind_speed_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Outdoor Temperature Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_outdoor_temperature_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_outdoor_temperature_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_outdoor_temperature_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Indoor Temperature Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_indoor_temperature_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_indoor_temperature_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_indoor_temperature_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Water Temperature Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_water_temperature_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_water_temperature_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_water_temperature_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Water Depth Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_water_depth_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_water_depth_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_water_depth_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Pressure Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_pressure_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_pressure_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_pressure_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- High Pressure Drop Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.high_pressure_drop_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.high_pressure_drop_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.high_pressure_drop_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Battery Charge Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_battery_charge_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_battery_charge_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_battery_charge_threshold"
-              mask="numeral"
-              outline
-              @change="UpdatePref('alerting', settings.preferences.alerting)"
-            />
-          </div>
-
-          <!-- Low Battery Voltage Threshold -->
-          <div class="flex flex-col space-y-2">
-            <label class="text-regularMedium font-semibold">{{ t('profile.low_battery_voltage_threshold') }}</label>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.low_battery_voltage_threshold') }}</p>
-            <VaInput
-              v-model.number="settings.preferences.alerting.low_battery_voltage_threshold"
-              mask="numeral"
-              outline
-              @change="UpdateVessel('alerting', settings.preferences.alerting)"
-            />
-          </div>
-        </div>
-      </template>
-    </div>
   </div>
 </template>
 
@@ -261,7 +108,7 @@
   const { init: initToast } = useToast()
   const GlobalStore = useGlobalStore()
   const { settings } = storeToRefs(GlobalStore)
-  const { fetchSettings, updatePref, updateVessel } = GlobalStore
+  const { fetchSettings, updatePref } = GlobalStore
 
   onBeforeMount(async () => {
     console.log(`onBeforeMount NotificationsTab`)
@@ -326,29 +173,6 @@
     // Notify user on success or failure using va-toast.
     initToast({
       message: response ? `Successfully updated ${key} with ${value}` : `Error updated ${key} with ${value}`,
-      position: 'top-right',
-      color: 'primary',
-      //color: response ? 'success' : 'warning',
-    })
-  }
-  const UpdateVessel = async (key, value) => {
-    if (!key || typeof value === 'undefined') {
-      return
-    }
-
-    if (key === 'alerting' && typeof value === 'object') {
-      console.debug(`Updating ${key}:`, JSON.stringify(value))
-    }
-
-    const response = await updateVessel(key, value)
-
-    if (typeof value === 'object') {
-      value = ''
-    }
-
-    // Notify user on success or failure using va-toast.
-    initToast({
-      message: response ? `Successfully updated ${key}` : `Error updated ${key}`,
       position: 'top-right',
       color: 'primary',
       //color: response ? 'success' : 'warning',

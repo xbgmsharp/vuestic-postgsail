@@ -12,10 +12,9 @@
 </template>
 
 <script setup>
-  import { useI18n } from 'vue-i18n'
-  import { ref } from 'vue'
-
-  const { t } = useI18n()
+  import { ref, computed } from 'vue'
+  import { useStayTypes } from '../queries/stay-types'
+  import { getStayTypeOptions } from '../utils/PostgSail'
 
   const props = defineProps({
     data: Number,
@@ -23,17 +22,17 @@
   })
   const emit = defineEmits(['clickFromChildComponent'])
 
-  const optionsHash = {
-    1: t('id.stay_code.1'),
-    2: t('id.stay_code.2'),
-    3: t('id.stay_code.3'),
-    4: t('id.stay_code.4'),
-  }
+  // Same query the Stay Types settings tab uses — RLS already scopes
+  // vessel_id != null rows to the current vessel, so no extra filtering by
+  // vessel needed here, only splitting built-in vs custom.
+  const { data: stayTypesData } = useStayTypes()
+  const customStayTypes = computed(() => (stayTypesData.value ?? []).filter((row) => row.vessel_id != null))
 
-  const options = Object.entries(optionsHash).map(([value, text]) => ({
-    value: parseInt(value),
-    text: text,
-  }))
+  // One canonical, translated list — built-ins from stayed_at_options plus
+  // this vessel's custom types. Previously this component had its own
+  // hardcoded 4-entry optionsHash (codes 1-4 only), which is why custom
+  // types never showed up here even after being added in Settings.
+  const options = computed(() => getStayTypeOptions(customStayTypes.value))
 
   const item = ref(props.id)
   const value = ref(props.data)

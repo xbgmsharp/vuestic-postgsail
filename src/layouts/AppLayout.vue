@@ -8,7 +8,11 @@
     <div class="app-layout">
       <navbar />
       <div class="app-layout__content">
-        <div class="app-layout__sidebar-wrapper" :class="{ minimized: isSidebarMinimized }">
+        <div
+          v-if="isLoggedIn || !isPublic"
+          class="app-layout__sidebar-wrapper"
+          :class="{ minimized: isSidebarMinimized }"
+        >
           <div v-if="isFullScreenSidebar" class="flex justify-end">
             <va-button
               class="px-4 py-4"
@@ -70,7 +74,7 @@
 
   //const isMobile = ref(false)
   const isTablet = ref(false)
-  const { isSidebarMinimized, isMobile } = storeToRefs(GlobalStore)
+  const { isSidebarMinimized, isMobile, isPublic, isLoggedIn } = storeToRefs(GlobalStore)
   const { fetchSettings } = GlobalStore
   const { fetchVessel } = VesselStore
   const { vesselName } = storeToRefs(VesselStore)
@@ -93,7 +97,7 @@
 
     isMobile.value = checkIsMobile()
     isTablet.value = checkIsTablet()
-    sidebarMinimizedWidth.value = isMobile.value ? '0' : '0' //'4.5rem'
+    sidebarMinimizedWidth.value = isMobile.value ? '0' : '4.5rem' //'4.5rem'
     sidebarWidth.value = isTablet.value ? '100%' : '16rem'
 
     adjustPadding()

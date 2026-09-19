@@ -304,6 +304,18 @@ const routes: Array<RouteRecordRaw> = [
         path: 'explore',
         component: () => import('../components/maps/leafletMapExplorer.vue'),
       },
+      {
+        name: 'friends',
+        path: 'friends',
+        component: () => import('../pages/friends/Friends.vue'),
+        meta: { titleKey: 'friends.title' },
+      },
+      {
+        name: 'friends-list',
+        path: 'friends-list',
+        component: () => import('../pages/friends/FriendsList.vue'),
+        meta: { titleKey: 'friends.title' },
+      },
       /*
       {
         name: 'map-explorer2',
@@ -369,7 +381,7 @@ const router = createRouter({
   },
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   const { isLoggedIn, validEmail, hasVessel, preferredHomepage, isPublic } = useGlobalStore()
   console.log(
     'isLoggedIn',
@@ -387,6 +399,7 @@ router.beforeEach(async (to, from, next) => {
   const { is_public } = GlobalStore
   const VesselStore = useVesselStore()
   const { fetchVessel } = VesselStore
+
   if (!isLoggedIn && to.path === '/login' && to.query.next) {
     if (
       /\w+\/(logs|timelapse|stats|monitoring|maplapse|logmap)/.test(to.query.next as string) ||
@@ -396,11 +409,9 @@ router.beforeEach(async (to, from, next) => {
       const new_path = to.query.next
       delete to.query.next
       if (Object.keys(to.query).length) {
-        next({ path: new_path as string, query: to.query })
-        return
+        return { path: new_path as string, query: to.query }
       }
-      next({ path: new_path as string })
-      return
+      return { path: new_path as string }
     }
     if (
       (/reset-password/.test(to.query.next as string) || /reset/.test(to.query.next as string)) &&
@@ -410,8 +421,7 @@ router.beforeEach(async (to, from, next) => {
       console.log(`req is reset-password and from login, set path to ${to.query.next}`)
       const new_path = to.query.next
       to.query.next = ''
-      next({ path: new_path as string, query: { token: to.query.token, uuid: to.query.uuid } })
-      return
+      return { path: new_path as string, query: { token: to.query.token, uuid: to.query.uuid } }
     }
     //console.log(`req has query next: ${to.query.next}`)
   }
@@ -433,48 +443,41 @@ router.beforeEach(async (to, from, next) => {
       )
       if (anonymous) {
         await fetchVessel()
-        next()
-        return
+        return true
       }
       // we have a public url but with no public permission. redirect to login
-      next({ name: 'login' })
-      return
+      return { name: 'login' }
     } else if (to.name == 'faq' || to.name == 'privacy') {
-      next()
-      return
+      return true
     }
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
     // If not logged in, yet required, redirect to login page
-    next({ name: 'login', query: { next: to.path } })
+    return { name: 'login', query: { next: to.path } }
   } else {
     console.warn('vue-router beforeEach activate -> /', isLoggedIn, validEmail, to)
     // Enforce email otp validation
     if (to.name != 'activate' && isLoggedIn && !validEmail) {
-      next({ name: 'activate' })
-      return
+      return { name: 'activate' }
     }
     // Enforce vessel creation
     if (to.name != 'boat-new' && to.name != 'logout' && isLoggedIn && validEmail && !hasVessel) {
-      next({ name: 'boat-new' })
-      return
+      return { name: 'boat-new' }
     }
     // Follow next query-string if all good
     if (to.query.next && isLoggedIn && validEmail && hasVessel) {
-      next({ path: to.query.next as string })
-      return
+      return { path: to.query.next as string }
     }
     // All good go to dashboard or preferredHomepage
     if (to.name === 'login' && isLoggedIn && validEmail && hasVessel) {
-      next({ name: preferredHomepage })
-      return
+      return { name: preferredHomepage }
     }
     if (to.meta.titleKey) {
       const titleKey = to.meta.titleKey as string
       document.title = setAppTitle(i18n.global.t(titleKey))
     }
-    next()
+    return true
   }
 })
 

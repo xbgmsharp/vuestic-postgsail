@@ -61,7 +61,19 @@
     "eventlogs": "Aktivitäts Log",
     "help": "Hilfe",
     "history": "Historie",
-    "windy": "Windy"
+    "windy": "Windy",
+    "friends": "Friends",
+    "sections": {
+      "navigate": "Navigate",
+      "fleet": "Fleet",
+      "insights": "Insights"
+    },
+    "places": "Places",
+    "monitoring_explore": "Metrics",
+    "logbook_report": "Journal",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "notifications": {
     "all": "Alle",
@@ -457,6 +469,15 @@
       "monitoring": {
         "title": "Monitoring"
       },
+      "sharing": {
+        "title": "Teilen"
+      },
+      "alerting": {
+        "title": "Alarmierung"
+      },
+      "integrations": {
+        "title": "Integrationen"
+      },
       "correlations": {
         "title": "Korrelationen"
       }
@@ -498,6 +519,8 @@
     "public_timelapse": "Zeitraffer",
     "public_monitoring": "Tracking & Monitoring",
     "instagram_handle": "Instagram Benutzername",
+    "noforeignland_enabled": "Publish to NoForeignland",
+    "noforeignland_api_key": "Boat API Key",
     "preferred_homepage": "Bevorzugte Startseite",
     "use_imperial_units": "Imperiale Einheiten verwenden",
     "email_notifications": "E-Mail-Benachrichtigungen",
@@ -568,7 +591,9 @@
       "public_monitoring": "Wenn aktiviert, ist dein Monitoring öffentlich unter https://iot.openplotter.cloud/{0}/monitoring erreichbar.",
       "public_name": "Wenn du dein öffentlichen Profil aktivierst, hast du die Möglichkeit deinen Bootsnamen zu festzuglegen.",
       "public_windy": "Wenn du dein öffentlichen Profil aktivierst, hast du die Möglichkeit aus deinem Boot in eine, in Windy integrierte, Wetterstation zu machen.",
-      "mcp_integration": "Erlaubt die sichere (Nur Lesen) Einbindung von KI Agenten. Wenn du den PostgSail MCP Server nutzt, kannst Du erweiterte Funktionen aktivieren. Diese erweitern die Möglichkeiten deines Marine Data Systems und erleichtern das Managen und die Optimierung deine Bootserfahrungen."
+      "mcp_integration": "Erlaubt die sichere (Nur Lesen) Einbindung von KI Agenten. Wenn du den PostgSail MCP Server nutzt, kannst Du erweiterte Funktionen aktivieren. Diese erweitern die Möglichkeiten deines Marine Data Systems und erleichtern das Managen und die Optimierung deine Bootserfahrungen.",
+      "noforeignland_enabled": "Füge deinen Boot API Schlüssel unten hinzu, um dein Boot auf der NoForeignland Community Karte anzuzeigen.",
+      "noforeignland_api_key": "Füge den API Schlüssel deines Bootes von noforeignland.com → Boot Einstellungen → Boot Tracking → API Schlüssel ein."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",

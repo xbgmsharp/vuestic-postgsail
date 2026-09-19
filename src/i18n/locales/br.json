@@ -61,7 +61,19 @@
     "eventlogs": "Event Logs",
     "help": "Help",
     "history": "History",
-    "windy": "Windy"
+    "windy": "Windy",
+    "friends": "Friends",
+    "sections": {
+      "navigate": "Navigate",
+      "fleet": "Fleet",
+      "insights": "Insights"
+    },
+    "places": "Places",
+    "monitoring_explore": "Metrics",
+    "logbook_report": "Journal",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "notifications": {
     "all": "All",
@@ -446,19 +458,28 @@
     }
   },
   "profile": {
-    "title": "Profile",
+    "title": "Perfil",
     "tabs": {
       "overview": {
-        "title": "Em geral"
+        "title": "Geral"
       },
       "notifications": {
         "title": "Notificações"
       },
       "monitoring": {
-        "title": "Monitoring"
+        "title": "Monitoramento"
+      },
+      "sharing": {
+        "title": "Compartilhamento"
+      },
+      "alerting": {
+        "title": "Alertas"
+      },
+      "integrations": {
+        "title": "Integrações"
       },
       "correlations": {
-        "title": "Correlations"
+        "title": "Correlações"
       }
     },
     "token_modal": {
@@ -498,6 +519,8 @@
     "public_timelapse": "Timelapse",
     "public_monitoring": "Tracking & Monitoring",
     "instagram_handle": "Instagram Handle",
+    "noforeignland_enabled": "Publish to NoForeignland",
+    "noforeignland_api_key": "Boat API Key",
     "preferred_homepage": "Preferred Homepage",
     "use_imperial_units": "Use Imperial Units",
     "email_notifications": "E-mail Notifications",
@@ -568,7 +591,9 @@
       "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "When you enable your public profile, you will have the option to choose your boat name",
       "public_windy": "When you enable your public profile, you will have the option to transform your boat in a weather station integrate in Windy.",
-      "mcp_integration": "Allows AI agents integration in a secure (read-only) and standardized way. When using PostgSail MCP server, you can enable advanced functionalities that enhance the capabilities of your marine data systems, making it easier to manage and optimize your boating experience."
+      "mcp_integration": "Allows AI agents integration in a secure (read-only) and standardized way. When using PostgSail MCP server, you can enable advanced functionalities that enhance the capabilities of your marine data systems, making it easier to manage and optimize your boating experience.",
+      "noforeignland_enabled": "Add your Boat API Key below to show your boat on the NoForeignland community map.",
+      "noforeignland_api_key": "Paste your boat's API Key from noforeignland.com → Boat settings → Boat tracking → API Key."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",

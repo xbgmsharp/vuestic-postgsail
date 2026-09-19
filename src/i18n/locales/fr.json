@@ -61,7 +61,19 @@
     "eventlogs": "Journaux d'événements",
     "help": "Aide",
     "history": "Historique",
-    "windy": "Windy"
+    "windy": "Windy",
+    "friends": "Friends",
+    "sections": {
+      "navigate": "Navigate",
+      "fleet": "Fleet",
+      "insights": "Insights"
+    },
+    "places": "Places",
+    "monitoring_explore": "Metrics",
+    "logbook_report": "Journal",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "notifications": {
     "all": "Tous",
@@ -456,8 +468,17 @@
       "monitoring": {
         "title": "Monitoring"
       },
+      "sharing": {
+        "title": "Partage"
+      },
+      "alerting": {
+        "title": "Alertes"
+      },
+      "integrations": {
+        "title": "Intégrations"
+      },
       "correlations": {
-        "title": "Correlations"
+        "title": "Corrélations"
       }
     },
     "token_modal": {
@@ -497,6 +518,8 @@
     "public_timelapse": "Timelapse",
     "public_monitoring": "Suivi et surveillance",
     "instagram_handle": "Identifiant Instagram",
+    "noforeignland_enabled": "Publish to NoForeignland",
+    "noforeignland_api_key": "Boat API Key",
     "preferred_homepage": "Page d'accueil préférée",
     "use_imperial_units": "Utiliser les unités impériales",
     "email_notifications": "Notifications par e-mail",
@@ -567,7 +590,9 @@
       "public_monitoring": "Lorsque activé, votre surveillance sera accessible publiquement à https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "Lorsque vous activez votre profil public, vous aurez la possibilité de choisir le nom de votre bateau",
       "public_windy": "Lorsque vous activez votre profil public, vous aurez la possibilité de transformer votre bateau en une station météorologique intégrée à Windy.",
-      "mcp_integration": "Permet l'intégration des agents IA de manière sécurisée (lecture seule) et standardisée. Lors de l'utilisation du serveur PostgSail MCP, vous pouvez activer des fonctionnalités avancées qui améliorent les capacités de vos systèmes de données marines, facilitant ainsi la gestion et l'optimisation de votre expérience de navigation."
+      "mcp_integration": "Permet l'intégration des agents IA de manière sécurisée (lecture seule) et standardisée. Lors de l'utilisation du serveur PostgSail MCP, vous pouvez activer des fonctionnalités avancées qui améliorent les capacités de vos systèmes de données marines, facilitant ainsi la gestion et l'optimisation de votre expérience de navigation.",
+      "noforeignland_enabled": "Ajoutez votre clé API de bateau ci-dessous pour afficher votre bateau sur la carte communautaire NoForeignland.",
+      "noforeignland_api_key": "Collez la clé API de votre bateau depuis noforeignland.com → Paramètres du bateau → Suivi du bateau → Clé API."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",

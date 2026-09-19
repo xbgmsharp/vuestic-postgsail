@@ -61,7 +61,19 @@
     "eventlogs": "Registro de eventos",
     "help": "Ayuda",
     "history": "Historial",
-    "windy": "Windy"
+    "windy": "Windy",
+    "friends": "Friends",
+    "sections": {
+      "navigate": "Navigate",
+      "fleet": "Fleet",
+      "insights": "Insights"
+    },
+    "places": "Places",
+    "monitoring_explore": "Metrics",
+    "logbook_report": "Journal",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "notifications": {
     "all": "Todas",
@@ -457,8 +469,17 @@
       "monitoring": {
         "title": "Monitorización"
       },
+      "sharing": {
+        "title": "Compartir"
+      },
+      "alerting": {
+        "title": "Alertas"
+      },
+      "integrations": {
+        "title": "Integraciones"
+      },
       "correlations": {
-        "title": "Vinculaciones SignalK"
+        "title": "Correlaciones"
       }
     },
     "token_modal": {
@@ -470,20 +491,20 @@
     },
     "name": "Nombre",
     "website": "Página web",
-    "language": "Language",
-    "sponsor": "Sponsor",
+    "language": "Idioma",
+    "sponsor": "Patrocinador",
     "theme": {
-      "title": "Theme",
-      "light": "Light",
-      "dark": "Dark",
+      "title": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro",
       "auto": "Auto"
     },
-    "general_preferences": "General Preferences",
-    "information": "Information",
-    "member_since": "Member since",
-    "social_links": "Social Links",
-    "public_profile_enabled": "Public Profile Enabled",
-    "phone_notifications_enabled": "Phone Notifications Enabled",
+    "general_preferences": "Preferencias generales",
+    "information": "Información",
+    "member_since": "Miembro desde",
+    "social_links": "Enlaces sociales",
+    "public_profile_enabled": "Perfil público activado",
+    "phone_notifications_enabled": "Notificaciones por teléfono activadas",
     "windy_station": "Estación Windy",
     "mcp_integration": "Integración con agentes IA de MCP",
     "password_protected": "Protegido por contraseña",
@@ -496,15 +517,17 @@
     "public_stats": "Estadísticas",
     "public_logs_list": "Lista de registros públicos",
     "public_timelapse": "Línea del tiempo pública",
-    "public_monitoring": "Tracking & Monitoring",
+    "public_monitoring": "Seguimiento y monitorización",
     "instagram_handle": "Nick Instagram",
+    "noforeignland_enabled": "Publish to NoForeignland",
+    "noforeignland_api_key": "Boat API Key",
     "preferred_homepage": "Pagina preferida de inicio ",
     "use_imperial_units": "Usar medidas imperiales",
     "email_notifications": "Notificaciones por E-mail",
     "phone_notifications": "Notificaciones por teléfono",
-    "position_reporting": "Position Reporting",
-    "position_reporting_enabled": "Position Reporting Enabled",
-    "position_reporting_interval": "Reporting Interval (minutes)",
+    "position_reporting": "Informe de posición",
+    "position_reporting_enabled": "Informe de posición activado",
+    "position_reporting_interval": "Intervalo de informe (minutos)",
     "alerting": "Alertas",
     "min_notification_interval": "Intervalo Min notificaciones (H)",
     "high_wind_speed_threshold": "Velocidad del viento (Kts)",
@@ -568,7 +591,9 @@
       "public_monitoring": "Estando activado, tus datos de monitorización serán accesibles públicamente en https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "Cuando habilites tu perfil público, tendrás la opción de elegir el nombre de tu barco",
       "public_windy": "Cuando habilites tu perfil público, tendrás la opción de transformar tu barco en una estaciòn de navegación integrada en Windy.",
-      "mcp_integration": "El Modelo de Protocolo de Contexto (Model Context Protocol o MCP) en un protocolo de código abierto que permite trabajar con los agentes de IA de una forma segura (solo lectura) y estandarizada. Usando el servidor MCP de PostgSail MCP podrás activar funcionalidades avanzadas que mejorarán la gestión de tus sistemas marinos de datos, optimizando así tu experiencia náutica."
+      "mcp_integration": "El Modelo de Protocolo de Contexto (Model Context Protocol o MCP) en un protocolo de código abierto que permite trabajar con los agentes de IA de una forma segura (solo lectura) y estandarizada. Usando el servidor MCP de PostgSail MCP podrás activar funcionalidades avanzadas que mejorarán la gestión de tus sistemas marinos de datos, optimizando así tu experiencia náutica.",
+      "noforeignland_enabled": "Añade tu clave API de barco a continuación para mostrar tu barco en el mapa comunitario de NoForeignland.",
+      "noforeignland_api_key": "Pega la clave API de tu barco desde noforeignland.com → Configuración del barco → Seguimiento del barco → Clave API."
     },
     "url": {
       "public_logs": "https://iot.openplotter.cloud/{0}/log/{1}",

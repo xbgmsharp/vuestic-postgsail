@@ -99,6 +99,8 @@ const defaultState = {
       public_stats: false,
       public_logs_list: false,
       public_timelapse: false,
+      noforeignland_enabled: false,
+      noforeignland_api_key: '',
       public_vessel: '',
       public_windy: false,
       public_monitoring: false,

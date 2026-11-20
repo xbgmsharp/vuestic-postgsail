@@ -123,58 +123,64 @@
     </template>
 
     <!-- Info Tiles — powered by vessel_activity_fn() -->
-    <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color" class="col-span-4">
-      <router-link :to="info.route">
-        <va-card-content class="flex flex-col space-y-3">
-          <header class="flex items-center justify-between">
-            <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2>
-            <div class="p-1.5 rounded flex items-center justify-center">
-              <va-icon :name="info.icon" outline :size="48" class="text-white" />
+    <!-- Own auto-fit grid: `col-span-4` gave three ~110px columns on phones. Tiles now
+         wrap on the space actually left by the sidebar, not on the viewport width. -->
+    <div class="dashboard__tiles col-span-12 grid gap-4">
+      <va-card v-for="(info, idx) in infoTiles" :key="idx" :color="info.color">
+        <router-link :to="info.route">
+          <va-card-content class="flex flex-col space-y-3">
+            <header class="flex items-center justify-between gap-2">
+              <h2 class="va-h2 m-0 text-white min-w-0 truncate">{{ info.total }}</h2>
+              <div class="p-1.5 rounded flex items-center justify-center shrink-0">
+                <va-icon :name="info.icon" outline :size="48" class="text-white" />
+              </div>
+            </header>
+
+            <!-- Total count + label -->
+            <div>
+              <!-- <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2> -->
+              <p class="text-white opacity-80 text-sm">{{ t('menu.' + info.text) }}</p>
             </div>
-          </header>
 
-          <!-- Total count + label -->
-          <div>
-            <!-- <h2 class="va-h2 m-0 text-white">{{ info.total }}</h2> -->
-            <p class="text-white opacity-80 text-sm">{{ t('menu.' + info.text) }}</p>
-          </div>
+            <!-- 30-day delta -->
+            <section class="border-t border-white/20 pt-2">
+              <div class="text-white font-semibold text-base">
+                {{ info.last30d }} {{ t('dashboard.tiles.last_30d') }}
+              </div>
 
-          <!-- 30-day delta -->
-          <section class="border-t border-white/20 pt-2">
-            <div class="text-white font-semibold text-base">{{ info.last30d }} {{ t('dashboard.tiles.last_30d') }}</div>
+              <!-- pct is NULL when prev_30d = 0 (first activity or off-season) -->
+              <p v-if="info.pct !== null" class="text-sm flex flex-wrap items-center gap-1 mt-0.5">
+                <va-icon
+                  :name="info.pct >= 0 ? 'arrow_upward' : 'arrow_downward'"
+                  size="16px"
+                  :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'"
+                />
+                <span :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'">
+                  {{ Math.abs(info.pct).toFixed(1) }}%
+                </span>
+                <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
+              </p>
 
-            <!-- pct is NULL when prev_30d = 0 (first activity or off-season) -->
-            <p v-if="info.pct !== null" class="text-sm flex items-center gap-1 mt-0.5">
-              <va-icon
-                :name="info.pct >= 0 ? 'arrow_upward' : 'arrow_downward'"
-                size="16px"
-                :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'"
-              />
-              <span :class="info.pct >= 0 ? 'text-green-300' : 'text-red-300'">
-                {{ Math.abs(info.pct).toFixed(1) }}%
-              </span>
-              <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
-            </p>
+              <p v-else-if="info.delta !== null" class="text-sm flex flex-wrap items-center gap-1 mt-0.5">
+                <va-icon
+                  :name="info.delta >= 0 ? 'arrow_upward' : 'arrow_downward'"
+                  size="16px"
+                  :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'"
+                />
+                <span :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'">
+                  {{ info.delta >= 0 ? '+' : '' }}{{ info.delta }}
+                </span>
+                <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
+              </p>
 
-            <p v-else-if="info.delta !== null" class="text-sm flex items-center gap-1 mt-0.5">
-              <va-icon
-                :name="info.delta >= 0 ? 'arrow_upward' : 'arrow_downward'"
-                size="16px"
-                :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'"
-              />
-              <span :class="info.delta >= 0 ? 'text-green-300' : 'text-red-300'">
-                {{ info.delta >= 0 ? '+' : '' }}{{ info.delta }}
-              </span>
-              <span class="text-white/60">{{ t('dashboard.tiles.vs_prev_30d') }}</span>
-            </p>
-
-            <p v-else class="text-sm text-white/50 mt-0.5">
-              {{ t('dashboard.tiles.no_prev_data') }}
-            </p>
-          </section>
-        </va-card-content>
-      </router-link>
-    </va-card>
+              <p v-else class="text-sm text-white/50 mt-0.5">
+                {{ t('dashboard.tiles.no_prev_data') }}
+              </p>
+            </section>
+          </va-card-content>
+        </router-link>
+      </va-card>
+    </div>
 
     <!-- echarts -->
     <echarts class="col-span-12" />
@@ -298,6 +304,8 @@
     return obj
   })
   const engineRuntime = computed(() => {
+    // Same guard as panelPower/Power: without it a non-array Monitoring2 throws during render
+    if (!Array.isArray(Monitoring2.value)) return false
     let obj = { key: 'engineRuntime', value: 0 }
     //Total running time for engine (Engine Hours in seconds)
     re = new RegExp(/propulsion.*\.runTime/, 'i')
@@ -542,6 +550,8 @@
 <style lang="scss">
   #dashboard-map {
     width: 100%;
+    // Between 577px and 1023px no height applied, so the map card rendered empty
+    height: 220px;
 
     @media (max-width: 576px) {
       height: 126px;
@@ -555,6 +565,10 @@
   .dashboard {
     .va-icon {
       fill: var(--va-text-primary);
+    }
+
+    &__tiles {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     }
 
     .va-card {

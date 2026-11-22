@@ -433,7 +433,7 @@
       "status": "Status",
       "plugin_version": "Plugin Version",
       "signalk_version": "Signalk Version",
-      "signalk": "Diese Daten werden aus den Bootsdaten mit SignalK gezogen.",
+      "signalk": "Die meisten Daten werden von SignalK synchronisiert — dort aktualisieren, damit sie hier erscheinen. Marke & Modell und Foto können direkt auf dieser Seite gesetzt werden.",
       "platform": "Platform",
       "configuration": "Konfiguration Signalk Mapping",
       "make_model": "Hersteller und Modell",
@@ -441,7 +441,13 @@
       "last_updated": "Letztes Update",
       "select": "Switch vessel",
       "addNew": "Add new vessel",
-      "switched": "Switched to {name}"
+      "switched": "Switched to {name}",
+      "windy": {
+        "station": "Windy Station",
+        "password": "Stationspasswort",
+        "last_metric": "Letzte gesendete Beobachtung",
+        "station_pending": "Ausstehend — wird beim ersten Upload erstellt (bis zu 1 Stunde)"
+      }
     },
     "errors": {
       "name": "Name ist erforderlich",
@@ -506,7 +512,7 @@
     "public_profile_enabled": "öffentliches Profil aktiviert",
     "phone_notifications_enabled": "Mobiltelefon-Benachrichtigungen aktiv",
     "windy_station": "Windy Station",
-    "mcp_integration": "KI Agenten MCP Integration",
+    "mcp_integration": "KI Agenten MCP",
     "password_protected": "Passwort geschützt",
     "set_password": "Passwort setzen",
     "delete_account": "Account löschen",
@@ -521,19 +527,29 @@
     "instagram_handle": "Instagram Benutzername",
     "noforeignland_enabled": "In NoForeignland veröffentlichen",
     "noforeignland_api_key": "Boat API Key",
+    "integration": {
+      "status_active": "Aktiv",
+      "status_pending": "Warten auf ersten Upload",
+      "status_error": "Fehler",
+      "status_disabled": "Deaktiviert",
+      "never": "Nie"
+    },
+    "windy": {
+      "enabled": "Auf Windy veröffentlichen",
+      "msg": "Veröffentlicht die Außenwetterdaten deines Bootes (Wind, Böen, Windrichtung, Temperatur, Luftdruck, Luftfeuchtigkeit) als öffentliche Windy.com-Wetterstation. Erfordert Außensensoren. Die Station ist auf Windy öffentlich und zeigt den Namen und die Position deines Bootes.",
+      "station": "Station",
+      "station_pending": "Wird beim ersten Upload erstellt (kann bis zu einer Stunde dauern)",
+      "password": "Stationspasswort",
+      "last_metric": "Letzte gesendete Beobachtung"
+    },
     "noforeignland": {
       "api_key_placeholder": "Füge Deinen Boat API Key ein",
       "show_key": "API key anzeigen",
       "hide_key": "API key verbergen",
       "enable_requires_key": "Füge Deinen Boat API Key hinzu, um die Veröffentlichung zu aktivieren.",
-      "status_active": "Aktiv",
-      "status_pending": "Warten auf ersten Upload",
-      "status_error": "Fehler",
-      "status_disabled": "Deaktiviert",
       "last_metric": "Letzte Position gesendet",
       "last_sent": "Letzter Upload",
-      "last_error": "Letzter Fehler",
-      "never": "Nie"
+      "last_error": "Letzter Fehler"
     },
     "preferred_homepage": "Bevorzugte Startseite",
     "use_imperial_units": "Imperiale Einheiten verwenden",
@@ -602,6 +618,7 @@
       "public_stats": "Wenn aktiviert, sind deine Statisktiken öffentlich unter https://iot.openplotter.cloud/{0}/stats erreichbar.",
       "public_logs_list": "Wenn aktiviert, sind alle deine Log Details öffentlich unter https://iot.openplotter.cloud/{0}/logs erreichbar.",
       "public_timelapse": "Wenn aktiviert, sind deine Time Laps öffentlich unter https://iot.openplotter.cloud/{0}/timelaps erreichbar.",
+      "public_timelapse3d": "Wenn aktiviert, ist Ihr 3D-Timelapse öffentlich zugänglich unter https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "Wenn aktiviert, ist dein Monitoring öffentlich unter https://iot.openplotter.cloud/{0}/monitoring erreichbar.",
       "public_name": "Wenn du dein öffentlichen Profil aktivierst, hast du die Möglichkeit deinen Bootsnamen zu festzuglegen.",
       "public_windy": "Wenn du dein öffentlichen Profil aktivierst, hast du die Möglichkeit aus deinem Boot in eine, in Windy integrierte, Wetterstation zu machen.",
@@ -614,6 +631,7 @@
       "public_stats": "https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
+      "public_timelapse3d": "https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
       "public_windy": "https://www.windy.com/station/pws-{0}"
     },

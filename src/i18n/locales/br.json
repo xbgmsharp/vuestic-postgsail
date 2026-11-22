@@ -433,7 +433,7 @@
       "status": "Status",
       "plugin_version": "Plugin version",
       "signalk_version": "Signalk version",
-      "signalk": "This data is pulled from the Vessel Base Data with SignalK.",
+      "signalk": "Most data is synced from SignalK — update it there to reflect changes here. Make & Model and Photo can be set directly on this page.",
       "platform": "Plataforma",
       "configuration": "Configuration Signalk Mapping",
       "make_model": "Make and Model",
@@ -441,7 +441,13 @@
       "last_updated": "Last updated",
       "select": "Switch vessel",
       "addNew": "Add new vessel",
-      "switched": "Switched to {name}"
+      "switched": "Switched to {name}",
+      "windy": {
+        "station": "Windy Station",
+        "password": "Station Password",
+        "last_metric": "Last Observation Sent",
+        "station_pending": "Pending — created on first upload (up to 1 hour)"
+      }
     },
     "errors": {
       "name": "Name is required",
@@ -506,7 +512,7 @@
     "public_profile_enabled": "Public Profile Enabled",
     "phone_notifications_enabled": "Phone Notifications Enabled",
     "windy_station": "Windy Station",
-    "mcp_integration": "AI agents MCP Integration",
+    "mcp_integration": "AI agents MCP",
     "password_protected": "Password Protected",
     "set_password": "Set Password",
     "delete_account": "Delete Account",
@@ -521,19 +527,29 @@
     "instagram_handle": "Instagram Handle",
     "noforeignland_enabled": "Publish to NoForeignland",
     "noforeignland_api_key": "Boat API Key",
+    "integration": {
+      "status_active": "Active",
+      "status_pending": "Waiting for first upload",
+      "status_error": "Error",
+      "status_disabled": "Disabled",
+      "never": "Never"
+    },
+    "windy": {
+      "enabled": "Publish to Windy",
+      "msg": "Publishes your boat's outside weather readings (wind, gusts, wind direction, temperature, pressure, humidity) as a public Windy.com weather station. Requires outside sensors. The station is public on Windy and shows your boat's name and position.",
+      "station": "Station",
+      "station_pending": "Created with the first upload (can take up to an hour)",
+      "password": "Station Password",
+      "last_metric": "Last observation sent"
+    },
     "noforeignland": {
       "api_key_placeholder": "Paste your Boat API Key",
       "show_key": "Show API key",
       "hide_key": "Hide API key",
       "enable_requires_key": "Add your Boat API Key to enable publishing.",
-      "status_active": "Active",
-      "status_pending": "Waiting for first upload",
-      "status_error": "Error",
-      "status_disabled": "Disabled",
       "last_metric": "Last position sent",
       "last_sent": "Last upload",
-      "last_error": "Last error",
-      "never": "Never"
+      "last_error": "Last error"
     },
     "preferred_homepage": "Preferred Homepage",
     "use_imperial_units": "Use Imperial Units",
@@ -602,6 +618,7 @@
       "public_stats": "When enabled, your statistics will be publicly accessible at https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "When enabled, list of all your logs will be publicly accessible at https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "When enabled, your timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse",
+      "public_timelapse3d": "When enabled, your 3D timelapse will be publicly accessible at https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "When enabled, your monitoring will be publicly accessible at https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "When you enable your public profile, you will have the option to choose your boat name",
       "public_windy": "When you enable your public profile, you will have the option to transform your boat in a weather station integrate in Windy.",
@@ -614,6 +631,7 @@
       "public_stats": "https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
+      "public_timelapse3d": "https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
       "public_windy": "https://www.windy.com/station/pws-{0}"
     },

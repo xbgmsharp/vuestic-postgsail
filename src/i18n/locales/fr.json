@@ -432,7 +432,7 @@
       "status": "Status",
       "plugin_version": "Plugin version",
       "signalk_version": "Signalk version",
-      "signalk": "Ces données sont extraites de 'Vessel Base Data' depuis SignalK.",
+      "signalk": "La plupart des données sont synchronisées depuis SignalK — mettez-les à jour là-bas pour qu'elles apparaissent ici. Le modèle et la photo peuvent être définis directement sur cette page.",
       "platform": "Plateforme",
       "configuration": "Configuration Signalk Mapping",
       "make_model": "Marque et modèle",
@@ -440,7 +440,13 @@
       "last_updated": "Dernière mise à jour",
       "select": "Changer de bateau",
       "addNew": "Ajouter un nouveau bateau",
-      "switched": "Changé pour {name}"
+      "switched": "Changé pour {name}",
+      "windy": {
+        "station": "Station Windy",
+        "password": "Mot de passe de la station",
+        "last_metric": "Dernière observation envoyée",
+        "station_pending": "En attente — créée au premier envoi (jusqu'à 1 heure)"
+      }
     },
     "errors": {
       "name": "Name is required",
@@ -505,7 +511,7 @@
     "public_profile_enabled": "Profil public activé",
     "phone_notifications_enabled": "Notifications téléphoniques activées",
     "windy_station": "Station Windy",
-    "mcp_integration": "Intégration des agents IA MCP",
+    "mcp_integration": "Agents IA MCP",
     "password_protected": "Protégé par mot de passe",
     "set_password": "Définir le mot de passe",
     "delete_account": "Supprimer le compte",
@@ -520,19 +526,29 @@
     "instagram_handle": "Identifiant Instagram",
     "noforeignland_enabled": "Publier sur NoForeignland",
     "noforeignland_api_key": "Clé API du bateau",
+    "integration": {
+      "status_active": "Actif",
+      "status_pending": "En attente du premier envoi",
+      "status_error": "Erreur",
+      "status_disabled": "Désactivé",
+      "never": "Jamais"
+    },
+    "windy": {
+      "enabled": "Publier sur Windy",
+      "msg": "Publie les relevés météo extérieurs de votre bateau (vent, rafales, direction du vent, température, pression, humidité) comme station météo publique sur Windy.com. Nécessite des capteurs extérieurs. La station est publique sur Windy et affiche le nom et la position de votre bateau.",
+      "station": "Station",
+      "station_pending": "Créée lors du premier envoi (jusqu'à une heure)",
+      "password": "Mot de passe de la station",
+      "last_metric": "Dernière observation envoyée"
+    },
     "noforeignland": {
       "api_key_placeholder": "Collez la clé API de votre bateau",
       "show_key": "Afficher la clé API",
       "hide_key": "Masquer la clé API",
       "enable_requires_key": "Ajoutez la clé API de votre bateau pour activer la publication.",
-      "status_active": "Actif",
-      "status_pending": "En attente du premier envoi",
-      "status_error": "Erreur",
-      "status_disabled": "Désactivé",
       "last_metric": "Dernière position envoyée",
       "last_sent": "Dernier envoi",
-      "last_error": "Dernière erreur",
-      "never": "Jamais"
+      "last_error": "Dernière erreur"
     },
     "preferred_homepage": "Page d'accueil préférée",
     "use_imperial_units": "Utiliser les unités impériales",
@@ -601,6 +617,7 @@
       "public_stats": "Lorsque activé, vos statistiques seront accessibles publiquement à https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "Lorsque activé, la liste de tous vos journaux sera accessible publiquement à https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "Lorsque activé, votre timelapse sera accessible publiquement à https://iot.openplotter.cloud/{0}/timelapse",
+      "public_timelapse3d": "Lorsqu'il est activé, votre timelapse 3D sera accessible publiquement à l'adresse https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "Lorsque activé, votre surveillance sera accessible publiquement à https://iot.openplotter.cloud/{0}/monitoring",
       "public_name": "Lorsque vous activez votre profil public, vous aurez la possibilité de choisir le nom de votre bateau",
       "public_windy": "Lorsque vous activez votre profil public, vous aurez la possibilité de transformer votre bateau en une station météorologique intégrée à Windy.",
@@ -613,6 +630,7 @@
       "public_stats": "https://iot.openplotter.cloud/{0}/stats",
       "public_logs_list": "https://iot.openplotter.cloud/{0}/logs",
       "public_timelapse": "https://iot.openplotter.cloud/{0}/timelapse",
+      "public_timelapse3d": "https://iot.openplotter.cloud/{0}/timelapse3d",
       "public_monitoring": "https://iot.openplotter.cloud/{0}/monitoring",
       "public_windy": "https://www.windy.com/station/pws-{0}"
     },

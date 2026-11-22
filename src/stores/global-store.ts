@@ -108,7 +108,6 @@ const defaultState = {
       use_imperial_units: false,
       email_notifications: true,
       phone_notifications: false,
-      windy: null,
       position_reporting: false,
       position_reporting_interval: 60,
       language: 'gb',
@@ -119,6 +118,8 @@ const defaultState = {
     username: '',
     has_vessel: false,
     public_vessel: '',
+    // Vessel-scoped since backend 0.12.0 (metadata.user_data.windy). Password never stored in preferences.
+    windy: { station_id: null as string | null, last_metric: null as string | null, password: null as string | null },
   },
   badges: {},
   ispublic: false,
@@ -192,6 +193,12 @@ export const useGlobalStore = defineStore('global', {
       const alerts = await api.vessel_settings()
       deepMerge(this.settings?.preferences?.alerting, alerts?.vessel_settings?.user_data?.alerting || {})
       deepMerge(this.alarms, alerts?.vessel_settings?.user_data?.alarms || {})
+      const w = alerts?.vessel_settings?.user_data?.windy || {}
+      this.settings.windy = {
+        station_id: w.station_id || null,
+        last_metric: w.last_metric || null,
+        password: w.password || null,
+      }
       return this.settings
     },
     async updatePref(key: string, value: any): Promise<any> {
@@ -370,7 +377,7 @@ export const useGlobalStore = defineStore('global', {
     firstName: (state) => state.settings?.first,
     instagram: (state) => state.settings?.preferences?.instagram_handle,
     website: (state) => state.settings?.preferences?.website,
-    windy: (state) => state.settings?.preferences?.windy,
+    windy: (state) => state.settings?.windy?.station_id || null,
     readOnly: (state) => {
       const demo_email = state.settings?.email.match(demo_pattern)
       console.debug('readOnly', demo_email)

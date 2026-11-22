@@ -23,3 +23,25 @@ export interface Response {
 export interface JSONObject {
   [k: string]: number[]
 }
+
+export type Vessel = {
+  name: string
+  mmsi: string
+  vessel_id: string
+  created_at: string
+  first_contact: string
+  last_contact: string
+  geojson: Record<string, unknown>
+  ship_type: number
+  country: string
+  alpha_2: string
+  length: number
+  beam: number
+  height: number
+  plugin_version: string
+  platform: string
+  make_model: string
+  has_images: boolean
+  images: { id: string; url: string; type: string; caption: string }[]
+  image_url: string
+}

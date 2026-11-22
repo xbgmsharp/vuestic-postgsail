@@ -300,6 +300,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { titleKey: 'menu.eventlogs' },
       },
       {
+        name: 'journal',
+        path: 'journal',
+        component: () => import('../pages/logs-book/Journal.vue'),
+        meta: { titleKey: 'menu.journal' },
+      },
+      {
         name: 'map-explorer',
         path: 'explore',
         component: () => import('../components/maps/leafletMapExplorer.vue'),

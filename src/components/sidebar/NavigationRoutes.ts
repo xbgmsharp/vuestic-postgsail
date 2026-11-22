@@ -53,67 +53,62 @@ const sections: INavigationSection[] = [
       {
         name: 'logs',
         displayName: 'menu.logs',
-        // NOTE: verify these route names against src/router — add log detail routes here.
-        matches: ['log-details', 'log-map', 'logslapse'],
+        matches: ['log-details', 'log-map'],
         meta: { icon: 'menu-logs' },
-      },
-      {
-        name: 'places',
-        displayName: 'menu.places',
-        meta: { icon: 'menu-moorages' },
-        children: [
-          {
-            name: 'stays',
-            displayName: 'menu.stays',
-            matches: ['stay-details'],
-            meta: { icon: 'menu-stays' },
-          },
-          {
-            name: 'moorages',
-            displayName: 'menu.moorages',
-            matches: ['moorage-details'],
-            meta: { icon: 'menu-moorages' },
-          },
-          {
-            name: 'map',
-            displayName: 'menu.map',
-            meta: { icon: 'menu-moorages-map' },
-          },
-        ],
-      },
-      {
-        name: 'monitoring-menu',
-        displayName: 'menu.monitoring',
-        meta: { icon: 'menu-monitoring' },
-        children: [
-          {
-            name: 'monitoring',
-            displayName: 'menu.monitoring_realtime',
-            meta: { icon: 'menu-monitoring' },
-          },
-          {
-            name: 'history',
-            displayName: 'menu.history',
-            meta: { icon: 'material-icons-manage_history' },
-          },
-          {
-            name: 'explore',
-            // Own key: `menu.explore` is already taken by the map explorer, and two
-            // entries labelled "Explore" in the same sidebar is a genuine ambiguity.
-            displayName: 'menu.monitoring_explore',
-            meta: { icon: 'material-icons-tune' },
-          },
-          {
-            name: 'windy',
-            displayName: 'menu.windy',
-            meta: { icon: 'material-icons-wind_power' },
-          },
-        ],
       },
       {
         name: 'stats',
         displayName: 'menu.stats',
         meta: { icon: 'menu-stats' },
+      },
+    ],
+  },
+  {
+    id: 'places',
+    displayName: 'menu.sections.places',
+    items: [
+      {
+        name: 'stays',
+        displayName: 'menu.stays',
+        matches: ['stay-details'],
+        meta: { icon: 'menu-stays' },
+      },
+      {
+        name: 'moorages',
+        displayName: 'menu.moorages',
+        matches: ['moorage-details'],
+        meta: { icon: 'menu-moorages' },
+      },
+      {
+        name: 'map',
+        displayName: 'menu.map',
+        meta: { icon: 'menu-moorages-map' },
+      },
+    ],
+  },
+  {
+    id: 'monitoring',
+    displayName: 'menu.sections.monitoring',
+    items: [
+      {
+        name: 'monitoring',
+        displayName: 'menu.monitoring_realtime',
+        meta: { icon: 'menu-monitoring' },
+      },
+      {
+        name: 'history',
+        displayName: 'menu.history',
+        meta: { icon: 'material-icons-manage_history' },
+      },
+      {
+        name: 'explore',
+        displayName: 'menu.monitoring_explore',
+        meta: { icon: 'material-icons-tune' },
+      },
+      {
+        name: 'windy',
+        displayName: 'menu.windy',
+        meta: { icon: 'material-icons-wind_power' },
       },
     ],
   },
@@ -135,7 +130,6 @@ const sections: INavigationSection[] = [
       {
         name: 'timelapse-form',
         displayName: 'menu.timelapse',
-        // Stay lit while watching the output the form dispatched to.
         matches: ['timelapse-replay', 'timelapse3d-replay'],
         meta: { icon: 'menu-timelapse' },
       },
@@ -146,9 +140,9 @@ const sections: INavigationSection[] = [
     displayName: 'menu.sections.insights',
     items: [
       {
-        name: 'logslapse',
-        displayName: 'menu.logbook_report',
-        meta: { icon: 'material-icons-print' },
+        name: 'journal',
+        displayName: 'menu.journal',
+        meta: { icon: 'material-icons-menu_book' },
       },
       {
         name: 'badges',

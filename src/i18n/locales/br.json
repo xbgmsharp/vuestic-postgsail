@@ -64,15 +64,19 @@
     "windy": "Windy",
     "friends": "Friends",
     "sections": {
-      "navigate": "Navigate",
-      "fleet": "Fleet",
-      "insights": "Insights"
+      "navigate": "Navegar",
+      "places": "Lugares",
+      "monitoring": "Monitoramento",
+      "fleet": "Frota",
+      "insights": "Análises"
     },
-    "places": "Places",
-    "monitoring_explore": "Metrics",
-    "logbook_report": "Journal",
+    "places": "Lugares",
+    "monitoring_explore": "Métricas",
+    "logbook_report": "Diário",
+    "journal": "Diário",
+    "print": "Imprimir",
     "aria": {
-      "primary": "Primary navigation"
+      "primary": "Navegação principal"
     }
   },
   "notifications": {
@@ -190,7 +194,8 @@
         "tags": "Filter by tags...",
         "reset": "Reset",
         "start_date": "Start date",
-        "end_date": "End date"
+        "end_date": "End date",
+        "all": "Todas"
       },
       "action": "Action",
       "from": "From",
@@ -208,7 +213,10 @@
         "message": "Start log must be earlier than End log and they must be adjacent (previous or next).",
         "danger": "This operation is irreversible. Are you sure you want to continue?",
         "success": "Logs merged successfully."
-      }
+      },
+      "trips": "travessias",
+      "load_more": "Carregar entradas anteriores",
+      "no_more": "Todas as entradas carregadas"
     },
     "details": {
       "title": "Log Book"
@@ -231,6 +239,8 @@
       "note": "Note | Notes",
       "remarks": "Diga o que aconteceu",
       "export": "Export",
+      "avg_speed": "Vel. média",
+      "max_speed": "Vel. máx.",
       "avg_max_speed": "SPEED AVG / MAX",
       "max_wind_speed": "WIND AVG / MAX",
       "sea_state": "Estado do mar",
@@ -263,9 +273,15 @@
       "fullTable": "Full Table"
     },
     "book": {
-      "days": "Jours",
-      "trips": "Voyages",
-      "stays": "Séjours"
+      "days": "Dias",
+      "trips": "Viagens",
+      "stays": "Estadias",
+      "print": "Imprimir o diário",
+      "mapUnavailable": "Mapa indisponível",
+      "trackNotes": "Notas de pontos",
+      "unknownDate": "Data desconhecida",
+      "activeStay": "Estadia ativa",
+      "title": "Diário de bordo"
     }
   },
   "stays": {
@@ -384,7 +400,8 @@
       "last_month": "Last month",
       "last_12_months": "Last 12 months"
     },
-    "no_data_for_range": "No logs for this period."
+    "no_data_for_range": "No logs for this period.",
+    "year": "Ano"
   },
   "boats": {
     "list": {

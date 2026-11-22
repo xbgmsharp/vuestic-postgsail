@@ -30,12 +30,18 @@
           <div class="flex flex-col space-y-1">
             <label class="text-regularMedium font-semibold">{{ t('profile.public_name') }}</label>
             <p class="text-sm va-text-secondary">{{ t('profile.msg.public_name') }}</p>
-            <VaInput
-              v-model.trim.lazy="localpref.public_vessel"
-              outline
-              :rules="[(v) => v.length > 3 || 'Min 4 characters']"
-              @change="UpdatePref('public_vessel', localpref.public_vessel)"
-            />
+            <div class="flex gap-2">
+              <VaSelect
+                v-model="vesselPrefix"
+                :options="vesselPrefixOptions"
+                value-by="value"
+                text-by="description"
+                outline
+                class="w-48 shrink-0"
+                @update:model-value="savePublicVessel"
+              />
+              <VaInput v-model.trim.lazy="vesselName" outline class="flex-grow" @change="savePublicVessel" />
+            </div>
             <p v-if="error_vessel" class="text-sm text-danger">{{ error_vessel }}</p>
           </div>
 
@@ -78,6 +84,14 @@
               class="va-link link text-sm"
             >
               {{ $t('profile.url.public_timelapse', [settings.public_vessel]) }}
+            </a>
+            <p class="text-sm va-text-secondary">{{ t('profile.msg.public_timelapse3d', [settings.public_vessel]) }}</p>
+            <a
+              :href="$t('profile.url.public_timelapse3d', [settings.public_vessel])"
+              target="_blank"
+              class="va-link link text-sm"
+            >
+              {{ $t('profile.url.public_timelapse3d', [settings.public_vessel]) }}
             </a>
           </div>
 
@@ -138,29 +152,6 @@
               {{ $t('profile.url.public_monitoring', [settings.public_vessel]) }}
             </a>
           </div>
-
-          <!-- Windy -->
-          <div class="flex flex-col space-y-2">
-            <div class="flex items-center justify-between">
-              <label class="text-regularMedium font-semibold">{{ t('profile.windy_station') }}</label>
-              <va-switch
-                v-model="settings.preferences.public_windy"
-                size="small"
-                outline
-                @update:modelValue="UpdatePref('public_windy', $event)"
-              />
-            </div>
-            <p class="text-sm va-text-secondary">{{ t('profile.msg.public_windy') }}</p>
-            <template v-if="settings.preferences.windy">
-              <a
-                :href="$t('profile.url.public_windy', [settings.preferences.windy])"
-                target="_blank"
-                class="va-link link text-sm"
-              >
-                {{ $t('profile.url.public_windy', [settings.preferences.windy]) }}
-              </a>
-            </template>
-          </div>
         </div>
       </template>
     </div>
@@ -169,7 +160,7 @@
 
 <script setup>
   import { useI18n } from 'vue-i18n'
-  import { ref, onBeforeMount } from 'vue'
+  import { ref, computed, onBeforeMount } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
   import { useToast } from 'vuestic-ui'
@@ -182,18 +173,52 @@
   const localpref = ref({})
   const error_vessel = ref('')
 
+  const vesselPrefixOptions = ref([
+    { value: 'SV', text: 'SV', description: 'SV - Sailing Vessel' },
+    { value: 'MV', text: 'MV', description: 'MV - Motor Vessel' },
+    { value: 'SY', text: 'SY', description: 'SY - Sailing Yacht' },
+    { value: 'MY', text: 'MY', description: 'MY - Motor Yacht' },
+    { value: 'RV', text: 'RV', description: 'RV - Racing Vessel' },
+  ])
+  const vesselPrefix = ref('SV')
+  const vesselName = ref('')
+
+  const KNOWN_PREFIXES = vesselPrefixOptions.value.map((o) => o.value)
+
+  const fullVesselName = computed(() => {
+    const name = vesselName.value.replace(/\s+/g, '')
+    return `${vesselPrefix.value}${name}`
+  })
+
   onBeforeMount(async () => {
     await fetchSettings()
     localpref.value = GlobalStore.settings.preferences
+    const val = localpref.value.public_vessel || ''
+    // Support both legacy SV_Marlow and current SVMarlow formats
+    const matched = KNOWN_PREFIXES.find((p) => val.startsWith(p + '_') || val.startsWith(p))
+    if (matched) {
+      vesselPrefix.value = matched
+      const rest = val.startsWith(matched + '_') ? val.slice(matched.length + 1) : val.slice(matched.length)
+      vesselName.value = rest
+    } else {
+      vesselPrefix.value = 'SV'
+      vesselName.value = val
+    }
   })
 
+  const savePublicVessel = async () => {
+    const combined = fullVesselName.value
+    const ok = await UpdatePref('public_vessel', combined)
+    if (ok) settings.value.public_vessel = combined
+  }
+
   const UpdatePref = async (key, value) => {
-    if (!key || typeof value === 'undefined') return
+    if (!key || typeof value === 'undefined') return false
     if (key === 'public_vessel') {
       const regex = /^\w{3,15}$/
       if (!regex.test(value)) {
-        error_vessel.value = 'Only alphanumeric characters plus underscore, 4–15 chars'
-        return
+        error_vessel.value = 'Name must be alphanumeric/underscore, combined 3–15 chars (e.g. SV_Marlow)'
+        return false
       }
       error_vessel.value = ''
     }
@@ -203,5 +228,6 @@
       position: 'top-right',
       color: response ? 'success' : 'warning',
     })
+    return !!response
   }
 </script>

@@ -56,7 +56,7 @@
             v-model="selectedTheme"
             :options="themeOptions"
             outline
-            size="small"
+            size="large"
             @update:modelValue="updateTheme"
           />
         </div>
@@ -115,18 +115,6 @@
           outline
           placeholder="(e.g. @postgsail)"
           @change="UpdatePref('instagram_handle', settings.preferences.instagram_handle)"
-        />
-      </div>
-
-      <!-- Windy Station -->
-      <div class="flex flex-col space-y-1">
-        <label class="text-regularMedium font-semibold">{{ t('profile.windy_station') }}</label>
-        <p class="text-sm va-text-secondary">{{ t('profile.msg.windy_station') }}</p>
-        <VaInput
-          v-model="settings.preferences.windy"
-          outline
-          placeholder="(e.g. d06efc48)"
-          @change="UpdatePref('windy', settings.preferences.windy)"
         />
       </div>
     </div>

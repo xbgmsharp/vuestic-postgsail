@@ -10,7 +10,7 @@
           <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
         </template>
         <va-inner-loading :loading="isBusy">
-          <template v-if="stats_logs && stats_logs.count">
+          <template v-if="hasEverHadData">
             <div class="gap-4 mb-4">
               <div class="mb-2">{{ $t('stats.date_range') }}:</div>
               <div class="w-64">
@@ -30,6 +30,8 @@
                 {{ preset.label }}
               </va-chip>
             </div>
+          </template>
+          <template v-if="stats_logs && stats_logs.count">
             <div>
               <div class="mb-2">{{ $t('stats.badges') }}:</div>
               <div class="badges-stats">
@@ -68,6 +70,14 @@
             <va-alert color="danger" outline class="mb-4">{{ $t('api.error') }}: {{ apiError }}</va-alert>
           </template>
           <va-inner-loading :loading="isBusy">
+            <va-alert
+              v-if="!isBusy && hasEverHadData && !(stats_logs && stats_logs.count)"
+              color="info"
+              outline
+              class="m-0"
+            >
+              {{ $t('stats.no_data_for_range') }}
+            </va-alert>
             <template v-if="stats_logs && stats_logs.count">
               <table class="va-table va-table--hoverable va-table--striped">
                 <tbody>
@@ -171,6 +181,14 @@
         <va-card-title>{{ t('stats.moorages') }}</va-card-title>
         <va-card-content>
           <va-inner-loading :loading="isBusy">
+            <va-alert
+              v-if="!isBusy && hasEverHadData && !stats_moorages?.unique_moorages"
+              color="info"
+              outline
+              class="m-0"
+            >
+              {{ $t('stats.no_data_for_range') }}
+            </va-alert>
             <template v-if="stats_moorages?.unique_moorages">
               <table class="va-table va-table--hoverable va-table--striped">
                 <tbody>
@@ -336,6 +354,7 @@
   const isBusy = ref(false)
   const apiError = ref(null)
   const dateRange = ref(null)
+  const hasEverHadData = ref(false)
 
   function getFlagIcon(code, size) {
     return `flag-icon-${code} ${size}`
@@ -394,7 +413,8 @@
     updateStatsLogs()
   }
 
-  const disabled = computed(() => !isBusy.value && !stats_logs.value?.count)
+  // noDataScreen only on first use — when the user has never had any data at all
+  const disabled = computed(() => !isBusy.value && !hasEverHadData.value)
 
   const filteredBadges = computed(() => {
     const source = userBadges.value || {}
@@ -450,9 +470,17 @@
         start_date: startDate,
         end_date: endDate,
       })
-      dateRange.value = {
-        start: startDate || stats_logs.value?.first_date || null,
-        end: endDate || stats_logs.value?.last_date || null,
+      hasEverHadData.value = !!stats_logs.value?.count
+      if (userFiltered.value) {
+        // URL params were present — show the custom range in the picker
+        dateRange.value = {
+          start: startDate || stats_logs.value?.first_date || null,
+          end: endDate || stats_logs.value?.last_date || null,
+        }
+      } else {
+        // Default: "All time" chip selected, no date range in picker
+        activeRangeKey.value = 'all'
+        dateRange.value = null
       }
     } catch (e) {
       apiError.value = e
@@ -462,15 +490,15 @@
   })
 
   function updateDateRange() {
+    activeRangeKey.value = null
     updateStatsLogs()
   }
 
   async function updateStatsLogs() {
     try {
-      await GlobalStore.fetchStats({
-        start_date: toISODate(dateRange.value.start),
-        end_date: toISODate(dateRange.value.end),
-      })
+      const startDate = dateRange.value?.start ? toISODate(dateRange.value.start) : null
+      const endDate = dateRange.value?.end ? toISODate(dateRange.value.end) : null
+      await GlobalStore.fetchStats({ start_date: startDate, end_date: endDate })
     } catch (err) {
       console.error('updateStatsLogs failed', err)
     }

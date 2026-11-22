@@ -276,7 +276,7 @@ class ApiClient extends HttpClient {
     return this.get(`rpc/logs_tags_fn`)
   }
 
-  async logs_range(payload: JSObj) {
+  async logs_range(payload: JSObj | string) {
     return this.get(`log_view?${payload}`)
   }
 
